@@ -1,0 +1,11 @@
+{
+    "comment": "v0.10.0",
+    "ignore": "test",
+    "package": [{
+        "checksumSHA1": "X0lJSZqC+7DyzHVgqCh52TwLqe8=",
+        "path": "github.com/adamzy/cedar-go",
+        "revision": "d348c21f72432c2b6d5f05f68759fde94f64b227",
+        "revisionTime": "2015-11-03T15:22:50Z"
+    }],
+    "rootPath": "githubc.com/go-ego/gse"
+}

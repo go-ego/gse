@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<title>gse中文分词演示</title>
+
+<head>
+    <style>
+        .left {
+            float: left;
+        }
+    </style>
+
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript">
+        Segment = function() {
+            var input = $('textarea#text').val();
+            $.ajax({
+                url: "/json",
+                type: "POST",
+                data: {
+                    text: input
+                },
+                dataType: "json",
+                success: function(result) {
+                    var out = ""
+                    var last_word_is_x = false
+                    for (var i = 0; i < result.segments.length; i++) {
+                        var segment = result.segments[i]
+                        if (segment.pos == "x") {
+                            if (segment.text != "\n") {
+                                last_word_is_x = true
+                            } else {
+                                last_word_is_x = false
+                            }
+
+                            out += segment.text
+                        } else {
+                            if (last_word_is_x) {
+                                out += " "
+                            }
+                            out += segment.text + "/" + segment.pos + " "
+                        }
+                    }
+                    $('textarea#output').html(out);
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        };
+    </script>
+</head>
+
+<body>
+
+    <h1>gse中文分词演示</h1>
+
+    <div class="left" width=100px>
+        <textarea id="text" rows="30" cols="60">
+百度91博弈全过程：将成中国互联网最大并购
+
+来源：21世纪经济报道
+
+7月16日上午，百度宣布拟全资收购在香港上市的网龙公司旗下的91无线业务，购买总价为19亿美元，相关各方已经签署谅解备忘录。91无线方面随后向记者证实了此事。该交易如果完成，将成为中国互联网历史上最大的一笔并购案。
+</textarea>
+    </div>
+
+    <div class="left">
+        <br><br><br><br>
+        <br><br><br><br> &nbsp;&nbsp;&nbsp;
+        <button type="button" onclick="Segment()">分词 ---></button>&nbsp;&nbsp;&nbsp;
+    </div>
+
+    <div class="left" width=100px>
+        <textarea id="output" rows="30" cols="60" disabled></textarea>
+    </div>
+
+</body>
+
+</html>
