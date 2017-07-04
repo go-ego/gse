@@ -21,13 +21,13 @@ Go中文分词
 
 分词速度<a href="https://github.com/go-ego/gse/blob/master/tools/benchmark.go">单线程</a>9MB/s，<a href="https://github.com/go-ego/gse/blob/master/tools/goroutines.go">goroutines并发</a>42MB/s（8核Macbook Pro）。
 
-# 安装/更新
+## 安装/更新
 
 ```
 go get -u github.com/go-ego/gse
 ```
 
-# 使用
+## 使用
 
 
 ```go
@@ -35,6 +35,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/go-ego/gse"
 )
 
@@ -52,3 +53,6 @@ func main() {
 	fmt.Println(gse.SegmentsToString(segments, false)) 
 }
 ```
+## License
+
+Gwk is primarily distributed under the terms of both the MIT license and the Apache License (Version 2.0), base on [sego](https://github.com/huichen/sego)
