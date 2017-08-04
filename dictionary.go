@@ -1,6 +1,8 @@
 package gse
 
-import cedar "go-ego/cedar-go"
+import (
+	cedar "github.com/go-ego/cedar-go"
+)
 
 // Dictionary结构体实现了一个字串前缀树，一个分词可能出现在叶子节点也有可能出现在非叶节点
 type Dictionary struct {
