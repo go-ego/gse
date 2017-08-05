@@ -2,8 +2,8 @@
     "comment": "v0.10.0",
     "ignore": "test",
     "package": [{
-        "checksumSHA1": "8ynPKpskZlLLx7SlxYGoZ2G/Gz8=",
-        "path": "github.com/go-ego/cedar-go",
+        "checksumSHA1": "9VKyURiSxKMEM0gibPtY1OPjejw=",
+        "path": "github.com/go-ego/cedar",
         "revision": "8ec3098aa38876bbc0d75a1056a52602c487a5a5",
         "revisionTime": "2017-08-04T13:12:22Z"
     }],

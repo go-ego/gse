@@ -7,7 +7,7 @@ go:
 
 install:
   - export PATH=$PATH:$HOME/gopath/bin
-  - go get -u github.com/go-ego/cedar-go
+  - go get -u github.com/go-ego/cedar
   - go get -v -t
 
 # notifications:

@@ -20,7 +20,7 @@ machine:
 dependencies:
   override:
     # './...' is a relative pattern which means all subdirectories
-    - go get -u github.com/go-ego/cedar-go
+    - go get -u github.com/go-ego/cedar
     - go get -t -d -v ./...
 
 # script:
