@@ -22,7 +22,7 @@ dependencies:
     # './...' is a relative pattern which means all subdirectories
     - go get -u github.com/go-ego/cedar
     - go get -u github.com/go-ego/gse
-    - go get -u -v ./...
+    - go get -t -d -v ./...
 
 # script:
 #   - ./go.test.sh

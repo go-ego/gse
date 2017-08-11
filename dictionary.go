@@ -4,7 +4,7 @@ import (
 	"github.com/go-ego/cedar"
 )
 
-// Dictionary结构体实现了一个字串前缀树，一个分词可能出现在叶子节点也有可能出现在非叶节点
+// Dictionary 结构体实现了一个字串前缀树，一个分词可能出现在叶子节点也有可能出现在非叶节点
 type Dictionary struct {
 	trie           *cedar.Cedar // Cedar 前缀树
 	maxTokenLength int          // 词典中最长的分词
@@ -12,26 +12,27 @@ type Dictionary struct {
 	totalFrequency int64        // 词典中所有分词的频率之和
 }
 
+// NewDictionary new dictionary
 func NewDictionary() *Dictionary {
 	return &Dictionary{trie: cedar.New()}
 }
 
-// 词典中最长的分词
+// MaxTokenLength 词典中最长的分词
 func (dict *Dictionary) MaxTokenLength() int {
 	return dict.maxTokenLength
 }
 
-// 词典中分词数目
+// NumTokens 词典中分词数目
 func (dict *Dictionary) NumTokens() int {
 	return len(dict.tokens)
 }
 
-// 词典中所有分词的频率之和
+// TotalFrequency 词典中所有分词的频率之和
 func (dict *Dictionary) TotalFrequency() int64 {
 	return dict.totalFrequency
 }
 
-// 向词典中加入一个分词
+// addToken 向词典中加入一个分词
 func (dict *Dictionary) addToken(token Token) {
 	bytes := textSliceToBytes(token.text)
 	_, err := dict.trie.Get(bytes)
@@ -47,7 +48,7 @@ func (dict *Dictionary) addToken(token Token) {
 	}
 }
 
-// 在词典中查找和字元组words可以前缀匹配的所有分词
+// lookupTokens 在词典中查找和字元组words可以前缀匹配的所有分词
 // 返回值为找到的分词数
 func (dict *Dictionary) lookupTokens(words []Text, tokens []*Token) (numOfTokens int) {
 	var id, value int
