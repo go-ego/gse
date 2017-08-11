@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-// SegmentsToString 输出分词结果为字符串
+// ToString segments to string  输出分词结果为字符串
 //
 // 有两种输出模式，以"中华人民共和国"为例
 //
@@ -14,7 +14,7 @@ import (
 //      "中华/nz 人民/n 共和/nz 共和国/ns 人民共和国/nt 中华人民共和国/ns "
 //
 // 搜索模式主要用于给搜索引擎提供尽可能多的关键字，详情请见Token结构体的注释。
-func SegmentsToString(segs []Segment, searchMode bool) (output string) {
+func ToString(segs []Segment, searchMode bool) (output string) {
 	if searchMode {
 		for _, seg := range segs {
 			output += tokenToString(seg.token)
@@ -36,7 +36,7 @@ func tokenToString(token *Token) (output string) {
 	return
 }
 
-// SegmentsToSlice 输出分词结果到一个字符串slice
+// ToSlice segments to slice 输出分词结果到一个字符串slice
 //
 // 有两种输出模式，以"中华人民共和国"为例
 //
@@ -45,7 +45,7 @@ func tokenToString(token *Token) (output string) {
 //      "[中华 人民 共和 共和国 人民共和国 中华人民共和国]"
 //
 // 搜索模式主要用于给搜索引擎提供尽可能多的关键字，详情请见Token结构体的注释。
-func SegmentsToSlice(segs []Segment, searchMode bool) (output []string) {
+func ToSlice(segs []Segment, searchMode bool) (output []string) {
 	if searchMode {
 		for _, seg := range segs {
 			output = append(output, tokenToSlice(seg.token)...)
