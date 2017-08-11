@@ -37,7 +37,7 @@ func TestSplit(t *testing.T) {
 
 func TestSegment(t *testing.T) {
 	var seg Segmenter
-	seg.LoadDictionary("testdata/test_dict1.txt,testdata/test_dict2.txt")
+	seg.LoadDict("testdata/test_dict1.txt,testdata/test_dict2.txt")
 	expect(t, "12", seg.dict.NumTokens())
 	segments := seg.Segment([]byte("中国有十三亿人口"))
 	expect(t, "中国/ 有/p3 十三亿/ 人口/p12 ", SegmentsToString(segments, false))
@@ -53,7 +53,7 @@ func TestSegment(t *testing.T) {
 }
 
 func TestLargeDictionary(t *testing.T) {
-	prodSeg.LoadDictionary("data/dictionary.txt")
+	prodSeg.LoadDict("data/dictionary.txt")
 	expect(t, "中国/ns 人口/n ", SegmentsToString(prodSeg.Segment(
 		[]byte("中国人口")), false))
 

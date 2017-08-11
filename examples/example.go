@@ -15,7 +15,7 @@ func main() {
 	flag.Parse()
 
 	var seg gse.Segmenter
-	seg.LoadDictionary("../data/dictionary.txt")
+	seg.LoadDict("../data/dictionary.txt")
 
 	segments := seg.Segment([]byte(*text))
 	fmt.Println(gse.SegmentsToString(segments, true))

@@ -33,7 +33,7 @@ func (seg *Segmenter) Dictionary() *Dictionary {
 	return seg.dict
 }
 
-// 从文件中载入词典
+// LoadDict load the dictionary from the file 从文件中载入词典
 //
 // 可以载入多个词典文件，文件名用","分隔，排在前面的词典优先载入分词，比如
 // 	"用户词典.txt,通用词典.txt"
@@ -41,7 +41,7 @@ func (seg *Segmenter) Dictionary() *Dictionary {
 //
 // 词典的格式为（每个分词一行）：
 //	分词文本 频率 词性
-func (seg *Segmenter) LoadDictionary(files string) {
+func (seg *Segmenter) LoadDict(files string) {
 	seg.dict = NewDictionary()
 	for _, file := range strings.Split(files, ",") {
 		log.Printf("载入gse词典 %s", file)

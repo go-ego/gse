@@ -79,7 +79,7 @@ func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	// 初始化分词器
-	segmenter.LoadDictionary(*dict)
+	segmenter.LoadDict(*dict)
 
 	http.HandleFunc("/json", JsonRpcServer)
 	http.Handle("/", http.FileServer(http.Dir(*staticFolder)))
