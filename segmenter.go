@@ -1,4 +1,5 @@
-//Go中文分词
+// package gse Go 中文分词
+
 package gse
 
 import (
@@ -17,7 +18,7 @@ const (
 	minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
 
-// 分词器结构体
+// Segmenter 分词器结构体
 type Segmenter struct {
 	dict *Dictionary
 }
@@ -28,7 +29,7 @@ type jumper struct {
 	token       *Token
 }
 
-// 返回分词器使用的词典
+// Dictionary 返回分词器使用的词典
 func (seg *Segmenter) Dictionary() *Dictionary {
 	return seg.dict
 }
@@ -127,7 +128,7 @@ func (seg *Segmenter) LoadDict(files string) {
 	log.Println("gse词典载入完毕")
 }
 
-// 对文本分词
+// Segment 对文本分词
 //
 // 输入参数：
 //	bytes	UTF8文本的字节数组
