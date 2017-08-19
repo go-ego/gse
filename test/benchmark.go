@@ -55,7 +55,7 @@ func main() {
 	t0 := time.Now()
 
 	var segmenter gse.Segmenter
-	segmenter.LoadDict("../data/dictionary.txt")
+	segmenter.LoadDict("../data/dict/dictionary.txt")
 
 	// 记录时间
 	t1 := time.Now()

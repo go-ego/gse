@@ -37,7 +37,7 @@ import (
 var (
 	host         = flag.String("host", "", "HTTP服务器主机名")
 	port         = flag.Int("port", 8080, "HTTP服务器端口")
-	dict         = flag.String("dict", "../data/dictionary.txt", "词典文件")
+	dict         = flag.String("dict", "../data/dict/dictionary.txt", "词典文件")
 	staticFolder = flag.String("static_folder", "static", "静态页面存放的目录")
 	segmenter    = gse.Segmenter{}
 )

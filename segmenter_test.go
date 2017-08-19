@@ -53,7 +53,7 @@ func TestSegment(t *testing.T) {
 }
 
 func TestLargeDictionary(t *testing.T) {
-	prodSeg.LoadDict("data/dictionary.txt")
+	prodSeg.LoadDict("data/dict/dictionary.txt")
 	expect(t, "中国/ns 人口/n ", ToString(prodSeg.Segment(
 		[]byte("中国人口")), false))
 

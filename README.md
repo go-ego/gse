@@ -42,7 +42,7 @@ import (
 func main() {
 	// 载入词典
 	var segmenter gse.Segmenter
-	segmenter.LoadDict("github.com/go-ego/gse/data/dictionary.txt")
+	segmenter.LoadDict("github.com/go-ego/gse/data/dict/dictionary.txt")
 
 	// 分词
 	text := []byte("中华人民共和国中央人民政府")

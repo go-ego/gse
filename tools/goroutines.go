@@ -33,7 +33,7 @@ func main() {
 	runtime.GOMAXPROCS(numThreads)
 
 	// 载入词典
-	segmenter.LoadDict("../data/dictionary.txt")
+	segmenter.LoadDict("../data/dict/dictionary.txt")
 
 	// 打开将要分词的文件
 	file, err := os.Open("../testdata/bailuyuan.txt")
