@@ -27,6 +27,25 @@ Go中文分词
 go get -u github.com/go-ego/gse
 ```
 
+## [Build-tools](https://github.com/go-ego/re)
+```
+go get -u github.com/go-ego/re 
+```
+### re gse
+To create a new gse application
+
+```
+$ re gse my-gse
+```
+
+### re run
+
+To run the application we just created, you can navigate to the application folder and execute:
+```
+$ cd my-gse && re run
+```
+
+
 ## 使用
 
 
