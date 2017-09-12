@@ -1,59 +1,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
-<title>gse中文分词演示</title>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>gse 中文分词演示</title>
+
     <style>
         .left {
             float: left;
         }
+        
+        #text {
+            font-size: 13px;
+        }
     </style>
-
-    <script type="text/javascript" src="jquery.min.js"></script>
-    <script type="text/javascript">
-        Segment = function() {
-            var input = $('textarea#text').val();
-            $.ajax({
-                url: "/json",
-                type: "POST",
-                data: {
-                    text: input
-                },
-                dataType: "json",
-                success: function(result) {
-                    var out = ""
-                    var last_word_is_x = false
-                    for (var i = 0; i < result.segments.length; i++) {
-                        var segment = result.segments[i]
-                        if (segment.pos == "x") {
-                            if (segment.text != "\n") {
-                                last_word_is_x = true
-                            } else {
-                                last_word_is_x = false
-                            }
-
-                            out += segment.text
-                        } else {
-                            if (last_word_is_x) {
-                                out += " "
-                            }
-                            out += segment.text + "/" + segment.pos + " "
-                        }
-                    }
-                    $('textarea#output').html(out);
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    alert(xhr.status);
-                    alert(thrownError);
-                }
-            });
-        };
-    </script>
 </head>
 
 <body>
 
-    <h1>gse中文分词演示</h1>
+    <h2>gse中文分词演示</h2>
 
     <div class="left" width=100px>
         <textarea id="text" rows="30" cols="60">
@@ -76,5 +42,46 @@
     </div>
 
 </body>
+
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript">
+    Segment = function() {
+        var input = $('textarea#text').val();
+        $.ajax({
+            url: "/json",
+            type: "POST",
+            data: {
+                text: input
+            },
+            dataType: "json",
+            success: function(result) {
+                var out = ""
+                var last_word_is_x = false
+                for (var i = 0; i < result.segments.length; i++) {
+                    var segment = result.segments[i]
+                    if (segment.pos == "x") {
+                        if (segment.text != "\n") {
+                            last_word_is_x = true
+                        } else {
+                            last_word_is_x = false
+                        }
+
+                        out += segment.text
+                    } else {
+                        if (last_word_is_x) {
+                            out += " "
+                        }
+                        out += segment.text + "/" + segment.pos + " "
+                    }
+                }
+                $('textarea#output').html(out);
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(thrownError);
+            }
+        });
+    };
+</script>
 
 </html>
