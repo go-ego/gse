@@ -3,32 +3,22 @@
 #   go:
 #     version: 1.9.1
 
-machine:
-  environment:
-    GODIST: "go1.9.1.linux-amd64.tar.gz"
-  post:
-    - mkdir -p download
-    - test -e download/$GODIST || curl -o download/$GODIST https://storage.googleapis.com/golang/$GODIST
-    - sudo rm -rf /usr/local/go
-    - sudo tar -C /usr/local -xzf download/$GODIST
+version: 2
 
-# customize dependencies
-# dependencies:
-#   pre:
-#     - sudo apt-get update
-#     - sudo apt-get install libx11-dev
-dependencies:
-  override:
-    # './...' is a relative pattern which means all subdirectories
-    - go get -u github.com/go-ego/cedar
-    - go get -u github.com/go-ego/gse
-    - go get -t -d -v ./...
+jobs:
+  build:
+    docker:
+      - image: golang:1.9.1
+    working_directory: /go/src/github.com/go-ego/riot
+    steps:
+      - checkout
+      # specify any bash command here prefixed with `run: `
+      - run: go get -u github.com/go-ego/cedar
+      - run: go get -u github.com/go-ego/gse
+      - run: go get -v -t -d ./...
+      - run: go test -v ./... 
+       # codecov.io
+      - run: go test -v -covermode=count -coverprofile=coverage.out
+      - run: bash <(curl -s https://codecov.io/bash)  
 
-# script:
-#   - ./go.test.sh
-
-test:
-  post:
-    - go test -v -covermode=count -coverprofile=coverage.out
-    - bash <(curl -s https://codecov.io/bash) 
    
