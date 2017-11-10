@@ -11,6 +11,7 @@ import (
 	"path"
 	"runtime"
 	"strconv"
+	"strings"
 	"unicode"
 	"unicode/utf8"
 )
@@ -50,28 +51,32 @@ func getCurrentFilePath() string {
 //	分词文本 频率 词性
 func (seg *Segmenter) LoadDict(files ...string) {
 	seg.dict = NewDictionary()
-	if len(files) == 0 {
+	if len(files) == 0 || (len(files) > 0 && files[0] == "") {
 		var (
 			dictDir  = path.Join(path.Dir(getCurrentFilePath()), "data")
 			dictPath = path.Join(dictDir, "dict/dictionary.txt")
 		)
+
+		// files = dictPath
 		files = []string{dictPath}
 		// files = []string{"./data/dict/dictionary.txt"}
 	}
-	// for _, file := range strings.Split(files, ",") {
-	for _, file := range files {
+	for _, file := range strings.Split(files[0], ",") {
+		// for _, file := range files {
 		log.Printf("载入 gse 词典 %s", file)
 		dictFile, err := os.Open(file)
 		defer dictFile.Close()
 		if err != nil {
-			log.Fatalf("无法载入字典文件 \"%s\" \n", file)
+			log.Fatalf("无法载入字典文件 \"%s\" %v \n", file, err)
 		}
 
 		reader := bufio.NewReader(dictFile)
-		var text string
-		var freqText string
-		var frequency int
-		var pos string
+		var (
+			text      string
+			freqText  string
+			frequency int
+			pos       string
+		)
 
 		// 逐行读入分词
 		for {
