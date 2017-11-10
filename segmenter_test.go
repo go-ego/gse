@@ -37,7 +37,8 @@ func TestSplit(t *testing.T) {
 
 func TestSegment(t *testing.T) {
 	var seg Segmenter
-	seg.LoadDict("testdata/test_dict1.txt,testdata/test_dict2.txt")
+	// seg.LoadDict("testdata/test_dict1.txt,testdata/test_dict2.txt")
+	seg.LoadDict("testdata/test_dict1.txt", "testdata/test_dict2.txt")
 	expect(t, "12", seg.dict.NumTokens())
 	segments := seg.Segment([]byte("中国有十三亿人口"))
 	expect(t, "中国/ 有/p3 十三亿/ 人口/p12 ", ToString(segments, false))
@@ -54,6 +55,28 @@ func TestSegment(t *testing.T) {
 
 func TestLargeDictionary(t *testing.T) {
 	prodSeg.LoadDict("data/dict/dictionary.txt")
+	expect(t, "中国/ns 人口/n ", ToString(prodSeg.Segment(
+		[]byte("中国人口")), false))
+
+	expect(t, "中国/ns 人口/n ", ToString(prodSeg.internalSegment(
+		[]byte("中国人口"), false), false))
+
+	expect(t, "中国/ns 人口/n ", ToString(prodSeg.internalSegment(
+		[]byte("中国人口"), true), false))
+
+	expect(t, "中华人民共和国/ns 中央人民政府/nt ", ToString(prodSeg.internalSegment(
+		[]byte("中华人民共和国中央人民政府"), true), false))
+
+	expect(t, "中华人民共和国中央人民政府/nt ", ToString(prodSeg.internalSegment(
+		[]byte("中华人民共和国中央人民政府"), false), false))
+
+	expect(t, "中华/nz 人民/n 共和/nz 共和国/ns 人民共和国/nt 中华人民共和国/ns 中央/n 人民/n 政府/n 人民政府/nt 中央人民政府/nt 中华人民共和国中央人民政府/nt ", ToString(prodSeg.Segment(
+		[]byte("中华人民共和国中央人民政府")), true))
+}
+
+func TestLoadDictionary(t *testing.T) {
+	var seg Segmenter
+	seg.LoadDict()
 	expect(t, "中国/ns 人口/n ", ToString(prodSeg.Segment(
 		[]byte("中国人口")), false))
 

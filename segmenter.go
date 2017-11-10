@@ -8,8 +8,9 @@ import (
 	"log"
 	"math"
 	"os"
+	"path"
+	"runtime"
 	"strconv"
-	"strings"
 	"unicode"
 	"unicode/utf8"
 )
@@ -34,6 +35,11 @@ func (seg *Segmenter) Dictionary() *Dictionary {
 	return seg.dict
 }
 
+func getCurrentFilePath() string {
+	_, filePath, _, _ := runtime.Caller(1)
+	return filePath
+}
+
 // LoadDict load the dictionary from the file 从文件中载入词典
 //
 // 可以载入多个词典文件，文件名用","分隔，排在前面的词典优先载入分词，比如
@@ -42,10 +48,19 @@ func (seg *Segmenter) Dictionary() *Dictionary {
 //
 // 词典的格式为（每个分词一行）：
 //	分词文本 频率 词性
-func (seg *Segmenter) LoadDict(files string) {
+func (seg *Segmenter) LoadDict(files ...string) {
 	seg.dict = NewDictionary()
-	for _, file := range strings.Split(files, ",") {
-		log.Printf("载入gse词典 %s", file)
+	if len(files) == 0 {
+		var (
+			dictDir  = path.Join(path.Dir(getCurrentFilePath()), "data")
+			dictPath = path.Join(dictDir, "dict/dictionary.txt")
+		)
+		files = []string{dictPath}
+		// files = []string{"./data/dict/dictionary.txt"}
+	}
+	// for _, file := range strings.Split(files, ",") {
+	for _, file := range files {
+		log.Printf("载入 gse 词典 %s", file)
 		dictFile, err := os.Open(file)
 		defer dictFile.Close()
 		if err != nil {
@@ -125,7 +140,7 @@ func (seg *Segmenter) LoadDict(files string) {
 		}
 	}
 
-	log.Println("gse词典载入完毕")
+	log.Println("gse 词典载入完毕")
 }
 
 // Segment 对文本分词

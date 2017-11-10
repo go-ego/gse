@@ -2,6 +2,7 @@
 .DS_Store
 .vscode
 .idea
+examples/examples
 
 # Debug files
 *.dSYM/
