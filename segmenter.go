@@ -25,7 +25,7 @@ type Segmenter struct {
 	dict *Dictionary
 }
 
-// 该结构体用于记录Viterbi算法中某字元处的向前分词跳转信息
+// jumper 该结构体用于记录Viterbi算法中某字元处的向前分词跳转信息
 type jumper struct {
 	minDistance float32
 	token       *Token
@@ -36,6 +36,7 @@ func (seg *Segmenter) Dictionary() *Dictionary {
 	return seg.dict
 }
 
+// getCurrentFilePath get current file path
 func getCurrentFilePath() string {
 	_, filePath, _, _ := runtime.Caller(1)
 	return filePath
@@ -44,11 +45,11 @@ func getCurrentFilePath() string {
 // LoadDict load the dictionary from the file
 //
 // The format of the dictionary is (one for each participle):
-// participle text, frequency, part of speech
+//	participle text, frequency, part of speech
 //
 // Can load multiple dictionary files, the file name separated by ","
 // the front of the dictionary preferentially load the participle,
-// such as "user dictionary .txt, common dictionary .txt"
+//	such as "user dictionary .txt, common dictionary .txt"
 // When a participle appears both in the user dictionary and
 // in the common dictionary, the user dictionary is given priority.
 //
@@ -249,7 +250,7 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 	return outputSegments
 }
 
-// 更新跳转信息:
+// updateJumper 更新跳转信息:
 // 	1. 当该位置从未被访问过时(jumper.minDistance为零的情况)，或者
 //	2. 当该位置的当前最短路径大于新的最短路径时
 // 将当前位置的最短路径值更新为baseDistance加上新分词的概率
@@ -261,7 +262,7 @@ func updateJumper(jumper *jumper, baseDistance float32, token *Token) {
 	}
 }
 
-// 取两整数较小值
+// minInt 取两整数较小值
 func minInt(a, b int) int {
 	if a > b {
 		return b
@@ -269,7 +270,7 @@ func minInt(a, b int) int {
 	return a
 }
 
-// 取两整数较大值
+// maxInt 取两整数较大值
 func maxInt(a, b int) int {
 	if a > b {
 		return a
@@ -277,7 +278,7 @@ func maxInt(a, b int) int {
 	return b
 }
 
-// 将文本划分成字元
+// splitTextToWords 将文本划分成字元
 func splitTextToWords(text Text) []Text {
 	output := make([]Text, 0, len(text)/3)
 	current := 0
@@ -313,7 +314,7 @@ func splitTextToWords(text Text) []Text {
 	return output
 }
 
-// 将英文词转化为小写
+// toLower 将英文词转化为小写
 func toLower(text []byte) []byte {
 	output := make([]byte, len(text))
 	for i, t := range text {
