@@ -117,21 +117,31 @@ func (seg *Segmenter) Read(file string) error {
 //	分词文本 频率 词性
 func (seg *Segmenter) LoadDict(files ...string) error {
 	seg.dict = NewDictionary()
-	if len(files) == 0 || (len(files) > 0 && files[0] == "") {
-		var (
-			dictDir  = path.Join(path.Dir(getCurrentFilePath()), "data")
-			dictPath = path.Join(dictDir, "dict/dictionary.txt")
-		)
+	var (
+		dictDir  = path.Join(path.Dir(getCurrentFilePath()), "data")
+		dictPath string
+	)
 
+	if len(files) == 0 || (len(files) > 0 && files[0] == "zh") {
+
+		dictPath = path.Join(dictDir, "dict/dictionary.txt")
 		// files = dictPath
 		files = []string{dictPath}
 		// files = []string{"./data/dict/dictionary.txt"}
 	}
-	for _, file := range strings.Split(files[0], ",") {
-		// for _, file := range files {
-		err := seg.Read(file)
-		if err != nil {
-			return err
+
+	if files[0] == "jp" {
+		dictPath = path.Join(dictDir, "dict/jp/dict.txt")
+		files = []string{dictPath}
+	}
+
+	if files[0] != "" && files[0] != "en" {
+		for _, file := range strings.Split(files[0], ",") {
+			// for _, file := range files {
+			err := seg.Read(file)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
