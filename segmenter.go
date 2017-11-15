@@ -43,12 +43,13 @@ func getCurrentFilePath() string {
 }
 
 // Read read flie
-func (seg *Segmenter) Read(file string) {
-	log.Printf("载入 gse 词典 %s", file)
+func (seg *Segmenter) Read(file string) error {
+	log.Printf("Load the gse dictionary %s", file)
 	dictFile, err := os.Open(file)
 	defer dictFile.Close()
 	if err != nil {
-		log.Fatalf("无法载入字典文件 \"%s\" %v \n", file, err)
+		log.Printf("Could not load dictionaries \"%s\" %v \n", file, err)
+		return err
 	}
 
 	reader := bufio.NewReader(dictFile)
@@ -91,6 +92,8 @@ func (seg *Segmenter) Read(file string) {
 		token := Token{text: words, frequency: frequency, pos: pos}
 		seg.dict.addToken(token)
 	}
+
+	return nil
 }
 
 // LoadDict load the dictionary from the file
@@ -112,7 +115,7 @@ func (seg *Segmenter) Read(file string) {
 //
 // 词典的格式为（每个分词一行）：
 //	分词文本 频率 词性
-func (seg *Segmenter) LoadDict(files ...string) {
+func (seg *Segmenter) LoadDict(files ...string) error {
 	seg.dict = NewDictionary()
 	if len(files) == 0 || (len(files) > 0 && files[0] == "") {
 		var (
@@ -126,7 +129,10 @@ func (seg *Segmenter) LoadDict(files ...string) {
 	}
 	for _, file := range strings.Split(files[0], ",") {
 		// for _, file := range files {
-		seg.Read(file)
+		err := seg.Read(file)
+		if err != nil {
+			return err
+		}
 	}
 
 	// 计算每个分词的路径值，路径值含义见Token结构体的注释
@@ -162,7 +168,9 @@ func (seg *Segmenter) LoadDict(files ...string) {
 		}
 	}
 
-	log.Println("gse 词典载入完毕")
+	log.Println("gse dictionary loaded finished.")
+
+	return nil
 }
 
 // Segment 对文本分词
