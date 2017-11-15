@@ -42,6 +42,57 @@ func getCurrentFilePath() string {
 	return filePath
 }
 
+// Read read flie
+func (seg *Segmenter) Read(file string) {
+	log.Printf("载入 gse 词典 %s", file)
+	dictFile, err := os.Open(file)
+	defer dictFile.Close()
+	if err != nil {
+		log.Fatalf("无法载入字典文件 \"%s\" %v \n", file, err)
+	}
+
+	reader := bufio.NewReader(dictFile)
+	var (
+		text      string
+		freqText  string
+		frequency int
+		pos       string
+	)
+
+	// 逐行读入分词
+	for {
+		size, _ := fmt.Fscanln(reader, &text, &freqText, &pos)
+
+		if size == 0 {
+			// 文件结束
+			break
+		} else if size < 2 {
+			// 无效行
+			continue
+		} else if size == 2 {
+			// 没有词性标注时设为空字符串
+			pos = ""
+		}
+
+		// 解析词频
+		var err error
+		frequency, err = strconv.Atoi(freqText)
+		if err != nil {
+			continue
+		}
+
+		// 过滤频率太小的词
+		if frequency < minTokenFrequency {
+			continue
+		}
+
+		// 将分词添加到字典中
+		words := splitTextToWords([]byte(text))
+		token := Token{text: words, frequency: frequency, pos: pos}
+		seg.dict.addToken(token)
+	}
+}
+
 // LoadDict load the dictionary from the file
 //
 // The format of the dictionary is (one for each participle):
@@ -75,53 +126,7 @@ func (seg *Segmenter) LoadDict(files ...string) {
 	}
 	for _, file := range strings.Split(files[0], ",") {
 		// for _, file := range files {
-		log.Printf("载入 gse 词典 %s", file)
-		dictFile, err := os.Open(file)
-		defer dictFile.Close()
-		if err != nil {
-			log.Fatalf("无法载入字典文件 \"%s\" %v \n", file, err)
-		}
-
-		reader := bufio.NewReader(dictFile)
-		var (
-			text      string
-			freqText  string
-			frequency int
-			pos       string
-		)
-
-		// 逐行读入分词
-		for {
-			size, _ := fmt.Fscanln(reader, &text, &freqText, &pos)
-
-			if size == 0 {
-				// 文件结束
-				break
-			} else if size < 2 {
-				// 无效行
-				continue
-			} else if size == 2 {
-				// 没有词性标注时设为空字符串
-				pos = ""
-			}
-
-			// 解析词频
-			var err error
-			frequency, err = strconv.Atoi(freqText)
-			if err != nil {
-				continue
-			}
-
-			// 过滤频率太小的词
-			if frequency < minTokenFrequency {
-				continue
-			}
-
-			// 将分词添加到字典中
-			words := splitTextToWords([]byte(text))
-			token := Token{text: words, frequency: frequency, pos: pos}
-			seg.dict.addToken(token)
-		}
+		seg.Read(file)
 	}
 
 	// 计算每个分词的路径值，路径值含义见Token结构体的注释
