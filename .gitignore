@@ -3,6 +3,7 @@
 .vscode
 .idea
 examples/examples
+examples/jp/jp
 
 # Debug files
 *.dSYM/
