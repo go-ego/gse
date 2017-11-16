@@ -1,4 +1,4 @@
-# gse
+# [gse](https://github.com/go-ego/gse)
 
 Go 语言高效分词, 支持英文、中文、日文等
 
