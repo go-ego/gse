@@ -71,7 +71,7 @@ func main() {
 	// 支持普通模式和搜索模式两种分词，见代码中 ToString 函数的注释。
 	fmt.Println(gse.ToString(segments, false)) 
 
-	text1 := []byte("深圳地王大厦")
+	text1 := []byte("深圳地标建筑, 深圳地王大厦")
 	segments1 := seg.Segment([]byte(text1))
 	fmt.Println(gse.ToString(segments1, false)) 
 }
