@@ -40,8 +40,10 @@ func TestSegment(t *testing.T) {
 	seg.LoadDict("testdata/test_dict1.txt,testdata/test_dict2.txt")
 	// seg.LoadDict("testdata/test_dict1.txt", "testdata/test_dict2.txt")
 	expect(t, "12", seg.dict.NumTokens())
+	// expect(t, "5", seg.dict.NumTokens())
 	segments := seg.Segment([]byte("中国有十三亿人口"))
 	expect(t, "中国/ 有/p3 十三亿/ 人口/p12 ", ToString(segments, false))
+	// expect(t, "中国/ 有/x 十三亿/ 人口/p12 ", ToString(segments, false))
 	expect(t, "4", len(segments))
 	expect(t, "0", segments[0].start)
 	expect(t, "6", segments[0].end)
@@ -51,6 +53,32 @@ func TestSegment(t *testing.T) {
 	expect(t, "18", segments[2].end)
 	expect(t, "18", segments[3].start)
 	expect(t, "24", segments[3].end)
+}
+
+func TestSegmentS(t *testing.T) {
+	var seg Segmenter
+	seg.LoadDict("testdata/test_dict.txt")
+
+	expect(t, "19", seg.dict.NumTokens())
+	text1 := []byte("深圳地王大厦")
+	segments := seg.Segment([]byte(text1))
+	expect(t, "深圳/n 地王大厦/n ", ToString(segments, false))
+
+	expect(t, "2", len(segments))
+	expect(t, "0", segments[0].start)
+	expect(t, "6", segments[0].end)
+	expect(t, "6", segments[1].start)
+	expect(t, "18", segments[1].end)
+
+	text2 := []byte("留给真爱你的人")
+	segments2 := seg.Segment([]byte(text2))
+	expect(t, "留给/v 真爱/nr 你/x 的/x 人/x ", ToString(segments2, false))
+
+	expect(t, "5", len(segments2))
+	expect(t, "0", segments2[0].start)
+	expect(t, "6", segments2[0].end)
+	expect(t, "6", segments2[1].start)
+	expect(t, "12", segments2[1].end)
 }
 
 func TestSegmentJp(t *testing.T) {
