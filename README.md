@@ -15,12 +15,12 @@ Go language Text Segmentation
 
 [简体中文](https://github.com/go-ego/gse/blob/master/README_zh.md)
 
-<a href="https://github.com/go-ego/gse/blob/master/dictionary.go">Dictionary </a> with double array trie（Double-Array Trie） to achieve,
+<a href="https://github.com/go-ego/gse/blob/master/dictionary.go">Dictionary </a> with double array trie (Double-Array Trie) to achieve,
 <a href="https://github.com/go-ego/gse/blob/master/segmenter.go">Sender </a> algorithm is the shortest path based on word frequency plus dynamic programming.
 
-Support common and search engine two participle mode, support user dictionary, POS tagging, run<a href="https://github.com/go-ego/gse/blob/master/server/server.go">JSON RPC service</a>.
+Support common and search engine two participle mode, support user dictionary, POS tagging, run<a href="https://github.com/go-ego/gse/blob/master/server/server.go"> JSON RPC service</a>.
 
-Text Segmentation speed<a href="https://github.com/go-ego/gse/blob/master/tools/benchmark.go">single thread</a>9MB/s，<a href="https://github.com/go-ego/gse/blob/master/tools/goroutines.go">goroutines concurrent</a>42MB/s（8 nuclear Macbook Pro）.
+Text Segmentation speed<a href="https://github.com/go-ego/gse/blob/master/tools/benchmark.go"> single thread</a> 9MB/s，<a href="https://github.com/go-ego/gse/blob/master/tools/goroutines.go">goroutines concurrent</a> 42MB/s（8 nuclear Macbook Pro）.
 
 ## Install / update
 
