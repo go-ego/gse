@@ -20,6 +20,8 @@ Go 语言高效分词, 支持英文、中文、日文等
 
 分词速度<a href="https://github.com/go-ego/gse/blob/master/tools/benchmark.go">单线程</a>9MB/s，<a href="https://github.com/go-ego/gse/blob/master/tools/goroutines.go">goroutines并发</a>42MB/s（8核Macbook Pro）。
 
+QQ 群: 120563750
+
 ## 安装/更新
 
 ```
