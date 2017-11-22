@@ -79,5 +79,7 @@ func main() {
 	// 记录时间并计算分词速度
 	t1 := time.Now()
 	log.Printf("分词花费时间 %v", t1.Sub(t0))
-	log.Printf("分词速度 %f MB/s", float64(size*numRuns)/t1.Sub(t0).Seconds()/(1024*1024))
+
+	ts := float64(size*numRuns) / t1.Sub(t0).Seconds() / (1024 * 1024)
+	log.Printf("分词速度 %f MB/s", ts)
 }
