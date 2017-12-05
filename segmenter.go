@@ -23,6 +23,7 @@ package gse
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"math"
 	"os"
@@ -35,7 +36,7 @@ import (
 )
 
 const (
-	version string = "v0.10.0.51, Mount Qomolangma!"
+	version string = "v0.10.0.54, Mount Qomolangma!"
 
 	minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
@@ -86,12 +87,23 @@ func (seg *Segmenter) Read(file string) error {
 	)
 
 	// 逐行读入分词
+	line := 0
 	for {
-		size, _ := fmt.Fscanln(reader, &text, &freqText, &pos)
+		line++
+		size, fserr := fmt.Fscanln(reader, &text, &freqText, &pos)
+		if fserr != nil {
+			if fserr == io.EOF {
+				// End of file
+				break
+			}
+
+			log.Printf("File %v line %v read error, skip: %v", file, line, fserr.Error())
+		}
 
 		if size == 0 {
-			// 文件结束
-			break
+			// 文件结束或错误行
+			// break
+			continue
 		} else if size < 2 {
 			// 无效行
 			continue
