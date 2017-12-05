@@ -96,7 +96,8 @@ func TestSegmentJp(t *testing.T) {
 
 func TestSegmentDicts(t *testing.T) {
 	var seg Segmenter
-	seg.LoadDict("zh,jp")
+	// seg.LoadDict("zh,jp")
+	seg.LoadDict("./data/dict/dictionary.txt,./data/dict/jp/dict.txt")
 
 	text1 := []byte("深圳地王大厦")
 	segments := seg.Segment([]byte(text1))
