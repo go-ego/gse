@@ -138,6 +138,47 @@ func (seg *Segmenter) Read(file string) error {
 	return nil
 }
 
+// DictPaths dict paths
+func DictPaths(dictDir, filePath string) (files []string) {
+	var dictPath string
+
+	if filePath == "zh" {
+		dictPath = path.Join(dictDir, "dict/dictionary.txt")
+		files = []string{dictPath}
+
+		return
+	}
+
+	if filePath == "jp" {
+		dictPath = path.Join(dictDir, "dict/jp/dict.txt")
+		files = []string{dictPath}
+
+		return
+	}
+
+	// if strings.Contains(filePath, ",") {
+	str := strings.Split(filePath, ",")
+	for i := 0; i < len(str); i++ {
+		if str[i] == "jp" {
+			dictPath = path.Join(dictDir, "dict/jp/dict.txt")
+		}
+
+		if str[i] == "zh" {
+			dictPath = path.Join(dictDir, "dict/dictionary.txt")
+		}
+
+		// if str[i] == "ti" {
+		// }
+
+		if dictPath != "" {
+			files = append(files, dictPath)
+		}
+	}
+	// }
+
+	return
+}
+
 // LoadDict load the dictionary from the file
 //
 // The format of the dictionary is (one for each participle):
@@ -162,22 +203,31 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	var (
 		dictDir  = path.Join(path.Dir(getCurrentFilePath()), "data")
 		dictPath string
+		load     bool
 	)
 
-	if len(files) == 0 || (len(files) > 0 && files[0] == "zh") {
+	if len(files) > 0 {
+		dictFiles := DictPaths(dictDir, files[0])
+		if len(dictFiles) > 0 {
+			load = true
+			// files = dictFiles
+			for i := 0; i < len(dictFiles); i++ {
+				err := seg.Read(dictFiles[i])
+				if err != nil {
+					return err
+				}
+			}
+		}
+	}
 
+	if len(files) == 0 {
 		dictPath = path.Join(dictDir, "dict/dictionary.txt")
 		// files = dictPath
 		files = []string{dictPath}
 		// files = []string{"./data/dict/dictionary.txt"}
 	}
 
-	if files[0] == "jp" {
-		dictPath = path.Join(dictDir, "dict/jp/dict.txt")
-		files = []string{dictPath}
-	}
-
-	if files[0] != "" && files[0] != "en" {
+	if files[0] != "" && files[0] != "en" && !load {
 		for _, file := range strings.Split(files[0], ",") {
 			// for _, file := range files {
 			err := seg.Read(file)

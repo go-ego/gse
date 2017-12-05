@@ -94,6 +94,30 @@ func TestSegmentJp(t *testing.T) {
 	expect(t, "15", segments[0].end)
 }
 
+func TestSegmentDicts(t *testing.T) {
+	var seg Segmenter
+	seg.LoadDict("zh,jp")
+
+	text1 := []byte("深圳地王大厦")
+	segments := seg.Segment([]byte(text1))
+	expect(t, "深圳/ns 地王大厦/n ", ToString(segments, false))
+
+	expect(t, "2", len(segments))
+	expect(t, "0", segments[0].start)
+	expect(t, "6", segments[0].end)
+	expect(t, "6", segments[1].start)
+	expect(t, "18", segments[1].end)
+
+	text2 := []byte("こんにちは世界")
+	segments = seg.Segment([]byte(text2))
+	expect(t, "こんにちは/感動詞 世界/n ", ToString(segments, false))
+	expect(t, "2", len(segments))
+	expect(t, "こん/名詞 こんにちは/感動詞 世界/n ", ToString(segments, true))
+	expect(t, "2", len(segments))
+	expect(t, "0", segments[0].start)
+	expect(t, "15", segments[0].end)
+}
+
 func TestLargeDictionary(t *testing.T) {
 	prodSeg.LoadDict("data/dict/dictionary.txt")
 	expect(t, "中国/ns 人口/n ", ToString(prodSeg.Segment(
