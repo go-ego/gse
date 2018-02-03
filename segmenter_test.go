@@ -131,6 +131,15 @@ func TestSegmentDicts(t *testing.T) {
 
 	expect(t, "0", segments[0].Start())
 	expect(t, "15", segments[0].End())
+
+	token := segments[0].Token()
+	expect(t, "こんにちは", token.Text())
+	expect(t, "5704", token.Frequency())
+	expect(t, "感動詞", token.Pos())
+
+	tseg := token.Segments()
+	expect(t, "0", tseg[0].Start())
+	expect(t, "6", tseg[0].End())
 }
 
 func TestLargeDictionary(t *testing.T) {
