@@ -128,6 +128,9 @@ func TestSegmentDicts(t *testing.T) {
 	expect(t, "2", len(segments))
 	expect(t, "0", segments[0].start)
 	expect(t, "15", segments[0].end)
+
+	expect(t, "0", segments[0].Start())
+	expect(t, "15", segments[0].End())
 }
 
 func TestLargeDictionary(t *testing.T) {
