@@ -64,6 +64,9 @@ func TestSegmentS(t *testing.T) {
 	segments := seg.Segment([]byte(text1))
 	expect(t, "深圳/n 地王大厦/n ", ToString(segments, false))
 
+	segs := seg.ModeSegment([]byte(text1), true)
+	expect(t, "深圳/n 地王大厦/n ", ToString(segs, false))
+
 	expect(t, "2", len(segments))
 	expect(t, "0", segments[0].start)
 	expect(t, "6", segments[0].end)
