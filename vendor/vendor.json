@@ -3,10 +3,10 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "HJj9xvieKJAKx7j9f/UZmwH5G4I=",
+			"checksumSHA1": "mlp5BTvNR0amojt51XwxPXcfY5I=",
 			"path": "github.com/go-ego/cedar",
-			"revision": "63a9578da11fb26bbec0e25fdb76f43d7783dcab",
-			"revisionTime": "2018-02-01T13:55:59Z"
+			"revision": "4ce5a41ec2a82cd8d4dd1f8a95e7e9d8a89ae958",
+			"revisionTime": "2018-03-16T12:30:27Z"
 		}
 	],
 	"rootPath": "github.com/go-ego/gse"
