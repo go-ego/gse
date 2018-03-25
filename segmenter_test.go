@@ -93,6 +93,7 @@ func TestSegmentJp(t *testing.T) {
 	expect(t, "2", len(segments))
 	expect(t, "こん/名詞 こんにちは/感動詞 世界/名詞 ", ToString(segments, true))
 	expect(t, "[こん こんにちは 世界]", ToSlice(segments, true))
+	expect(t, "[こんにちは 世界]", ToSlice(segments, false))
 	expect(t, "2", len(segments))
 	expect(t, "0", segments[0].start)
 	expect(t, "15", segments[0].end)
