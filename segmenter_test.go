@@ -55,9 +55,18 @@ func TestSegment(t *testing.T) {
 	expect(t, "24", segments[3].end)
 }
 
+func TestGetVer(t *testing.T) {
+	ver := GetVersion()
+	expect(t, version, ver)
+}
+
 func TestSegmentS(t *testing.T) {
 	var seg Segmenter
 	seg.LoadDict("testdata/test_dict.txt")
+
+	dict := seg.Dictionary()
+	expect(t, "4", dict.maxTokenLen)
+	expect(t, "2103", dict.totalFrequency)
 
 	expect(t, "19", seg.dict.NumTokens())
 	text1 := []byte("深圳地王大厦")
