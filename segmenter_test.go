@@ -1,12 +1,20 @@
 package gse
 
 import (
+	"fmt"
+	"runtime"
 	"testing"
 )
 
 var (
 	prodSeg = Segmenter{}
 )
+
+func TestGetVer(t *testing.T) {
+	fmt.Println(runtime.Version())
+	ver := GetVersion()
+	expect(t, version, ver)
+}
 
 func TestSplit(t *testing.T) {
 	expect(t, "中/国/有/十/三/亿/人/口/",
@@ -53,11 +61,6 @@ func TestSegment(t *testing.T) {
 	expect(t, "18", segments[2].end)
 	expect(t, "18", segments[3].start)
 	expect(t, "24", segments[3].end)
-}
-
-func TestGetVer(t *testing.T) {
-	ver := GetVersion()
-	expect(t, version, ver)
 }
 
 func TestSegmentS(t *testing.T) {
