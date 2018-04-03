@@ -15,7 +15,10 @@ var (
 func TestGetVer(t *testing.T) {
 	fmt.Println("go version: ", runtime.Version())
 	ver := GetVersion()
+
 	tt.Expect(t, version, ver)
+	expect(t, version, ver)
+	tt.Equal(t, version, ver)
 }
 
 func TestSplit(t *testing.T) {
@@ -43,6 +46,8 @@ func TestSplit(t *testing.T) {
 
 	tt.Expect(t, "je/ /suis/ /enchanté/ /de/ /cette/ /pièce/",
 		bytesToString(splitTextToWords([]byte("Je suis enchanté de cette pièce"))))
+
+	tt.Expect(t, "[[116 111 32 119 111 114 100 115]]", toWords("to words"))
 }
 
 func TestSegment(t *testing.T) {
