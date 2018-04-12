@@ -59,11 +59,13 @@ func TestSegment(t *testing.T) {
 	segments := seg.Segment([]byte("中国有十三亿人口"))
 	tt.Expect(t, "中国/ 有/p3 十三亿/ 人口/p12 ", ToString(segments, false))
 	// tt.Expect(t, "中国/ 有/x 十三亿/ 人口/p12 ", ToString(segments, false))
+
 	tt.Expect(t, "4", len(segments))
 	tt.Expect(t, "0", segments[0].start)
 	tt.Expect(t, "6", segments[0].end)
 	tt.Expect(t, "6", segments[1].start)
 	tt.Expect(t, "9", segments[1].end)
+
 	tt.Expect(t, "9", segments[2].start)
 	tt.Expect(t, "18", segments[2].end)
 	tt.Expect(t, "18", segments[3].start)
@@ -108,11 +110,12 @@ func TestSegmentJp(t *testing.T) {
 	seg.LoadDict("data/dict/jp/dict.txt")
 	text2 := []byte("こんにちは世界")
 	segments := seg.Segment([]byte(text2))
+
 	tt.Expect(t, "こんにちは/感動詞 世界/名詞 ", ToString(segments, false))
-	tt.Expect(t, "2", len(segments))
 	tt.Expect(t, "こん/名詞 こんにちは/感動詞 世界/名詞 ", ToString(segments, true))
 	tt.Expect(t, "[こん こんにちは 世界]", ToSlice(segments, true))
 	tt.Expect(t, "[こんにちは 世界]", ToSlice(segments, false))
+
 	tt.Expect(t, "2", len(segments))
 	tt.Expect(t, "0", segments[0].start)
 	tt.Expect(t, "15", segments[0].end)
@@ -121,6 +124,7 @@ func TestSegmentJp(t *testing.T) {
 func TestDictPaths(t *testing.T) {
 	paths := DictPaths("./dictDir", "zh,jp")
 	tt.Expect(t, "2", len(paths))
+
 	if paths[0] != "dictDir/dict/dictionary.txt" {
 		t.Errorf("what=\"%s\", got=\"%s\"", "dictDir/dict/dictionary.txt", paths[0])
 	}
@@ -160,6 +164,12 @@ func TestSegmentDicts(t *testing.T) {
 	tt.Expect(t, "こんにちは", token.Text())
 	tt.Expect(t, "5704", token.Frequency())
 	tt.Expect(t, "感動詞", token.Pos())
+
+	var tokenArr []*Token
+	for i := 0; i < len(segments); i++ {
+		tokenArr = append(tokenArr, segments[i].Token())
+	}
+	tt.Expect(t, "こんにちは 世界 ", printTokens(tokenArr, 2))
 
 	tseg := token.Segments()
 	tt.Expect(t, "0", tseg[0].Start())
