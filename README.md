@@ -77,6 +77,8 @@ func main() {
 }
 ```
 
+[Look at an custom dictionary example](/examples/dict/main.go)
+
 [Look at an Chinese example](https://github.com/go-ego/gse/blob/master/examples/example.go)
 
 [Look at an Japanese example](https://github.com/go-ego/gse/blob/master/examples/jp/main.go)
