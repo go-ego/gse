@@ -90,14 +90,14 @@ func (seg *Segmenter) Read(file string) error {
 	line := 0
 	for {
 		line++
-		size, fserr := fmt.Fscanln(reader, &text, &freqText, &pos)
-		if fserr != nil {
-			if fserr == io.EOF {
+		size, fsErr := fmt.Fscanln(reader, &text, &freqText, &pos)
+		if fsErr != nil {
+			if fsErr == io.EOF {
 				// End of file
 				break
 			}
 
-			log.Printf("File %v line %v read error, skip: %v", file, line, fserr.Error())
+			log.Printf("File %v line %v read error, skip: %v", file, line, fsErr.Error())
 		}
 
 		if size == 0 {
@@ -138,7 +138,7 @@ func (seg *Segmenter) Read(file string) error {
 	return nil
 }
 
-// DictPaths dict paths
+// DictPaths get the dict paths
 func DictPaths(dictDir, filePath string) (files []string) {
 	var dictPath string
 
