@@ -8,7 +8,7 @@ import (
 
 func main() {
 	var seg gse.Segmenter
-	seg.LoadDict("testdata/test_dict.txt,testdata/test_dict1.txt")
+	seg.LoadDict("../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
 
 	text1 := []byte("深圳地王大厦")
 
