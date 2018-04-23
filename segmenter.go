@@ -70,11 +70,11 @@ func getCurrentFilePath() string {
 
 // Read read the flie
 func (seg *Segmenter) Read(file string) error {
-	log.Printf("Load the gse dictionary %s", file)
+	log.Printf("Load the gse dictionary: %s", file)
 	dictFile, err := os.Open(file)
 	defer dictFile.Close()
 	if err != nil {
-		log.Printf("Could not load dictionaries \"%s\" %v \n", file, err)
+		log.Printf("Could not load dictionaries: \"%s\" %v \n", file, err)
 		return err
 	}
 
@@ -142,6 +142,10 @@ func (seg *Segmenter) Read(file string) error {
 func DictPaths(dictDir, filePath string) (files []string) {
 	var dictPath string
 
+	if filePath == "en" {
+		return
+	}
+
 	if filePath == "zh" {
 		dictPath = path.Join(dictDir, "dict/dictionary.txt")
 		files = []string{dictPath}
@@ -157,24 +161,32 @@ func DictPaths(dictDir, filePath string) (files []string) {
 	}
 
 	// if strings.Contains(filePath, ",") {
-	str := strings.Split(filePath, ",")
-	for i := 0; i < len(str); i++ {
-		if str[i] == "jp" {
+	fileName := strings.Split(filePath, ",")
+	for i := 0; i < len(fileName); i++ {
+		if fileName[i] == "jp" {
 			dictPath = path.Join(dictDir, "dict/jp/dict.txt")
 		}
 
-		if str[i] == "zh" {
+		if fileName[i] == "zh" {
 			dictPath = path.Join(dictDir, "dict/dictionary.txt")
 		}
 
 		// if str[i] == "ti" {
 		// }
 
+		dictName := fileName[i] != "en" && fileName[i] != "zh" &&
+			fileName[i] != "jp" && fileName[i] != "ti"
+
+		if dictName {
+			dictPath = fileName[i]
+		}
+
 		if dictPath != "" {
 			files = append(files, dictPath)
 		}
 	}
 	// }
+	log.Println("Dict files path: ", files)
 
 	return
 }
@@ -242,13 +254,13 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	var (
 		dictDir  = path.Join(path.Dir(getCurrentFilePath()), "data")
 		dictPath string
-		load     bool
+		// load     bool
 	)
 
 	if len(files) > 0 {
 		dictFiles := DictPaths(dictDir, files[0])
 		if len(dictFiles) > 0 {
-			load = true
+			// load = true
 			// files = dictFiles
 			for i := 0; i < len(dictFiles); i++ {
 				err := seg.Read(dictFiles[i])
@@ -261,23 +273,25 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 
 	if len(files) == 0 {
 		dictPath = path.Join(dictDir, "dict/dictionary.txt")
-		// files = dictPath
-		files = []string{dictPath}
-		// files = []string{"./data/dict/dictionary.txt"}
-	}
-
-	if files[0] != "" && files[0] != "en" && !load {
-		for _, file := range strings.Split(files[0], ",") {
-			// for _, file := range files {
-			err := seg.Read(file)
-			if err != nil {
-				return err
-			}
+		// files = []string{dictPath}
+		err := seg.Read(dictPath)
+		if err != nil {
+			return err
 		}
 	}
 
+	// if files[0] != "" && files[0] != "en" && !load {
+	// 	for _, file := range strings.Split(files[0], ",") {
+	// 		// for _, file := range files {
+	// 		err := seg.Read(file)
+	// 		if err != nil {
+	// 			return err
+	// 		}
+	// 	}
+	// }
+
 	seg.SegToken()
-	log.Println("gse dictionary loaded finished.")
+	log.Println("Gse dictionary loaded finished.")
 
 	return nil
 }
