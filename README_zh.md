@@ -82,6 +82,27 @@ func main() {
 
 [自定义词典分词示例](/examples/dict/main.go)
 
+```Go
+
+package main
+
+import (
+	"fmt"
+
+	"github.com/go-ego/gse"
+)
+
+func main() {
+	var seg gse.Segmenter
+	seg.LoadDict("zh,testdata/test_dict.txt,testdata/test_dict1.txt")
+
+	text1 := []byte("所以, 你好, 再见")
+
+	segments := seg.Segment(text1)
+	fmt.Println(gse.ToString(segments, false))
+}
+```
+
 [中文分词示例](/examples/example.go)
 
 [日文分词示例](/examples/jp/main.go)

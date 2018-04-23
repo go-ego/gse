@@ -79,6 +79,26 @@ func main() {
 
 [Look at an custom dictionary example](/examples/dict/main.go)
 
+```Go
+package main
+
+import (
+	"fmt"
+
+	"github.com/go-ego/gse"
+)
+
+func main() {
+	var seg gse.Segmenter
+	seg.LoadDict("zh,testdata/test_dict.txt,testdata/test_dict1.txt")
+
+	text1 := []byte("你好世界, Hello world")
+
+	segments := seg.Segment(text1)
+	fmt.Println(gse.ToString(segments, false))
+}
+```
+
 [Look at an Chinese example](https://github.com/go-ego/gse/blob/master/examples/example.go)
 
 [Look at an Japanese example](https://github.com/go-ego/gse/blob/master/examples/jp/main.go)
