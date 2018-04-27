@@ -36,7 +36,7 @@ import (
 )
 
 const (
-	version string = "v0.10.0.86, Mount Qomolangma!"
+	version string = "v0.10.0.87, Danube River!"
 
 	minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
