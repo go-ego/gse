@@ -61,14 +61,14 @@ import (
 
 func main() {
 	// 载入词典
-	var segmenter gse.Segmenter
+	var seg gse.Segmenter
 	// 加载默认字典
-	segmenter.LoadDict()
+	seg.LoadDict()
 	// segmenter.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
 
 	// 分词
 	text := []byte("中华人民共和国中央人民政府")
-	segments := segmenter.Segment(text)
+	segments := seg.Segment(text)
   
 	// 处理分词结果
 	// 支持普通模式和搜索模式两种分词，见代码中 ToString 函数的注释。
