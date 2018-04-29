@@ -61,10 +61,10 @@ import (
 
 func main() {
 	// Load the dictionary
-	var segmenter gse.Segmenter
+	var seg gse.Segmenter
 	// Loading the default dictionary
-	segmenter.LoadDict()
-	// segmenter.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
+	seg.LoadDict()
+	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
 
 	// Text Segmentation
 	text := []byte("你好世界, Hello world.")
