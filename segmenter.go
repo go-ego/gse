@@ -36,7 +36,7 @@ import (
 )
 
 const (
-	version string = "v0.10.0.87, Danube River!"
+	version string = "v0.10.0.94, Danube River!"
 
 	minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
@@ -307,7 +307,7 @@ func (seg *Segmenter) Segment(bytes []byte) []Segment {
 	return seg.internalSegment(bytes, false)
 }
 
-// ModeSegment use segment with search mode
+// ModeSegment segment using search mode if searchMode is true
 func (seg *Segmenter) ModeSegment(bytes []byte, searchMode ...bool) []Segment {
 	var mode bool
 	if len(searchMode) > 0 {

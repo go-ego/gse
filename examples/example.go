@@ -17,6 +17,7 @@ func main() {
 
 	var seg gse.Segmenter
 	// seg.LoadDict("../data/dict/dictionary.txt")
+	// 加载默认词典
 	seg.LoadDict()
 
 	segments := seg.Segment([]byte(*text))
