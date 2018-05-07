@@ -24,5 +24,11 @@ func main() {
 
 	text2 := []byte("深圳地标建筑, 深圳地王大厦")
 	segs := seg.Segment(text2)
+
 	log.Println(gse.ToString(segs, false))
+	// 深圳/ns 地标/n 建筑/n ,/x  /x 深圳/ns 地王大厦/n
+
+	// segs := seg.ModeSegment(text2, true)
+	log.Println("搜索模式: ", gse.ToString(segs, true))
+	// 搜索模式: 深圳/ns 地标/n 建筑/n ,/x  /x 深圳/ns 地王/n 大厦/n 地王大厦/n
 }

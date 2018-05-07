@@ -17,6 +17,6 @@ func main() {
 	//"深圳/n 地王大厦/n "
 
 	segs := seg.ModeSegment(text1, true)
-	fmt.Println(gse.ToString(segs, false))
-	// "深圳/n 地王大厦/n "
+	fmt.Println(gse.ToString(segs, true))
+	// "深圳/n 地王大厦/n"
 }
