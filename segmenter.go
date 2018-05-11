@@ -191,7 +191,7 @@ func DictPaths(dictDir, filePath string) (files []string) {
 	return
 }
 
-// SegToken segmenter token
+// SegToken add segmenter token
 func (seg *Segmenter) SegToken() {
 	// 计算每个分词的路径值，路径值含义见 Token 结构体的注释
 	logTotalFrequency := float32(math.Log2(float64(seg.dict.totalFrequency)))

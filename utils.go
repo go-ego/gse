@@ -19,11 +19,12 @@ func ToString(segs []Segment, searchMode bool) (output string) {
 		for _, seg := range segs {
 			output += tokenToString(seg.token)
 		}
-	} else {
-		for _, seg := range segs {
-			output += fmt.Sprintf(
-				"%s/%s ", textSliceToString(seg.token.text), seg.token.pos)
-		}
+		return
+	}
+
+	for _, seg := range segs {
+		output += fmt.Sprintf(
+			"%s/%s ", textSliceToString(seg.token.text), seg.token.pos)
 	}
 	return
 }
@@ -32,7 +33,9 @@ func tokenToBytes(token *Token) (output []byte) {
 	for _, s := range token.segments {
 		output = append(output, tokenToBytes(s.token)...)
 	}
-	output = append(output, []byte(fmt.Sprintf("%s/%s ", textSliceToString(token.text), token.pos))...)
+	output = append(output, []byte(fmt.Sprintf("%s/%s ",
+		textSliceToString(token.text), token.pos))...)
+
 	return
 }
 
@@ -58,10 +61,11 @@ func ToSlice(segs []Segment, searchMode bool) (output []string) {
 		for _, seg := range segs {
 			output = append(output, tokenToSlice(seg.token)...)
 		}
-	} else {
-		for _, seg := range segs {
-			output = append(output, seg.token.Text())
-		}
+		return
+	}
+
+	for _, seg := range segs {
+		output = append(output, seg.token.Text())
 	}
 	return
 }
