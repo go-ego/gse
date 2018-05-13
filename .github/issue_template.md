@@ -14,9 +14,10 @@
   - [ ] No
   - [ ] Not relevant
 - Provide example code: 
-    ```Go
 
-    ```
+```Go
+
+```
 - Log gist:
 
 ## Description
