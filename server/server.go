@@ -3,10 +3,10 @@
 gse 分词服务器同时提供了两种模式：
 
 	"/"	分词演示网页
-	"/json"	JSON格式的RPC服务
+	"/json"	JSON 格式的 RPC 服务
 		输入：
-			POST或GET模式输入text参数
-		输出JSON格式：
+			POST 或 GET 模式输入 text 参数
+		输出 JSON 格式：
 			{
 				segments:[
 					{"text":"服务器", "pos":"n"},

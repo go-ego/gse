@@ -97,7 +97,8 @@ func (seg *Segmenter) Read(file string) error {
 				break
 			}
 
-			log.Printf("File %v line %v read error, skip: %v", file, line, fsErr.Error())
+			log.Printf("File %v line %v read error, skip: %v",
+				file, line, fsErr.Error())
 		}
 
 		if size == 0 {

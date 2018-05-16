@@ -1,4 +1,4 @@
-// 测试gse并行分词速度
+// 测试 gse 并行分词速度
 
 package main
 

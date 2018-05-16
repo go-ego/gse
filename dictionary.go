@@ -64,7 +64,7 @@ func (dict *Dictionary) addToken(token Token) {
 	}
 }
 
-// lookupTokens 在词典中查找和字元组words可以前缀匹配的所有分词
+// lookupTokens 在词典中查找和字元组 words 可以前缀匹配的所有分词
 // 返回值为找到的分词数
 func (dict *Dictionary) lookupTokens(words []Text,
 	tokens []*Token) (numOfTokens int) {

@@ -45,7 +45,7 @@ var (
 )
 
 func main() {
-	// 确保单线程，因为Go从1.5开始默认多线程
+	// 确保单线程，因为 Go 从 1.5 开始默认多线程
 	runtime.GOMAXPROCS(1)
 
 	// 解析命令行参数
@@ -61,7 +61,7 @@ func main() {
 	t1 := time.Now()
 	log.Printf("载入词典花费时间 %v", t1.Sub(t0))
 
-	// 写入内存profile文件
+	// 写入内存 profile 文件
 	if *memprofile != "" {
 		f, err := os.Create(*memprofile)
 		if err != nil {
@@ -103,7 +103,7 @@ func main() {
 	// 记录时间
 	t2 := time.Now()
 
-	// 打开处理器profile文件
+	// 打开处理器 profile 文件
 	if *cpuprofile != "" {
 		f, err := os.Create(*cpuprofile)
 		if err != nil {
@@ -124,7 +124,7 @@ func main() {
 		}
 	}
 
-	// 停止处理器profile
+	// 停止处理器 profile
 	if *cpuprofile != "" {
 		defer pprof.StopCPUProfile()
 	}
