@@ -35,11 +35,12 @@ import (
 )
 
 var (
+	segmenter = gse.Segmenter{}
+
 	host         = flag.String("host", "", "HTTP服务器主机名")
 	port         = flag.Int("port", 8080, "HTTP服务器端口")
 	dict         = flag.String("dict", "../data/dict/dictionary.txt", "词典文件")
 	staticFolder = flag.String("static_folder", "static", "静态页面存放的目录")
-	segmenter    = gse.Segmenter{}
 )
 
 // JsonResponse json response
@@ -86,6 +87,7 @@ func main() {
 
 	http.HandleFunc("/json", JsonRpcServer)
 	http.Handle("/", http.FileServer(http.Dir(*staticFolder)))
+
 	log.Print("服务器启动")
 	http.ListenAndServe(fmt.Sprintf("%s:%d", *host, *port), nil)
 }
