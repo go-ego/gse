@@ -29,6 +29,7 @@ func main() {
 	log.Println(gse.ToString(segs, false))
 	// 深圳/ns 地标/n 建筑/n ,/x  /x 深圳/ns 地王大厦/n
 
+	// 搜索模式主要用于给搜索引擎提供尽可能多的关键字
 	// segs := seg.ModeSegment(text2, true)
 	log.Println("搜索模式: ", gse.ToString(segs, true))
 	// 搜索模式: 深圳/ns 地标/n 建筑/n ,/x  /x 深圳/ns 地王/n 大厦/n 地王大厦/n
