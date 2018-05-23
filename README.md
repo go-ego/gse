@@ -73,6 +73,8 @@ func main() {
 	// Handle word segmentation results
 	// Support for normal mode and search mode two participle,
 	// see the comments in the code ToString function.
+	// The search mode is mainly used to provide search engines 
+	// with as many keywords as possible
 	fmt.Println(gse.ToString(segments, false)) 
 }
 ```
