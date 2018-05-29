@@ -33,7 +33,7 @@ go get -u github.com/go-ego/gse
 go get -u github.com/go-ego/re 
 ```
 ### re gse
-To create a new gse application
+创建一个新的 gse 程序
 
 ```
 $ re gse my-gse
@@ -41,7 +41,7 @@ $ re gse my-gse
 
 ### re run
 
-To run the application we just created, you can navigate to the application folder and execute:
+运行我们刚刚创建的应用程序, CD 到程序文件夹并执行:
 ```
 $ cd my-gse && re run
 ```

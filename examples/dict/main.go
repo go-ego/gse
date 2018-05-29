@@ -16,6 +16,7 @@ func main() {
 	fmt.Println(gse.ToString(segments, false))
 	//"深圳/n 地王大厦/n "
 
+	// 搜索模式主要用于给搜索引擎提供尽可能多的关键字
 	segs := seg.ModeSegment(text1, true)
 	fmt.Println(gse.ToString(segs, true))
 	// "深圳/n 地王大厦/n "
