@@ -68,13 +68,13 @@ func getCurrentFilePath() string {
 	return filePath
 }
 
-// Read read the flie
+// Read read the dict flie
 func (seg *Segmenter) Read(file string) error {
-	log.Printf("Load the gse dictionary: %s", file)
+	log.Printf("Load the gse dictionary: \"%s\" ", file)
 	dictFile, err := os.Open(file)
 	defer dictFile.Close()
 	if err != nil {
-		log.Printf("Could not load dictionaries: \"%s\" %v \n", file, err)
+		log.Printf("Could not load dictionaries: \"%s\", %v \n", file, err)
 		return err
 	}
 
