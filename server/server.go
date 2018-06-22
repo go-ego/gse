@@ -23,13 +23,14 @@ gse 分词服务器同时提供了两种模式：
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
 	"log"
-	"net/http"
 	"runtime"
+
+	"encoding/json"
+	"net/http"
 
 	"github.com/go-ego/gse"
 )
@@ -79,7 +80,7 @@ func JsonRpcServer(w http.ResponseWriter, req *http.Request) {
 func main() {
 	flag.Parse()
 
-	// 将线程数设置为CPU数
+	// 将线程数设置为 CPU数
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	// 初始化分词器
