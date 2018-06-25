@@ -79,12 +79,17 @@ func tokenToSlice(token *Token) (output []string) {
 }
 
 // 将多个字元拼接一个字符串输出
-func textSliceToString(text []Text) string {
+func textToString(text []Text) string {
 	var output string
 	for _, word := range text {
 		output += string(word)
 	}
 	return output
+}
+
+// 将多个字元拼接一个字符串输出
+func textSliceToString(text []Text) string {
+	return Join(text)
 }
 
 // 返回多个字元的字节总长度
@@ -101,4 +106,33 @@ func textSliceToBytes(text []Text) []byte {
 		buf.Write(word)
 	}
 	return buf.Bytes()
+}
+
+// Join is better string splicing
+func Join(text []Text) string {
+	switch len(text) {
+	case 0:
+		return ""
+	case 1:
+		return string(text[0])
+	case 2:
+		// Special case for common small values.
+		// Remove if github.com/golang/go/issues/6714 is fixed
+		return string(text[0]) + string(text[1])
+	case 3:
+		// Special case for common small values.
+		// Remove if #6714 is fixed
+		return string(text[0]) + string(text[1]) + string(text[2])
+	}
+	n := 0
+	for i := 0; i < len(text); i++ {
+		n += len(text[i])
+	}
+
+	b := make([]byte, n)
+	bp := copy(b, text[0])
+	for _, str := range text[1:] {
+		bp += copy(b[bp:], str)
+	}
+	return string(b)
 }
