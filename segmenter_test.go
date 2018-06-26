@@ -218,3 +218,14 @@ func TestLargeDictionary(t *testing.T) {
 // 	tt.Expect(t, "中华/nz 人民/n 共和/nz 共和国/ns 人民共和国/nt 中华人民共和国/ns 中央/n 人民/n 政府/n 人民政府/nt 中央人民政府/nt 中华人民共和国中央人民政府/nt ", ToString(prodSeg.Segment(
 // 		[]byte("中华人民共和国中央人民政府")), true))
 // }
+
+func TestTokenEquals(t *testing.T) {
+	token := Token{
+		text: []Text{
+			[]byte("one"),
+			[]byte("two"),
+		},
+	}
+
+	tt.True(t, token.Equals("onetwo"))
+}
