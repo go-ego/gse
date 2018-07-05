@@ -72,11 +72,11 @@ func getCurrentFilePath() string {
 func (seg *Segmenter) Read(file string) error {
 	log.Printf("Load the gse dictionary: \"%s\" ", file)
 	dictFile, err := os.Open(file)
-	defer dictFile.Close()
 	if err != nil {
 		log.Printf("Could not load dictionaries: \"%s\", %v \n", file, err)
 		return err
 	}
+	defer dictFile.Close()
 
 	reader := bufio.NewReader(dictFile)
 	var (
