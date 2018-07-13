@@ -321,7 +321,8 @@ func (seg *Segmenter) ModeSegment(bytes []byte, searchMode ...bool) []Segment {
 func (seg *Segmenter) internalSegment(bytes []byte, searchMode bool) []Segment {
 	// 处理特殊情况
 	if len(bytes) == 0 {
-		return []Segment{}
+		// return []Segment{}
+		return nil
 	}
 
 	// 划分字元
@@ -333,7 +334,7 @@ func (seg *Segmenter) internalSegment(bytes []byte, searchMode bool) []Segment {
 func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 	// 搜索模式下该分词已无继续划分可能的情况
 	if searchMode && len(text) == 1 {
-		return []Segment{}
+		return nil
 	}
 
 	// jumpers 定义了每个字元处的向前跳转信息，
@@ -342,7 +343,7 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 	jumpers := make([]jumper, len(text))
 
 	if seg.dict == nil {
-		return []Segment{}
+		return nil
 	}
 
 	tokens := make([]*Token, seg.dict.maxTokenLen)
