@@ -341,6 +341,10 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 	// 以及从文本段开始到该字元的最短路径值
 	jumpers := make([]jumper, len(text))
 
+	if seg.dict == nil {
+		return []Segment{}
+	}
+
 	tokens := make([]*Token, seg.dict.maxTokenLen)
 	for current := 0; current < len(text); current++ {
 		// 找到前一个字元处的最短路径，以便计算后续路径值
