@@ -23,8 +23,8 @@ func ToString(segs []Segment, searchMode bool) (output string) {
 	}
 
 	for _, seg := range segs {
-		output += fmt.Sprintf(
-			"%s/%s ", textSliceToString(seg.token.text), seg.token.pos)
+		output += fmt.Sprintf("%s/%s ",
+			textSliceToString(seg.token.text), seg.token.pos)
 	}
 	return
 }
