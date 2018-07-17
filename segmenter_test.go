@@ -112,8 +112,8 @@ func TestSegmentJp(t *testing.T) {
 	segments := seg.Segment([]byte(text2))
 
 	tt.Expect(t, "こんにちは/感動詞 世界/名詞 ", ToString(segments, false))
-	tt.Expect(t, "こん/名詞 に/助詞 ち/動詞 は/助詞 こんにちは/感動詞 世界/名詞 ", ToString(segments, true))
-	tt.Expect(t, "[こん に ち は こんにちは 世界]", ToSlice(segments, true))
+	tt.Expect(t, "こん/名詞 こんにちは/感動詞 世界/名詞 ", ToString(segments, true))
+	tt.Expect(t, "[こん こんにちは 世界]", ToSlice(segments, true))
 	tt.Expect(t, "[こんにちは 世界]", ToSlice(segments, false))
 
 	tt.Expect(t, "2", len(segments))
@@ -152,7 +152,7 @@ func TestSegmentDicts(t *testing.T) {
 	segments = seg.Segment([]byte(text2))
 	tt.Expect(t, "こんにちは/感動詞 世界/n ", ToString(segments, false))
 	tt.Expect(t, "2", len(segments))
-	tt.Expect(t, "こん/名詞 に/助詞 ち/動詞 は/助詞 こんにちは/感動詞 世界/n ", ToString(segments, true))
+	tt.Expect(t, "こん/名詞 こんにちは/感動詞 世界/n ", ToString(segments, true))
 	tt.Expect(t, "2", len(segments))
 	tt.Expect(t, "0", segments[0].start)
 	tt.Expect(t, "15", segments[0].end)

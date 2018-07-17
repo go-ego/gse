@@ -192,6 +192,18 @@ func DictPaths(dictDir, filePath string) (files []string) {
 	return
 }
 
+// IsJp is jp char return true
+func IsJp(segText string) bool {
+	for _, r := range segText {
+		jp := unicode.Is(unicode.Scripts["Hiragana"], r) ||
+			unicode.Is(unicode.Scripts["Katakana"], r)
+		if jp {
+			return true
+		}
+	}
+	return false
+}
+
 // SegToken add segmenter token
 func (seg *Segmenter) SegToken() {
 	// 计算每个分词的路径值，路径值含义见 Token 结构体的注释
@@ -214,7 +226,15 @@ func (seg *Segmenter) SegToken() {
 			// 略去字元长度为一的分词
 			// TODO: 这值得进一步推敲，特别是当字典中有英文复合词的时候
 			if len(segments[iToken].token.text) > 0 {
-				numTokensToAdd++
+				hasJp := false
+				if len(segments[iToken].token.text) == 1 {
+					segText := string(segments[iToken].token.text[0])
+					hasJp = IsJp(segText)
+				}
+
+				if !hasJp {
+					numTokensToAdd++
+				}
 			}
 		}
 		token.segments = make([]*Segment, numTokensToAdd)
@@ -224,8 +244,16 @@ func (seg *Segmenter) SegToken() {
 		for iToken := 0; iToken < len(segments); iToken++ {
 			// if len(segments[iToken].token.text) > 1 {
 			if len(segments[iToken].token.text) > 0 {
-				token.segments[iSegmentsToAdd] = &segments[iToken]
-				iSegmentsToAdd++
+				hasJp := false
+				if len(segments[iToken].token.text) == 1 {
+					segText := string(segments[iToken].token.text[0])
+					hasJp = IsJp(segText)
+				}
+
+				if !hasJp {
+					token.segments[iSegmentsToAdd] = &segments[iToken]
+					iSegmentsToAdd++
+				}
 			}
 		}
 	}

@@ -42,7 +42,7 @@ func tokenToBytes(token *Token) (output []byte) {
 func tokenToString(token *Token) (output string) {
 	hasOnlyTerminalToken := true
 	for _, s := range token.segments {
-		if len(s.token.segments) > 1 {
+		if len(s.token.segments) > 1 || IsJp(string(s.token.text[0])) {
 			hasOnlyTerminalToken = false
 		}
 
@@ -83,7 +83,7 @@ func ToSlice(segs []Segment, searchMode bool) (output []string) {
 func tokenToSlice(token *Token) (output []string) {
 	hasOnlyTerminalToken := true
 	for _, s := range token.segments {
-		if len(s.token.segments) > 1 {
+		if len(s.token.segments) > 1 || IsJp(string(s.token.text[0])) {
 			hasOnlyTerminalToken = false
 		}
 
