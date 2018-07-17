@@ -112,8 +112,8 @@ func TestSegmentJp(t *testing.T) {
 	segments := seg.Segment([]byte(text2))
 
 	tt.Expect(t, "こんにちは/感動詞 世界/名詞 ", ToString(segments, false))
-	tt.Expect(t, "こん/名詞 こんにちは/感動詞 世界/名詞 ", ToString(segments, true))
-	tt.Expect(t, "[こん こんにちは 世界]", ToSlice(segments, true))
+	tt.Expect(t, "こん/名詞 に/助詞 ち/動詞 は/助詞 こんにちは/感動詞 世界/名詞 ", ToString(segments, true))
+	tt.Expect(t, "[こん に ち は こんにちは 世界]", ToSlice(segments, true))
 	tt.Expect(t, "[こんにちは 世界]", ToSlice(segments, false))
 
 	tt.Expect(t, "2", len(segments))
@@ -152,7 +152,7 @@ func TestSegmentDicts(t *testing.T) {
 	segments = seg.Segment([]byte(text2))
 	tt.Expect(t, "こんにちは/感動詞 世界/n ", ToString(segments, false))
 	tt.Expect(t, "2", len(segments))
-	tt.Expect(t, "こん/名詞 こんにちは/感動詞 世界/n ", ToString(segments, true))
+	tt.Expect(t, "こん/名詞 に/助詞 ち/動詞 は/助詞 こんにちは/感動詞 世界/n ", ToString(segments, true))
 	tt.Expect(t, "2", len(segments))
 	tt.Expect(t, "0", segments[0].start)
 	tt.Expect(t, "15", segments[0].end)
@@ -193,7 +193,7 @@ func TestLargeDictionary(t *testing.T) {
 	tt.Expect(t, "中华人民共和国中央人民政府/nt ", ToString(prodSeg.internalSegment(
 		[]byte("中华人民共和国中央人民政府"), false), false))
 
-	tt.Expect(t, "中华/nz 人民/n 共和/nz 共和国/ns 人民共和国/nt 中华人民共和国/ns 中央/n 人民/n 政府/n 人民政府/nt 中央人民政府/nt 中华人民共和国中央人民政府/nt ",
+	tt.Expect(t, "中华/nz 人民/n 共和/nz 国/n 共和国/ns 人民共和国/nt 中华人民共和国/ns 中央/n 人民/n 政府/n 人民政府/nt 中央人民政府/nt 中华人民共和国中央人民政府/nt ",
 		ToString(prodSeg.Segment([]byte("中华人民共和国中央人民政府")), true))
 }
 

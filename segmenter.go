@@ -210,9 +210,10 @@ func (seg *Segmenter) SegToken() {
 		// 计算需要添加的子分词数目
 		numTokensToAdd := 0
 		for iToken := 0; iToken < len(segments); iToken++ {
-			if len(segments[iToken].token.text) > 1 {
-				// 略去字元长度为一的分词
-				// TODO: 这值得进一步推敲，特别是当字典中有英文复合词的时候
+			// if len(segments[iToken].token.text) > 1 {
+			// 略去字元长度为一的分词
+			// TODO: 这值得进一步推敲，特别是当字典中有英文复合词的时候
+			if len(segments[iToken].token.text) > 0 {
 				numTokensToAdd++
 			}
 		}
@@ -221,7 +222,8 @@ func (seg *Segmenter) SegToken() {
 		// 添加子分词
 		iSegmentsToAdd := 0
 		for iToken := 0; iToken < len(segments); iToken++ {
-			if len(segments[iToken].token.text) > 1 {
+			// if len(segments[iToken].token.text) > 1 {
+			if len(segments[iToken].token.text) > 0 {
 				token.segments[iSegmentsToAdd] = &segments[iToken]
 				iSegmentsToAdd++
 			}
