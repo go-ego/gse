@@ -100,7 +100,7 @@ func main() {
 	text1 := []byte("所以, 你好, 再见")
 
 	segments := seg.Segment(text1)
-	fmt.Println(gse.ToString(segments, false))
+	fmt.Println(gse.ToString(segments))
 }
 ```
 

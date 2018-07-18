@@ -97,7 +97,7 @@ func main() {
 	text1 := []byte("你好世界, Hello world")
 
 	segments := seg.Segment(text1)
-	fmt.Println(gse.ToString(segments, false))
+	fmt.Println(gse.ToString(segments))
 }
 ```
 

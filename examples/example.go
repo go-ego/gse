@@ -26,7 +26,8 @@ func main() {
 	text2 := []byte("深圳地标建筑, 深圳地王大厦")
 	segs := seg.Segment(text2)
 
-	log.Println(gse.ToString(segs, false))
+	// log.Println(gse.ToString(segs, false))
+	log.Println(gse.ToString(segs))
 	// 深圳/ns 地标/n 建筑/n ,/x  /x 深圳/ns 地王大厦/n
 
 	// 搜索模式主要用于给搜索引擎提供尽可能多的关键字
