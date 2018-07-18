@@ -73,11 +73,11 @@ func main() {
 	// 处理分词结果
 	// 支持普通模式和搜索模式两种分词，见代码中 ToString 函数的注释。
 	// 搜索模式主要用于给搜索引擎提供尽可能多的关键字
-	fmt.Println(gse.ToString(segments, false)) 
+	fmt.Println(gse.ToString(segments)) 
 
 	text1 := []byte("深圳地标建筑, 深圳地王大厦")
 	segments1 := seg.Segment([]byte(text1))
-	fmt.Println(gse.ToString(segments1, false)) 
+	fmt.Println(gse.ToString(segments1, true)) 
 }
 ```
 
