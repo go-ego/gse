@@ -83,6 +83,7 @@ func TestSegmentS(t *testing.T) {
 	tt.Expect(t, "19", seg.dict.NumTokens())
 	text1 := []byte("深圳地王大厦")
 	segments := seg.Segment([]byte(text1))
+	tt.Expect(t, "深圳/n 地王大厦/n ", ToString(segments))
 	tt.Expect(t, "深圳/n 地王大厦/n ", ToString(segments, false))
 
 	segs := seg.ModeSegment([]byte(text1), true)
@@ -115,6 +116,7 @@ func TestSegmentJp(t *testing.T) {
 	tt.Expect(t, "こん/名詞 こんにちは/感動詞 世界/名詞 ", ToString(segments, true))
 	tt.Expect(t, "[こん こんにちは 世界]", ToSlice(segments, true))
 	tt.Expect(t, "[こんにちは 世界]", ToSlice(segments, false))
+	tt.True(t, IsJp(ToSlice(segments)[0]))
 
 	tt.Expect(t, "2", len(segments))
 	tt.Expect(t, "0", segments[0].start)
@@ -215,7 +217,7 @@ func TestLargeDictionary(t *testing.T) {
 // 	tt.Expect(t, "中华人民共和国中央人民政府/nt ", ToString(prodSeg.internalSegment(
 // 		[]byte("中华人民共和国中央人民政府"), false), false))
 
-// 	tt.Expect(t, "中华/nz 人民/n 共和/nz 共和国/ns 人民共和国/nt 中华人民共和国/ns 中央/n 人民/n 政府/n 人民政府/nt 中央人民政府/nt 中华人民共和国中央人民政府/nt ", ToString(prodSeg.Segment(
+// 	tt.Expect(t, "中华/nz 人民/n 共和/nz 国/n 共和国/ns 人民共和国/nt 中华人民共和国/ns 中央/n 人民/n 政府/n 人民政府/nt 中央人民政府/nt 中华人民共和国中央人民政府/nt ", ToString(prodSeg.Segment(
 // 		[]byte("中华人民共和国中央人民政府")), true))
 // }
 
