@@ -11,8 +11,9 @@ import (
 //
 //  普通模式（searchMode=false）输出一个分词 "中华人民共和国/ns "
 //  搜索模式（searchMode=true） 输出普通模式的再细致切分：
-//      "中华/nz 人民/n 共和/nz 共和国/ns 人民共和国/nt 中华人民共和国/ns "
+//      "中华/nz 人民/n 共和/nz 国/n 共和国/ns 人民共和国/nt 中华人民共和国/ns "
 //
+// 默认 searchMode=false
 // 搜索模式主要用于给搜索引擎提供尽可能多的关键字，详情请见 Token 结构体的注释。
 func ToString(segs []Segment, searchMode ...bool) (output string) {
 	var mode bool
@@ -68,8 +69,9 @@ func tokenToString(token *Token) (output string) {
 //
 //  普通模式（searchMode=false）输出一个分词"[中华人民共和国]"
 //  搜索模式（searchMode=true） 输出普通模式的再细致切分：
-//      "[中华 人民 共和 共和国 人民共和国 中华人民共和国]"
+//      "[中华 人民 共和 国 共和国 人民共和国 中华人民共和国]"
 //
+// 默认 searchMode=false
 // 搜索模式主要用于给搜索引擎提供尽可能多的关键字，详情请见Token结构体的注释。
 func ToSlice(segs []Segment, searchMode ...bool) (output []string) {
 	var mode bool
