@@ -69,7 +69,8 @@ func JsonRpcServer(w http.ResponseWriter, req *http.Request) {
 	// 整理为输出格式
 	ss := []*Segment{}
 	for _, segment := range segments {
-		ss = append(ss, &Segment{Text: segment.Token().Text(), Pos: segment.Token().Pos()})
+		ss = append(ss, &Segment{
+			Text: segment.Token().Text(), Pos: segment.Token().Pos()})
 	}
 	response, _ := json.Marshal(&JsonResponse{Segments: ss})
 

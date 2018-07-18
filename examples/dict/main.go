@@ -13,7 +13,8 @@ func main() {
 	text1 := []byte("深圳地王大厦")
 
 	segments := seg.Segment(text1)
-	fmt.Println(gse.ToString(segments, false))
+	// fmt.Println(gse.ToString(segments, false))
+	fmt.Println(gse.ToString(segments))
 	//"深圳/n 地王大厦/n "
 
 	// 搜索模式主要用于给搜索引擎提供尽可能多的关键字

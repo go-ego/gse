@@ -26,5 +26,5 @@ func main() {
 
 	text2 := []byte("运命は神の考えるものだ, 人间は人间らしく働ければそれ结构だ")
 	segs := seg.Segment(text2)
-	log.Println(gse.ToString(segs, false))
+	log.Println(gse.ToString(segs))
 }
