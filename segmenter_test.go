@@ -82,6 +82,12 @@ func TestSegmentS(t *testing.T) {
 
 	tt.Expect(t, "19", seg.dict.NumTokens())
 	text1 := []byte("深圳地王大厦")
+	tt.Expect(t, "深圳/n 地王大厦/n ", seg.String(text1))
+	tt.Expect(t, "[深圳 地王大厦]", seg.Slice(text1))
+
+	tt.Expect(t, "深圳/n 地王/n 大厦/n 地王大厦/n ", seg.String(text1, true))
+	tt.Expect(t, "[深圳 地王 大厦 地王大厦]", seg.Slice(text1, true))
+
 	segments := seg.Segment([]byte(text1))
 	tt.Expect(t, "深圳/n 地王大厦/n ", ToString(segments))
 	tt.Expect(t, "深圳/n 地王大厦/n ", ToString(segments, false))
