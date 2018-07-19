@@ -348,6 +348,20 @@ func (seg *Segmenter) ModeSegment(bytes []byte, searchMode ...bool) []Segment {
 	return seg.internalSegment(bytes, mode)
 }
 
+// Slice use modeSegment segment retrun []string
+// using search mode if searchMode is true
+func (seg *Segmenter) Slice(bytes []byte, searchMode ...bool) []string {
+	segs := seg.ModeSegment(bytes, searchMode...)
+	return ToSlice(segs, searchMode...)
+}
+
+// Slice use modeSegment segment retrun string
+// using search mode if searchMode is true
+func (seg *Segmenter) String(bytes []byte, searchMode ...bool) string {
+	segs := seg.ModeSegment(bytes, searchMode...)
+	return ToString(segs, searchMode...)
+}
+
 func (seg *Segmenter) internalSegment(bytes []byte, searchMode bool) []Segment {
 	// 处理特殊情况
 	if len(bytes) == 0 {
