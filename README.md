@@ -68,6 +68,8 @@ func main() {
 
 	// Text Segmentation
 	text := []byte("你好世界, Hello world.")
+	fmt.Println(segmenter.String(text, true)) 
+
 	segments := segmenter.Segment(text)
   
 	// Handle word segmentation results

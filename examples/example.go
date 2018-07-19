@@ -24,6 +24,9 @@ func main() {
 	fmt.Println(gse.ToString(segments, true))
 
 	text2 := []byte("深圳地标建筑, 深圳地王大厦")
+	fmt.Println(seg.String(text2, true))
+	fmt.Println(seg.Slice(text2, true))
+
 	segs := seg.Segment(text2)
 
 	// log.Println(gse.ToString(segs, false))

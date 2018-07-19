@@ -11,6 +11,7 @@ func main() {
 	seg.LoadDict("zh,../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
 
 	text1 := []byte("深圳地王大厦")
+	fmt.Println(seg.String(text1, true))
 
 	segments := seg.Segment(text1)
 	// fmt.Println(gse.ToString(segments, false))

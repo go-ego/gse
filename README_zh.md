@@ -68,6 +68,8 @@ func main() {
 
 	// 分词
 	text := []byte("中华人民共和国中央人民政府")
+	fmt.Println(seg.String(text, true)) 
+
 	segments := seg.Segment(text)
   
 	// 处理分词结果
