@@ -10,7 +10,9 @@ type node struct {
 	Check int
 }
 
-func (n *node) base() int { return -(n.Value + 1) }
+func (n *node) base() int {
+	return -(n.Value + 1)
+}
 
 type ninfo struct {
 	Sibling, Child byte
@@ -92,6 +94,7 @@ func (da *cedar) get(key []byte, from, pos int) *int {
 func (da *cedar) follow(from int, label byte) int {
 	base := da.Array[from].base()
 	to := base ^ int(label)
+
 	if base < 0 || da.Array[to].Check < 0 {
 		hasChild := false
 		if base >= 0 {
@@ -99,25 +102,34 @@ func (da *cedar) follow(from int, label byte) int {
 		}
 		to = da.popEnode(base, label, from)
 		da.pushSibling(from, to^int(label), label, hasChild)
-	} else if da.Array[to].Check != from {
-		to = da.resolve(from, base, label)
-	} else if da.Array[to].Check == from {
-	} else {
-		panic("cedar: internal error, should not be here")
+
+		return to
 	}
-	return to
+
+	if da.Array[to].Check != from {
+		to = da.resolve(from, base, label)
+		return to
+	}
+
+	if da.Array[to].Check == from {
+		return to
+	}
+
+	panic("cedar: internal error, should not be here")
+	// return to
 }
 
 func (da *cedar) popBlock(bi int, headIn *int, last bool) {
 	if last {
 		*headIn = 0
-	} else {
-		b := &da.Blocks[bi]
-		da.Blocks[b.Prev].Next = b.Next
-		da.Blocks[b.Next].Prev = b.Prev
-		if bi == *headIn {
-			*headIn = b.Next
-		}
+		return
+	}
+
+	b := &da.Blocks[bi]
+	da.Blocks[b.Prev].Next = b.Next
+	da.Blocks[b.Next].Prev = b.Prev
+	if bi == *headIn {
+		*headIn = b.Next
 	}
 }
 
@@ -366,15 +378,15 @@ func (da *cedar) resolve(fromN, baseN int, labelN byte) int {
 
 	var (
 		from  int
-		baseS int
+		nbase int
 	)
 
 	if flag {
 		from = fromN
-		baseS = baseN
+		nbase = baseN
 	} else {
 		from = fromP
-		baseS = baseP
+		nbase = baseP
 	}
 
 	if flag && children[0] == labelN {
@@ -382,9 +394,21 @@ func (da *cedar) resolve(fromN, baseN int, labelN byte) int {
 	}
 
 	da.Array[from].Value = -base - 1
+	base, labelN, toPn = da.list(base, from, nbase, fromN, toPn,
+		labelN, children, flag)
+
+	if flag {
+		return base ^ int(labelN)
+	}
+
+	return toPn
+}
+
+func (da *cedar) list(base, from, nbase, fromN, toPn int,
+	labelN byte, children []byte, flag bool) (int, byte, int) {
 	for i := 0; i < len(children); i++ {
 		to := da.popEnode(base, children[i], from)
-		toS := baseS ^ int(children[i])
+		newTo := nbase ^ int(children[i])
 
 		if i == len(children)-1 {
 			da.Ninfos[to].Sibling = 0
@@ -392,16 +416,16 @@ func (da *cedar) resolve(fromN, baseN int, labelN byte) int {
 			da.Ninfos[to].Sibling = children[i+1]
 		}
 
-		if flag && toS == toPn { // new node has no child
+		if flag && newTo == toPn { // new node has no child
 			continue
 		}
 
 		n := &da.Array[to]
-		nS := &da.Array[toS]
-		n.Value = nS.Value
+		ns := &da.Array[newTo]
+		n.Value = ns.Value
 		if n.Value < 0 && children[i] != 0 {
 			// this node has children, fix their check
-			c := da.Ninfos[toS].Child
+			c := da.Ninfos[newTo].Child
 			da.Ninfos[to].Child = c
 			da.Array[n.base()^int(c)].Check = to
 			c = da.Ninfos[n.base()^int(c)].Sibling
@@ -411,23 +435,19 @@ func (da *cedar) resolve(fromN, baseN int, labelN byte) int {
 			}
 		}
 
-		if !flag && toS == fromN { // parent node moved
+		if !flag && newTo == fromN { // parent node moved
 			fromN = to
 		}
 
-		if !flag && toS == toPn {
+		if !flag && newTo == toPn {
 			da.pushSibling(fromN, toPn^int(labelN), labelN, true)
-			da.Ninfos[toS].Child = 0
-			nS.Value = ValueLimit
-			nS.Check = fromN
+			da.Ninfos[newTo].Child = 0
+			ns.Value = ValueLimit
+			ns.Check = fromN
 		} else {
-			da.pushEnode(toS)
+			da.pushEnode(newTo)
 		}
 	}
 
-	if flag {
-		return base ^ int(labelN)
-	}
-
-	return toPn
+	return base, labelN, toPn
 }
