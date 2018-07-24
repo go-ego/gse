@@ -78,22 +78,23 @@ func TestSegmentS(t *testing.T) {
 
 	dict := seg.Dictionary()
 	tt.Expect(t, "4", dict.maxTokenLen)
-	tt.Expect(t, "2103", dict.totalFrequency)
+	tt.Expect(t, "10444", dict.totalFrequency)
 
-	tt.Expect(t, "19", seg.dict.NumTokens())
+	tt.Expect(t, "32", seg.dict.NumTokens())
 	text1 := []byte("深圳地王大厦")
-	tt.Expect(t, "深圳/n 地王大厦/n ", seg.String(text1))
+
+	tt.Expect(t, "深圳/ns 地王大厦/nr ", seg.String(text1))
 	tt.Expect(t, "[深圳 地王大厦]", seg.Slice(text1))
 
-	tt.Expect(t, "深圳/n 地王/n 大厦/n 地王大厦/n ", seg.String(text1, true))
+	tt.Expect(t, "深圳/ns 地王/n 大厦/n 地王大厦/nr ", seg.String(text1, true))
 	tt.Expect(t, "[深圳 地王 大厦 地王大厦]", seg.Slice(text1, true))
 
 	segments := seg.Segment([]byte(text1))
-	tt.Expect(t, "深圳/n 地王大厦/n ", ToString(segments))
-	tt.Expect(t, "深圳/n 地王大厦/n ", ToString(segments, false))
+	tt.Expect(t, "深圳/ns 地王大厦/nr ", ToString(segments))
+	tt.Expect(t, "深圳/ns 地王大厦/nr ", ToString(segments, false))
 
 	segs := seg.ModeSegment([]byte(text1), true)
-	tt.Expect(t, "深圳/n 地王大厦/n ", ToString(segs, false))
+	tt.Expect(t, "深圳/ns 地王大厦/nr ", ToString(segs, false))
 
 	tt.Expect(t, "2", len(segments))
 	tt.Expect(t, "0", segments[0].start)
