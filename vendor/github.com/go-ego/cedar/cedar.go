@@ -316,43 +316,62 @@ func (da *cedar) findPlace() int {
 func (da *cedar) findPlaces(child []byte) int {
 	bi := da.BheadO
 	if bi != 0 {
-		bz := da.Blocks[da.BheadO].Prev
-		nc := len(child)
-
-		for {
-			b := &da.Blocks[bi]
-			if b.Num >= nc && nc < b.Reject {
-				for e := b.Ehead; ; {
-					base := e ^ int(child[0])
-					for i := 0; da.Array[base^int(child[i])].Check < 0; i++ {
-						if i == len(child)-1 {
-							b.Ehead = e
-							return e
-						}
-					}
-					e = -da.Array[e].Check
-					if e == b.Ehead {
-						break
-					}
-				}
-			}
-			b.Reject = nc
-			if b.Reject < da.Reject[b.Num] {
-				da.Reject[b.Num] = b.Reject
-			}
-
-			biS := b.Next
-			b.Trial++
-			if b.Trial == da.MaxTrial {
-				da.transferBlock(bi, &da.BheadO, &da.BheadC)
-			}
-			if bi == bz {
-				break
-			}
-			bi = biS
+		e := da.listBi(bi, child)
+		if e > 0 {
+			return e
 		}
 	}
 	return da.addBlock() << 8
+}
+
+func (da *cedar) listBi(bi int, child []byte) int {
+	nc := len(child)
+	bz := da.Blocks[da.BheadO].Prev
+	for {
+		b := &da.Blocks[bi]
+		if b.Num >= nc && nc < b.Reject {
+			e := da.listEhead(b, child)
+			if e > 0 {
+				return e
+			}
+		}
+		b.Reject = nc
+		if b.Reject < da.Reject[b.Num] {
+			da.Reject[b.Num] = b.Reject
+		}
+
+		biN := b.Next
+		b.Trial++
+		if b.Trial == da.MaxTrial {
+			da.transferBlock(bi, &da.BheadO, &da.BheadC)
+		}
+		if bi == bz {
+			break
+		}
+		bi = biN
+	}
+
+	return 0
+}
+
+func (da *cedar) listEhead(b *block, child []byte) int {
+	for e := b.Ehead; ; {
+		base := e ^ int(child[0])
+		for i := 0; da.Array[base^int(child[i])].Check < 0; i++ {
+			if i == len(child)-1 {
+				b.Ehead = e
+				// if e == 0 {
+				// }
+				return e
+			}
+		}
+		e = -da.Array[e].Check
+		if e == b.Ehead {
+			break
+		}
+	}
+
+	return 0
 }
 
 func (da *cedar) resolve(fromN, baseN int, labelN byte) int {

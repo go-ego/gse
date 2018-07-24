@@ -97,8 +97,13 @@ func (seg *Segmenter) Read(file string) error {
 				break
 			}
 
-			log.Printf("File '%v' line \"%v\" read error, skip: %v",
-				file, line, fsErr.Error())
+			if size > 0 {
+				log.Printf("File '%v' line \"%v\" read error: %v, skip",
+					file, line, fsErr.Error())
+			} else {
+				log.Printf("File '%v' line \"%v\" is empty, read error: %v, skip",
+					file, line, fsErr.Error())
+			}
 		}
 
 		if size == 0 {
