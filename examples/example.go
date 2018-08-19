@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	text = flag.String("text", "中国互联网历史上最大的一笔并购案", "要分词的文本")
+	text = flag.String("text", "《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄", "要分词的文本")
 )
 
 func main() {
