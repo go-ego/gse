@@ -67,7 +67,7 @@ func main() {
 	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
 
 	// 分词
-	text := []byte("中华人民共和国中央人民政府")
+	text := []byte("山达尔星联邦共和国联邦政府")
 	fmt.Println(seg.String(text, true)) 
 
 	segments := seg.Segment(text)
