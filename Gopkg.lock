@@ -5,7 +5,7 @@
   branch = "master"
   name = "github.com/go-ego/cedar"
   packages = ["."]
-  revision = "39a3301a49c052d18c55ade2bd080cda1ccc0446"
+  revision = "4fc66f191550e645bf2285eb0468bc59c249e90d"
 
 [[projects]]
   branch = "master"

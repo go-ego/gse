@@ -189,7 +189,9 @@ func TestSegmentDicts(t *testing.T) {
 }
 
 func TestLargeDictionary(t *testing.T) {
-	prodSeg.LoadDict("zh,testdata/test_dict2.txt")
+	err := prodSeg.LoadDict("zh,testdata/test_dict2.txt")
+	tt.Nil(t, err)
+
 	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.Segment(
 		[]byte("世界人口")), false))
 
@@ -209,27 +211,29 @@ func TestLargeDictionary(t *testing.T) {
 		ToString(prodSeg.Segment([]byte("山达尔星新星联邦共和国联邦政府")), true))
 }
 
-// func TestLoadDictionary(t *testing.T) {
-// 	var seg Segmenter
-// 	seg.LoadDict()
-// 	tt.Expect(t, "世界/ns 人口/n ", ToString(prodSeg.Segment(
-// 		[]byte("世界人口")), false))
+func TestLoadDictionary(t *testing.T) {
+	// 	var seg Segmenter
+	// 	seg.LoadDict()
+	err := prodSeg.LoadDict()
+	tt.Nil(t, err)
+	// 	tt.Expect(t, "世界/ns 人口/n ", ToString(prodSeg.Segment(
+	// 		[]byte("世界人口")), false))
 
-// 	tt.Expect(t, "世界/ns 人口/n ", ToString(prodSeg.internalSegment(
-// 		[]byte("世界人口"), false), false))
+	// 	tt.Expect(t, "世界/ns 人口/n ", ToString(prodSeg.internalSegment(
+	// 		[]byte("世界人口"), false), false))
 
-// 	tt.Expect(t, "世界/ns 人口/n ", ToString(prodSeg.internalSegment(
-// 		[]byte("世界人口"), true), false))
+	// 	tt.Expect(t, "世界/ns 人口/n ", ToString(prodSeg.internalSegment(
+	// 		[]byte("世界人口"), true), false))
 
-// 	tt.Expect(t, "山达尔星新星联邦共和国/ns 联邦政府/nt ", ToString(prodSeg.internalSegment(
-// 		[]byte("山达尔星新星联邦共和国联邦政府"), true), false))
+	// 	tt.Expect(t, "山达尔星新星联邦共和国/ns 联邦政府/nt ", ToString(prodSeg.internalSegment(
+	// 		[]byte("山达尔星新星联邦共和国联邦政府"), true), false))
 
-// 	tt.Expect(t, "山达尔星新星联邦共和国联邦政府/nt ", ToString(prodSeg.internalSegment(
-// 		[]byte("山达尔星新星联邦共和国联邦政府"), false), false))
+	// 	tt.Expect(t, "山达尔星新星联邦共和国联邦政府/nt ", ToString(prodSeg.internalSegment(
+	// 		[]byte("山达尔星新星联邦共和国联邦政府"), false), false))
 
-// 	tt.Expect(t, "山达尔星/nz 新星/nz 联邦/n 共和/nz 国/n 共和国/ns 联邦共和国/nt 新星联邦共和国/ns 联邦/n 政府/n 联邦政府/nt 联邦联邦政府/nt 新星联邦共和国联邦政府/nt ", ToString(prodSeg.Segment(
-// 		[]byte("山达尔星新星联邦共和国联邦政府")), true))
-// }
+	// 	tt.Expect(t, "山达尔星/nz 新星/nz 联邦/n 共和/nz 国/n 共和国/ns 联邦共和国/nt 新星联邦共和国/ns 联邦/n 政府/n 联邦政府/nt 联邦联邦政府/nt 新星联邦共和国联邦政府/nt ", ToString(prodSeg.Segment(
+	// 		[]byte("山达尔星新星联邦共和国联邦政府")), true))
+}
 
 func TestTokenEquals(t *testing.T) {
 	token := Token{
