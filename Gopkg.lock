@@ -11,7 +11,7 @@
   branch = "master"
   name = "github.com/vcaesar/tt"
   packages = ["."]
-  revision = "54af4381b253a2380245310c25e1ff66dfc46f62"
+  revision = "7089d2bb06d77214951b387bded252993f105022"
 
 [solve-meta]
   analyzer-name = "dep"
