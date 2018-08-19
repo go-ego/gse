@@ -22,17 +22,17 @@ func TestGetVer(t *testing.T) {
 }
 
 func TestSplit(t *testing.T) {
-	tt.Expect(t, "中/国/有/十/三/亿/人/口/",
+	tt.Expect(t, "世/界/有/七/十/亿/人/口/",
 		bytesToString(splitTextToWords([]byte(
-			"中国有十三亿人口"))))
+			"世界有七十亿人口"))))
 
 	tt.Expect(t, "github/ /is/ /a/ /web/-/based/ /hosting/ /service/,/ /for/ /software/ /development/ /projects/./",
 		bytesToString(splitTextToWords([]byte(
 			"GitHub is a web-based hosting service, for software development projects."))))
 
-	tt.Expect(t, "中/国/雅/虎/yahoo/!/ /china/致/力/于/，/领/先/的/公/益/民/生/门/户/网/站/。/",
+	tt.Expect(t, "雅/虎/yahoo/!/ /致/力/于/，/领/先/的/门/户/网/站/。/",
 		bytesToString(splitTextToWords([]byte(
-			"中国雅虎Yahoo! China致力于，领先的公益民生门户网站。"))))
+			"雅虎Yahoo! 致力于，领先的门户网站。"))))
 
 	tt.Expect(t, "こ/ん/に/ち/は/", bytesToString(splitTextToWords([]byte("こんにちは"))))
 
@@ -54,11 +54,11 @@ func TestSegment(t *testing.T) {
 	var seg Segmenter
 	seg.LoadDict("testdata/test_dict1.txt,testdata/test_dict2.txt")
 	// seg.LoadDict("testdata/test_dict1.txt", "testdata/test_dict2.txt")
-	tt.Expect(t, "12", seg.dict.NumTokens())
+	tt.Expect(t, "16", seg.dict.NumTokens())
 	// tt.Expect(t, "5", seg.dict.NumTokens())
-	segments := seg.Segment([]byte("中国有十三亿人口"))
-	tt.Expect(t, "中国/ 有/p3 十三亿/ 人口/p12 ", ToString(segments, false))
-	// tt.Expect(t, "中国/ 有/x 十三亿/ 人口/p12 ", ToString(segments, false))
+	segments := seg.Segment([]byte("世界有七十亿人口"))
+	tt.Expect(t, "世界/ 有/p3 七十亿/ 人口/p12 ", ToString(segments, false))
+	// tt.Expect(t, "世界/ 有/x 七十亿/ 人口/p12 ", ToString(segments, false))
 
 	tt.Expect(t, "4", len(segments))
 	tt.Expect(t, "0", segments[0].start)
@@ -74,29 +74,32 @@ func TestSegment(t *testing.T) {
 
 func TestSegmentS(t *testing.T) {
 	var seg Segmenter
-	seg.LoadDict("testdata/test_dict.txt")
+	seg.LoadDict("zh,testdata/test_dict.txt")
+	// seg.LoadDict()
 
 	dict := seg.Dictionary()
-	tt.Expect(t, "4", dict.maxTokenLen)
-	tt.Expect(t, "10444", dict.totalFrequency)
+	tt.Expect(t, "16", dict.maxTokenLen)
+	tt.Expect(t, "53250733", dict.totalFrequency)
 
-	tt.Expect(t, "32", seg.dict.NumTokens())
-	text1 := []byte("深圳地王大厦")
+	tt.Expect(t, "587880", seg.dict.NumTokens())
+	text1 := []byte("纽约帝国大厦, 深圳地王大厦")
+	segStr := "纽约/ns 帝国大厦/nr ,/x  /x 深圳/ns 地王大厦/n "
 
-	tt.Expect(t, "深圳/ns 地王大厦/nr ", seg.String(text1))
-	tt.Expect(t, "[深圳 地王大厦]", seg.Slice(text1))
+	tt.Expect(t, "纽约/ns 帝国大厦/nr ,/x  /x 深圳/ns 地王大厦/n ", seg.String(text1))
+	tt.Expect(t, "[纽约 帝国大厦 ,   深圳 地王大厦]", seg.Slice(text1))
 
-	tt.Expect(t, "深圳/ns 地王/n 大厦/n 地王大厦/nr ", seg.String(text1, true))
-	tt.Expect(t, "[深圳 地王 大厦 地王大厦]", seg.Slice(text1, true))
+	tt.Expect(t, "纽约/ns 帝国/n 大厦/n 帝国大厦/nr ,/x  /x 深圳/ns 地王/n 大厦/n 地王大厦/n ",
+		seg.String(text1, true))
+	tt.Expect(t, "[纽约 帝国 大厦 帝国大厦 ,   深圳 地王 大厦 地王大厦]", seg.Slice(text1, true))
 
 	segments := seg.Segment([]byte(text1))
-	tt.Expect(t, "深圳/ns 地王大厦/nr ", ToString(segments))
-	tt.Expect(t, "深圳/ns 地王大厦/nr ", ToString(segments, false))
+	tt.Expect(t, segStr, ToString(segments))
+	tt.Expect(t, segStr, ToString(segments, false))
 
 	segs := seg.ModeSegment([]byte(text1), true)
-	tt.Expect(t, "深圳/ns 地王大厦/nr ", ToString(segs, false))
+	tt.Expect(t, segStr, ToString(segs, false))
 
-	tt.Expect(t, "2", len(segments))
+	tt.Expect(t, "6", len(segments))
 	tt.Expect(t, "0", segments[0].start)
 	tt.Expect(t, "6", segments[0].end)
 	tt.Expect(t, "6", segments[1].start)
@@ -104,7 +107,7 @@ func TestSegmentS(t *testing.T) {
 
 	text2 := []byte("留给真爱你的人")
 	segments2 := seg.Segment([]byte(text2))
-	tt.Expect(t, "留给/v 真爱/nr 你/x 的/x 人/x ", ToString(segments2, false))
+	tt.Expect(t, "留给/v 真爱/nr 你/r 的/uj 人/n ", ToString(segments2, false))
 
 	tt.Expect(t, "5", len(segments2))
 	tt.Expect(t, "0", segments2[0].start)
@@ -186,46 +189,46 @@ func TestSegmentDicts(t *testing.T) {
 }
 
 func TestLargeDictionary(t *testing.T) {
-	prodSeg.LoadDict("data/dict/dictionary.txt")
-	tt.Expect(t, "中国/ns 人口/n ", ToString(prodSeg.Segment(
-		[]byte("中国人口")), false))
+	prodSeg.LoadDict("zh,testdata/test_dict2.txt")
+	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.Segment(
+		[]byte("世界人口")), false))
 
-	tt.Expect(t, "中国/ns 人口/n ", ToString(prodSeg.internalSegment(
-		[]byte("中国人口"), false), false))
+	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.internalSegment(
+		[]byte("世界人口"), false), false))
 
-	tt.Expect(t, "中国/ns 人口/n ", ToString(prodSeg.internalSegment(
-		[]byte("中国人口"), true), false))
+	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.internalSegment(
+		[]byte("世界人口"), true), false))
 
-	tt.Expect(t, "中华人民共和国/ns 中央人民政府/nt ", ToString(prodSeg.internalSegment(
-		[]byte("中华人民共和国中央人民政府"), true), false))
+	tt.Expect(t, "山达尔星新星联邦共和国/ns 联邦政府/nt ", ToString(prodSeg.internalSegment(
+		[]byte("山达尔星新星联邦共和国联邦政府"), true), false))
 
-	tt.Expect(t, "中华人民共和国中央人民政府/nt ", ToString(prodSeg.internalSegment(
-		[]byte("中华人民共和国中央人民政府"), false), false))
+	tt.Expect(t, "山达尔星新星联邦共和国联邦政府/nt ", ToString(prodSeg.internalSegment(
+		[]byte("山达尔星新星联邦共和国联邦政府"), false), false))
 
-	tt.Expect(t, "中华/nz 人民/n 共和/nz 国/n 共和国/ns 人民共和国/nt 中华人民共和国/ns 中央/n 人民/n 政府/n 人民政府/nt 中央人民政府/nt 中华人民共和国中央人民政府/nt ",
-		ToString(prodSeg.Segment([]byte("中华人民共和国中央人民政府")), true))
+	tt.Expect(t, "达尔/nrt 星/n 山达尔星/nz 新星/nz 联邦/n 共和/nz 国/n 共和国/ns 联邦共和国/nt 山达尔星新星联邦共和国/ns 联邦/n 政府/n 联邦政府/nt 山达尔星新星联邦共和国联邦政府/nt ",
+		ToString(prodSeg.Segment([]byte("山达尔星新星联邦共和国联邦政府")), true))
 }
 
 // func TestLoadDictionary(t *testing.T) {
 // 	var seg Segmenter
 // 	seg.LoadDict()
-// 	tt.Expect(t, "中国/ns 人口/n ", ToString(prodSeg.Segment(
-// 		[]byte("中国人口")), false))
+// 	tt.Expect(t, "世界/ns 人口/n ", ToString(prodSeg.Segment(
+// 		[]byte("世界人口")), false))
 
-// 	tt.Expect(t, "中国/ns 人口/n ", ToString(prodSeg.internalSegment(
-// 		[]byte("中国人口"), false), false))
+// 	tt.Expect(t, "世界/ns 人口/n ", ToString(prodSeg.internalSegment(
+// 		[]byte("世界人口"), false), false))
 
-// 	tt.Expect(t, "中国/ns 人口/n ", ToString(prodSeg.internalSegment(
-// 		[]byte("中国人口"), true), false))
+// 	tt.Expect(t, "世界/ns 人口/n ", ToString(prodSeg.internalSegment(
+// 		[]byte("世界人口"), true), false))
 
-// 	tt.Expect(t, "中华人民共和国/ns 中央人民政府/nt ", ToString(prodSeg.internalSegment(
-// 		[]byte("中华人民共和国中央人民政府"), true), false))
+// 	tt.Expect(t, "山达尔星新星联邦共和国/ns 联邦政府/nt ", ToString(prodSeg.internalSegment(
+// 		[]byte("山达尔星新星联邦共和国联邦政府"), true), false))
 
-// 	tt.Expect(t, "中华人民共和国中央人民政府/nt ", ToString(prodSeg.internalSegment(
-// 		[]byte("中华人民共和国中央人民政府"), false), false))
+// 	tt.Expect(t, "山达尔星新星联邦共和国联邦政府/nt ", ToString(prodSeg.internalSegment(
+// 		[]byte("山达尔星新星联邦共和国联邦政府"), false), false))
 
-// 	tt.Expect(t, "中华/nz 人民/n 共和/nz 国/n 共和国/ns 人民共和国/nt 中华人民共和国/ns 中央/n 人民/n 政府/n 人民政府/nt 中央人民政府/nt 中华人民共和国中央人民政府/nt ", ToString(prodSeg.Segment(
-// 		[]byte("中华人民共和国中央人民政府")), true))
+// 	tt.Expect(t, "山达尔星/nz 新星/nz 联邦/n 共和/nz 国/n 共和国/ns 联邦共和国/nt 新星联邦共和国/ns 联邦/n 政府/n 联邦政府/nt 联邦联邦政府/nt 新星联邦共和国联邦政府/nt ", ToString(prodSeg.Segment(
+// 		[]byte("山达尔星新星联邦共和国联邦政府")), true))
 // }
 
 func TestTokenEquals(t *testing.T) {
