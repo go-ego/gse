@@ -107,6 +107,11 @@ func main() {
 
 [Look at an Japanese example](https://github.com/go-ego/gse/blob/master/examples/jp/main.go)
 
+## Authors
+* [The author is vz](https://github.com/vcaesar)
+* [Maintainers](https://github.com/orgs/go-ego/people)
+* [Contributors](https://github.com/go-ego/gse/graphs/contributors)
+
 ## License
 
 Gse is primarily distributed under the terms of both the MIT license and the Apache License (Version 2.0), base on [sego](https://github.com/huichen/sego).
