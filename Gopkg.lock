@@ -5,13 +5,13 @@
   branch = "master"
   name = "github.com/go-ego/cedar"
   packages = ["."]
-  revision = "4fc66f191550e645bf2285eb0468bc59c249e90d"
+  revision = "393be26fe3b8614d07dff4df428cb9ab8fc56c1f"
 
 [[projects]]
   branch = "master"
   name = "github.com/vcaesar/tt"
   packages = ["."]
-  revision = "7089d2bb06d77214951b387bded252993f105022"
+  revision = "59ab8a500c5e013fef75c4cbefd336e7dd2a9fcc"
 
 [solve-meta]
   analyzer-name = "dep"
