@@ -44,23 +44,7 @@ var (
 	numRuns    = 20
 )
 
-func main() {
-	// 确保单线程，因为 Go 从 1.5 开始默认多线程
-	runtime.GOMAXPROCS(1)
-
-	// 解析命令行参数
-	flag.Parse()
-
-	// 记录时间
-	t0 := time.Now()
-
-	var segmenter gse.Segmenter
-	segmenter.LoadDict("../data/dict/dictionary.txt")
-
-	// 记录时间
-	t1 := time.Now()
-	log.Printf("载入词典花费时间 %v", t1.Sub(t0))
-
+func mem() {
 	// 写入内存 profile 文件
 	if *memprofile != "" {
 		f, err := os.Create(*memprofile)
@@ -70,7 +54,9 @@ func main() {
 		pprof.WriteHeapProfile(f)
 		defer f.Close()
 	}
+}
 
+func openFile() ([][]byte, int) {
 	// 打开将要分词的文件
 	file, err := os.Open("../testdata/bailuyuan.txt")
 	if err != nil {
@@ -90,19 +76,28 @@ func main() {
 		lines = append(lines, content)
 	}
 
+	return lines, size
+}
+
+func outputInit() *os.File {
 	// 当指定输出文件时打开输出文件
-	var of *os.File
+	var (
+		of  *os.File
+		err error
+	)
+
 	if *output != "" {
 		of, err = os.Create(*output)
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer of.Close()
+		// defer of.Close()
 	}
 
-	// 记录时间
-	t2 := time.Now()
+	return of
+}
 
+func cpu() {
 	// 打开处理器 profile 文件
 	if *cpuprofile != "" {
 		f, err := os.Create(*cpuprofile)
@@ -112,6 +107,35 @@ func main() {
 		pprof.StartCPUProfile(f)
 		defer pprof.StopCPUProfile()
 	}
+}
+
+func main() {
+	// 确保单线程，因为 Go 从 1.5 开始默认多线程
+	runtime.GOMAXPROCS(1)
+
+	// 解析命令行参数
+	flag.Parse()
+
+	// 记录时间
+	t0 := time.Now()
+
+	var segmenter gse.Segmenter
+	segmenter.LoadDict("../data/dict/dictionary.txt")
+
+	// 记录时间
+	t1 := time.Now()
+	log.Printf("载入词典花费时间 %v", t1.Sub(t0))
+
+	mem()
+
+	lines, size := openFile()
+	of := outputInit()
+	defer of.Close()
+
+	// 记录时间
+	t2 := time.Now()
+
+	cpu()
 
 	// 分词
 	for i := 0; i < numRuns; i++ {
