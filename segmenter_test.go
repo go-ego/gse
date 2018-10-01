@@ -10,6 +10,8 @@ import (
 
 var (
 	prodSeg = Segmenter{}
+
+	testH = []byte("こんにちは世界")
 )
 
 func TestGetVer(t *testing.T) {
@@ -92,11 +94,11 @@ func TestSegmentS(t *testing.T) {
 		seg.String(text1, true))
 	tt.Expect(t, "[纽约 帝国 大厦 帝国大厦 ,   深圳 地王 大厦 地王大厦]", seg.Slice(text1, true))
 
-	segments := seg.Segment([]byte(text1))
+	segments := seg.Segment(text1)
 	tt.Expect(t, segStr, ToString(segments))
 	tt.Expect(t, segStr, ToString(segments, false))
 
-	segs := seg.ModeSegment([]byte(text1), true)
+	segs := seg.ModeSegment(text1, true)
 	tt.Expect(t, segStr, ToString(segs, false))
 
 	tt.Expect(t, "6", len(segments))
@@ -106,7 +108,7 @@ func TestSegmentS(t *testing.T) {
 	tt.Expect(t, "18", segments[1].end)
 
 	text2 := []byte("留给真爱你的人")
-	segments2 := seg.Segment([]byte(text2))
+	segments2 := seg.Segment(text2)
 	tt.Expect(t, "留给/v 真爱/nr 你/r 的/uj 人/n ", ToString(segments2, false))
 
 	tt.Expect(t, "5", len(segments2))
@@ -119,8 +121,7 @@ func TestSegmentS(t *testing.T) {
 func TestSegmentJp(t *testing.T) {
 	var seg Segmenter
 	seg.LoadDict("data/dict/jp/dict.txt")
-	text2 := []byte("こんにちは世界")
-	segments := seg.Segment([]byte(text2))
+	segments := seg.Segment(testH)
 
 	tt.Expect(t, "こんにちは/感動詞 世界/名詞 ", ToString(segments, false))
 	tt.Expect(t, "こん/名詞 こんにちは/感動詞 世界/名詞 ", ToString(segments, true))
@@ -151,7 +152,7 @@ func TestSegmentDicts(t *testing.T) {
 	seg.LoadDict("./data/dict/dictionary.txt,./data/dict/jp/dict.txt")
 
 	text1 := []byte("深圳地王大厦")
-	segments := seg.Segment([]byte(text1))
+	segments := seg.Segment(text1)
 	tt.Expect(t, "深圳/ns 地王大厦/n ", ToString(segments, false))
 
 	tt.Expect(t, "2", len(segments))
@@ -160,8 +161,7 @@ func TestSegmentDicts(t *testing.T) {
 	tt.Expect(t, "6", segments[1].start)
 	tt.Expect(t, "18", segments[1].end)
 
-	text2 := []byte("こんにちは世界")
-	segments = seg.Segment([]byte(text2))
+	segments = seg.Segment(testH)
 	tt.Expect(t, "こんにちは/感動詞 世界/n ", ToString(segments, false))
 	tt.Expect(t, "2", len(segments))
 	tt.Expect(t, "こん/名詞 こんにちは/感動詞 世界/n ", ToString(segments, true))
@@ -192,14 +192,15 @@ func TestLargeDictionary(t *testing.T) {
 	err := prodSeg.LoadDict("zh,testdata/test_dict2.txt")
 	tt.Nil(t, err)
 
-	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.Segment(
-		[]byte("世界人口")), false))
+	text1 := []byte("世界人口")
 
-	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.internalSegment(
-		[]byte("世界人口"), false), false))
+	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.Segment(text1), false))
 
-	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.internalSegment(
-		[]byte("世界人口"), true), false))
+	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.internalSegment(text1, false),
+		false))
+
+	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.internalSegment(text1, true),
+		false))
 
 	tt.Expect(t, "山达尔星新星联邦共和国/ns 联邦政府/nt ", ToString(prodSeg.internalSegment(
 		[]byte("山达尔星新星联邦共和国联邦政府"), true), false))
