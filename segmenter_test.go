@@ -218,7 +218,19 @@ func TestLargeDictionary(t *testing.T) {
 }
 
 func TestLoadDictionary(t *testing.T) {
-	err := prodSeg.LoadDict()
+
+	var seg, seg1 Segmenter
+
+	err := seg.LoadDict("en")
+	tt.Nil(t, err)
+
+	err = seg.LoadDict("zh")
+	tt.Nil(t, err)
+
+	err = seg1.LoadDict("jp")
+	tt.Nil(t, err)
+
+	err = prodSeg.LoadDict()
 	tt.Nil(t, err)
 
 	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.Segment(
