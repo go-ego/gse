@@ -5,9 +5,8 @@
 
 **You MUST delete the content above including this line before posting, otherwise your issue will be invalid.**
 
-- Ego version (or commit ref):
+- Gse version (or commit ref):
 - Go version:
-- Gcc version:
 - Operating system and bit:
 - Can you reproduce the bug at [Examples](https://github.com/go-ego/gse/tree/master/examples):
   - [ ] Yes (provide example code)
