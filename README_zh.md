@@ -100,6 +100,7 @@ func main() {
 	seg.LoadDict("zh,testdata/test_dict.txt,testdata/test_dict1.txt")
 
 	text1 := []byte("所以, 你好, 再见")
+	fmt.Println(seg.String(text1, true)) 
 
 	segments := seg.Segment(text1)
 	fmt.Println(gse.ToString(segments))

@@ -69,9 +69,9 @@ func main() {
 
 	// Text Segmentation
 	text := []byte("你好世界, Hello world.")
-	fmt.Println(segmenter.String(text, true)) 
+	fmt.Println(seg.String(text, true)) 
 
-	segments := segmenter.Segment(text)
+	segments := seg.Segment(text)
   
 	// Handle word segmentation results
 	// Support for normal mode and search mode two participle,
@@ -98,6 +98,7 @@ func main() {
 	seg.LoadDict("zh,testdata/test_dict.txt,testdata/test_dict1.txt")
 
 	text1 := []byte("你好世界, Hello world")
+	fmt.Println(seg.String(text1, true)) 
 
 	segments := seg.Segment(text1)
 	fmt.Println(gse.ToString(segments))
