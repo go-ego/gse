@@ -21,6 +21,8 @@ Go efficient text segmentation; support english, chinese, japanese and other.
 
 Support common and search engine two participle mode, support user dictionary, POS tagging, run<a href="https://github.com/go-ego/gse/blob/master/server/server.go"> JSON RPC service</a>.
 
+Support HMM cut text use Viterbi algorithm
+
 Text Segmentation speed<a href="https://github.com/go-ego/gse/blob/master/tools/benchmark.go"> single thread</a> 9MB/s，<a href="https://github.com/go-ego/gse/blob/master/tools/goroutines.go">goroutines concurrent</a> 42MB/s (8 nuclear Macbook Pro).
 
 ## Install / update
