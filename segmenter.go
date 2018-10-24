@@ -159,7 +159,7 @@ func (seg *Segmenter) String(bytes []byte, searchMode ...bool) string {
 }
 
 // HMMCut cut sentence string use HMM with Viterbi
-func (seg *Segment) HMMCut(str string, prob ...map[rune]float64) []string {
+func (seg *Segmenter) HMMCut(str string, prob ...map[rune]float64) []string {
 	hmm.LoadModel(prob...)
 	return hmm.Cut(str)
 }
