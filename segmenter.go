@@ -25,6 +25,8 @@ import (
 	"path"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/go-ego/gse/hmm"
 )
 
 const (
@@ -154,6 +156,12 @@ func (seg *Segmenter) Slice(bytes []byte, searchMode ...bool) []string {
 func (seg *Segmenter) String(bytes []byte, searchMode ...bool) string {
 	segs := seg.ModeSegment(bytes, searchMode...)
 	return ToString(segs, searchMode...)
+}
+
+// HMMCut cut sentence string use HMM with Viterbi
+func (seg *Segment) HMMCut(str string, prob ...map[rune]float64) []string {
+	hmm.LoadModel(prob...)
+	return hmm.Cut(str)
 }
 
 func (seg *Segmenter) internalSegment(bytes []byte, searchMode bool) []Segment {
