@@ -155,6 +155,11 @@ func TestSegmentDicts(t *testing.T) {
 	// seg.LoadDict("zh,jp")
 	seg.LoadDict("./data/dict/dictionary.txt,./data/dict/jp/dict.txt")
 
+	hmm := seg.HMMCut("纽约时代广场")
+	tt.Equal(t, 2, len(hmm))
+	tt.Equal(t, "纽约", hmm[0])
+	tt.Equal(t, "时代广场", hmm[1])
+
 	text1 := []byte("深圳地王大厦")
 	segments := seg.Segment(text1)
 	tt.Expect(t, "深圳/ns 地王大厦/n ", ToString(segments, false))
