@@ -52,10 +52,8 @@ func tokenToString(token *Token) (output string) {
 			hasOnlyTerminalToken = false
 		}
 
-		if !hasOnlyTerminalToken {
-			if s != nil {
-				output += tokenToString(s.token)
-			}
+		if !hasOnlyTerminalToken && s != nil {
+			output += tokenToString(s.token)
 		}
 	}
 
