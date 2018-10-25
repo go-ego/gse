@@ -103,7 +103,7 @@ func tokenToSlice(token *Token) (output []string) {
 	}
 
 	output = append(output, textSliceToString(token.text))
-	return output
+	return
 }
 
 // 将多个字元拼接一个字符串输出
