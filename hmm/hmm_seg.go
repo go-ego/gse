@@ -16,8 +16,12 @@ var (
 
 // LoadModel load HMM model
 func LoadModel(prob ...map[rune]float64) {
-	if len(prob) > 0 {
+	if len(prob) > 3 {
 		probEmit['B'] = prob[0]
+		probEmit['E'] = prob[1]
+		probEmit['M'] = prob[2]
+		probEmit['S'] = prob[3]
+
 		return
 	}
 

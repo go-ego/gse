@@ -17,6 +17,7 @@ func init() {
 	prevStatus['M'] = []byte{'M', 'B'}
 	prevStatus['S'] = []byte{'S', 'E'}
 	prevStatus['E'] = []byte{'B', 'M'}
+
 	probStart['B'] = -0.26268660809250016
 	probStart['E'] = -3.14e+100
 	probStart['M'] = -3.14e+100
