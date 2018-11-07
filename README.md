@@ -63,10 +63,10 @@ import (
 )
 
 func main() {
-	// Load the dictionary
 	var seg gse.Segmenter
 	// Loading the default dictionary
 	seg.LoadDict()
+	// Load the dictionary
 	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
 
 	// Text Segmentation
