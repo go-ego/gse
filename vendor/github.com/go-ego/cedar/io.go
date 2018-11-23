@@ -24,7 +24,7 @@ func (da *Cedar) Save(out io.Writer, dataType string) error {
 
 // SaveToFile saves the cedar to a file,
 // where dataType is either "json" or "gob".
-func (da *Cedar) SaveToFile(fileName string, dataType string) error {
+func (da *Cedar) SaveToFile(fileName, dataType string) error {
 	file, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		return err
@@ -52,7 +52,7 @@ func (da *Cedar) Load(in io.Reader, dataType string) error {
 
 // LoadFromFile loads the cedar from a file,
 // where dataType is either "json" or "gob".
-func (da *Cedar) LoadFromFile(fileName string, dataType string) error {
+func (da *Cedar) LoadFromFile(fileName, dataType string) error {
 	file, err := os.OpenFile(fileName, os.O_RDONLY, 0600)
 	defer file.Close()
 	if err != nil {

@@ -100,7 +100,7 @@ func (da *cedar) follow(from int, label byte) int {
 		if base >= 0 {
 			hasChild = (da.Array[base^int(da.Ninfos[from].Child)].Check == from)
 		}
-		to = da.popEnode(base, label, from)
+		to = da.popEnode(base, from, label)
 		da.pushSibling(from, to^int(label), label, hasChild)
 
 		return to
@@ -181,7 +181,7 @@ func (da *cedar) transferBlock(bi int, headIn, headOut *int) {
 	da.pushBlock(bi, headOut, *headOut == 0 && da.Blocks[bi].Num != 0)
 }
 
-func (da *cedar) popEnode(base int, label byte, from int) int {
+func (da *cedar) popEnode(base, from int, label byte) int {
 	e := base ^ int(label)
 	if base < 0 {
 		e = da.findPlace()
@@ -281,7 +281,7 @@ func (da *cedar) consult(baseN, baseP int, cN, cP byte) bool {
 	return cP != 0
 }
 
-func (da *cedar) setChild(base int, c byte, label byte, flag bool) []byte {
+func (da *cedar) setChild(base int, c, label byte, flag bool) []byte {
 	child := make([]byte, 0, 257)
 	if c == 0 {
 		child = append(child, c)
@@ -426,7 +426,7 @@ func (da *cedar) resolve(fromN, baseN int, labelN byte) int {
 func (da *cedar) list(base, from, nbase, fromN, toPn int,
 	labelN byte, children []byte, flag bool) (int, byte, int) {
 	for i := 0; i < len(children); i++ {
-		to := da.popEnode(base, children[i], from)
+		to := da.popEnode(base, from, children[i])
 		newTo := nbase ^ int(children[i])
 
 		if i == len(children)-1 {

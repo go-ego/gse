@@ -1,6 +1,6 @@
 module github.com/go-ego/gse
 
 require (
-	github.com/go-ego/cedar v0.0.0-20180905173823-393be26fe3b8
-	github.com/vcaesar/tt v0.0.0-20180903174032-59ab8a500c5e
+	github.com/go-ego/cedar v0.0.0-20181122171415-ea076a54857e
+	github.com/vcaesar/tt v0.0.0-20181105181427-53fc2b08e954
 )
