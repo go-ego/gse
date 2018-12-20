@@ -243,25 +243,18 @@ func TestLoadDictionary(t *testing.T) {
 
 }
 
-func TestTokenEquals(t *testing.T) {
-	token := Token{
-		text: []Text{
-			[]byte("one"),
-			[]byte("two"),
-		},
-	}
+var token = Token{
+	text: []Text{
+		[]byte("one"),
+		[]byte("two"),
+	},
+}
 
+func TestTokenEquals(t *testing.T) {
 	tt.True(t, token.Equals("onetwo"))
 }
 
 func TestTokenNotEquals(t *testing.T) {
-	token := Token{
-		text: []Text{
-			[]byte("one"),
-			[]byte("two"),
-		},
-	}
-
 	tt.False(t, token.Equals("one-two"))
 }
 
@@ -290,4 +283,12 @@ func TestBenchmark(t *testing.T) {
 
 	fmt.Println("textSliceToString: ")
 	fmt.Println(testing.Benchmark(TextSliceToString))
+}
+
+func BenchmarkEquals(t *testing.B) {
+	fn := func() {
+		token.Equals("onetwo")
+	}
+
+	tt.BM(t, fn)
 }
