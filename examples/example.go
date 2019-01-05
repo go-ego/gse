@@ -9,7 +9,10 @@ import (
 )
 
 var (
-	text = flag.String("text", "《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄", "要分词的文本")
+	text = flag.String("text",
+		"《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄", "要分词的文本")
+
+	text2 = []byte("深圳地标建筑, 深圳地王大厦")
 )
 
 func main() {
@@ -23,12 +26,7 @@ func main() {
 	segments := seg.Segment([]byte(*text))
 	fmt.Println(gse.ToString(segments, true))
 
-	text2 := []byte("深圳地标建筑, 深圳地王大厦")
-	fmt.Println(seg.String(text2, true))
-	fmt.Println(seg.Slice(text2, true))
-
 	segs := seg.Segment(text2)
-
 	// log.Println(gse.ToString(segs, false))
 	log.Println(gse.ToString(segs))
 	// 深圳/ns 地标/n 建筑/n ,/x  /x 深圳/ns 地王大厦/n
@@ -39,4 +37,7 @@ func main() {
 	// 搜索模式: 深圳/ns 地标/n 建筑/n ,/x  /x 深圳/ns 地王/n 大厦/n 地王大厦/n
 
 	log.Println("to slice", gse.ToSlice(segs, true))
+
+	fmt.Println(seg.String(text2, true))
+	fmt.Println(seg.Slice(text2, true))
 }
