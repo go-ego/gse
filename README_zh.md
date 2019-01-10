@@ -16,7 +16,7 @@ Go 语言高效分词, 支持英文、中文、日文等
 <a href="https://github.com/go-ego/gse/blob/master/dictionary.go">词典</a>用双数组 trie（Double-Array Trie）实现，
 <a href="https://github.com/go-ego/gse/blob/master/segmenter.go">分词器</a>算法为基于词频的最短路径加动态规划。
 
-支持 HMM 分词, 使用 viterbi 算法
+支持 HMM 分词, 使用 viterbi 算法.
 
 支持普通和搜索引擎两种分词模式，支持用户词典、词性标注，可运行<a href="https://github.com/go-ego/gse/blob/master/server/server.go"> JSON RPC 服务</a>。
 
@@ -32,7 +32,7 @@ go get -u github.com/go-ego/gse
 
 ## [Build-tools](https://github.com/go-ego/re)
 ```
-go get -u github.com/go-ego/re 
+go get -u github.com/go-ego/re
 ```
 ### re gse
 创建一个新的 gse 程序
@@ -74,16 +74,16 @@ func main() {
 	// 处理分词结果
 	// 支持普通模式和搜索模式两种分词，见代码中 ToString 函数的注释。
 	// 搜索模式主要用于给搜索引擎提供尽可能多的关键字
-	fmt.Println("输出分词结果, 类型为字符串, 使用搜索模式: ", seg.String(text, true)) 
-	fmt.Println("输出分词结果, 类型为 slice: ", seg.Slice(text)) 
+	fmt.Println("输出分词结果, 类型为字符串, 使用搜索模式: ", seg.String(text, true))
+	fmt.Println("输出分词结果, 类型为 slice: ", seg.Slice(text))
 
 	segments := seg.Segment(text)
 	// 处理分词结果
-	fmt.Println(gse.ToString(segments)) 
+	fmt.Println(gse.ToString(segments))
 
 	text1 := []byte("深圳地标建筑, 深圳地王大厦")
 	segments1 := seg.Segment([]byte(text1))
-	fmt.Println(gse.ToString(segments1, true)) 
+	fmt.Println(gse.ToString(segments1, true))
 }
 ```
 
@@ -104,7 +104,7 @@ func main() {
 	seg.LoadDict("zh,testdata/test_dict.txt,testdata/test_dict1.txt")
 
 	text1 := []byte("所以, 你好, 再见")
-	fmt.Println(seg.String(text1, true)) 
+	fmt.Println(seg.String(text1, true))
 
 	segments := seg.Segment(text1)
 	fmt.Println(gse.ToString(segments))

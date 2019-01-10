@@ -21,7 +21,7 @@ Go efficient text segmentation; support english, chinese, japanese and other.
 
 Support common and search engine two participle mode, support user dictionary, POS tagging, run<a href="https://github.com/go-ego/gse/blob/master/server/server.go"> JSON RPC service</a>.
 
-Support HMM cut text use Viterbi algorithm
+Support HMM cut text use Viterbi algorithm.
 
 Text Segmentation speed<a href="https://github.com/go-ego/gse/blob/master/tools/benchmark.go"> single thread</a> 9MB/s，<a href="https://github.com/go-ego/gse/blob/master/tools/goroutines.go">goroutines concurrent</a> 42MB/s (8 nuclear Macbook Pro).
 
@@ -33,7 +33,7 @@ go get -u github.com/go-ego/gse
 
 ## [Build-tools](https://github.com/go-ego/re)
 ```
-go get -u github.com/go-ego/re 
+go get -u github.com/go-ego/re
 ```
 ### re gse
 To create a new gse application
@@ -71,16 +71,16 @@ func main() {
 
 	// Text Segmentation
 	text := []byte("你好世界, Hello world.")
-	fmt.Println(seg.String(text, true)) 
+	fmt.Println(seg.String(text, true))
 
 	segments := seg.Segment(text)
-  
+
 	// Handle word segmentation results
 	// Support for normal mode and search mode two participle,
 	// see the comments in the code ToString function.
-	// The search mode is mainly used to provide search engines 
+	// The search mode is mainly used to provide search engines
 	// with as many keywords as possible
-	fmt.Println(gse.ToString(segments, true)) 
+	fmt.Println(gse.ToString(segments, true))
 }
 ```
 
@@ -100,7 +100,7 @@ func main() {
 	seg.LoadDict("zh,testdata/test_dict.txt,testdata/test_dict1.txt")
 
 	text1 := []byte("你好世界, Hello world")
-	fmt.Println(seg.String(text1, true)) 
+	fmt.Println(seg.String(text1, true))
 
 	segments := seg.Segment(text1)
 	fmt.Println(gse.ToString(segments))
