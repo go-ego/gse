@@ -59,6 +59,7 @@ func (dict *Dictionary) addToken(token Token) {
 	dict.trie.Insert(bytes, dict.NumTokens())
 	dict.tokens = append(dict.tokens, token)
 	dict.totalFrequency += int64(token.frequency)
+
 	if len(token.text) > dict.maxTokenLen {
 		dict.maxTokenLen = len(token.text)
 	}
@@ -66,8 +67,8 @@ func (dict *Dictionary) addToken(token Token) {
 
 // lookupTokens 在词典中查找和字元组 words 可以前缀匹配的所有分词
 // 返回值为找到的分词数
-func (dict *Dictionary) lookupTokens(words []Text,
-	tokens []*Token) (numOfTokens int) {
+func (dict *Dictionary) lookupTokens(
+	words []Text, tokens []*Token) (numOfTokens int) {
 	var (
 		id, value int
 		err       error
@@ -78,6 +79,7 @@ func (dict *Dictionary) lookupTokens(words []Text,
 		if err != nil {
 			break
 		}
+
 		value, err = dict.trie.Value(id)
 		if err == nil {
 			tokens[numOfTokens] = &dict.tokens[value]
