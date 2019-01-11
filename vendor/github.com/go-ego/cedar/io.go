@@ -14,10 +14,10 @@ func (da *Cedar) Save(out io.Writer, dataType string) error {
 	switch dataType {
 	case "gob", "GOB":
 		dataEecoder := gob.NewEncoder(out)
-		return dataEecoder.Encode(da.cedar)
+		return dataEecoder.Encode(da)
 	case "json", "JSON":
 		dataEecoder := json.NewEncoder(out)
-		return dataEecoder.Encode(da.cedar)
+		return dataEecoder.Encode(da)
 	}
 	return ErrInvalidDataType
 }
@@ -42,10 +42,10 @@ func (da *Cedar) Load(in io.Reader, dataType string) error {
 	switch dataType {
 	case "gob", "GOB":
 		dataDecoder := gob.NewDecoder(in)
-		return dataDecoder.Decode(da.cedar)
+		return dataDecoder.Decode(da)
 	case "json", "JSON":
 		dataDecoder := json.NewDecoder(in)
-		return dataDecoder.Decode(da.cedar)
+		return dataDecoder.Decode(da)
 	}
 	return ErrInvalidDataType
 }

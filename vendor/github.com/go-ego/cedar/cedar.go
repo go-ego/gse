@@ -29,26 +29,22 @@ func (b *block) init() {
 
 // Cedar cedar struct
 type Cedar struct {
-	*cedar
-}
+	Array  []node
+	Ninfos []ninfo
+	Blocks []block
+	Reject [257]int
 
-type cedar struct {
-	Array    []node
-	Ninfos   []ninfo
-	Blocks   []block
-	Reject   [257]int
-	BheadF   int
-	BheadC   int
-	BheadO   int
+	BheadF, BheadC, BheadO int
+
 	Capacity int
 	Size     int
 	Ordered  bool
 	MaxTrial int
 }
 
-// New new cedar
+// New new Cedar
 func New() *Cedar {
-	da := cedar{
+	da := Cedar{
 		Array:    make([]node, 256),
 		Ninfos:   make([]ninfo, 256),
 		Blocks:   make([]block, 1),
@@ -72,11 +68,11 @@ func New() *Cedar {
 		da.Reject[i] = i + 1
 	}
 
-	return &Cedar{&da}
+	return &da
 }
 
 // Get value by key, insert the key if not exist
-func (da *cedar) get(key []byte, from, pos int) *int {
+func (da *Cedar) get(key []byte, from, pos int) *int {
 	for ; pos < len(key); pos++ {
 		if value := da.Array[from].Value; value >= 0 && value != ValueLimit {
 			to := da.follow(from, 0)
@@ -91,7 +87,7 @@ func (da *cedar) get(key []byte, from, pos int) *int {
 	return &da.Array[to].Value
 }
 
-func (da *cedar) follow(from int, label byte) int {
+func (da *Cedar) follow(from int, label byte) int {
 	base := da.Array[from].base()
 	to := base ^ int(label)
 
@@ -115,11 +111,11 @@ func (da *cedar) follow(from int, label byte) int {
 		return to
 	}
 
-	panic("cedar: internal error, should not be here")
+	panic("Cedar: internal error, should not be here")
 	// return to
 }
 
-func (da *cedar) popBlock(bi int, headIn *int, last bool) {
+func (da *Cedar) popBlock(bi int, headIn *int, last bool) {
 	if last {
 		*headIn = 0
 		return
@@ -133,7 +129,7 @@ func (da *cedar) popBlock(bi int, headIn *int, last bool) {
 	}
 }
 
-func (da *cedar) pushBlock(bi int, headOut *int, empty bool) {
+func (da *Cedar) pushBlock(bi int, headOut *int, empty bool) {
 	b := &da.Blocks[bi]
 	if empty {
 		*headOut, b.Prev, b.Next = bi, bi, bi
@@ -145,7 +141,7 @@ func (da *cedar) pushBlock(bi int, headOut *int, empty bool) {
 	}
 }
 
-func (da *cedar) addBlock() int {
+func (da *Cedar) addBlock() int {
 	if da.Size == da.Capacity {
 		da.Capacity *= 2
 
@@ -176,12 +172,12 @@ func (da *cedar) addBlock() int {
 	return da.Size>>8 - 1
 }
 
-func (da *cedar) transferBlock(bi int, headIn, headOut *int) {
+func (da *Cedar) transferBlock(bi int, headIn, headOut *int) {
 	da.popBlock(bi, headIn, bi == da.Blocks[bi].Next)
 	da.pushBlock(bi, headOut, *headOut == 0 && da.Blocks[bi].Num != 0)
 }
 
-func (da *cedar) popEnode(base, from int, label byte) int {
+func (da *Cedar) popEnode(base, from int, label byte) int {
 	e := base ^ int(label)
 	if base < 0 {
 		e = da.findPlace()
@@ -213,7 +209,7 @@ func (da *cedar) popEnode(base, from int, label byte) int {
 	return e
 }
 
-func (da *cedar) pushEnode(e int) {
+func (da *Cedar) pushEnode(e int) {
 	bi := e >> 8
 	b := &da.Blocks[bi]
 	b.Num++
@@ -245,7 +241,7 @@ func (da *cedar) pushEnode(e int) {
 }
 
 // hasChild: wherether the `from` node has children
-func (da *cedar) pushSibling(from, base int, label byte, hasChild bool) {
+func (da *Cedar) pushSibling(from, base int, label byte, hasChild bool) {
 	c := &da.Ninfos[from].Child
 	keepOrder := *c == 0
 	if da.Ordered {
@@ -263,7 +259,7 @@ func (da *cedar) pushSibling(from, base int, label byte, hasChild bool) {
 	*c = label
 }
 
-func (da *cedar) popSibling(from, base int, label byte) {
+func (da *Cedar) popSibling(from, base int, label byte) {
 	c := &da.Ninfos[from].Child
 	for *c != label {
 		c = &da.Ninfos[base^int(*c)].Sibling
@@ -271,7 +267,7 @@ func (da *cedar) popSibling(from, base int, label byte) {
 	*c = da.Ninfos[base^int(*c)].Sibling
 }
 
-func (da *cedar) consult(baseN, baseP int, cN, cP byte) bool {
+func (da *Cedar) consult(baseN, baseP int, cN, cP byte) bool {
 	cN = da.Ninfos[baseN^int(cN)].Sibling
 	cP = da.Ninfos[baseP^int(cP)].Sibling
 	for cN != 0 && cP != 0 {
@@ -281,7 +277,7 @@ func (da *cedar) consult(baseN, baseP int, cN, cP byte) bool {
 	return cP != 0
 }
 
-func (da *cedar) setChild(base int, c, label byte, flag bool) []byte {
+func (da *Cedar) setChild(base int, c, label byte, flag bool) []byte {
 	child := make([]byte, 0, 257)
 	if c == 0 {
 		child = append(child, c)
@@ -303,7 +299,7 @@ func (da *cedar) setChild(base int, c, label byte, flag bool) []byte {
 	return child
 }
 
-func (da *cedar) findPlace() int {
+func (da *Cedar) findPlace() int {
 	if da.BheadC != 0 {
 		return da.Blocks[da.BheadC].Ehead
 	}
@@ -313,7 +309,7 @@ func (da *cedar) findPlace() int {
 	return da.addBlock() << 8
 }
 
-func (da *cedar) findPlaces(child []byte) int {
+func (da *Cedar) findPlaces(child []byte) int {
 	bi := da.BheadO
 	if bi != 0 {
 		e := da.listBi(bi, child)
@@ -324,7 +320,7 @@ func (da *cedar) findPlaces(child []byte) int {
 	return da.addBlock() << 8
 }
 
-func (da *cedar) listBi(bi int, child []byte) int {
+func (da *Cedar) listBi(bi int, child []byte) int {
 	nc := len(child)
 	bz := da.Blocks[da.BheadO].Prev
 	for {
@@ -354,7 +350,7 @@ func (da *cedar) listBi(bi int, child []byte) int {
 	return 0
 }
 
-func (da *cedar) listEhead(b *block, child []byte) int {
+func (da *Cedar) listEhead(b *block, child []byte) int {
 	for e := b.Ehead; ; {
 		base := e ^ int(child[0])
 		for i := 0; da.Array[base^int(child[i])].Check < 0; i++ {
@@ -374,7 +370,7 @@ func (da *cedar) listEhead(b *block, child []byte) int {
 	return 0
 }
 
-func (da *cedar) resolve(fromN, baseN int, labelN byte) int {
+func (da *Cedar) resolve(fromN, baseN int, labelN byte) int {
 	toPn := baseN ^ int(labelN)
 	fromP := da.Array[toPn].Check
 	baseP := da.Array[fromP].base()
@@ -423,7 +419,7 @@ func (da *cedar) resolve(fromN, baseN int, labelN byte) int {
 	return toPn
 }
 
-func (da *cedar) list(base, from, nbase, fromN, toPn int,
+func (da *Cedar) list(base, from, nbase, fromN, toPn int,
 	labelN byte, children []byte, flag bool) (int, byte, int) {
 	for i := 0; i < len(children); i++ {
 		to := da.popEnode(base, from, children[i])
