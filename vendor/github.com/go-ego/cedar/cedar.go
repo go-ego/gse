@@ -80,10 +80,12 @@ func (da *Cedar) get(key []byte, from, pos int) *int {
 		}
 		from = da.follow(from, key[pos])
 	}
+
 	to := from
 	if da.Array[from].Value < 0 {
 		to = da.follow(from, 0)
 	}
+
 	return &da.Array[to].Value
 }
 
@@ -182,10 +184,12 @@ func (da *Cedar) popEnode(base, from int, label byte) int {
 	if base < 0 {
 		e = da.findPlace()
 	}
+
 	bi := e >> 8
 	n := &da.Array[e]
 	b := &da.Blocks[bi]
 	b.Num--
+
 	if b.Num == 0 {
 		if bi != 0 {
 			da.transferBlock(bi, &da.BheadC, &da.BheadF)
@@ -193,9 +197,11 @@ func (da *Cedar) popEnode(base, from int, label byte) int {
 	} else {
 		da.Array[-n.Value].Check = n.Check
 		da.Array[-n.Check].Value = n.Value
+
 		if e == b.Ehead {
 			b.Ehead = -n.Check
 		}
+
 		if bi != 0 && b.Num == 1 && b.Trial != da.MaxTrial {
 			da.transferBlock(bi, &da.BheadO, &da.BheadC)
 		}
@@ -206,6 +212,7 @@ func (da *Cedar) popEnode(base, from int, label byte) int {
 	if base < 0 {
 		da.Array[from].Value = -(e ^ int(label)) - 1
 	}
+
 	return e
 }
 
@@ -226,11 +233,13 @@ func (da *Cedar) pushEnode(e int) {
 		da.Array[e] = node{-prev, -next}
 		da.Array[prev].Check = -e
 		da.Array[next].Value = -e
+
 		if b.Num == 2 || b.Trial == da.MaxTrial {
 			if bi != 0 {
 				da.transferBlock(bi, &da.BheadC, &da.BheadO)
 			}
 		}
+
 		b.Trial = 0
 	}
 
@@ -270,6 +279,7 @@ func (da *Cedar) popSibling(from, base int, label byte) {
 func (da *Cedar) consult(baseN, baseP int, cN, cP byte) bool {
 	cN = da.Ninfos[baseN^int(cN)].Sibling
 	cP = da.Ninfos[baseP^int(cP)].Sibling
+
 	for cN != 0 && cP != 0 {
 		cN = da.Ninfos[baseN^int(cN)].Sibling
 		cP = da.Ninfos[baseP^int(cP)].Sibling
@@ -283,19 +293,23 @@ func (da *Cedar) setChild(base int, c, label byte, flag bool) []byte {
 		child = append(child, c)
 		c = da.Ninfos[base^int(c)].Sibling
 	}
+
 	if da.Ordered {
 		for c != 0 && c <= label {
 			child = append(child, c)
 			c = da.Ninfos[base^int(c)].Sibling
 		}
 	}
+
 	if flag {
 		child = append(child, label)
 	}
+
 	for c != 0 {
 		child = append(child, c)
 		c = da.Ninfos[base^int(c)].Sibling
 	}
+
 	return child
 }
 
@@ -303,9 +317,11 @@ func (da *Cedar) findPlace() int {
 	if da.BheadC != 0 {
 		return da.Blocks[da.BheadC].Ehead
 	}
+
 	if da.BheadO != 0 {
 		return da.Blocks[da.BheadO].Ehead
 	}
+
 	return da.addBlock() << 8
 }
 
@@ -317,12 +333,14 @@ func (da *Cedar) findPlaces(child []byte) int {
 			return e
 		}
 	}
+
 	return da.addBlock() << 8
 }
 
 func (da *Cedar) listBi(bi int, child []byte) int {
 	nc := len(child)
 	bz := da.Blocks[da.BheadO].Prev
+
 	for {
 		b := &da.Blocks[bi]
 		if b.Num >= nc && nc < b.Reject {
@@ -331,6 +349,7 @@ func (da *Cedar) listBi(bi int, child []byte) int {
 				return e
 			}
 		}
+
 		b.Reject = nc
 		if b.Reject < da.Reject[b.Num] {
 			da.Reject[b.Num] = b.Reject
@@ -341,6 +360,7 @@ func (da *Cedar) listBi(bi int, child []byte) int {
 		if b.Trial == da.MaxTrial {
 			da.transferBlock(bi, &da.BheadO, &da.BheadC)
 		}
+
 		if bi == bz {
 			break
 		}
@@ -361,6 +381,7 @@ func (da *Cedar) listEhead(b *block, child []byte) int {
 				return e
 			}
 		}
+
 		e = -da.Array[e].Check
 		if e == b.Ehead {
 			break
@@ -438,11 +459,13 @@ func (da *Cedar) list(base, from, nbase, fromN, toPn int,
 		n := &da.Array[to]
 		ns := &da.Array[newTo]
 		n.Value = ns.Value
+
 		if n.Value < 0 && children[i] != 0 {
 			// this node has children, fix their check
 			c := da.Ninfos[newTo].Child
 			da.Ninfos[to].Child = c
 			da.Array[n.base()^int(c)].Check = to
+
 			c = da.Ninfos[n.base()^int(c)].Sibling
 			for c != 0 {
 				da.Array[n.base()^int(c)].Check = to

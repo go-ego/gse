@@ -30,7 +30,7 @@ import (
 )
 
 const (
-	version string = "v0.20.0.147, Lethe River!"
+	version string = "v0.30.0.177, Lethe River!"
 
 	minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
@@ -204,8 +204,8 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 		}
 
 		// 寻找所有以当前字元开头的分词
-		numTokens := seg.dict.lookupTokens(
-			text[current:minInt(current+seg.dict.maxTokenLen, len(text))], tokens)
+		tx := text[current:minInt(current+seg.dict.maxTokenLen, len(text))]
+		numTokens := seg.dict.lookupTokens(tx, tokens)
 
 		// 对所有可能的分词，更新分词结束字元处的跳转信息
 		for iToken := 0; iToken < numTokens; iToken++ {
@@ -284,6 +284,7 @@ func splitTextToWords(text Text) []Text {
 	current := 0
 	inAlphanumeric := true
 	alphanumericStart := 0
+
 	for current < len(text) {
 		r, size := utf8.DecodeRune(text[current:])
 		if size <= 2 && (unicode.IsLetter(r) || unicode.IsNumber(r)) {
@@ -324,5 +325,6 @@ func toLower(text []byte) []byte {
 			output[i] = t
 		}
 	}
+
 	return output
 }

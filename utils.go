@@ -35,16 +35,6 @@ func ToString(segs []Segment, searchMode ...bool) (output string) {
 	return
 }
 
-func tokenToBytes(token *Token) (output []byte) {
-	for _, s := range token.segments {
-		output = append(output, tokenToBytes(s.token)...)
-	}
-	output = append(output, []byte(fmt.Sprintf("%s/%s ",
-		textSliceToString(token.text), token.pos))...)
-
-	return
-}
-
 func tokenToString(token *Token) (output string) {
 	hasOnlyTerminalToken := true
 	for _, s := range token.segments {
@@ -58,6 +48,16 @@ func tokenToString(token *Token) (output string) {
 	}
 
 	output += fmt.Sprintf("%s/%s ", textSliceToString(token.text), token.pos)
+	return
+}
+
+func tokenToBytes(token *Token) (output []byte) {
+	for _, s := range token.segments {
+		output = append(output, tokenToBytes(s.token)...)
+	}
+	output = append(output, []byte(fmt.Sprintf("%s/%s ",
+		textSliceToString(token.text), token.pos))...)
+
 	return
 }
 
