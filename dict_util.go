@@ -14,6 +14,78 @@ import (
 	"unicode"
 )
 
+// Dictionary 返回分词器使用的词典
+func (seg *Segmenter) Dictionary() *Dictionary {
+	return seg.dict
+}
+
+// LoadDict load the dictionary from the file
+//
+// The format of the dictionary is (one for each participle):
+//	participle text, frequency, part of speech
+//
+// Can load multiple dictionary files, the file name separated by ","
+// the front of the dictionary preferentially load the participle,
+//	such as: "user_dictionary.txt,common_dictionary.txt"
+// When a participle appears both in the user dictionary and
+// in the `common dictionary`, the `user dictionary` is given priority.
+//
+// 从文件中载入词典
+//
+// 可以载入多个词典文件，文件名用 "," 分隔，排在前面的词典优先载入分词，比如:
+// 	"用户词典.txt,通用词典.txt"
+// 当一个分词既出现在用户词典也出现在 `通用词典` 中，则优先使用 `用户词典`。
+//
+// 词典的格式为（每个分词一行）：
+//	分词文本 频率 词性
+func (seg *Segmenter) LoadDict(files ...string) error {
+	seg.dict = NewDict()
+
+	var (
+		dictDir  = path.Join(path.Dir(getCurrentFilePath()), "data")
+		dictPath string
+		// load     bool
+	)
+
+	if len(files) > 0 {
+		dictFiles := DictPaths(dictDir, files[0])
+		if len(dictFiles) > 0 {
+			// load = true
+			// files = dictFiles
+			for i := 0; i < len(dictFiles); i++ {
+				err := seg.Read(dictFiles[i])
+				if err != nil {
+					return err
+				}
+			}
+		}
+	}
+
+	if len(files) == 0 {
+		dictPath = path.Join(dictDir, "dict/dictionary.txt")
+		// files = []string{dictPath}
+		err := seg.Read(dictPath)
+		if err != nil {
+			return err
+		}
+	}
+
+	// if files[0] != "" && files[0] != "en" && !load {
+	// 	for _, file := range strings.Split(files[0], ",") {
+	// 		// for _, file := range files {
+	// 		err := seg.Read(file)
+	// 		if err != nil {
+	// 			return err
+	// 		}
+	// 	}
+	// }
+
+	seg.SegToken()
+	log.Println("Gse dictionary loaded finished.")
+
+	return nil
+}
+
 // getCurrentFilePath get current file path
 func getCurrentFilePath() string {
 	_, filePath, _, _ := runtime.Caller(1)
