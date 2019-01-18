@@ -241,6 +241,11 @@ func TestLoadDictionary(t *testing.T) {
 	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.Segment(
 		[]byte("世界人口")), false))
 
+	dict := prodSeg.Dictionary()
+
+	freq, ok := dict.Find([]byte("世界"))
+	tt.Equal(t, 34387, freq)
+	tt.True(t, ok)
 }
 
 var token = Token{
