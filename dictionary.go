@@ -89,3 +89,26 @@ func (dict *Dictionary) lookupTokens(
 
 	return
 }
+
+// Find find word in the dictionary is non-existent
+// and the word's frequency
+func (dict *Dictionary) Find(word []byte) (int, bool) {
+	var (
+		id, value, freq int
+		err             error
+	)
+
+	id, err = dict.trie.Jump(word, id)
+	if err != nil {
+		return 0, false
+	}
+
+	value, err = dict.trie.Value(id)
+	if err != nil || value == 0 {
+		return 0, false
+	}
+
+	freq = dict.tokens[value].frequency
+
+	return freq, true
+}
