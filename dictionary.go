@@ -104,7 +104,11 @@ func (dict *Dictionary) Find(word []byte) (int, bool) {
 	}
 
 	value, err = dict.trie.Value(id)
-	if err != nil || value == 0 {
+	if err != nil && id != 0 {
+		return 0, true
+	}
+
+	if err != nil {
 		return 0, false
 	}
 
