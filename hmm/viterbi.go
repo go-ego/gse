@@ -112,6 +112,7 @@ func probs(obs []rune, vtb []map[byte]float64, y byte, t int) probStates {
 		} else {
 			transP = minFloat
 		}
+
 		prob0 := vtb[t-1][y0] + transP + emP
 		ps0 = append(ps0, &probState{prob: prob0, state: y0})
 	}
