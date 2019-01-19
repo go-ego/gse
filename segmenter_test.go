@@ -246,6 +246,15 @@ func TestLoadDictionary(t *testing.T) {
 	freq, ok := dict.Find([]byte("世界"))
 	tt.Equal(t, 34387, freq)
 	tt.True(t, ok)
+
+	freq, ok = dict.Find([]byte("地王大"))
+	tt.Equal(t, 0, freq)
+	tt.True(t, ok)
+
+	freq, ok = dict.Find([]byte("地王大厦"))
+	tt.Equal(t, 10, freq)
+	tt.True(t, ok)
+
 }
 
 var token = Token{
