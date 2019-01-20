@@ -247,12 +247,16 @@ func TestLoadDictionary(t *testing.T) {
 	tt.Equal(t, 34387, freq)
 	tt.True(t, ok)
 
-	freq, ok = dict.Find([]byte("地王大"))
+	freq, ok = dict.Find([]byte("帝国大"))
 	tt.Equal(t, 0, freq)
 	tt.True(t, ok)
 
-	freq, ok = dict.Find([]byte("地王大厦"))
-	tt.Equal(t, 10, freq)
+	freq, ok = dict.Find([]byte("帝国大厦"))
+	tt.Equal(t, 3, freq)
+	tt.True(t, ok)
+
+	freq, ok = dict.Find([]byte("地王大"))
+	tt.Equal(t, 0, freq)
 	tt.True(t, ok)
 
 }
