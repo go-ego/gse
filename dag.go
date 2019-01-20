@@ -13,3 +13,47 @@
 // under the License.
 
 package gse
+
+func (seg *Segmenter) find(str string) (int, bool) {
+	return seg.dict.Find([]byte(str))
+}
+
+func (seg *Segmenter) getDag(runes []rune) map[int][]int {
+	dag := make(map[int][]int)
+	n := len(runes)
+
+	var (
+		frag []rune
+		i    int
+	)
+
+	for k := 0; k < n; k++ {
+		dag[k] = make([]int, 0)
+		i = k
+		frag = runes[k : k+1]
+
+		for {
+			freq, ok := seg.find(string(frag))
+			if !ok {
+				break
+			}
+
+			if freq > 0 {
+				dag[k] = append(dag[k], i)
+			}
+
+			i++
+			if i >= n {
+				break
+			}
+
+			frag = runes[k : i+1]
+		}
+
+		if len(dag[k]) == 0 {
+			dag[k] = append(dag[k], k)
+		}
+	}
+
+	return dag
+}
