@@ -16,6 +16,11 @@ package gse
 
 import "math"
 
+const (
+	// RatioWord ratio words and letters
+	RatioWord float32 = 1.5
+)
+
 type route struct {
 	frequency float64
 	index     int
@@ -116,4 +121,55 @@ func (seg *Segmenter) hmm(bufString string, buf []rune) (result []string) {
 		result = append(result, string(elem))
 	}
 	return
+}
+
+func (seg *Segmenter) cutDAG(str string, prob ...map[rune]float64) []string {
+	seg.LoadModel(prob...)
+
+	mLen := int(float32(len(str))/RatioWord) + 1
+	result := make([]string, 0, mLen)
+
+	runes := []rune(str)
+	routes := seg.calc(runes)
+
+	var y int
+	length := len(runes)
+	var buf []rune
+
+	for x := 0; x < length; {
+		y = routes[x].index + 1
+		frag := runes[x:y]
+
+		if y-x == 1 {
+			buf = append(buf, frag...)
+		} else {
+			if len(buf) > 0 {
+				bufString := string(buf)
+
+				if len(buf) == 1 {
+					result = append(result, bufString)
+				} else {
+					result = append(result, seg.hmm(bufString, buf)...)
+				}
+
+				buf = make([]rune, 0)
+			}
+
+			result = append(result, string(frag))
+		}
+
+		x = y
+	}
+
+	if len(buf) > 0 {
+		bufString := string(buf)
+
+		if len(buf) == 1 {
+			result = append(result, bufString)
+		} else {
+			result = append(result, seg.hmm(bufString, buf)...)
+		}
+	}
+
+	return result
 }
