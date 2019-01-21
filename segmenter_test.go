@@ -155,7 +155,7 @@ func TestSegmentDicts(t *testing.T) {
 	// seg.LoadDict("zh,jp")
 	seg.LoadDict("./data/dict/dictionary.txt,./data/dict/jp/dict.txt")
 
-	hmm := seg.HMMCut("纽约时代广场")
+	hmm := seg.HMMCutMod("纽约时代广场")
 	tt.Equal(t, 2, len(hmm))
 	tt.Equal(t, "纽约", hmm[0])
 	tt.Equal(t, "时代广场", hmm[1])

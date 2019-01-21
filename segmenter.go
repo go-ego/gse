@@ -84,8 +84,19 @@ func (seg *Segmenter) String(bytes []byte, searchMode ...bool) string {
 	return ToString(segs, searchMode...)
 }
 
+// LoadModel load the hmm model
+func (seg *Segmenter) LoadModel(prob ...map[rune]float64) {
+	hmm.LoadModel(prob...)
+}
+
 // HMMCut cut sentence string use HMM with Viterbi
-func (seg *Segmenter) HMMCut(str string, prob ...map[rune]float64) []string {
+func (seg *Segmenter) HMMCut(str string) []string {
+	// hmm.LoadModel(prob...)
+	return hmm.Cut(str)
+}
+
+// HMMCutMod cut sentence string use HMM with Viterbi
+func (seg *Segmenter) HMMCutMod(str string, prob ...map[rune]float64) []string {
 	hmm.LoadModel(prob...)
 	return hmm.Cut(str)
 }

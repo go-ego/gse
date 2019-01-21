@@ -9,7 +9,7 @@ import (
 var seg gse.Segmenter
 
 func main() {
-	hmm := seg.HMMCut("纽约时代广场")
+	hmm := seg.HMMCutMod("纽约时代广场")
 
 	fmt.Println("hmm cut: ", hmm)
 }

@@ -101,12 +101,11 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 	return rs
 }
 
-func (seg *Segmenter) hmm(bufString string,
-	buf []rune, prob ...map[rune]float64) (result []string) {
+func (seg *Segmenter) hmm(bufString string, buf []rune) (result []string) {
 
 	v, ok := seg.find(bufString)
 	if !ok || v == 0 {
-		for _, t := range seg.HMMCut(bufString, prob...) {
+		for _, t := range seg.HMMCut(bufString) {
 			result = append(result, t)
 		}
 
