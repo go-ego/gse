@@ -100,3 +100,21 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 
 	return rs
 }
+
+func (seg *Segmenter) hmm(bufString string,
+	buf []rune, prob ...map[rune]float64) (result []string) {
+
+	v, ok := seg.find(bufString)
+	if !ok || v == 0 {
+		for _, t := range seg.HMMCut(bufString, prob...) {
+			result = append(result, t)
+		}
+
+		return
+	}
+
+	for _, elem := range buf {
+		result = append(result, string(elem))
+	}
+	return
+}
