@@ -14,6 +14,13 @@
 
 package gse
 
+import "math"
+
+type route struct {
+	frequency float64
+	index     int
+}
+
 func (seg *Segmenter) find(str string) (int, bool) {
 	return seg.dict.Find([]byte(str))
 }
@@ -56,4 +63,40 @@ func (seg *Segmenter) getDag(runes []rune) map[int][]int {
 	}
 
 	return dag
+}
+
+func (seg *Segmenter) calc(runes []rune) map[int]route {
+	dag := seg.getDag(runes)
+
+	n := len(runes)
+	rs := make(map[int]route)
+
+	rs[n] = route{frequency: 0.0, index: 0}
+	var r route
+
+	logT := math.Log(float64(seg.dict.totalFrequency))
+	for idx := n - 1; idx >= 0; idx-- {
+		for _, i := range dag[idx] {
+			freq, ok := seg.find(string(runes[idx : i+1]))
+
+			if ok {
+				f := math.Log(float64(freq)) - logT + rs[i+1].frequency
+				r = route{frequency: f, index: i}
+			} else {
+				f := math.Log(1.0) - logT + rs[i+1].frequency
+				r = route{frequency: f, index: i}
+			}
+
+			if v, ok := rs[idx]; !ok {
+				rs[idx] = r
+			} else {
+				f := v.frequency == r.frequency && v.index < r.index
+				if v.frequency < r.frequency || f {
+					rs[idx] = r
+				}
+			}
+		}
+	}
+
+	return rs
 }
