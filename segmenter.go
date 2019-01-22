@@ -49,27 +49,6 @@ type jumper struct {
 	token       *Token
 }
 
-// Segment 对文本分词
-//
-// 输入参数：
-//	bytes	UTF8 文本的字节数组
-//
-// 输出：
-//	[]Segment	划分的分词
-func (seg *Segmenter) Segment(bytes []byte) []Segment {
-	return seg.internalSegment(bytes, false)
-}
-
-// ModeSegment segment using search mode if searchMode is true
-func (seg *Segmenter) ModeSegment(bytes []byte, searchMode ...bool) []Segment {
-	var mode bool
-	if len(searchMode) > 0 {
-		mode = searchMode[0]
-	}
-
-	return seg.internalSegment(bytes, mode)
-}
-
 // Slice use modeSegment segment retrun []string
 // using search mode if searchMode is true
 func (seg *Segmenter) Slice(bytes []byte, searchMode ...bool) []string {
@@ -99,6 +78,27 @@ func (seg *Segmenter) HMMCut(str string) []string {
 func (seg *Segmenter) HMMCutMod(str string, prob ...map[rune]float64) []string {
 	hmm.LoadModel(prob...)
 	return hmm.Cut(str)
+}
+
+// Segment 对文本分词
+//
+// 输入参数：
+//	bytes	UTF8 文本的字节数组
+//
+// 输出：
+//	[]Segment	划分的分词
+func (seg *Segmenter) Segment(bytes []byte) []Segment {
+	return seg.internalSegment(bytes, false)
+}
+
+// ModeSegment segment using search mode if searchMode is true
+func (seg *Segmenter) ModeSegment(bytes []byte, searchMode ...bool) []Segment {
+	var mode bool
+	if len(searchMode) > 0 {
+		mode = searchMode[0]
+	}
+
+	return seg.internalSegment(bytes, mode)
 }
 
 func (seg *Segmenter) internalSegment(bytes []byte, searchMode bool) []Segment {
