@@ -19,6 +19,8 @@ import "math"
 const (
 	// RatioWord ratio words and letters
 	RatioWord float32 = 1.5
+	// RatioWordFull full ratio words and letters
+	RatioWordFull float32 = 1
 )
 
 type route struct {
@@ -168,6 +170,40 @@ func (seg *Segmenter) cutDAG(str string, prob ...map[rune]float64) []string {
 			result = append(result, bufString)
 		} else {
 			result = append(result, seg.hmm(bufString, buf)...)
+		}
+	}
+
+	return result
+}
+
+func (seg *Segmenter) cutAll(str string) []string {
+	mLen := int(float32(len(str))/RatioWord) + 1
+	result := make([]string, 0, mLen)
+
+	runes := []rune(str)
+	dag := seg.getDag(runes)
+	start := -1
+	ks := make([]int, len(dag))
+
+	for k := range dag {
+		ks[k] = k
+	}
+
+	var l []int
+	for k := range ks {
+		l = dag[k]
+
+		if len(l) == 1 && k > start {
+			result = append(result, string(runes[k:l[0]+1]))
+			start = l[0]
+			continue
+		}
+
+		for _, j := range l {
+			if j > k {
+				result = append(result, string(runes[k:j+1]))
+				start = j
+			}
 		}
 	}
 
