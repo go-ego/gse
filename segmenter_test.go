@@ -155,11 +155,6 @@ func TestSegmentDicts(t *testing.T) {
 	// seg.LoadDict("zh,jp")
 	seg.LoadDict("./data/dict/dictionary.txt,./data/dict/jp/dict.txt")
 
-	hmm := seg.HMMCutMod("纽约时代广场")
-	tt.Equal(t, 2, len(hmm))
-	tt.Equal(t, "纽约", hmm[0])
-	tt.Equal(t, "时代广场", hmm[1])
-
 	text1 := []byte("深圳地王大厦")
 	segments := seg.Segment(text1)
 	tt.Expect(t, "深圳/ns 地王大厦/n ", ToString(segments, false))
@@ -259,6 +254,20 @@ func TestLoadDictionary(t *testing.T) {
 	tt.Equal(t, 0, freq)
 	tt.True(t, ok)
 
+}
+
+func TestHMM(t *testing.T) {
+	prodSeg.LoadDict()
+
+	hmm := prodSeg.HMMCutMod("纽约时代广场")
+	tt.Equal(t, 2, len(hmm))
+	tt.Equal(t, "纽约", hmm[0])
+	tt.Equal(t, "时代广场", hmm[1])
+
+	text := "纽约时代广场, 纽约帝国大厦, 深圳湾体育中心"
+	tx := prodSeg.Cut(text, true)
+	tt.Equal(t, 8, len(tx))
+	tt.Equal(t, "[纽约时代广场 ,  纽约 帝国大厦 ,  深圳湾 体育 中心]", tx)
 }
 
 var token = Token{
