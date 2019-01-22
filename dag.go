@@ -209,3 +209,32 @@ func (seg *Segmenter) cutAll(str string) []string {
 
 	return result
 }
+
+func (seg *Segmenter) cutForSearch(str string, hmm ...interface{}) []string {
+
+	mLen := int(float32(len(str))/RatioWordFull) + 1
+	result := make([]string, 0, mLen)
+
+	ws := seg.Cut(str, hmm...)
+	for _, word := range ws {
+		runes := []rune(word)
+		for _, incr := range []int{2, 3} {
+			if len(runes) <= incr {
+				continue
+			}
+
+			var gram string
+			for i := 0; i < len(runes)-incr+1; i++ {
+				gram = string(runes[i : i+incr])
+				v, ok := seg.find(gram)
+				if ok && v > 0 {
+					result = append(result, gram)
+				}
+			}
+		}
+
+		result = append(result, word)
+	}
+
+	return result
+}
