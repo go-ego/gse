@@ -21,6 +21,7 @@ package gse Go efficient text segmentation, Go 语言高性能分词
 package gse
 
 import (
+	"reflect"
 	"unicode"
 	"unicode/utf8"
 
@@ -43,10 +44,34 @@ type Segmenter struct {
 	dict *Dictionary
 }
 
+// Prob type hmm model struct
+type Prob struct {
+	B, E, M, S map[rune]float64
+}
+
 // jumper 该结构体用于记录 Viterbi 算法中某字元处的向前分词跳转信息
 type jumper struct {
 	minDistance float32
 	token       *Token
+}
+
+// Cut cuts a str into words using accurate mode.
+// Parameter hmm controls whether to use the HMM
+// or use the user's model.
+func (seg *Segmenter) Cut(str string, hmm ...interface{}) []string {
+	if len(hmm) <= 0 {
+		return seg.Slice([]byte(str))
+		// return seg.cutDAGNoHMM(str)
+	}
+
+	var prob Prob
+	if reflect.TypeOf(hmm[0]) == reflect.TypeOf(prob) {
+		prob = hmm[0].(Prob)
+
+		return seg.cutDAG(str, prob.B, prob.E, prob.M, prob.S)
+	}
+
+	return seg.cutDAG(str)
 }
 
 // Slice use modeSegment segment retrun []string
