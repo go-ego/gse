@@ -74,6 +74,20 @@ func (seg *Segmenter) Cut(str string, hmm ...interface{}) []string {
 	return seg.cutDAG(str)
 }
 
+// CutSearch cuts str into words using search engine mode.
+func (seg *Segmenter) CutSearch(str string, hmm ...interface{}) []string {
+	if len(hmm) <= 0 {
+		return seg.Slice([]byte(str), true)
+	}
+
+	return seg.cutForSearch(str, hmm...)
+}
+
+// CutAll cuts a str into words using full mode.
+func (seg *Segmenter) CutAll(str string) []string {
+	return seg.cutAll(str)
+}
+
 // Slice use modeSegment segment retrun []string
 // using search mode if searchMode is true
 func (seg *Segmenter) Slice(bytes []byte, searchMode ...bool) []string {
