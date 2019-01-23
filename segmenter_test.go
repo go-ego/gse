@@ -268,6 +268,18 @@ func TestHMM(t *testing.T) {
 	tx := prodSeg.Cut(text, true)
 	tt.Equal(t, 8, len(tx))
 	tt.Equal(t, "[纽约时代广场 ,  纽约 帝国大厦 ,  深圳湾 体育 中心]", tx)
+
+	tx = prodSeg.CutAll(text)
+	tt.Equal(t, 19, len(tx))
+	tt.Equal(t,
+		"[纽约 纽约时代广场 时代 时代广场 广场 ,   纽约 帝国 帝国大厦 国大 大厦 ,   深圳 深圳湾 体育 体育中心 中心]",
+		tx)
+
+	tx = prodSeg.CutSearch(text, true)
+	tt.Equal(t, 15, len(tx))
+	tt.Equal(t,
+		"[纽约 时代 广场 纽约时代广场 ,  纽约 帝国 国大 大厦 帝国大厦 ,  深圳 深圳湾 体育 中心]",
+		tx)
 }
 
 var token = Token{
