@@ -68,11 +68,22 @@ func main() {
 	// Load the dictionary
 	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
 
-	// Text Segmentation
-	text := []byte("你好世界, Hello world.")
-	fmt.Println(seg.String(text, true))
+	text := "你好世界, Hello world."
 
-	segments := seg.Segment(text)
+	hmm := seg.Cut(text, true)
+	fmt.Println("hmm cut: ", hmm)
+
+	hmm = seg.CutSearch(text, true)
+	fmt.Println("hmm cut: ", hmm)
+
+	hmm = seg.CutAll(text)
+	fmt.Println("cut all: ", hmm)
+
+	// Text Segmentation
+	tb := []byte(text)
+	fmt.Println(seg.String(tb, true))
+
+	segments := seg.Segment(tb)
 
 	// Handle word segmentation results
 	// Support for normal mode and search mode two participle,
