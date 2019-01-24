@@ -28,7 +28,8 @@ type route struct {
 	index     int
 }
 
-func (seg *Segmenter) find(str string) (int, bool) {
+// Find find word in dictionary return word's frequency and existence
+func (seg *Segmenter) Find(str string) (int, bool) {
 	return seg.dict.Find([]byte(str))
 }
 
@@ -47,7 +48,7 @@ func (seg *Segmenter) getDag(runes []rune) map[int][]int {
 		frag = runes[k : k+1]
 
 		for {
-			freq, ok := seg.find(string(frag))
+			freq, ok := seg.Find(string(frag))
 			if !ok {
 				break
 			}
@@ -84,7 +85,7 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 	logT := math.Log(float64(seg.dict.totalFrequency))
 	for idx := n - 1; idx >= 0; idx-- {
 		for _, i := range dag[idx] {
-			freq, ok := seg.find(string(runes[idx : i+1]))
+			freq, ok := seg.Find(string(runes[idx : i+1]))
 
 			if ok {
 				f := math.Log(float64(freq)) - logT + rs[i+1].frequency
@@ -110,7 +111,7 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 
 func (seg *Segmenter) hmm(bufString string, buf []rune) (result []string) {
 
-	v, ok := seg.find(bufString)
+	v, ok := seg.Find(bufString)
 	if !ok || v == 0 {
 		for _, t := range seg.HMMCut(bufString) {
 			result = append(result, t)
@@ -226,7 +227,7 @@ func (seg *Segmenter) cutForSearch(str string, hmm ...interface{}) []string {
 			var gram string
 			for i := 0; i < len(runes)-incr+1; i++ {
 				gram = string(runes[i : i+incr])
-				v, ok := seg.find(gram)
+				v, ok := seg.Find(gram)
 				if ok && v > 0 {
 					result = append(result, gram)
 				}
