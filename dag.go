@@ -126,8 +126,7 @@ func (seg *Segmenter) hmm(bufString string, buf []rune) (result []string) {
 	return
 }
 
-func (seg *Segmenter) cutDAG(str string, prob ...map[rune]float64) []string {
-	seg.LoadModel(prob...)
+func (seg *Segmenter) cutDAG(str string) []string {
 
 	mLen := int(float32(len(str))/RatioWord) + 1
 	result := make([]string, 0, mLen)
@@ -211,7 +210,7 @@ func (seg *Segmenter) cutAll(str string) []string {
 	return result
 }
 
-func (seg *Segmenter) cutForSearch(str string, hmm ...interface{}) []string {
+func (seg *Segmenter) cutForSearch(str string, hmm ...bool) []string {
 
 	mLen := int(float32(len(str))/RatioWordFull) + 1
 	result := make([]string, 0, mLen)

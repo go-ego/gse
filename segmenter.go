@@ -21,7 +21,6 @@ package gse Go efficient text segmentation, Go 语言高性能分词
 package gse
 
 import (
-	"reflect"
 	"unicode"
 	"unicode/utf8"
 
@@ -33,6 +32,10 @@ const (
 
 	minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
+
+func init() {
+	hmm.LoadModel()
+}
 
 // GetVersion get the gse version
 func GetVersion() string {
@@ -58,24 +61,17 @@ type jumper struct {
 // Cut cuts a str into words using accurate mode.
 // Parameter hmm controls whether to use the HMM
 // or use the user's model.
-func (seg *Segmenter) Cut(str string, hmm ...interface{}) []string {
+func (seg *Segmenter) Cut(str string, hmm ...bool) []string {
 	if len(hmm) <= 0 {
 		return seg.Slice([]byte(str))
 		// return seg.cutDAGNoHMM(str)
-	}
-
-	var prob Prob
-	if reflect.TypeOf(hmm[0]) == reflect.TypeOf(prob) {
-		prob = hmm[0].(Prob)
-
-		return seg.cutDAG(str, prob.B, prob.E, prob.M, prob.S)
 	}
 
 	return seg.cutDAG(str)
 }
 
 // CutSearch cuts str into words using search engine mode.
-func (seg *Segmenter) CutSearch(str string, hmm ...interface{}) []string {
+func (seg *Segmenter) CutSearch(str string, hmm ...bool) []string {
 	if len(hmm) <= 0 {
 		return seg.Slice([]byte(str), true)
 	}
