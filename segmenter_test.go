@@ -250,6 +250,10 @@ func TestLoadDictionary(t *testing.T) {
 	tt.Equal(t, 3, freq)
 	tt.True(t, ok)
 
+	freq, ok = prodSeg.Find("帝国大厦大")
+	tt.Equal(t, 0, freq)
+	tt.False(t, ok)
+
 	freq, ok = dict.Find([]byte("地王大"))
 	tt.Equal(t, 0, freq)
 	tt.True(t, ok)
