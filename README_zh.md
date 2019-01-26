@@ -60,13 +60,9 @@ import (
 	"github.com/go-ego/gse"
 )
 
-func main() {
-	var seg gse.Segmenter
-	// 加载默认字典
-	seg.LoadDict()
-	// 载入词典
-	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
+var seg gse.Segmenter
 
+func cut() {
 	text := "你好世界, Hello world."
 
 	hmm := seg.Cut(text, true)
@@ -77,9 +73,11 @@ func main() {
 
 	hmm = seg.CutAll(text)
 	fmt.Println("cut all: ", hmm)
+}
 
+func segCut() {
 	// 分词文本
-	tb: = []byte("山达尔星联邦共和国联邦政府")
+	tb := []byte("山达尔星联邦共和国联邦政府")
 
 	// 处理分词结果
 	// 支持普通模式和搜索模式两种分词，见代码中 ToString 函数的注释。
@@ -94,6 +92,18 @@ func main() {
 	text1 := []byte("深圳地标建筑, 深圳地王大厦")
 	segments1 := seg.Segment([]byte(text1))
 	fmt.Println(gse.ToString(segments1, true))
+}
+
+func main() {
+	// 加载默认字典
+	seg.LoadDict()
+	// 载入词典
+	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
+
+	cut()
+
+	segCut()
+
 }
 ```
 

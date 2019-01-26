@@ -61,15 +61,13 @@ import (
 	"github.com/go-ego/gse"
 )
 
-func main() {
-	var seg gse.Segmenter
-	// Loading the default dictionary
-	seg.LoadDict()
-	// Load the dictionary
-	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
+var (
+	text = "你好世界, Hello world."
 
-	text := "你好世界, Hello world."
+	seg gse.Segmenter
+)
 
+func cut() {
 	hmm := seg.Cut(text, true)
 	fmt.Println("hmm cut: ", hmm)
 
@@ -78,7 +76,9 @@ func main() {
 
 	hmm = seg.CutAll(text)
 	fmt.Println("cut all: ", hmm)
+}
 
+func segCut() {
 	// Text Segmentation
 	tb := []byte(text)
 	fmt.Println(seg.String(tb, true))
@@ -92,6 +92,18 @@ func main() {
 	// with as many keywords as possible
 	fmt.Println(gse.ToString(segments, true))
 }
+
+func main() {
+	// Loading the default dictionary
+	seg.LoadDict()
+	// Load the dictionary
+	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
+
+	cut()
+
+	segCut()
+}
+
 ```
 
 [Look at an custom dictionary example](/examples/dict/main.go)
