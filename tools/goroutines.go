@@ -28,13 +28,7 @@ func worker() {
 	done <- true
 }
 
-func main() {
-	// 将线程数设置为CPU数
-	runtime.GOMAXPROCS(numThreads)
-
-	// 载入词典
-	segmenter.LoadDict("../data/dict/dictionary.txt")
-
+func openBook() (int, [][]byte) {
 	// 打开将要分词的文件
 	file, err := os.Open("../testdata/bailuyuan.txt")
 	if err != nil {
@@ -53,6 +47,17 @@ func main() {
 		size += len(content)
 		lines = append(lines, content)
 	}
+
+	return size, lines
+}
+
+func main() {
+	// 将线程数设置为CPU数
+	runtime.GOMAXPROCS(numThreads)
+
+	// 载入词典
+	segmenter.LoadDict("../data/dict/dictionary.txt")
+	size, lines := openBook()
 
 	// 启动工作线程
 	for i := 0; i < numThreads; i++ {
