@@ -23,7 +23,7 @@ Support common, search engine, full mode, precise mode and HMM mode multiple wor
 
 Support HMM cut text use Viterbi algorithm.
 
-Text Segmentation speed<a href="https://github.com/go-ego/gse/blob/master/tools/benchmark.go"> single thread</a> 9MB/s，<a href="https://github.com/go-ego/gse/blob/master/tools/goroutines.go">goroutines concurrent</a> 42MB/s (8 nuclear Macbook Pro).
+Text Segmentation speed<a href="https://github.com/go-ego/gse/blob/master/benchmark/benchmark.go"> single thread</a> 9MB/s，<a href="https://github.com/go-ego/gse/blob/master/tools/goroutines.go">goroutines concurrent</a> 42MB/s (8 nuclear Macbook Pro).
 
 ## Install / update
 
