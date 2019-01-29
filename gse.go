@@ -47,7 +47,7 @@ type Prob struct {
 // Parameter hmm controls whether to use the HMM
 // or use the user's model.
 func (seg *Segmenter) Cut(str string, hmm ...bool) []string {
-	if len(hmm) <= 0 {
+	if len(hmm) <= 0 || (len(hmm) > 0 && hmm[0] == false) {
 		return seg.Slice([]byte(str))
 		// return seg.cutDAGNoHMM(str)
 	}
@@ -57,7 +57,7 @@ func (seg *Segmenter) Cut(str string, hmm ...bool) []string {
 
 // CutSearch cuts str into words using search engine mode.
 func (seg *Segmenter) CutSearch(str string, hmm ...bool) []string {
-	if len(hmm) <= 0 {
+	if len(hmm) <= 0 || (len(hmm) > 0 && hmm[0] == false) {
 		return seg.Slice([]byte(str), true)
 	}
 
