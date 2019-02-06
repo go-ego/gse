@@ -89,7 +89,7 @@ func segCut() {
 	// 处理分词结果
 	fmt.Println(gse.ToString(segments))
 
-	text1 := []byte("深圳地标建筑, 深圳地王大厦")
+	text1 := []byte("上海地标建筑, 东方明珠电视台塔上海中心大厦")
 	segments1 := seg.Segment([]byte(text1))
 	fmt.Println(gse.ToString(segments1, true))
 }
