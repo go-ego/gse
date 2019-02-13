@@ -85,18 +85,19 @@ func TestSegmentS(t *testing.T) {
 
 	dict := seg.Dictionary()
 	tt.Expect(t, "16", dict.maxTokenLen)
-	tt.Expect(t, "53250733", dict.totalFrequency)
+	tt.Expect(t, "53250736", dict.totalFrequency)
 
-	tt.Expect(t, "587880", seg.dict.NumTokens())
-	text1 := []byte("纽约帝国大厦, 深圳地王大厦")
-	segStr := "纽约/ns 帝国大厦/nr ,/x  /x 深圳/ns 地王大厦/n "
+	tt.Expect(t, "587881", seg.dict.NumTokens())
+	text1 := []byte("纽约帝国大厦, 旧金山湾金门大桥")
+	segStr := "纽约/ns 帝国大厦/nr ,/x  /x 旧金山湾/ns 金门大桥/nz "
 
-	tt.Expect(t, "纽约/ns 帝国大厦/nr ,/x  /x 深圳/ns 地王大厦/n ", seg.String(text1))
-	tt.Expect(t, "[纽约 帝国大厦 ,   深圳 地王大厦]", seg.Slice(text1))
+	tt.Expect(t, "纽约/ns 帝国大厦/nr ,/x  /x 旧金山湾/ns 金门大桥/nz ", seg.String(text1))
+	tt.Expect(t, "[纽约 帝国大厦 ,   旧金山湾 金门大桥]", seg.Slice(text1))
 
-	tt.Expect(t, "纽约/ns 帝国/n 大厦/n 帝国大厦/nr ,/x  /x 深圳/ns 地王/n 大厦/n 地王大厦/n ",
+	tt.Expect(t,
+		"纽约/ns 帝国/n 大厦/n 帝国大厦/nr ,/x  /x 金山/nr 旧金山/ns 湾/zg 旧金山湾/ns 金门/n 大桥/ns 金门大桥/nz ",
 		seg.String(text1, true))
-	tt.Expect(t, "[纽约 帝国 大厦 帝国大厦 ,   深圳 地王 大厦 地王大厦]", seg.Slice(text1, true))
+	tt.Expect(t, "[纽约 帝国 大厦 帝国大厦 ,   金山 旧金山 湾 旧金山湾 金门 大桥 金门大桥]", seg.Slice(text1, true))
 
 	segments := seg.Segment(text1)
 	tt.Expect(t, segStr, ToString(segments))
@@ -155,15 +156,15 @@ func TestSegmentDicts(t *testing.T) {
 	// seg.LoadDict("zh,jp")
 	seg.LoadDict("./data/dict/dictionary.txt,./data/dict/jp/dict.txt")
 
-	text1 := []byte("深圳地王大厦")
+	text1 := []byte("旧金山湾金门大桥")
 	segments := seg.Segment(text1)
-	tt.Expect(t, "深圳/ns 地王大厦/n ", ToString(segments, false))
+	tt.Expect(t, "旧金山湾/ns 金门大桥/nz ", ToString(segments, false))
 
 	tt.Expect(t, "2", len(segments))
 	tt.Expect(t, "0", segments[0].start)
-	tt.Expect(t, "6", segments[0].end)
-	tt.Expect(t, "6", segments[1].start)
-	tt.Expect(t, "18", segments[1].end)
+	tt.Expect(t, "12", segments[0].end)
+	tt.Expect(t, "12", segments[1].start)
+	tt.Expect(t, "24", segments[1].end)
 
 	segments = seg.Segment(testH)
 	tt.Expect(t, "こんにちは/感動詞 世界/n ", ToString(segments, false))
@@ -268,21 +269,21 @@ func TestHMM(t *testing.T) {
 	tt.Equal(t, "纽约", hmm[0])
 	tt.Equal(t, "时代广场", hmm[1])
 
-	text := "纽约时代广场, 纽约帝国大厦, 深圳湾体育中心"
+	text := "纽约时代广场, 纽约帝国大厦, 旧金山湾金门大桥"
 	tx := prodSeg.Cut(text, true)
-	tt.Equal(t, 8, len(tx))
-	tt.Equal(t, "[纽约时代广场 ,  纽约 帝国大厦 ,  深圳湾 体育 中心]", tx)
+	tt.Equal(t, 7, len(tx))
+	tt.Equal(t, "[纽约时代广场 ,  纽约 帝国大厦 ,  旧金山湾 金门大桥]", tx)
 
 	tx = prodSeg.CutAll(text)
-	tt.Equal(t, 19, len(tx))
+	tt.Equal(t, 21, len(tx))
 	tt.Equal(t,
-		"[纽约 纽约时代广场 时代 时代广场 广场 ,   纽约 帝国 帝国大厦 国大 大厦 ,   深圳 深圳湾 体育 体育中心 中心]",
+		"[纽约 纽约时代广场 时代 时代广场 广场 ,   纽约 帝国 帝国大厦 国大 大厦 ,   旧金山 旧金山湾 金山 山湾 金门 金门大桥 大桥]",
 		tx)
 
 	tx = prodSeg.CutSearch(text, true)
-	tt.Equal(t, 15, len(tx))
+	tt.Equal(t, 18, len(tx))
 	tt.Equal(t,
-		"[纽约 时代 广场 纽约时代广场 ,  纽约 帝国 国大 大厦 帝国大厦 ,  深圳 深圳湾 体育 中心]",
+		"[纽约 时代 广场 纽约时代广场 ,  纽约 帝国 国大 大厦 帝国大厦 ,  金山 山湾 旧金山 旧金山湾 金门 大桥 金门大桥]",
 		tx)
 }
 
