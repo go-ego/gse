@@ -12,7 +12,7 @@ var (
 	text = flag.String("text",
 		"《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄", "要分词的文本")
 
-	text2 = []byte("深圳地标建筑, 深圳地王大厦")
+	text2 = []byte("上海地标建筑, 上海东方明珠电视塔")
 )
 
 func main() {
@@ -29,12 +29,12 @@ func main() {
 	segs := seg.Segment(text2)
 	// log.Println(gse.ToString(segs, false))
 	log.Println(gse.ToString(segs))
-	// 深圳/ns 地标/n 建筑/n ,/x  /x 深圳/ns 地王大厦/n
+	// 上海/ns 地标/n 建筑/n ,/x  /x 上海/ns 东方明珠/nr 电视塔/n
 
 	// 搜索模式主要用于给搜索引擎提供尽可能多的关键字
 	// segs := seg.ModeSegment(text2, true)
 	log.Println("搜索模式: ", gse.ToString(segs, true))
-	// 搜索模式: 深圳/ns 地标/n 建筑/n ,/x  /x 深圳/ns 地王/n 大厦/n 地王大厦/n
+	// 搜索模式: 上海/ns 地标/n 建筑/n ,/x  /x 上海/ns 东方/s 明珠/nr 东方明珠/nr 电视/n 塔/j 电视塔/n
 
 	log.Println("to slice", gse.ToSlice(segs, true))
 
