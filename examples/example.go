@@ -9,21 +9,27 @@ import (
 )
 
 var (
-	text = flag.String("text",
-		"《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄", "要分词的文本")
+	seg gse.Segmenter
+
+	text  = "《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄"
+	text1 = flag.String("text", text, "要分词的文本")
 
 	text2 = []byte("上海地标建筑, 上海东方明珠电视塔")
 )
 
-func main() {
-	flag.Parse()
+func cut() {
+	hmm := seg.Cut(text, true)
+	fmt.Println("hmm cut: ", hmm)
 
-	var seg gse.Segmenter
-	// seg.LoadDict("../data/dict/dictionary.txt")
-	// 加载默认词典
-	seg.LoadDict()
+	hmm = seg.CutSearch(text, true)
+	fmt.Println("hmm cut: ", hmm)
 
-	segments := seg.Segment([]byte(*text))
+	hmm = seg.CutAll(text)
+	fmt.Println("cut all: ", hmm)
+}
+
+func segCut() {
+	segments := seg.Segment([]byte(*text1))
 	fmt.Println(gse.ToString(segments, true))
 
 	segs := seg.Segment(text2)
@@ -40,4 +46,16 @@ func main() {
 
 	fmt.Println(seg.String(text2, true))
 	fmt.Println(seg.Slice(text2, true))
+}
+
+func main() {
+	flag.Parse()
+
+	// seg.LoadDict("../data/dict/dictionary.txt")
+	// 加载默认词典
+	seg.LoadDict()
+
+	cut()
+
+	segCut()
 }
