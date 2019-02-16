@@ -17,17 +17,26 @@ var (
 	text2 = []byte("上海地标建筑, 上海东方明珠电视塔")
 )
 
+// 使用 DAG 或 HMM 模式分词
 func cut() {
+	// use DAG and HMM
 	hmm := seg.Cut(text, true)
 	fmt.Println("hmm cut: ", hmm)
 
+	hmm = seg.Cut(text)
+	fmt.Println("hmm cut: ", hmm)
+
 	hmm = seg.CutSearch(text, true)
+	fmt.Println("hmm cut: ", hmm)
+
+	hmm = seg.CutSearch(text)
 	fmt.Println("hmm cut: ", hmm)
 
 	hmm = seg.CutAll(text)
 	fmt.Println("cut all: ", hmm)
 }
 
+// 使用最短路径和动态规划分词
 func segCut() {
 	segments := seg.Segment([]byte(*text1))
 	fmt.Println(gse.ToString(segments, true))
