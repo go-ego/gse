@@ -61,6 +61,7 @@ func (token *Token) Equals(str string) bool {
 
 	bytStr := []byte(str)
 	index := 0
+
 	for i := 0; i < len(token.text); i++ {
 		textArray := []byte(token.text[i])
 		for j := 0; j < len(textArray); j++ {
@@ -68,8 +69,10 @@ func (token *Token) Equals(str string) bool {
 				index = index + 1
 				return false
 			}
+
 			index = index + 1
 		}
 	}
+
 	return true
 }

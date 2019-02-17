@@ -24,7 +24,7 @@ import (
 )
 
 const (
-	version = "v0.30.1.213, Rhine River!"
+	version = "v0.30.1.222, Rhine River!"
 
 	minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
