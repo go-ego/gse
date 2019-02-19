@@ -30,7 +30,7 @@ func worker() {
 
 func openBook() (int, [][]byte) {
 	// 打开将要分词的文件
-	file, err := os.Open("../testdata/bailuyuan.txt")
+	file, err := os.Open("../../testdata/bailuyuan.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,7 +56,7 @@ func main() {
 	runtime.GOMAXPROCS(numThreads)
 
 	// 载入词典
-	segmenter.LoadDict("../data/dict/dictionary.txt")
+	segmenter.LoadDict("../../data/dict/dictionary.txt")
 	size, lines := openBook()
 
 	// 启动工作线程
