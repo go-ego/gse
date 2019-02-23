@@ -28,6 +28,13 @@ import (
 	"unicode"
 )
 
+var (
+	// LoadNoFreq load not have freq dict word
+	LoadNoFreq bool
+	// MinTokenFreq load min freq token
+	MinTokenFreq = 2
+)
+
 // Dictionary 返回分词器使用的词典
 func (seg *Segmenter) Dictionary() *Dictionary {
 	return seg.dict
@@ -149,8 +156,12 @@ func (seg *Segmenter) Read(file string) error {
 			// break
 			continue
 		} else if size < 2 {
-			// 无效行
-			continue
+			if !LoadNoFreq {
+				// 无效行
+				continue
+			} else {
+				freqText = "2"
+			}
 		} else if size == 2 {
 			// 没有词性标注时设为空字符串
 			pos = ""
@@ -164,7 +175,7 @@ func (seg *Segmenter) Read(file string) error {
 		}
 
 		// 过滤频率太小的词
-		if frequency < minTokenFrequency {
+		if frequency < MinTokenFreq {
 			continue
 		}
 		// 过滤, 降低词频
