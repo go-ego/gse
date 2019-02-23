@@ -40,6 +40,25 @@ func (seg *Segmenter) Dictionary() *Dictionary {
 	return seg.dict
 }
 
+// AddToken add new text to token
+func (seg *Segmenter) AddToken(text string, frequency int, pos ...string) {
+	var po string
+	if len(pos) > 0 {
+		po = pos[0]
+	}
+
+	words := splitTextToWords([]byte(text))
+	token := Token{text: words, frequency: frequency, pos: po}
+
+	seg.dict.addToken(token)
+}
+
+// AddTokenForce add new text to token and force
+func (seg *Segmenter) AddTokenForce(text string, frequency int, pos ...string) {
+	seg.AddToken(text, frequency, pos...)
+	seg.SegToken()
+}
+
 // LoadDict load the dictionary from the file
 //
 // The format of the dictionary is (one for each participle):
