@@ -43,8 +43,8 @@ func (dict *Dictionary) NumTokens() int {
 	return len(dict.tokens)
 }
 
-// TotalFrequency 词典中所有分词的频率之和
-func (dict *Dictionary) TotalFrequency() int64 {
+// TotalFreq 词典中所有分词的频率之和
+func (dict *Dictionary) TotalFreq() int64 {
 	return dict.totalFrequency
 }
 

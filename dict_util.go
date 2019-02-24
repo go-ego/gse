@@ -56,7 +56,7 @@ func (seg *Segmenter) AddToken(text string, frequency int, pos ...string) {
 // AddTokenForce add new text to token and force
 func (seg *Segmenter) AddTokenForce(text string, frequency int, pos ...string) {
 	seg.AddToken(text, frequency, pos...)
-	seg.SegToken()
+	seg.CalcToken()
 }
 
 // LoadDict load the dictionary from the file
@@ -120,7 +120,7 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	// 	}
 	// }
 
-	seg.SegToken()
+	seg.CalcToken()
 	log.Println("Gse dictionary loaded finished.")
 
 	return nil
@@ -277,8 +277,8 @@ func IsJp(segText string) bool {
 	return false
 }
 
-// SegToken add segmenter token
-func (seg *Segmenter) SegToken() {
+// CalcToken calc the segmenter token
+func (seg *Segmenter) CalcToken() {
 	// 计算每个分词的路径值，路径值含义见 Token 结构体的注释
 	logTotalFrequency := float32(math.Log2(float64(seg.dict.totalFrequency)))
 	for i := range seg.dict.tokens {
