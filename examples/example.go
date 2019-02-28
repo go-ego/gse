@@ -64,6 +64,11 @@ func main() {
 	// 加载默认词典
 	seg.LoadDict()
 
+	seg.AddToken("《复仇者联盟3：无限战争》", 100, "n")
+	seg.AddToken("上海中心大厦", 100, "n")
+	seg.AddTokenForce("上海东方明珠塔", 100, "n")
+	// seg.CalcToken()
+
 	cut()
 
 	segCut()
