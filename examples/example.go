@@ -14,7 +14,7 @@ var (
 	text  = "《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄"
 	text1 = flag.String("text", text, "要分词的文本")
 
-	text2 = []byte("上海地标建筑, 上海东方明珠电视塔")
+	text2 = []byte("上海地标建筑, 上海东方明珠广播电视塔")
 )
 
 // 使用 DAG 或 HMM 模式分词
@@ -66,7 +66,7 @@ func main() {
 
 	seg.AddToken("《复仇者联盟3：无限战争》", 100, "n")
 	seg.AddToken("上海中心大厦", 100, "n")
-	seg.AddTokenForce("上海东方明珠塔", 100, "n")
+	seg.AddTokenForce("上海东方明珠广播电视塔", 100, "n")
 	// seg.CalcToken()
 
 	cut()
