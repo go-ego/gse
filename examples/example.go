@@ -68,7 +68,7 @@ func main() {
 	// seg.LoadDict("zh,../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
 
 	seg.AddToken("《复仇者联盟3：无限战争》", 100, "n")
-	seg.AddToken("上海中心大厦", 100, "n")
+	seg.AddToken("上海中心大厦", 100)
 	seg.AddTokenForce("上海东方明珠广播电视塔", 100, "n")
 	// seg.CalcToken()
 
