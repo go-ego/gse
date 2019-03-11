@@ -85,7 +85,7 @@ func TestSegmentS(t *testing.T) {
 
 	dict := seg.Dictionary()
 	tt.Expect(t, "16", dict.maxTokenLen)
-	tt.Expect(t, "53250736", dict.totalFrequency)
+	tt.Expect(t, "53250728", dict.totalFrequency)
 
 	tt.Expect(t, "587881", seg.dict.NumTokens())
 	text1 := []byte("纽约帝国大厦, 旧金山湾金门大桥")
@@ -259,7 +259,7 @@ func TestLoadDictionary(t *testing.T) {
 	tt.Equal(t, 0, freq)
 	tt.True(t, ok)
 
-	seg.AddToken("上海中心大厦", 100, "n")
+	seg.AddToken("上海中心大厦", 100)
 	seg.AddTokenForce("上海东方明珠塔", 100, "n")
 	freq, ok = seg.Find("上海东方明珠塔")
 	tt.Equal(t, 100, freq)
