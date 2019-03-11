@@ -70,7 +70,9 @@ func main() {
 	seg.AddToken("《复仇者联盟3：无限战争》", 100, "n")
 	seg.AddToken("上海中心大厦", 100)
 	seg.AddTokenForce("上海东方明珠广播电视塔", 100, "n")
-	// seg.CalcToken()
+	//
+	seg.AddToken("东方明珠广播电视塔", 100)
+	seg.CalcToken()
 
 	cut()
 

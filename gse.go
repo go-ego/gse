@@ -24,9 +24,9 @@ import (
 )
 
 const (
-	version = "v0.30.1.222, Rhine River!"
+	version = "v0.30.1.238, Snake River!"
 
-	minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
+	// minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
 
 func init() {
