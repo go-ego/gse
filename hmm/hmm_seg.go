@@ -12,8 +12,10 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-// package hmm is the Golang HMM cut module
+/*
 
+Package hmm is the Golang HMM cut module
+*/
 package hmm
 
 import (

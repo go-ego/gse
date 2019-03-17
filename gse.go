@@ -14,9 +14,8 @@
 
 /*
 
-package gse Go efficient text segmentation, Go 语言高性能分词
+Package gse Go efficient text segmentation, Go 语言高性能分词
 */
-
 package gse
 
 import (
