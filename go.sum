@@ -1,4 +1,5 @@
 github.com/go-ego/cedar v0.0.0-20190318172318-7949cd3f793f h1:9uAK71f0pEDi/XmXwaa6nrMF+IKcWDVUPlGRXgTQAxw=
 github.com/go-ego/cedar v0.0.0-20190318172318-7949cd3f793f/go.mod h1:TMuo5n9ZbmInm6IKEHqoCsW0EDYufNXKUQ/rqoZpPZE=
 github.com/vcaesar/tt v0.0.0-20190129174325-917c1f70bb5a/go.mod h1:xKkGp+ufbz/1DQmNxdbAMFqZJOVIJEX7dGvLZMhPIWg=
+github.com/vcaesar/tt v0.0.0-20190311143935-d2abd51da7af h1:1zF2e+eQ0m4QFW/WBLDSbVTMh/68BMcOdQkm5AXrlUQ=
 github.com/vcaesar/tt v0.0.0-20190311143935-d2abd51da7af/go.mod h1:xKkGp+ufbz/1DQmNxdbAMFqZJOVIJEX7dGvLZMhPIWg=
