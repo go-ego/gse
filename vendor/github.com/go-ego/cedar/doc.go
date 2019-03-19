@@ -11,4 +11,5 @@
 // key must be `[]byte` without zero items,
 // while value must be integer in the range [0, 2<<63-2] or
 // [0, 2<<31-2] depends on the platform.
+//
 package cedar

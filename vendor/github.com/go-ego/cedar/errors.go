@@ -11,6 +11,7 @@ var (
 	ErrInvalidValue = errors.New("cedar: invalid value")
 	// ErrInvalidKey invalid key error
 	ErrInvalidKey = errors.New("cedar: invalid key")
+
 	// ErrNoPath no path error
 	ErrNoPath = errors.New("cedar: no path")
 	// ErrNoValue no value error

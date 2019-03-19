@@ -1,4 +1,4 @@
-# cedar 
+# cedar
 [![Build Status](https://travis-ci.org/go-ego/cedar.svg)](https://travis-ci.org/go-ego/cedar)
 [![CircleCI Status](https://circleci.com/gh/go-ego/cedar.svg?style=shield)](https://circleci.com/gh/go-ego/cedar)
 [![codecov](https://codecov.io/gh/go-ego/cedar/branch/master/graph/badge.svg)](https://codecov.io/gh/go-ego/cedar)
@@ -9,8 +9,8 @@
 
 Package `cedar` implementes double-array trie, base on [cedar-go](https://github.com/adamzy/cedar-go).
 
-It is a [Golang](https://golang.org/) port of [cedar](http://www.tkl.iis.u-tokyo.ac.jp/~ynaga/cedar) which is written in C++ by Naoki Yoshinaga. `cedar-go` currently implements the `reduced` verion of cedar. 
-This package is not thread safe if there is one goroutine doing insertions or deletions. 
+It is a [Golang](https://golang.org/) port of [cedar](http://www.tkl.iis.u-tokyo.ac.jp/~ynaga/cedar) which is written in C++ by Naoki Yoshinaga. `cedar-go` currently implements the `reduced` verion of cedar.
+This package is not thread safe if there is one goroutine doing insertions or deletions.
 
 ## Install
 ```
@@ -41,11 +41,12 @@ func main() {
 	}
 
 	// Insert key-value pairs.
-    // The order of insertion is not important.
+	// The order of insertion is not important.
 	trie.Insert([]byte("How many"), 0)
 	trie.Insert([]byte("How many loved"), 1)
 	trie.Insert([]byte("How many loved your moments"), 2)
 	trie.Insert([]byte("How many loved your moments of glad grace"), 3)
+	//
 	trie.Insert([]byte("姑苏"), 4)
 	trie.Insert([]byte("姑苏城外"), 5)
 	trie.Insert([]byte("姑苏城外寒山寺"), 6)

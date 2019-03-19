@@ -2,10 +2,11 @@ package cedar
 
 import (
 	"bufio"
-	"encoding/gob"
-	"encoding/json"
 	"io"
 	"os"
+
+	"encoding/gob"
+	"encoding/json"
 )
 
 // Save saves the cedar to an io.Writer,
