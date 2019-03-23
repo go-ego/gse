@@ -25,6 +25,10 @@ Support HMM cut text use Viterbi algorithm.
 
 Text Segmentation speed<a href="https://github.com/go-ego/gse/blob/master/benchmark/benchmark.go"> single thread</a> 9.2MB/s，<a href="https://github.com/go-ego/gse/blob/master/benchmark/goroutines/goroutines.go">goroutines concurrent</a> 26.8MB/s. HMM text segmentation single thread 3.2MB/s. (2core 4threads Macbook Pro).
 
+## Binding:
+
+[gse-bind](https://github.com/vcaesar/gse-bind), binding JavaScript and other, support more language.
+
 ## Install / update
 
 ```

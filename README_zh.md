@@ -24,6 +24,10 @@ Go 语言高效分词, 支持英文、中文、日文等
 
 QQ 群: 120563750
 
+## Binding:
+
+[gse-bind](https://github.com/vcaesar/gse-bind), binding JavaScript and other, support more language.
+
 ## 安装/更新
 
 ```
