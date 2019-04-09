@@ -36,27 +36,6 @@ func cut() {
 	fmt.Println("cut all: ", hmm)
 }
 
-// 使用最短路径和动态规划分词
-func segCut() {
-	segments := seg.Segment([]byte(*text1))
-	fmt.Println(gse.ToString(segments, true))
-
-	segs := seg.Segment(text2)
-	// log.Println(gse.ToString(segs, false))
-	log.Println(gse.ToString(segs))
-	// 上海/ns 地标/n 建筑/n ,/x  /x 上海/ns 东方明珠/nr 电视塔/n
-
-	// 搜索模式主要用于给搜索引擎提供尽可能多的关键字
-	// segs := seg.ModeSegment(text2, true)
-	log.Println("搜索模式: ", gse.ToString(segs, true))
-	// 搜索模式: 上海/ns 地标/n 建筑/n ,/x  /x 上海/ns 东方/s 明珠/nr 东方明珠/nr 电视/n 塔/j 电视塔/n
-
-	log.Println("to slice", gse.ToSlice(segs, true))
-
-	fmt.Println(seg.String(text2, true))
-	fmt.Println(seg.Slice(text2, true))
-}
-
 func main() {
 	flag.Parse()
 
@@ -77,4 +56,25 @@ func main() {
 	cut()
 
 	segCut()
+}
+
+// 使用最短路径和动态规划分词
+func segCut() {
+	segments := seg.Segment([]byte(*text1))
+	fmt.Println(gse.ToString(segments, true))
+
+	segs := seg.Segment(text2)
+	// log.Println(gse.ToString(segs, false))
+	log.Println(gse.ToString(segs))
+	// 上海/ns 地标/n 建筑/n ,/x  /x 上海/ns 东方明珠/nr 电视塔/n
+
+	// 搜索模式主要用于给搜索引擎提供尽可能多的关键字
+	// segs := seg.ModeSegment(text2, true)
+	log.Println("搜索模式: ", gse.ToString(segs, true))
+	// 搜索模式: 上海/ns 地标/n 建筑/n ,/x  /x 上海/ns 东方/s 明珠/nr 东方明珠/nr 电视/n 塔/j 电视塔/n
+
+	log.Println("to slice", gse.ToSlice(segs, true))
+
+	fmt.Println(seg.String(text2, true))
+	fmt.Println(seg.Slice(text2, true))
 }
