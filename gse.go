@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	version = "v0.30.1.243, Snake River!"
+	version = "v0.30.1.247, Snake River!"
 
 	// minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
@@ -43,7 +43,7 @@ type Prob struct {
 }
 
 // Cut cuts a str into words using accurate mode.
-// Parameter hmm controls whether to use the HMM
+// Parameter hmm controls whether to use the HMM(Hidden Markov Model)
 // or use the user's model.
 func (seg *Segmenter) Cut(str string, hmm ...bool) []string {
 	if len(hmm) <= 0 || (len(hmm) > 0 && hmm[0] == false) {
