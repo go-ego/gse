@@ -73,10 +73,10 @@ var (
 
 func cut() {
 	hmm := seg.Cut(text, true)
-	fmt.Println("hmm cut: ", hmm)
+	fmt.Println("cut use hmm: ", hmm)
 
 	hmm = seg.CutSearch(text, true)
-	fmt.Println("hmm cut: ", hmm)
+	fmt.Println("cut search use hmm: ", hmm)
 
 	hmm = seg.CutAll(text)
 	fmt.Println("cut all: ", hmm)
