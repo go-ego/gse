@@ -21,19 +21,19 @@ var (
 func cut() {
 	// use DAG and HMM
 	hmm := seg.Cut(text, true)
-	fmt.Println("hmm cut: ", hmm)
-
-	hmm = seg.Cut(text)
-	fmt.Println("hmm cut: ", hmm)
+	fmt.Println("cut use hmm: ", hmm)
+	//
+	cut := seg.Cut(text)
+	fmt.Println("cut: ", cut)
 
 	hmm = seg.CutSearch(text, true)
-	fmt.Println("hmm cut: ", hmm)
+	fmt.Println("cut search use hmm: ", hmm)
+	//
+	cut = seg.CutSearch(text)
+	fmt.Println("cut search: ", cut)
 
-	hmm = seg.CutSearch(text)
-	fmt.Println("hmm cut: ", hmm)
-
-	hmm = seg.CutAll(text)
-	fmt.Println("cut all: ", hmm)
+	cut = seg.CutAll(text)
+	fmt.Println("cut all: ", cut)
 }
 
 func main() {
