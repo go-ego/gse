@@ -40,6 +40,7 @@ var (
 
 	host         = flag.String("host", "", "HTTP服务器主机名")
 	port         = flag.Int("port", 8080, "HTTP服务器端口")
+	hmm          = flag.Bool("hmm", false, "use hmm")
 	dict         = flag.String("dict", "../data/dict/dictionary.txt", "词典文件")
 	staticFolder = flag.String("static_folder", "static", "静态页面存放的目录")
 )
@@ -55,12 +56,27 @@ type Segment struct {
 	Pos  string `json:"pos"`
 }
 
+// JsonResp json response
+type JsonResp struct {
+	Seg []string
+}
+
 // JsonRpcServer json rpc server
 func JsonRpcServer(w http.ResponseWriter, req *http.Request) {
 	// 得到要分词的文本
 	text := req.URL.Query().Get("text")
 	if text == "" {
 		text = req.PostFormValue("text")
+	}
+
+	if *hmm {
+		segs := segmenter.Cut(text, true)
+		response, _ := json.Marshal(&JsonResp{Seg: segs})
+
+		w.Header().Set("Content-Type", "application/json")
+		io.WriteString(w, string(response))
+
+		return
 	}
 
 	// 分词
