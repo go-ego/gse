@@ -30,7 +30,7 @@ func main() {
 	fmt.Println("cut search use hmm: ", hmm)
 	//
 	cut = seg.CutSearch(text)
-	fmt.Println("cut search: ", hmm)
+	fmt.Println("cut search: ", cut)
 
 	cut = seg.CutAll(text)
 	fmt.Println("cut all: ", cut)
