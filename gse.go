@@ -83,6 +83,9 @@ func (seg *Segmenter) String(bytes []byte, searchMode ...bool) string {
 }
 
 // LoadModel load the hmm model
+//
+// Use the user's model:
+// 	seg.LoadModel(B, E, M, S map[rune]float64)
 func (seg *Segmenter) LoadModel(prob ...map[rune]float64) {
 	hmm.LoadModel(prob...)
 }
