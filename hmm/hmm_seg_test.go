@@ -17,7 +17,7 @@ func TestViterbi(t *testing.T) {
 	states := []byte{'B', 'M', 'E', 'S'}
 	prob, path := Viterbi([]rune(testText), states)
 	if math.Abs(prob+43.124804533979976) > 1e-10 {
-		t.Fatal(prob)
+		t.Fatal("Viterbi(testText) prob is: ", prob)
 	}
 
 	for index, state := range []byte{'B', 'E', 'B', 'M', 'M', 'E'} {
