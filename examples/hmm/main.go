@@ -13,12 +13,9 @@ var (
 )
 
 func main() {
-	hmm := seg.HMMCutMod(text)
-	fmt.Println("hmm cut: ", hmm)
-
 	seg.LoadDict()
 
-	hmm = seg.Cut(text, true)
+	hmm := seg.Cut(text, true)
 	fmt.Println("hmm cut: ", hmm)
 
 	hmm = seg.CutSearch(text, true)
@@ -26,4 +23,8 @@ func main() {
 
 	hmm = seg.CutAll(text)
 	fmt.Println("cut all: ", hmm)
+
+	//
+	hmm = seg.HMMCutMod(text)
+	fmt.Println("hmm cut: ", hmm)
 }
