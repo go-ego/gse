@@ -1,4 +1,0 @@
-# github.com/go-ego/cedar v0.0.0-20190318172318-7949cd3f793f
-github.com/go-ego/cedar
-# github.com/vcaesar/tt v0.0.0-20190311143935-d2abd51da7af
-github.com/vcaesar/tt
