@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	version = "v0.30.1.247, Snake River!"
+	version = "v0.40.1.260, Snake River!"
 
 	// minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
