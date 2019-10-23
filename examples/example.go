@@ -17,6 +17,32 @@ var (
 	text2 = []byte("上海地标建筑, 上海东方明珠广播电视塔")
 )
 
+func main() {
+	flag.Parse()
+
+	// 加载默认词典
+	seg.LoadDict()
+	// seg.LoadDict("../data/dict/dictionary.txt")
+	//
+	// 使用自定义字典
+	// seg.LoadDict("zh,../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
+
+	addToken()
+
+	cut()
+
+	segCut()
+}
+
+func addToken() {
+	seg.AddToken("《复仇者联盟3：无限战争》", 100, "n")
+	seg.AddToken("上海中心大厦", 100)
+	seg.AddTokenForce("上海东方明珠广播电视塔", 100, "n")
+	//
+	seg.AddToken("东方明珠广播电视塔", 100)
+	seg.CalcToken()
+}
+
 // 使用 DAG 或 HMM 模式分词
 func cut() {
 	// use DAG and HMM
@@ -34,28 +60,6 @@ func cut() {
 
 	cut = seg.CutAll(text)
 	fmt.Println("cut all: ", cut)
-}
-
-func main() {
-	flag.Parse()
-
-	// 加载默认词典
-	seg.LoadDict()
-	// seg.LoadDict("../data/dict/dictionary.txt")
-
-	// 使用自定义字典
-	// seg.LoadDict("zh,../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
-
-	seg.AddToken("《复仇者联盟3：无限战争》", 100, "n")
-	seg.AddToken("上海中心大厦", 100)
-	seg.AddTokenForce("上海东方明珠广播电视塔", 100, "n")
-	//
-	seg.AddToken("东方明珠广播电视塔", 100)
-	seg.CalcToken()
-
-	cut()
-
-	segCut()
 }
 
 // 使用最短路径和动态规划分词
