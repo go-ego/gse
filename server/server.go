@@ -45,7 +45,7 @@ var (
 	staticFolder = flag.String("static_folder", "static", "静态页面存放的目录")
 )
 
-// JsonResponse json response
+// JsonResponse []*segments json response
 type JsonResponse struct {
 	Segments []*Segment `json:"segments"`
 }
@@ -56,12 +56,12 @@ type Segment struct {
 	Pos  string `json:"pos"`
 }
 
-// JsonResp json response
+// JsonResp []string json response
 type JsonResp struct {
 	Seg []string
 }
 
-// JsonRpcServer json rpc server
+// JsonRpcServer start json rpc server
 func JsonRpcServer(w http.ResponseWriter, req *http.Request) {
 	// 得到要分词的文本
 	text := req.URL.Query().Get("text")
