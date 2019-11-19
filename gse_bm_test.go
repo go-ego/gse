@@ -51,3 +51,19 @@ func BenchmarkCutSearchHMM(t *testing.B) {
 
 	tt.BM(t, fn)
 }
+
+func BenchmarkSlice(b *testing.B) {
+	fn := func() {
+		prodSeg.Slice([]byte(text))
+	}
+
+	tt.BM(b, fn)
+}
+
+func BenchmarkString(b *testing.B) {
+	fn := func() {
+		prodSeg.String([]byte(text))
+	}
+
+	tt.BM(b, fn)
+}
