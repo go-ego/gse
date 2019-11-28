@@ -3,7 +3,7 @@ on: [push]
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     steps:
       - name: Set up Go 1.13
         uses: actions/setup-go@v1
