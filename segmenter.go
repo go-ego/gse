@@ -181,11 +181,13 @@ func splitTextToWords(text Text) []Text {
 				alphanumericStart = current
 				inAlphanumeric = true
 			}
+			output = append(output, toLower(text[current:current+size]))
 		} else {
 			if inAlphanumeric {
 				inAlphanumeric = false
 				if current != 0 {
-					output = append(output, toLower(text[alphanumericStart:current]))
+					//output = append(output, toLower(text[alphanumericStart:current]))
+					_ = alphanumericStart
 				}
 			}
 			output = append(output, text[current:current+size])
@@ -196,7 +198,7 @@ func splitTextToWords(text Text) []Text {
 	// 处理最后一个字元是英文的情况
 	if inAlphanumeric {
 		if current != 0 {
-			output = append(output, toLower(text[alphanumericStart:current]))
+			//output = append(output, toLower(text[alphanumericStart:current]))
 		}
 	}
 
