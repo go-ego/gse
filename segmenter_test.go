@@ -292,6 +292,29 @@ func TestHMM(t *testing.T) {
 		tx)
 }
 
+func TestInAlphaNum(t *testing.T) {
+	var seg Segmenter
+	AlphaNum = true
+	seg.LoadDict("zh,./testdata/test_dict3.txt")
+
+	freq, ok := seg.Find("hello")
+	tt.Equal(t, 20, freq)
+	tt.True(t, ok)
+
+	freq, ok = seg.Find("world")
+	tt.Equal(t, 20, freq)
+	tt.True(t, ok)
+
+	text := "helloworld! 你好世界"
+	tx := seg.Cut(text)
+	tt.Equal(t, 6, len(tx))
+	tt.Equal(t, "[hello world !   你好 世界]", tx)
+
+	tx = seg.Cut(text, true)
+	tt.Equal(t, 5, len(tx))
+	tt.Equal(t, "[hello world !  你好 世界]", tx)
+}
+
 var token = Token{
 	text: []Text{
 		[]byte("one"),

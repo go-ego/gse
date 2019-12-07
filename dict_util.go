@@ -33,6 +33,11 @@ var (
 	LoadNoFreq bool
 	// MinTokenFreq load min freq token
 	MinTokenFreq = 2
+
+	// AlphaNum set splitTextToWords can add token
+	// when words in alphanum
+	// set up alphanum dictionary word segmentation
+	AlphaNum = false
 )
 
 // Dictionary 返回分词器使用的词典
