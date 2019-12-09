@@ -33,8 +33,8 @@ var (
 	LoadNoFreq bool
 	// MinTokenFreq load min freq token
 	MinTokenFreq = 2
-	//DefaultFreqText default frenquency when not specified
-	DefaultFreqText = "2"
+	// TextFreq add token frenquency when not specified freq
+	TextFreq = "2"
 
 	// AlphaNum set splitTextToWords can add token
 	// when words in alphanum
@@ -186,7 +186,7 @@ func (seg *Segmenter) Read(file string) error {
 				// 无效行
 				continue
 			} else {
-				freqText = DefaultFreqText
+				freqText = TextFreq
 			}
 		} else if size == 2 {
 			// 没有词性标注时设为空字符串
