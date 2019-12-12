@@ -293,9 +293,12 @@ func TestHMM(t *testing.T) {
 }
 
 func TestInAlphaNum(t *testing.T) {
-	var seg Segmenter
+	// var seg Segmenter
+	// AlphaNum = true
+	// seg.LoadDict("zh,./testdata/test_dict3.txt")
+	//
 	AlphaNum = true
-	seg.LoadDict("zh,./testdata/test_dict3.txt")
+	seg := New("zh,./testdata/test_dict3.txt")
 
 	freq, ok := seg.Find("hello")
 	tt.Equal(t, 20, freq)

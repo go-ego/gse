@@ -42,6 +42,14 @@ type Prob struct {
 	B, E, M, S map[rune]float64
 }
 
+// New return new gse segmenter
+func New(files ...string) Segmenter {
+	var seg Segmenter
+	seg.LoadDict(files...)
+
+	return seg
+}
+
 // Cut cuts a str into words using accurate mode.
 // Parameter hmm controls whether to use the HMM(Hidden Markov Model)
 // or use the user's model.
