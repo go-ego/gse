@@ -45,6 +45,9 @@ type Prob struct {
 // New return new gse segmenter
 func New(files ...string) Segmenter {
 	var seg Segmenter
+	if len(files) > 1 && files[1] == "alpha" {
+		AlphaNum = true
+	}
 	seg.LoadDict(files...)
 
 	return seg

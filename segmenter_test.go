@@ -297,8 +297,8 @@ func TestInAlphaNum(t *testing.T) {
 	// AlphaNum = true
 	// seg.LoadDict("zh,./testdata/test_dict3.txt")
 	//
-	AlphaNum = true
-	seg := New("zh,./testdata/test_dict3.txt")
+	// AlphaNum = true
+	seg := New("zh,./testdata/test_dict3.txt", "alpha")
 
 	freq, ok := seg.Find("hello")
 	tt.Equal(t, 20, freq)
