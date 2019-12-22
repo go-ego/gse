@@ -67,19 +67,20 @@ import (
 )
 
 var (
-	text = "你好世界, Hello world."
+	text = "你好世界, Hello world, Helloworld."
 
+	new = gse.New("zh,testdata/test_dict3.txt", "alpha")
 	seg gse.Segmenter
 )
 
 func cut() {
-	hmm := seg.Cut(text, true)
+	hmm := new.Cut(text, true)
 	fmt.Println("cut use hmm: ", hmm)
 
-	hmm = seg.CutSearch(text, true)
+	hmm = new.CutSearch(text, true)
 	fmt.Println("cut search use hmm: ", hmm)
 
-	hmm = seg.CutAll(text)
+	hmm = new.CutAll(text)
 	fmt.Println("cut all: ", hmm)
 }
 
