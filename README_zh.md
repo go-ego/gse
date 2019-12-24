@@ -65,18 +65,21 @@ import (
 	"github.com/go-ego/gse"
 )
 
-var seg gse.Segmenter
+var (
+	seg gse.Segmenter
+	new = gse.New("zh,testdata/test_dict3.txt", "alpha")
+)
 
 func cut() {
-	text := "你好世界, Hello world."
+	text := "你好世界, Hello world, Helloworld."
 
-	hmm := seg.Cut(text, true)
+	hmm := new.Cut(text, true)
 	fmt.Println("cut use hmm: ", hmm)
 
-	hmm = seg.CutSearch(text, true)
+	hmm = new.CutSearch(text, true)
 	fmt.Println("cut search use hmm: ", hmm)
 
-	hmm = seg.CutAll(text)
+	hmm = new.CutAll(text)
 	fmt.Println("cut all: ", hmm)
 }
 
