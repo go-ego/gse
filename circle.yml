@@ -8,8 +8,7 @@ version: 2
 jobs:
   build:
     docker:
-      # - image: golang:1.10.1
-      - image: govgo/go:1.10.3
+      - image: golang:1.13.5
     working_directory: /gopath/src/github.com/go-ego/gse
     steps:
       - checkout
@@ -17,9 +16,7 @@ jobs:
       # - run: go get -u github.com/go-ego/cedar
       # - run: go get -u github.com/go-ego/gse
       - run: go get -v -t -d ./...
-      - run: go test -v ./... 
-       # codecov.io
+      - run: go test -v ./...
+      # codecov.io
       - run: go test -v -covermode=count -coverprofile=coverage.out
-      - run: bash <(curl -s https://codecov.io/bash)  
-
-   
+      - run: bash <(curl -s https://codecov.io/bash)
