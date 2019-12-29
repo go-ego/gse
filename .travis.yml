@@ -15,7 +15,7 @@ install:
   # - go get -u github.com/go-ego/cedar
   - go get -t -d -v ./...
   # - go get -u -v -t ./...
-
+  
 # notifications:
 #   email:
 #     - .com
