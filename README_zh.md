@@ -83,7 +83,18 @@ func cut() {
 	fmt.Println("cut all: ", hmm)
 }
 
+func main() {
+	cut()
+
+	segCut()
+}
+
 func segCut() {
+	// 加载默认字典
+	seg.LoadDict()
+	// 载入词典
+	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
+
 	// 分词文本
 	tb := []byte("山达尔星联邦共和国联邦政府")
 
@@ -102,16 +113,6 @@ func segCut() {
 	fmt.Println(gse.ToString(segments1, true))
 }
 
-func main() {
-	// 加载默认字典
-	seg.LoadDict()
-	// 载入词典
-	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
-
-	cut()
-
-	segCut()
-}
 ```
 
 [自定义词典分词示例](/examples/dict/main.go)
