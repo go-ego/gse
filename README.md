@@ -84,7 +84,18 @@ func cut() {
 	fmt.Println("cut all: ", hmm)
 }
 
+func main() {
+	cut()
+
+	segCut()
+}
+
 func segCut() {
+	// Loading the default dictionary
+	seg.LoadDict()
+	// Load the dictionary
+	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
+
 	// Text Segmentation
 	tb := []byte(text)
 	fmt.Println(seg.String(tb, true))
@@ -97,17 +108,6 @@ func segCut() {
 	// The search mode is mainly used to provide search engines
 	// with as many keywords as possible
 	fmt.Println(gse.ToString(segments, true))
-}
-
-func main() {
-	// Loading the default dictionary
-	seg.LoadDict()
-	// Load the dictionary
-	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
-
-	cut()
-
-	segCut()
 }
 
 ```
