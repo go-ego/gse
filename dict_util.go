@@ -54,7 +54,7 @@ func (seg *Segmenter) AddToken(text string, frequency int, pos ...string) {
 		po = pos[0]
 	}
 
-	words := splitTextToWords([]byte(text))
+	words := SplitTextToWords([]byte(text))
 	token := Token{text: words, frequency: frequency, pos: po}
 
 	seg.dict.addToken(token)
@@ -211,7 +211,7 @@ func (seg *Segmenter) Read(file string) error {
 		}
 
 		// 将分词添加到字典中
-		words := splitTextToWords([]byte(text))
+		words := SplitTextToWords([]byte(text))
 		token := Token{text: words, frequency: frequency, pos: pos}
 		seg.dict.addToken(token)
 	}

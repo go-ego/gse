@@ -60,7 +60,7 @@ func (seg *Segmenter) internalSegment(bytes []byte, searchMode bool) []Segment {
 	}
 
 	// 划分字元
-	text := splitTextToWords(bytes)
+	text := SplitTextToWords(bytes)
 
 	return seg.segmentWords(text, searchMode)
 }
@@ -166,8 +166,8 @@ func maxInt(a, b int) int {
 	return b
 }
 
-// splitTextToWords 将文本划分成字元
-func splitTextToWords(text Text) []Text {
+// SplitTextToWords 将文本划分成字元
+func SplitTextToWords(text Text) []Text {
 	output := make([]Text, 0, len(text)/3)
 	current := 0
 	inAlphanumeric := true
