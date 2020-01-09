@@ -36,7 +36,7 @@ import (
 )
 
 var (
-	segmenter = gse.Segmenter{}
+	seg = gse.Segmenter{}
 
 	host         = flag.String("host", "", "HTTP服务器主机名")
 	port         = flag.Int("port", 8080, "HTTP服务器端口")
@@ -70,7 +70,7 @@ func JsonRpcServer(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if *hmm {
-		segs := segmenter.Cut(text, true)
+		segs := seg.Cut(text, true)
 		response, _ := json.Marshal(&JsonResp{Seg: segs})
 
 		w.Header().Set("Content-Type", "application/json")
@@ -80,11 +80,11 @@ func JsonRpcServer(w http.ResponseWriter, req *http.Request) {
 	}
 
 	// 分词
-	segments := segmenter.Segment([]byte(text))
+	segs := seg.Segment([]byte(text))
 
 	// 整理为输出格式
 	ss := []*Segment{}
-	for _, segment := range segments {
+	for _, segment := range segs {
 		ss = append(ss, &Segment{
 			Text: segment.Token().Text(), Pos: segment.Token().Pos()})
 	}
@@ -101,7 +101,7 @@ func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	// 初始化分词器
-	segmenter.LoadDict(*dict)
+	seg.LoadDict(*dict)
 
 	http.HandleFunc("/json", JsonRpcServer)
 	http.Handle("/", http.FileServer(http.Dir(*staticFolder)))
