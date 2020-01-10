@@ -93,7 +93,7 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 
 		// 寻找所有以当前字元开头的分词
 		tx := text[current:minInt(current+seg.dict.maxTokenLen, len(text))]
-		numTokens := seg.dict.lookupTokens(tx, tokens)
+		numTokens := seg.dict.LookupTokens(tx, tokens)
 
 		// 对所有可能的分词，更新分词结束字元处的跳转信息
 		for iToken := 0; iToken < numTokens; iToken++ {
