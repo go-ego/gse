@@ -143,12 +143,8 @@ func TestDictPaths(t *testing.T) {
 	paths := DictPaths("./dictDir", "zh,jp")
 	tt.Expect(t, "2", len(paths))
 
-	if paths[0] != "dictDir/dict/dictionary.txt" {
-		t.Errorf("what=\"%s\", got=\"%s\"", "dictDir/dict/dictionary.txt", paths[0])
-	}
-	if paths[1] != "dictDir/dict/jp/dict.txt" {
-		t.Errorf("what=\"%s\", got=\"%s\"", "dictDir/dict/jp/dict.txt", paths[1])
-	}
+	tt.Expect(t, "dictDir/dict/dictionary.txt", paths[0])
+	tt.Expect(t, "dictDir/dict/jp/dict.txt", paths[1])
 }
 
 func TestSegmentDicts(t *testing.T) {
