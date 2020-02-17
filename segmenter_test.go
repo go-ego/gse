@@ -304,14 +304,14 @@ func TestInAlphaNum(t *testing.T) {
 	tt.Equal(t, 20, freq)
 	tt.True(t, ok)
 
-	text := "helloworld! 你好世界"
+	text := "helloworld! 你好世界, Helloworld."
 	tx := seg.Cut(text)
-	tt.Equal(t, 6, len(tx))
-	tt.Equal(t, "[hello world !   你好 世界]", tx)
+	tt.Equal(t, 11, len(tx))
+	tt.Equal(t, "[hello world !   你好 世界 ,   hello world .]", tx)
 
 	tx = seg.Cut(text, true)
-	tt.Equal(t, 5, len(tx))
-	tt.Equal(t, "[hello world !  你好 世界]", tx)
+	tt.Equal(t, 9, len(tx))
+	tt.Equal(t, "[hello world !  你好 世界 ,  Hello world .]", tx)
 }
 
 var token = Token{
