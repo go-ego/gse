@@ -133,6 +133,7 @@ func textSliceToBytes(text []Text) []byte {
 	for _, word := range text {
 		buf.Write(word)
 	}
+
 	return buf.Bytes()
 }
 
