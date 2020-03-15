@@ -40,6 +40,9 @@ var (
 	// when words in alphanum
 	// set up alphanum dictionary word segmentation
 	AlphaNum = false
+
+	// ToLower set alpha tolower
+	ToLower = true
 )
 
 // Dictionary 返回分词器使用的词典

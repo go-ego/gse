@@ -150,22 +150,6 @@ func updateJumper(jumper *jumper, baseDistance float32, token *Token) {
 	}
 }
 
-// minInt 取两整数较小值
-func minInt(a, b int) int {
-	if a > b {
-		return b
-	}
-	return a
-}
-
-// maxInt 取两整数较大值
-func maxInt(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
 // SplitTextToWords 将文本划分成字元
 func SplitTextToWords(text Text) []Text {
 	output := make([]Text, 0, len(text)/3)
@@ -220,4 +204,20 @@ func toLower(text []byte) []byte {
 	}
 
 	return output
+}
+
+// minInt 取两整数较小值
+func minInt(a, b int) int {
+	if a > b {
+		return b
+	}
+	return a
+}
+
+// maxInt 取两整数较大值
+func maxInt(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
