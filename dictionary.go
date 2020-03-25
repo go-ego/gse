@@ -65,6 +65,13 @@ func (dict *Dictionary) addToken(token Token) {
 	}
 }
 
+// RemoveToken remove token in dictionary
+func (dict *Dictionary) RemoveToken(token Token) error {
+	bytes := textSliceToBytes(token.text)
+
+	return dict.trie.Delete(bytes)
+}
+
 // LookupTokens 在词典中查找和字元组 words 可以前缀匹配的所有分词
 // 返回值为找到的分词数
 func (dict *Dictionary) LookupTokens(

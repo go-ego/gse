@@ -69,6 +69,14 @@ func (seg *Segmenter) AddTokenForce(text string, frequency int, pos ...string) {
 	seg.CalcToken()
 }
 
+// RemoveToken remove token in dictionary
+func (seg *Segmenter) RemoveToken(text string) {
+	words := SplitTextToWords([]byte(text))
+	token := Token{text: words}
+
+	seg.dict.RemoveToken(token)
+}
+
 // LoadDict load the dictionary from the file
 //
 // The format of the dictionary is (one for each participle):
