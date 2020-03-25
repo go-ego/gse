@@ -260,6 +260,11 @@ func TestLoadDictionary(t *testing.T) {
 	freq, ok = seg.Find("上海东方明珠塔")
 	tt.Equal(t, 100, freq)
 	tt.True(t, ok)
+
+	seg.RemoveToken("上海东方明珠塔")
+	freq, ok = dict.Find([]byte("上海东方明珠塔"))
+	tt.Equal(t, 0, freq)
+	tt.False(t, ok)
 }
 
 func TestHMM(t *testing.T) {
