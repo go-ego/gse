@@ -79,20 +79,6 @@ func (seg *Segmenter) CutAll(str string) []string {
 	return seg.cutAll(str)
 }
 
-// Slice use modeSegment segment retrun []string
-// using search mode if searchMode is true
-func (seg *Segmenter) Slice(bytes []byte, searchMode ...bool) []string {
-	segs := seg.ModeSegment(bytes, searchMode...)
-	return ToSlice(segs, searchMode...)
-}
-
-// Slice use modeSegment segment retrun string
-// using search mode if searchMode is true
-func (seg *Segmenter) String(bytes []byte, searchMode ...bool) string {
-	segs := seg.ModeSegment(bytes, searchMode...)
-	return ToString(segs, searchMode...)
-}
-
 // LoadModel load the hmm model
 //
 // Use the user's model:
@@ -111,4 +97,18 @@ func (seg *Segmenter) HMMCut(str string) []string {
 func (seg *Segmenter) HMMCutMod(str string, prob ...map[rune]float64) []string {
 	hmm.LoadModel(prob...)
 	return hmm.Cut(str)
+}
+
+// Slice use modeSegment segment retrun []string
+// using search mode if searchMode is true
+func (seg *Segmenter) Slice(bytes []byte, searchMode ...bool) []string {
+	segs := seg.ModeSegment(bytes, searchMode...)
+	return ToSlice(segs, searchMode...)
+}
+
+// Slice use modeSegment segment retrun string
+// using search mode if searchMode is true
+func (seg *Segmenter) String(bytes []byte, searchMode ...bool) string {
+	segs := seg.ModeSegment(bytes, searchMode...)
+	return ToString(segs, searchMode...)
 }
