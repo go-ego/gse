@@ -67,3 +67,19 @@ func BenchmarkString(b *testing.B) {
 
 	tt.BM(b, fn)
 }
+
+func BenchmarkAddToken(b *testing.B) {
+	fn := func() {
+		prodSeg.AddToken(text, 10)
+	}
+
+	tt.BM(b, fn)
+}
+
+func BenchmarkRemoveToken(b *testing.B) {
+	fn := func() {
+		prodSeg.RemoveToken(text)
+	}
+
+	tt.BM(b, fn)
+}
