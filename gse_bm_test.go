@@ -83,3 +83,11 @@ func BenchmarkRemoveToken(b *testing.B) {
 
 	tt.BM(b, fn)
 }
+
+func BenchmarkFind(b *testing.B) {
+	fn := func() {
+		prodSeg.Find("帝国大厦")
+	}
+
+	tt.BM(b, fn)
+}

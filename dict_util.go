@@ -64,6 +64,7 @@ func (seg *Segmenter) AddToken(text string, frequency int, pos ...string) {
 }
 
 // AddTokenForce add new text to token and force
+// time-consuming
 func (seg *Segmenter) AddTokenForce(text string, frequency int, pos ...string) {
 	seg.AddToken(text, frequency, pos...)
 	seg.CalcToken()

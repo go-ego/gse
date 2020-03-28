@@ -37,10 +37,12 @@ func main() {
 func addToken() {
 	seg.AddToken("《复仇者联盟3：无限战争》", 100, "n")
 	seg.AddToken("上海中心大厦", 100)
-	seg.AddTokenForce("上海东方明珠广播电视塔", 100, "n")
+	seg.AddToken("上海东方明珠广播电视塔", 100, "n")
+	// seg.AddTokenForce("上海东方明珠广播电视塔", 100, "n")
 	//
 	seg.AddToken("东方明珠广播电视塔", 100)
-	seg.CalcToken()
+	// seg.CalcToken()
+	seg.RemoveToken("东方明珠广播电视塔")
 }
 
 // 使用 DAG 或 HMM 模式分词
