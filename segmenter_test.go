@@ -255,6 +255,11 @@ func TestLoadDictionary(t *testing.T) {
 	tt.Equal(t, 0, freq)
 	tt.True(t, ok)
 
+	seg.AddToken("伦敦摘星塔", 100)
+	freq, ok = seg.Find("伦敦摘星塔")
+	tt.Equal(t, 100, freq)
+	tt.True(t, ok)
+
 	seg.AddToken("上海中心大厦", 100)
 	seg.AddTokenForce("上海东方明珠塔", 100, "n")
 	freq, ok = seg.Find("上海东方明珠塔")
