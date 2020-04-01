@@ -167,13 +167,13 @@ func SplitTextToWords(text Text) []Text {
 			}
 
 			if AlphaNum {
-				output = append(output, toLower(text[current:current+size]))
+				output = append(output, toLow(text[current:current+size]))
 			}
 		} else {
 			if inAlphanumeric {
 				inAlphanumeric = false
 				if current != 0 && !AlphaNum {
-					output = append(output, toLower(text[alphanumericStart:current]))
+					output = append(output, toLow(text[alphanumericStart:current]))
 				}
 			}
 
@@ -185,11 +185,19 @@ func SplitTextToWords(text Text) []Text {
 	// 处理最后一个字元是英文的情况
 	if inAlphanumeric && !AlphaNum {
 		if current != 0 {
-			output = append(output, toLower(text[alphanumericStart:current]))
+			output = append(output, toLow(text[alphanumericStart:current]))
 		}
 	}
 
 	return output
+}
+
+func toLow(text []byte) []byte {
+	if ToLower {
+		return toLower(text)
+	}
+
+	return text
 }
 
 // toLower 将英文词转化为小写
