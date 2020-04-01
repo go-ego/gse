@@ -218,6 +218,9 @@ func TestLoadDictionary(t *testing.T) {
 
 	var seg, seg1 Segmenter
 
+	ToLower = false
+	defer func() { ToLower = true }()
+
 	err := seg.LoadDict("en")
 	tt.Nil(t, err)
 
