@@ -67,7 +67,7 @@ import (
 )
 
 var (
-	text = "你好世界, Hello world, Helloworld."
+	text = "Hello world, Helloworld. Winter is coming! 你好世界."
 
 	new = gse.New("zh,testdata/test_dict3.txt", "alpha")
 	seg gse.Segmenter

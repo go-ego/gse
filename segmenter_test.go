@@ -256,6 +256,12 @@ func TestLoadDictionary(t *testing.T) {
 	tt.True(t, ok)
 
 	seg.AddToken("伦敦摘星塔", 100)
+	seg.AddToken("Winter is coming", 100)
+
+	freq, ok = seg.Find("Winter is coming")
+	tt.Equal(t, 100, freq)
+	tt.True(t, ok)
+
 	freq, ok = seg.Find("伦敦摘星塔")
 	tt.Equal(t, 100, freq)
 	tt.True(t, ok)
