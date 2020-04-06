@@ -30,7 +30,7 @@ func main() {
 	addToken()
 
 	cut()
-
+	//
 	segCut()
 }
 
@@ -41,6 +41,9 @@ func addToken() {
 	// seg.AddTokenForce("上海东方明珠广播电视塔", 100, "n")
 	//
 	seg.AddToken("东方明珠广播电视塔", 100)
+	freq, ok := seg.Find("东方明珠广播电视塔")
+	fmt.Println("seg.Find: ", freq, ok)
+
 	// seg.CalcToken()
 	seg.RemoveToken("东方明珠广播电视塔")
 }
