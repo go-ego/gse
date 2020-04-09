@@ -269,14 +269,14 @@ func TestLoadDictionary(t *testing.T) {
 	tt.Equal(t, 100, freq)
 	tt.True(t, ok)
 
-	seg.AddToken("上海中心大厦", 100)
-	seg.AddTokenForce("上海东方明珠塔", 100, "n")
-	freq, ok = seg.Find("上海东方明珠塔")
+	seg.AddToken("西雅图中心", 100)
+	seg.AddToken("西雅图太空针", 100, "n")
+	freq, ok = seg.Find("西雅图太空针")
 	tt.Equal(t, 100, freq)
 	tt.True(t, ok)
 
-	seg.RemoveToken("上海东方明珠塔")
-	freq, ok = dict.Find([]byte("上海东方明珠塔"))
+	seg.RemoveToken("西雅图太空针")
+	freq, ok = dict.Find([]byte("西雅图太空针"))
 	tt.Equal(t, 0, freq)
 	tt.False(t, ok)
 }
