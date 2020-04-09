@@ -14,7 +14,7 @@ var (
 	text  = "《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄"
 	text1 = flag.String("text", text, "要分词的文本")
 
-	text2 = []byte("上海地标建筑, 上海东方明珠广播电视塔")
+	text2 = []byte("西雅图地标建筑, Seattle Space Needle, 西雅图太空针. Sky tree.")
 )
 
 func main() {
@@ -36,16 +36,17 @@ func main() {
 
 func addToken() {
 	seg.AddToken("《复仇者联盟3：无限战争》", 100, "n")
-	seg.AddToken("上海中心大厦", 100)
-	seg.AddToken("上海东方明珠广播电视塔", 100, "n")
+	seg.AddToken("西雅图中心", 100)
+	seg.AddToken("西雅图太空针", 100, "n")
+	seg.AddToken("Space Needle", 100, "n")
 	// seg.AddTokenForce("上海东方明珠广播电视塔", 100, "n")
 	//
-	seg.AddToken("东方明珠广播电视塔", 100)
-	freq, ok := seg.Find("东方明珠广播电视塔")
+	seg.AddToken("太空针", 100)
+	freq, ok := seg.Find("太空针")
 	fmt.Println("seg.Find: ", freq, ok)
 
 	// seg.CalcToken()
-	seg.RemoveToken("东方明珠广播电视塔")
+	seg.RemoveToken("太空针")
 }
 
 // 使用 DAG 或 HMM 模式分词
@@ -80,8 +81,6 @@ func segCut() {
 	// 搜索模式主要用于给搜索引擎提供尽可能多的关键字
 	// segs := seg.ModeSegment(text2, true)
 	log.Println("搜索模式: ", gse.ToString(segs, true))
-	// 搜索模式: 上海/ns 地标/n 建筑/n ,/x  /x 上海/ns 东方/s 明珠/nr 东方明珠/nr 电视/n 塔/j 电视塔/n
-
 	log.Println("to slice", gse.ToSlice(segs, true))
 
 	fmt.Println(seg.String(text2, true))
