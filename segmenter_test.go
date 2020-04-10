@@ -254,10 +254,6 @@ func TestLoadDictionary(t *testing.T) {
 	tt.Equal(t, 0, freq)
 	tt.False(t, ok)
 
-	freq, ok = dict.Find([]byte("地王大"))
-	tt.Equal(t, 0, freq)
-	tt.True(t, ok)
-
 	seg.AddToken("伦敦摘星塔", 100)
 	seg.AddToken("Winter is coming", 100)
 
@@ -275,6 +271,7 @@ func TestLoadDictionary(t *testing.T) {
 	tt.Equal(t, 100, freq)
 	tt.True(t, ok)
 
+	seg.AddTokenForce("Space Needle", 100, "n")
 	seg.RemoveToken("西雅图太空针")
 	freq, ok = dict.Find([]byte("西雅图太空针"))
 	tt.Equal(t, 0, freq)
