@@ -7,9 +7,8 @@ import (
 )
 
 func main() {
-	var seg gse.Segmenter
-	gse.AlphaNum = true
-	seg.LoadDict("zh,../../testdata/test_dict3.txt")
+	seg := gse.New("zh,../../testdata/test_dict3.txt", "alpha")
+	seg.AddToken("winter is coming!", 100, "n")
 
 	freq, ok := seg.Find("hello")
 	fmt.Println(freq, ok)
@@ -17,7 +16,7 @@ func main() {
 	freq, ok = seg.Find("world")
 	fmt.Println(freq, ok)
 
-	text := "helloworld! 你好世界"
+	text := "Helloworld, winter is coming! 你好世界."
 
 	tx := seg.Cut(text)
 	fmt.Println(tx)
