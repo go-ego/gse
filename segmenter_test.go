@@ -291,6 +291,10 @@ func TestHMM(t *testing.T) {
 	tt.Equal(t, 7, len(tx))
 	tt.Equal(t, "[纽约时代广场 ,  纽约 帝国大厦 ,  旧金山湾 金门大桥]", tx)
 
+	tx = prodSeg.Trim(tx)
+	tt.Equal(t, 5, len(tx))
+	tt.Equal(t, "[纽约时代广场 纽约 帝国大厦 旧金山湾 金门大桥]", tx)
+
 	tx = prodSeg.CutAll(text)
 	tt.Equal(t, 21, len(tx))
 	tt.Equal(t,

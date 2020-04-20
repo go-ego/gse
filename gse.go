@@ -19,6 +19,8 @@ Package gse Go efficient text segmentation, Go 语言高性能分词
 package gse
 
 import (
+	"unicode"
+
 	"github.com/go-ego/gse/hmm"
 )
 
@@ -111,4 +113,16 @@ func (seg *Segmenter) Slice(bytes []byte, searchMode ...bool) []string {
 func (seg *Segmenter) String(bytes []byte, searchMode ...bool) string {
 	segs := seg.ModeSegment(bytes, searchMode...)
 	return ToString(segs, searchMode...)
+}
+
+// Trim trim []string exclude space and punct
+func (seg *Segmenter) Trim(s []string) (r []string) {
+	for i := 0; i < len(s); i++ {
+		ru := []rune(s[i])[0]
+		if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
+			r = append(r, s[i])
+		}
+	}
+
+	return
 }
