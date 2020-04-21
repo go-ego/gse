@@ -20,6 +20,15 @@ func BenchmarkCut(t *testing.B) {
 	tt.BM(t, fn)
 }
 
+func BenchmarkCutTrim(t *testing.B) {
+	fn := func() {
+		s := prodSeg.Cut(text)
+		prodSeg.Trim(s)
+	}
+
+	tt.BM(t, fn)
+}
+
 func BenchmarkCutHMM(t *testing.B) {
 	fn := func() {
 		prodSeg.Cut(text, true)
