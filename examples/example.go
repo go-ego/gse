@@ -66,6 +66,9 @@ func cut() {
 
 	cut = seg.CutAll(text)
 	fmt.Println("cut all: ", cut)
+
+	cut = seg.Trim(cut)
+	fmt.Println("cut all: ", cut)
 }
 
 // 使用最短路径和动态规划分词
