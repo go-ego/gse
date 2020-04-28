@@ -83,16 +83,18 @@ func (seg *Segmenter) RemoveToken(text string) {
 // The format of the dictionary is (one for each participle):
 //	participle text, frequency, part of speech
 //
-// Can load multiple dictionary files, the file name separated by ","
+// Can load multiple dictionary files, the file name separated by "," or ", "
 // the front of the dictionary preferentially load the participle,
 //	such as: "user_dictionary.txt,common_dictionary.txt"
+//
 // When a participle appears both in the user dictionary and
 // in the `common dictionary`, the `user dictionary` is given priority.
 //
 // 从文件中载入词典
 //
-// 可以载入多个词典文件，文件名用 "," 分隔，排在前面的词典优先载入分词，比如:
+// 可以载入多个词典文件，文件名用 "," 或 ", " 分隔，排在前面的词典优先载入分词，比如:
 // 	"用户词典.txt,通用词典.txt"
+//
 // 当一个分词既出现在用户词典也出现在 `通用词典` 中，则优先使用 `用户词典`。
 //
 // 词典的格式为（每个分词一行）：
@@ -253,8 +255,13 @@ func DictPaths(dictDir, filePath string) (files []string) {
 		return
 	}
 
-	// if strings.Contains(filePath, ",") {
-	fileName := strings.Split(filePath, ",")
+	var fileName []string
+	if strings.Contains(filePath, ", ") {
+		fileName = strings.Split(filePath, ", ")
+	} else {
+		fileName = strings.Split(filePath, ",")
+	}
+
 	for i := 0; i < len(fileName); i++ {
 		if fileName[i] == "jp" {
 			dictPath = path.Join(dictDir, "dict/jp/dict.txt")
