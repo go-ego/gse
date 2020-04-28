@@ -115,11 +115,24 @@ func (seg *Segmenter) String(bytes []byte, searchMode ...bool) string {
 	return ToString(segs, searchMode...)
 }
 
+func notPunct(ru []rune) bool {
+	for i := 0; i < len(ru); i++ {
+		if !unicode.IsSpace(ru[i]) && !unicode.IsPunct(ru[i]) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // Trim trim []string exclude space and punct
 func (seg *Segmenter) Trim(s []string) (r []string) {
 	for i := 0; i < len(s); i++ {
-		ru := []rune(s[i])[0]
-		if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
+		ru := []rune(s[i])
+		r0 := ru[0]
+		if !unicode.IsSpace(r0) && !unicode.IsPunct(r0) {
+			r = append(r, s[i])
+		} else if len(ru) > 1 && notPunct(ru) {
 			r = append(r, s[i])
 		}
 	}

@@ -11,7 +11,7 @@ import (
 var (
 	seg gse.Segmenter
 
-	text  = "《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄"
+	text  = "《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄制作的的科幻片."
 	text1 = flag.String("text", text, "要分词的文本")
 
 	text2 = []byte("西雅图地标建筑, Seattle Space Needle, 西雅图太空针. Sky tree.")
