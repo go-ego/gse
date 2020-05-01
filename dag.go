@@ -14,7 +14,10 @@
 
 package gse
 
-import "math"
+import (
+	"math"
+	"regexp"
+)
 
 const (
 	// RatioWord ratio words and letters
@@ -22,6 +25,8 @@ const (
 	// RatioWordFull full ratio words and letters
 	RatioWordFull float32 = 1
 )
+
+var reEng = regexp.MustCompile(`[[:alnum:]]`)
 
 type route struct {
 	frequency float64
@@ -171,6 +176,44 @@ func (seg *Segmenter) cutDAG(str string) []string {
 		} else {
 			result = append(result, seg.hmm(bufString, buf)...)
 		}
+	}
+
+	return result
+}
+
+func (seg *Segmenter) cutDAGNoHMM(str string) []string {
+	mLen := int(float32(len(str))/RatioWord) + 1
+	result := make([]string, 0, mLen)
+
+	runes := []rune(str)
+	routes := seg.calc(runes)
+	length := len(runes)
+
+	var y int
+	var buf []rune
+
+	for x := 0; x < length; {
+		y = routes[x].index + 1
+		frag := runes[x:y]
+
+		if reEng.MatchString(string(frag)) && len(frag) == 1 {
+			buf = append(buf, frag...)
+			x = y
+			continue
+		}
+
+		if len(buf) > 0 {
+			result = append(result, string(buf))
+			buf = make([]rune, 0)
+		}
+
+		result = append(result, string(frag))
+		x = y
+	}
+
+	if len(buf) > 0 {
+		result = append(result, string(buf))
+		buf = make([]rune, 0)
 	}
 
 	return result
