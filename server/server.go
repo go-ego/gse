@@ -16,7 +16,7 @@ gse 分词服务器同时提供了两种模式：
 			}
 
 
-测试服务器见 http://gse.weiboglass.com
+测试服务器
 
 */
 
@@ -106,6 +106,6 @@ func main() {
 	http.HandleFunc("/json", JsonRpcServer)
 	http.Handle("/", http.FileServer(http.Dir(*staticFolder)))
 
-	log.Print("服务器启动")
+	log.Printf("%s %s:%d \n", "Server listen: ", *host, *port)
 	http.ListenAndServe(fmt.Sprintf("%s:%d", *host, *port), nil)
 }
