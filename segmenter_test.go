@@ -18,9 +18,9 @@ func TestGetVer(t *testing.T) {
 	fmt.Println("go version: ", runtime.Version())
 	ver := GetVersion()
 
-	tt.Expect(t, version, ver)
-	expect(t, version, ver)
-	tt.Equal(t, version, ver)
+	tt.Expect(t, Version, ver)
+	expect(t, Version, ver)
+	tt.Equal(t, Version, ver)
 }
 
 func TestSplit(t *testing.T) {
