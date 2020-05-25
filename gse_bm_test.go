@@ -29,6 +29,14 @@ func BenchmarkCutTrim(t *testing.B) {
 	tt.BM(t, fn)
 }
 
+func BenchmarkCut_NoHMM(t *testing.B) {
+	fn := func() {
+		prodSeg.Cut(text, false)
+	}
+
+	tt.BM(t, fn)
+}
+
 func BenchmarkCutHMM(t *testing.B) {
 	fn := func() {
 		prodSeg.Cut(text, true)
@@ -48,6 +56,14 @@ func BenchmarkCutAll(t *testing.B) {
 func BenchmarkCutSearch(t *testing.B) {
 	fn := func() {
 		prodSeg.CutSearch(text)
+	}
+
+	tt.BM(t, fn)
+}
+
+func BenchmarkCutSearch_NoHMM(t *testing.B) {
+	fn := func() {
+		prodSeg.CutSearch(text, false)
 	}
 
 	tt.BM(t, fn)

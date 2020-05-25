@@ -309,6 +309,12 @@ func TestHMM(t *testing.T) {
 		"[纽约 纽约时代广场 时代 时代广场 广场 ,   纽约 帝国 帝国大厦 国大 大厦 ,   旧金山 旧金山湾 金山 山湾 金门 金门大桥 大桥]",
 		tx)
 
+	tx = prodSeg.CutSearch(text, false)
+	tt.Equal(t, 20, len(tx))
+	tt.Equal(t,
+		"[纽约 时代 广场 纽约时代广场 ,   纽约 帝国 国大 大厦 帝国大厦 ,   金山 山湾 旧金山 旧金山湾 金门 大桥 金门大桥]",
+		tx)
+
 	tx = prodSeg.CutSearch(text, true)
 	tt.Equal(t, 18, len(tx))
 	tt.Equal(t,
@@ -336,6 +342,10 @@ func TestInAlphaNum(t *testing.T) {
 	tx := seg.Cut(text)
 	tt.Equal(t, 11, len(tx))
 	tt.Equal(t, "[hello world !   你好 世界 ,   hello world .]", tx)
+
+	tx = seg.Cut(text, false)
+	tt.Equal(t, 11, len(tx))
+	tt.Equal(t, "[hello world !   你好 世界 ,   Hello world .]", tx)
 
 	tx = seg.Cut(text, true)
 	tt.Equal(t, 9, len(tx))
