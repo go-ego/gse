@@ -25,7 +25,8 @@ import (
 )
 
 const (
-	version = "v0.50.2.339, Snake River!"
+	// Version get the gse version
+	Version = "v0.50.1.344, Nisqually Glacier!"
 
 	// minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
@@ -36,7 +37,7 @@ func init() {
 
 // GetVersion get the gse version
 func GetVersion() string {
-	return version
+	return Version
 }
 
 // Prob type hmm model struct
