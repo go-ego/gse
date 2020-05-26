@@ -213,7 +213,7 @@ func (seg *Segmenter) cutDAGNoHMM(str string) []string {
 
 	if len(buf) > 0 {
 		result = append(result, string(buf))
-		buf = make([]rune, 0)
+		// buf = make([]rune, 0)
 	}
 
 	return result
