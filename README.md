@@ -135,9 +135,9 @@ func main() {
 }
 ```
 
-[Look at an Chinese example](https://github.com/go-ego/gse/blob/master/examples/example.go)
+[Look at an Chinese example](/examples/main.go)
 
-[Look at an Japanese example](https://github.com/go-ego/gse/blob/master/examples/jp/main.go)
+[Look at an Japanese example](/examples/jp/main.go)
 
 ## Authors
 * [The author is vz](https://github.com/vcaesar)

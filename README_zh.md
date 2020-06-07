@@ -137,7 +137,7 @@ func main() {
 }
 ```
 
-[中文分词示例](/examples/example.go)
+[中文分词示例](/examples/main.go)
 
 [日文分词示例](/examples/jp/main.go)
 
