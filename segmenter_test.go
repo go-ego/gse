@@ -60,8 +60,8 @@ func TestSegment(t *testing.T) {
 	var seg Segmenter
 	seg.LoadDict("testdata/test_dict1.txt,testdata/test_dict2.txt")
 	// seg.LoadDict("testdata/test_dict1.txt", "testdata/test_dict2.txt")
-	tt.Expect(t, "16", seg.dict.NumTokens())
-	// tt.Expect(t, "5", seg.dict.NumTokens())
+	tt.Expect(t, "16", seg.Dict.NumTokens())
+	// tt.Expect(t, "5", seg.Dict.NumTokens())
 	segments := seg.Segment([]byte("世界有七十亿人口"))
 	tt.Expect(t, "世界/ 有/p3 七十亿/ 人口/p12 ", ToString(segments, false))
 	// tt.Expect(t, "世界/ 有/x 七十亿/ 人口/p12 ", ToString(segments, false))
@@ -87,7 +87,7 @@ func TestSegmentS(t *testing.T) {
 	tt.Expect(t, "16", dict.maxTokenLen)
 	tt.Expect(t, "53250728", dict.totalFrequency)
 
-	tt.Expect(t, "587881", seg.dict.NumTokens())
+	tt.Expect(t, "587881", seg.Dict.NumTokens())
 	text1 := []byte("纽约帝国大厦, 旧金山湾金门大桥")
 	segStr := "纽约/ns 帝国大厦/nr ,/x  /x 旧金山湾/ns 金门大桥/nz "
 

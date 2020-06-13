@@ -22,7 +22,7 @@ import (
 
 // Segmenter 分词器结构体
 type Segmenter struct {
-	dict *Dictionary
+	Dict *Dictionary
 }
 
 // jumper 该结构体用于记录 Viterbi 算法中某字元处的向前分词跳转信息
@@ -76,11 +76,11 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 	// 以及从文本段开始到该字元的最短路径值
 	jumpers := make([]jumper, len(text))
 
-	if seg.dict == nil {
+	if seg.Dict == nil {
 		return nil
 	}
 
-	tokens := make([]*Token, seg.dict.maxTokenLen)
+	tokens := make([]*Token, seg.Dict.maxTokenLen)
 	for current := 0; current < len(text); current++ {
 		// 找到前一个字元处的最短路径，以便计算后续路径值
 		var baseDistance float32
@@ -92,8 +92,8 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 		}
 
 		// 寻找所有以当前字元开头的分词
-		tx := text[current:minInt(current+seg.dict.maxTokenLen, len(text))]
-		numTokens := seg.dict.LookupTokens(tx, tokens)
+		tx := text[current:minInt(current+seg.Dict.maxTokenLen, len(text))]
+		numTokens := seg.Dict.LookupTokens(tx, tokens)
 
 		// 对所有可能的分词，更新分词结束字元处的跳转信息
 		for iToken := 0; iToken < numTokens; iToken++ {

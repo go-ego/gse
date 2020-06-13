@@ -47,7 +47,7 @@ var (
 
 // Dictionary 返回分词器使用的词典
 func (seg *Segmenter) Dictionary() *Dictionary {
-	return seg.dict
+	return seg.Dict
 }
 
 // AddToken add new text to token
@@ -60,7 +60,7 @@ func (seg *Segmenter) AddToken(text string, frequency int, pos ...string) {
 	words := SplitTextToWords([]byte(text))
 	token := Token{text: words, frequency: frequency, pos: po}
 
-	seg.dict.addToken(token)
+	seg.Dict.addToken(token)
 }
 
 // AddTokenForce add new text to token and force
@@ -75,7 +75,7 @@ func (seg *Segmenter) RemoveToken(text string) {
 	words := SplitTextToWords([]byte(text))
 	token := Token{text: words}
 
-	seg.dict.RemoveToken(token)
+	seg.Dict.RemoveToken(token)
 }
 
 // LoadDict load the dictionary from the file
@@ -100,7 +100,7 @@ func (seg *Segmenter) RemoveToken(text string) {
 // 词典的格式为（每个分词一行）：
 //	分词文本 频率 词性
 func (seg *Segmenter) LoadDict(files ...string) error {
-	seg.dict = NewDict()
+	seg.Dict = NewDict()
 
 	var (
 		dictDir  = path.Join(path.Dir(getCurrentFilePath()), "data")
@@ -227,7 +227,7 @@ func (seg *Segmenter) Read(file string) error {
 		// 将分词添加到字典中
 		words := SplitTextToWords([]byte(text))
 		token := Token{text: words, frequency: frequency, pos: pos}
-		seg.dict.addToken(token)
+		seg.Dict.addToken(token)
 	}
 
 	return nil
@@ -306,16 +306,16 @@ func IsJp(segText string) bool {
 // CalcToken calc the segmenter token
 func (seg *Segmenter) CalcToken() {
 	// 计算每个分词的路径值，路径值含义见 Token 结构体的注释
-	logTotalFrequency := float32(math.Log2(float64(seg.dict.totalFrequency)))
-	for i := range seg.dict.tokens {
-		token := &seg.dict.tokens[i]
+	logTotalFrequency := float32(math.Log2(float64(seg.Dict.totalFrequency)))
+	for i := range seg.Dict.Tokens {
+		token := &seg.Dict.Tokens[i]
 		token.distance = logTotalFrequency - float32(math.Log2(float64(token.frequency)))
 	}
 
 	// 对每个分词进行细致划分，用于搜索引擎模式，
 	// 该模式用法见 Token 结构体的注释。
-	for i := range seg.dict.tokens {
-		token := &seg.dict.tokens[i]
+	for i := range seg.Dict.Tokens {
+		token := &seg.Dict.Tokens[i]
 		segments := seg.segmentWords(token.text, true)
 
 		// 计算需要添加的子分词数目

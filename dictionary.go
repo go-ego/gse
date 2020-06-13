@@ -24,7 +24,7 @@ import (
 type Dictionary struct {
 	trie           *cedar.Cedar // Cedar 前缀树
 	maxTokenLen    int          // 词典中最长的分词
-	tokens         []Token      // 词典中所有的分词，方便遍历
+	Tokens         []Token      // 词典中所有的分词，方便遍历
 	totalFrequency int64        // 词典中所有分词的频率之和
 }
 
@@ -40,7 +40,7 @@ func (dict *Dictionary) MaxTokenLen() int {
 
 // NumTokens 词典中分词数目
 func (dict *Dictionary) NumTokens() int {
-	return len(dict.tokens)
+	return len(dict.Tokens)
 }
 
 // TotalFreq 词典中所有分词的频率之和
@@ -57,7 +57,7 @@ func (dict *Dictionary) addToken(token Token) {
 	}
 
 	dict.trie.Insert(bytes, dict.NumTokens())
-	dict.tokens = append(dict.tokens, token)
+	dict.Tokens = append(dict.Tokens, token)
 	dict.totalFrequency += int64(token.frequency)
 
 	if len(token.text) > dict.maxTokenLen {
@@ -89,7 +89,7 @@ func (dict *Dictionary) LookupTokens(
 
 		value, err = dict.trie.Value(id)
 		if err == nil {
-			tokens[numOfTokens] = &dict.tokens[value]
+			tokens[numOfTokens] = &dict.Tokens[value]
 			numOfTokens++
 		}
 	}
@@ -119,7 +119,19 @@ func (dict *Dictionary) Find(word []byte) (int, bool) {
 		return 0, false
 	}
 
-	freq = dict.tokens[value].frequency
+	freq = dict.Tokens[value].frequency
 
 	return freq, true
+}
+
+// Value find word in the dictionary
+// retrun the word's value, id
+func (dict *Dictionary) Value(word []byte) (val, id int, err error) {
+	id, err = dict.trie.Jump(word, id)
+	if err != nil {
+		return 0, id, err
+	}
+
+	val, err = dict.trie.Value(id)
+	return
 }
