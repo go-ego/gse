@@ -35,7 +35,12 @@ type route struct {
 
 // Find find word in dictionary return word's frequency and existence
 func (seg *Segmenter) Find(str string) (int, bool) {
-	return seg.dict.Find([]byte(str))
+	return seg.Dict.Find([]byte(str))
+}
+
+// Value find word in dictionary return word's value
+func (seg *Segmenter) Value(str string) (int, int, error) {
+	return seg.Dict.Value([]byte(str))
 }
 
 func (seg *Segmenter) getDag(runes []rune) map[int][]int {
@@ -87,7 +92,7 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 	rs[n] = route{frequency: 0.0, index: 0}
 	var r route
 
-	logT := math.Log(float64(seg.dict.totalFrequency))
+	logT := math.Log(float64(seg.Dict.totalFrequency))
 	for idx := n - 1; idx >= 0; idx-- {
 		for _, i := range dag[idx] {
 			freq, ok := seg.Find(string(runes[idx : i+1]))
