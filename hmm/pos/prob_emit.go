@@ -1,4 +1,4 @@
-// Package hmm model data
+// Package pos model data
 // The data from https://github.com/fxsjy/jieba
 //
 package pos
