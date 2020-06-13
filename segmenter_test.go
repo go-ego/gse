@@ -258,6 +258,11 @@ func TestLoadDictionary(t *testing.T) {
 	tt.Equal(t, 0, freq)
 	tt.False(t, ok)
 
+	val, id, err := prodSeg.Value("帝国")
+	tt.Equal(t, 147102, val)
+	tt.Equal(t, 256572, id)
+	tt.Nil(t, err)
+
 	seg.AddToken("伦敦摘星塔", 100)
 	seg.AddToken("Winter is coming", 100)
 
