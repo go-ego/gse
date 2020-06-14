@@ -13,3 +13,41 @@
 // under the License.
 
 package idf
+
+import (
+	"sort"
+
+	"github.com/go-ego/gse"
+)
+
+// Idf represents a dictionary for all words with their
+// IDFs(Inverse Document Frequency).
+type Idf struct {
+	median float64
+	freqs  []float64
+
+	seg gse.Segmenter
+}
+
+// AddToken adds a new word with IDF into it's dictionary.
+func (i *Idf) AddToken(text string, frequency float64, pos ...string) {
+	i.seg.AddToken(text, frequency, pos...)
+
+	i.freqs = append(i.freqs, frequency)
+	sort.Float64s(i.freqs)
+	i.median = i.freqs[len(i.freqs)/2]
+}
+
+func (i *Idf) loadDict(fileName ...string) error {
+	return i.seg.LoadDict(fileName...)
+}
+
+// Frequency returns the IDF of given word.
+func (i *Idf) Frequency(key string) (float64, bool) {
+	return i.seg.Find(key)
+}
+
+// NewIdf creates a new Idf instance.
+func NewIdf() *Idf {
+	return &Idf{freqs: make([]float64, 0)}
+}
