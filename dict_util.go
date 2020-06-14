@@ -32,9 +32,9 @@ var (
 	// LoadNoFreq load not have freq dict word
 	LoadNoFreq bool
 	// MinTokenFreq load min freq token
-	MinTokenFreq = 2
+	MinTokenFreq = 2.0
 	// TextFreq add token frenquency when not specified freq
-	TextFreq = "2"
+	TextFreq = "2.0"
 
 	// AlphaNum set splitTextToWords can add token
 	// when words in alphanum
@@ -53,7 +53,7 @@ func (seg *Segmenter) Dictionary() *Dictionary {
 }
 
 // AddToken add new text to token
-func (seg *Segmenter) AddToken(text string, frequency int, pos ...string) {
+func (seg *Segmenter) AddToken(text string, frequency float64, pos ...string) {
 	var po string
 	if len(pos) > 0 {
 		po = pos[0]
@@ -67,7 +67,7 @@ func (seg *Segmenter) AddToken(text string, frequency int, pos ...string) {
 
 // AddTokenForce add new text to token and force
 // time-consuming
-func (seg *Segmenter) AddTokenForce(text string, frequency int, pos ...string) {
+func (seg *Segmenter) AddTokenForce(text string, frequency float64, pos ...string) {
 	seg.AddToken(text, frequency, pos...)
 	seg.CalcToken()
 }
@@ -169,7 +169,7 @@ func (seg *Segmenter) Read(file string) error {
 	var (
 		text      string
 		freqText  string
-		frequency int
+		frequency float64
 		pos       string
 	)
 
@@ -213,7 +213,7 @@ func (seg *Segmenter) Read(file string) error {
 
 		// 解析词频
 		var err error
-		frequency, err = strconv.Atoi(freqText)
+		frequency, err = strconv.ParseFloat(freqText, 64)
 		if err != nil {
 			continue
 		}

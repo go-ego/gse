@@ -31,7 +31,7 @@ type Dict struct {
 // }
 
 // AddToken adds one token
-func (d *Dict) AddToken(text string, frequency int, pos ...string) {
+func (d *Dict) AddToken(text string, frequency float64, pos ...string) {
 	d.seg.AddToken(text, frequency, pos...)
 }
 

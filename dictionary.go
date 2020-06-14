@@ -99,10 +99,11 @@ func (dict *Dictionary) LookupTokens(
 
 // Find find word in the dictionary is non-existent
 // and the word's frequency
-func (dict *Dictionary) Find(word []byte) (int, bool) {
+func (dict *Dictionary) Find(word []byte) (float64, bool) {
 	var (
-		id, value, freq int
-		err             error
+		id, value int
+		freq      float64
+		err       error
 	)
 
 	id, err = dict.trie.Jump(word, id)

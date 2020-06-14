@@ -34,7 +34,7 @@ type route struct {
 }
 
 // Find find word in dictionary return word's frequency and existence
-func (seg *Segmenter) Find(str string) (int, bool) {
+func (seg *Segmenter) Find(str string) (float64, bool) {
 	return seg.Dict.Find([]byte(str))
 }
 
