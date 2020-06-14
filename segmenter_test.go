@@ -125,6 +125,7 @@ func TestSegmentS(t *testing.T) {
 
 func TestSegmentJp(t *testing.T) {
 	var seg Segmenter
+	SkipLog = true
 	seg.LoadDict("data/dict/jp/dict.txt")
 	segments := seg.Segment(testH)
 
