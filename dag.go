@@ -92,13 +92,13 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 	rs[n] = route{frequency: 0.0, index: 0}
 	var r route
 
-	logT := math.Log(float64(seg.Dict.totalFrequency))
+	logT := math.Log(seg.Dict.totalFrequency)
 	for idx := n - 1; idx >= 0; idx-- {
 		for _, i := range dag[idx] {
 			freq, ok := seg.Find(string(runes[idx : i+1]))
 
 			if ok {
-				f := math.Log(float64(freq)) - logT + rs[i+1].frequency
+				f := math.Log(freq) - logT + rs[i+1].frequency
 				r = route{frequency: f, index: i}
 			} else {
 				f := math.Log(1.0) - logT + rs[i+1].frequency

@@ -40,7 +40,7 @@ func (d *Dict) updateLogTotal() {
 }
 
 // Frequency returns the frequency and existence of give word
-func (d *Dict) Frequency(key string) (int, bool) {
+func (d *Dict) Frequency(key string) (float64, bool) {
 	return d.seg.Find(key)
 }
 

@@ -310,10 +310,10 @@ func IsJp(segText string) bool {
 // CalcToken calc the segmenter token
 func (seg *Segmenter) CalcToken() {
 	// 计算每个分词的路径值，路径值含义见 Token 结构体的注释
-	logTotalFrequency := float32(math.Log2(float64(seg.Dict.totalFrequency)))
+	logTotalFrequency := float32(math.Log2(seg.Dict.totalFrequency))
 	for i := range seg.Dict.Tokens {
 		token := &seg.Dict.Tokens[i]
-		token.distance = logTotalFrequency - float32(math.Log2(float64(token.frequency)))
+		token.distance = logTotalFrequency - float32(math.Log2(token.frequency))
 	}
 
 	// 对每个分词进行细致划分，用于搜索引擎模式，

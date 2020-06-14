@@ -25,7 +25,7 @@ type Dictionary struct {
 	trie           *cedar.Cedar // Cedar 前缀树
 	maxTokenLen    int          // 词典中最长的分词
 	Tokens         []Token      // 词典中所有的分词，方便遍历
-	totalFrequency int64        // 词典中所有分词的频率之和
+	totalFrequency float64      // 词典中所有分词的频率之和
 }
 
 // NewDict new dictionary
@@ -44,7 +44,7 @@ func (dict *Dictionary) NumTokens() int {
 }
 
 // TotalFreq 词典中所有分词的频率之和
-func (dict *Dictionary) TotalFreq() int64 {
+func (dict *Dictionary) TotalFreq() float64 {
 	return dict.totalFrequency
 }
 
@@ -58,7 +58,7 @@ func (dict *Dictionary) addToken(token Token) {
 
 	dict.trie.Insert(bytes, dict.NumTokens())
 	dict.Tokens = append(dict.Tokens, token)
-	dict.totalFrequency += int64(token.frequency)
+	dict.totalFrequency += token.frequency
 
 	if len(token.text) > dict.maxTokenLen {
 		dict.maxTokenLen = len(token.text)
