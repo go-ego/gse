@@ -20,7 +20,7 @@ import (
 	"github.com/go-ego/gse"
 )
 
-// Dict represents a thread-safe dictionary used for word segmentation.
+// Dict represents a dictionary used for word segmentation.
 type Dict struct {
 	total, logTotal float64
 	seg             gse.Segmenter
