@@ -43,6 +43,8 @@ var (
 
 	// ToLower set alpha tolower
 	ToLower = true
+	// SkipLog set skip log print
+	SkipLog bool
 )
 
 // Dictionary 返回分词器使用的词典
@@ -183,8 +185,10 @@ func (seg *Segmenter) Read(file string) error {
 			}
 
 			if size > 0 {
-				log.Printf("File '%v' line \"%v\" read error: %v, skip",
-					file, line, fsErr.Error())
+				if SkipLog {
+					log.Printf("File '%v' line \"%v\" read error: %v, skip",
+						file, line, fsErr.Error())
+				}
 			} else {
 				log.Printf("File '%v' line \"%v\" is empty, read error: %v, skip",
 					file, line, fsErr.Error())
