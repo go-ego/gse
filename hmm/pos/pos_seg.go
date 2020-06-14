@@ -294,7 +294,7 @@ func (seg *Segmenter) cutDAGNoHMM(sentence string) (result []Segment) {
 
 	if len(buf) > 0 {
 		result = append(result, Segment{string(buf), "eng"})
-		buf = make([]rune, 0)
+		// buf = make([]rune, 0)
 	}
 
 	return
