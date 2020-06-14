@@ -85,7 +85,7 @@ func TestSegmentS(t *testing.T) {
 
 	dict := seg.Dictionary()
 	tt.Expect(t, "16", dict.maxTokenLen)
-	tt.Expect(t, "53250728", dict.totalFrequency)
+	tt.Expect(t, "5.3250728e+07", dict.totalFrequency)
 
 	tt.Expect(t, "587881", seg.Dict.NumTokens())
 	text1 := []byte("纽约帝国大厦, 旧金山湾金门大桥")
