@@ -88,7 +88,7 @@ func TestSegmentS(t *testing.T) {
 	tt.Expect(t, "5.3250728e+07", dict.totalFrequency)
 
 	tt.Expect(t, "587881", seg.Dict.NumTokens())
-	text1 := []byte("纽约帝国大厦, 旧金山湾金门大桥")
+	text1 := "纽约帝国大厦, 旧金山湾金门大桥"
 	segStr := "纽约/ns 帝国大厦/nr ,/x  /x 旧金山湾/ns 金门大桥/nz "
 
 	tt.Expect(t, "纽约/ns 帝国大厦/nr ,/x  /x 旧金山湾/ns 金门大桥/nz ", seg.String(text1))
@@ -99,11 +99,11 @@ func TestSegmentS(t *testing.T) {
 		seg.String(text1, true))
 	tt.Expect(t, "[纽约 帝国 大厦 帝国大厦 ,   金山 旧金山 湾 旧金山湾 金门 大桥 金门大桥]", seg.Slice(text1, true))
 
-	segments := seg.Segment(text1)
+	segments := seg.Segment([]byte(text1))
 	tt.Expect(t, segStr, ToString(segments))
 	tt.Expect(t, segStr, ToString(segments, false))
 
-	segs := seg.ModeSegment(text1, true)
+	segs := seg.ModeSegment([]byte(text1), true)
 	tt.Expect(t, segStr, ToString(segs, false))
 
 	tt.Expect(t, "6", len(segments))

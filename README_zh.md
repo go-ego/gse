@@ -107,7 +107,7 @@ func segCut() {
 	fmt.Println(gse.ToString(segments))
 
 	text1 := []byte("上海地标建筑, 东方明珠电视台塔上海中心大厦")
-	segments1 := seg.Segment([]byte(text1))
+	segments1 := seg.Segment(text1)
 	fmt.Println(gse.ToString(segments1, true))
 }
 
@@ -129,10 +129,10 @@ func main() {
 	var seg gse.Segmenter
 	seg.LoadDict("zh,testdata/test_dict.txt,testdata/test_dict1.txt")
 
-	text1 := []byte("所以, 你好, 再见")
+	text1 := "所以, 你好, 再见"
 	fmt.Println(seg.String(text1, true))
 
-	segments := seg.Segment(text1)
+	segments := seg.Segment([]byte(text1))
 	fmt.Println(gse.ToString(segments))
 }
 ```

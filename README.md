@@ -98,7 +98,7 @@ func segCut() {
 
 	// Text Segmentation
 	tb := []byte(text)
-	fmt.Println(seg.String(tb, true))
+	fmt.Println(seg.String(text, true))
 
 	segments := seg.Segment(tb)
 
@@ -127,7 +127,7 @@ func main() {
 	var seg gse.Segmenter
 	seg.LoadDict("zh,testdata/test_dict.txt,testdata/test_dict1.txt")
 
-	text1 := []byte("你好世界, Hello world")
+	text1 := "你好世界, Hello world"
 	fmt.Println(seg.String(text1, true))
 
 	segments := seg.Segment(text1)

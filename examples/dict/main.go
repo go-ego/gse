@@ -28,7 +28,7 @@ func segment() {
 	seg.LoadDict("zh,../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
 
 	text1 := []byte(text)
-	fmt.Println(seg.String(text1, true))
+	fmt.Println(seg.String(text, true))
 	// 金山/nr 旧金山/ns 湾/zg 旧金山湾/ns 金门/n 大桥/ns 金门大桥/nz
 
 	segments := seg.Segment(text1)

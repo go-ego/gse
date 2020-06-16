@@ -14,7 +14,7 @@ var (
 	text  = "《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄制作的的科幻片."
 	text1 = flag.String("text", text, "要分词的文本")
 
-	text2 = []byte("西雅图地标建筑, Seattle Space Needle, 西雅图太空针. Sky tree.")
+	text2 = "西雅图地标建筑, Seattle Space Needle, 西雅图太空针. Sky tree."
 )
 
 func main() {
@@ -76,7 +76,7 @@ func segCut() {
 	segments := seg.Segment([]byte(*text1))
 	fmt.Println(gse.ToString(segments, true))
 
-	segs := seg.Segment(text2)
+	segs := seg.Segment([]byte(text2))
 	// log.Println(gse.ToString(segs, false))
 	log.Println(gse.ToString(segs))
 	// 上海/ns 地标/n 建筑/n ,/x  /x 上海/ns 东方明珠/nr 电视塔/n
