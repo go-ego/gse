@@ -21,8 +21,8 @@ func main() {
 	// seg.LoadDict("../data/dict/dictionary.txt")
 	seg.LoadDict("jp")
 
-	fmt.Println(seg.String([]byte(*text), true))
-	fmt.Println(seg.Slice([]byte(*text), true))
+	fmt.Println(seg.String(*text, true))
+	fmt.Println(seg.Slice(*text, true))
 	fmt.Println(seg.CutAll(*text))
 
 	segments := seg.Segment([]byte(*text))
