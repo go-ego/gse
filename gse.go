@@ -19,6 +19,7 @@ Package gse Go efficient text segmentation, Go 语言高性能分词
 package gse
 
 import (
+	"strings"
 	"unicode"
 
 	"github.com/go-ego/gse/hmm"
@@ -118,6 +119,44 @@ func (seg *Segmenter) Slice(s string, searchMode ...bool) []string {
 func (seg *Segmenter) String(s string, searchMode ...bool) string {
 	segs := seg.ModeSegment([]byte(s), searchMode...)
 	return ToString(segs, searchMode...)
+}
+
+// SegPos represents a word with it's POS
+type SegPos struct {
+	Text, Pos string
+}
+
+// Pos return text and pos array
+func (seg *Segmenter) Pos(s string, searchMode ...bool) (pos []SegPos) {
+	st := seg.String(s, searchMode...)
+	sa := strings.Split(st, " ")
+	for i := 0; i < len(sa); i++ {
+		if sa[i] != "" && sa[i] != " " {
+			po := strings.Split(sa[i], "/")
+			if po[0] != "" && po[0] != " " {
+				pos1 := SegPos{
+					Text: po[0],
+					Pos:  po[1],
+				}
+
+				pos = append(pos, pos1)
+			}
+		}
+	}
+
+	return
+}
+
+// TrimPos not space and punct
+func (seg *Segmenter) TrimPos(se []SegPos) (re []SegPos) {
+	for i := 0; i < len(se); i++ {
+		ru := []rune(se[i].Text)[0]
+		if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
+			re = append(re, se[i])
+		}
+	}
+
+	return
 }
 
 func notPunct(ru []rune) bool {
