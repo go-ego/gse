@@ -150,9 +150,11 @@ func (seg *Segmenter) Pos(s string, searchMode ...bool) (pos []SegPos) {
 // TrimPos not space and punct
 func (seg *Segmenter) TrimPos(se []SegPos) (re []SegPos) {
 	for i := 0; i < len(se); i++ {
-		ru := []rune(se[i].Text)[0]
-		if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
-			re = append(re, se[i])
+		if se[i].Text != "" && se[i].Text != " " {
+			ru := []rune(se[i].Text)[0]
+			if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
+				re = append(re, se[i])
+			}
 		}
 	}
 
