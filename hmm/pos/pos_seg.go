@@ -17,7 +17,9 @@ package pos
 import (
 	"math"
 	"regexp"
+	"unicode"
 
+	"github.com/go-ego/gse"
 	"github.com/go-ego/gse/hmm/util"
 )
 
@@ -41,6 +43,11 @@ type Segment struct {
 // Segmenter is a words segmentation struct.
 type Segmenter struct {
 	dict Dict
+}
+
+// WithGse register gse segmenter
+func (seg *Segmenter) WithGse(segs gse.Segmenter) {
+	seg.dict.seg = segs
 }
 
 // LoadDict loads dictionary from given file name.
@@ -337,6 +344,20 @@ func (seg *Segmenter) Cut(sentence string, hmm bool) (result []Segment) {
 			}
 		}
 
+	}
+
+	return
+}
+
+// Trim not space and punct
+func (seg *Segmenter) Trim(se []Segment) (re []Segment) {
+	for i := 0; i < len(se); i++ {
+		if se[i].Text != "" && se[i].Text != " " {
+			ru := []rune(se[i].Text)[0]
+			if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
+				re = append(re, se[i])
+			}
+		}
 	}
 
 	return
