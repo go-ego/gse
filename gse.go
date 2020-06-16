@@ -61,7 +61,7 @@ func New(files ...string) Segmenter {
 // or use the user's model.
 func (seg *Segmenter) Cut(str string, hmm ...bool) []string {
 	if len(hmm) <= 0 {
-		return seg.Slice([]byte(str))
+		return seg.Slice(str)
 		// return seg.cutDAGNoHMM(str)
 	}
 
@@ -75,7 +75,7 @@ func (seg *Segmenter) Cut(str string, hmm ...bool) []string {
 // CutSearch cuts str into words using search engine mode.
 func (seg *Segmenter) CutSearch(str string, hmm ...bool) []string {
 	if len(hmm) <= 0 {
-		return seg.Slice([]byte(str), true)
+		return seg.Slice(str, true)
 	}
 
 	return seg.cutForSearch(str, hmm...)
@@ -108,15 +108,15 @@ func (seg *Segmenter) HMMCutMod(str string, prob ...map[rune]float64) []string {
 
 // Slice use modeSegment segment retrun []string
 // using search mode if searchMode is true
-func (seg *Segmenter) Slice(bytes []byte, searchMode ...bool) []string {
-	segs := seg.ModeSegment(bytes, searchMode...)
+func (seg *Segmenter) Slice(s string, searchMode ...bool) []string {
+	segs := seg.ModeSegment([]byte(s), searchMode...)
 	return ToSlice(segs, searchMode...)
 }
 
 // Slice use modeSegment segment retrun string
 // using search mode if searchMode is true
-func (seg *Segmenter) String(bytes []byte, searchMode ...bool) string {
-	segs := seg.ModeSegment(bytes, searchMode...)
+func (seg *Segmenter) String(s string, searchMode ...bool) string {
+	segs := seg.ModeSegment([]byte(s), searchMode...)
 	return ToString(segs, searchMode...)
 }
 

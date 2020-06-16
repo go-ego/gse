@@ -79,7 +79,7 @@ func BenchmarkCutSearchHMM(t *testing.B) {
 
 func BenchmarkSlice(b *testing.B) {
 	fn := func() {
-		prodSeg.Slice([]byte(text))
+		prodSeg.Slice(text)
 	}
 
 	tt.BM(b, fn)
@@ -87,7 +87,7 @@ func BenchmarkSlice(b *testing.B) {
 
 func BenchmarkString(b *testing.B) {
 	fn := func() {
-		prodSeg.String([]byte(text))
+		prodSeg.String(text)
 	}
 
 	tt.BM(b, fn)
