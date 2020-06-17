@@ -35,8 +35,8 @@ var (
 	reSkipInternal = regexp.MustCompile(`(\r\n|\s)`)
 )
 
-// Segment represents a word with it's POS
-type Segment struct {
+// SegPos represents a word with it's POS
+type SegPos struct {
 	Text, Pos string
 }
 
@@ -55,7 +55,7 @@ func (seg *Segmenter) LoadDict(fileName ...string) error {
 	return seg.dict.loadDict(fileName...)
 }
 
-func (seg *Segmenter) cutDetailInternal(sentence string) (result []Segment) {
+func (seg *Segmenter) cutDetailInternal(sentence string) (result []SegPos) {
 	runes := []rune(sentence)
 	posList := viterbi(runes)
 
@@ -67,22 +67,22 @@ func (seg *Segmenter) cutDetailInternal(sentence string) (result []Segment) {
 		case "B":
 			begin = i
 		case "E":
-			result = append(result, Segment{string(runes[begin : i+1]), pos.pos()})
+			result = append(result, SegPos{string(runes[begin : i+1]), pos.pos()})
 			next = i + 1
 		case "S":
-			result = append(result, Segment{string(char), pos.pos()})
+			result = append(result, SegPos{string(char), pos.pos()})
 			next = i + 1
 		}
 	}
 
 	if next < len(runes) {
-		result = append(result, Segment{string(runes[next:]), posList[next].pos()})
+		result = append(result, SegPos{string(runes[next:]), posList[next].pos()})
 	}
 
 	return
 }
 
-func (seg *Segmenter) cutDetail(sentence string) (result []Segment) {
+func (seg *Segmenter) cutDetail(sentence string) (result []SegPos) {
 	for _, blk := range util.RegexpSplit(reHanDetail, sentence, -1) {
 		if reHanDetail.MatchString(blk) {
 			for _, segment := range seg.cutDetailInternal(blk) {
@@ -98,11 +98,11 @@ func (seg *Segmenter) cutDetail(sentence string) (result []Segment) {
 
 			switch {
 			case reNum.MatchString(x):
-				result = append(result, Segment{x, "m"})
+				result = append(result, SegPos{x, "m"})
 			case reEng.MatchString(x):
-				result = append(result, Segment{x, "eng"})
+				result = append(result, SegPos{x, "eng"})
 			default:
-				result = append(result, Segment{x, "x"})
+				result = append(result, SegPos{x, "x"})
 			}
 		}
 	}
@@ -182,9 +182,9 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 	return rs
 }
 
-type cutFunc func(sentence string) []Segment
+type cutFunc func(sentence string) []SegPos
 
-func (seg *Segmenter) cutDAG(sentence string) (result []Segment) {
+func (seg *Segmenter) cutDAG(sentence string) (result []SegPos) {
 	runes := []rune(sentence)
 	routes := seg.calc(runes)
 	var y int
@@ -204,9 +204,9 @@ func (seg *Segmenter) cutDAG(sentence string) (result []Segment) {
 			bufString := string(buf)
 			if len(buf) == 1 {
 				if tag, ok := seg.dict.Pos(bufString); ok {
-					result = append(result, Segment{bufString, tag})
+					result = append(result, SegPos{bufString, tag})
 				} else {
-					result = append(result, Segment{bufString, "x"})
+					result = append(result, SegPos{bufString, "x"})
 				}
 
 				buf = make([]rune, 0)
@@ -222,9 +222,9 @@ func (seg *Segmenter) cutDAG(sentence string) (result []Segment) {
 				for _, elem := range buf {
 					selem := string(elem)
 					if tag, ok := seg.dict.Pos(selem); ok {
-						result = append(result, Segment{selem, tag})
+						result = append(result, SegPos{selem, tag})
 					} else {
-						result = append(result, Segment{selem, "x"})
+						result = append(result, SegPos{selem, "x"})
 					}
 				}
 			}
@@ -233,9 +233,9 @@ func (seg *Segmenter) cutDAG(sentence string) (result []Segment) {
 
 		word := string(frag)
 		if tag, ok := seg.dict.Pos(word); ok {
-			result = append(result, Segment{word, tag})
+			result = append(result, SegPos{word, tag})
 		} else {
-			result = append(result, Segment{word, "x"})
+			result = append(result, SegPos{word, "x"})
 		}
 		x = y
 	}
@@ -244,9 +244,9 @@ func (seg *Segmenter) cutDAG(sentence string) (result []Segment) {
 		bufString := string(buf)
 		if len(buf) == 1 {
 			if tag, ok := seg.dict.Pos(bufString); ok {
-				result = append(result, Segment{bufString, tag})
+				result = append(result, SegPos{bufString, tag})
 			} else {
-				result = append(result, Segment{bufString, "x"})
+				result = append(result, SegPos{bufString, "x"})
 			}
 		} else {
 			if v, ok := seg.dict.Frequency(bufString); !ok || v == 0.0 {
@@ -257,9 +257,9 @@ func (seg *Segmenter) cutDAG(sentence string) (result []Segment) {
 				for _, elem := range buf {
 					selem := string(elem)
 					if tag, ok := seg.dict.Pos(selem); ok {
-						result = append(result, Segment{selem, tag})
+						result = append(result, SegPos{selem, tag})
 					} else {
-						result = append(result, Segment{selem, "x"})
+						result = append(result, SegPos{selem, "x"})
 					}
 				}
 			}
@@ -269,7 +269,7 @@ func (seg *Segmenter) cutDAG(sentence string) (result []Segment) {
 	return
 }
 
-func (seg *Segmenter) cutDAGNoHMM(sentence string) (result []Segment) {
+func (seg *Segmenter) cutDAGNoHMM(sentence string) (result []SegPos) {
 	runes := []rune(sentence)
 	routes := seg.calc(runes)
 	var y int
@@ -286,21 +286,21 @@ func (seg *Segmenter) cutDAGNoHMM(sentence string) (result []Segment) {
 		}
 
 		if len(buf) > 0 {
-			result = append(result, Segment{string(buf), "eng"})
+			result = append(result, SegPos{string(buf), "eng"})
 			buf = make([]rune, 0)
 		}
 
 		word := string(frag)
 		if tag, ok := seg.dict.Pos(word); ok {
-			result = append(result, Segment{word, tag})
+			result = append(result, SegPos{word, tag})
 		} else {
-			result = append(result, Segment{word, "x"})
+			result = append(result, SegPos{word, "x"})
 		}
 		x = y
 	}
 
 	if len(buf) > 0 {
-		result = append(result, Segment{string(buf), "eng"})
+		result = append(result, SegPos{string(buf), "eng"})
 		// buf = make([]rune, 0)
 	}
 
@@ -309,7 +309,7 @@ func (seg *Segmenter) cutDAGNoHMM(sentence string) (result []Segment) {
 
 // Cut cuts a sentence into words.
 // Parameter hmm controls whether to use the HMM.
-func (seg *Segmenter) Cut(sentence string, hmm bool) (result []Segment) {
+func (seg *Segmenter) Cut(sentence string, hmm bool) (result []SegPos) {
 	var cut cutFunc
 	if hmm {
 		cut = seg.cutDAG
@@ -327,7 +327,7 @@ func (seg *Segmenter) Cut(sentence string, hmm bool) (result []Segment) {
 
 		for _, x := range util.RegexpSplit(reSkipInternal, blk, -1) {
 			if reSkipInternal.MatchString(x) {
-				result = append(result, Segment{x, "x"})
+				result = append(result, SegPos{x, "x"})
 				continue
 			}
 
@@ -335,11 +335,11 @@ func (seg *Segmenter) Cut(sentence string, hmm bool) (result []Segment) {
 				s := string(xx)
 				switch {
 				case reNum.MatchString(s):
-					result = append(result, Segment{s, "m"})
+					result = append(result, SegPos{s, "m"})
 				case reEng.MatchString(x):
-					result = append(result, Segment{x, "eng"})
+					result = append(result, SegPos{x, "eng"})
 				default:
-					result = append(result, Segment{s, "x"})
+					result = append(result, SegPos{s, "x"})
 				}
 			}
 		}
@@ -350,11 +350,24 @@ func (seg *Segmenter) Cut(sentence string, hmm bool) (result []Segment) {
 }
 
 // Trim not space and punct
-func (seg *Segmenter) Trim(se []Segment) (re []Segment) {
+func (seg *Segmenter) Trim(se []SegPos) (re []SegPos) {
 	for i := 0; i < len(se); i++ {
 		if se[i].Text != "" && se[i].Text != " " {
 			ru := []rune(se[i].Text)[0]
 			if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
+				re = append(re, se[i])
+			}
+		}
+	}
+
+	return
+}
+
+// TrimPos trim some pos
+func (seg *Segmenter) TrimPos(se []SegPos, pos ...string) (re []SegPos) {
+	for i := 0; i < len(se); i++ {
+		for h := 0; h < len(pos); h++ {
+			if se[i].Pos != pos[h] {
 				re = append(re, se[i])
 			}
 		}
