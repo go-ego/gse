@@ -147,12 +147,25 @@ func (seg *Segmenter) Pos(s string, searchMode ...bool) (pos []SegPos) {
 	return
 }
 
-// TrimPos not space and punct
-func (seg *Segmenter) TrimPos(se []SegPos) (re []SegPos) {
+// TrimPunct not space and punct
+func (seg *Segmenter) TrimPunct(se []SegPos) (re []SegPos) {
 	for i := 0; i < len(se); i++ {
 		if se[i].Text != "" && se[i].Text != " " {
 			ru := []rune(se[i].Text)[0]
 			if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
+				re = append(re, se[i])
+			}
+		}
+	}
+
+	return
+}
+
+// TrimPos trim some pos
+func (seg *Segmenter) TrimPos(se []SegPos, pos ...string) (re []SegPos) {
+	for i := 0; i < len(se); i++ {
+		for h := 0; h < len(pos); h++ {
+			if se[i].Pos != pos[h] {
 				re = append(re, se[i])
 			}
 		}
