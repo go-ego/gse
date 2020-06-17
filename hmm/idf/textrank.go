@@ -4,6 +4,7 @@ import (
 	"math"
 	"sort"
 
+	"github.com/go-ego/gse"
 	"github.com/go-ego/gse/hmm/pos"
 )
 
@@ -12,6 +13,23 @@ const dampingFactor = 0.85
 var (
 	defaultAllowPOS = []string{"ns", "n", "vn", "v"}
 )
+
+// TextRanker is used to extract tags from sentence.
+type TextRanker struct {
+	seg *pos.Segmenter
+	HMM bool
+}
+
+// WithGse register gse segmenter
+func (t *TextRanker) WithGse(segs gse.Segmenter) {
+	t.seg.WithGse(segs)
+}
+
+// LoadDict reads a given file and create a new dictionary file for Textranker.
+func (t *TextRanker) LoadDict(fileName ...string) error {
+	t.seg = new(pos.Segmenter)
+	return t.seg.LoadDict(fileName...)
+}
 
 type edge struct {
 	start  string
@@ -167,15 +185,4 @@ func (t *TextRanker) TextRankWithPOS(sentence string, topK int, allowPOS []strin
 // Parameter topK specify how many top keywords to be returned at most.
 func (t *TextRanker) TextRank(sentence string, topK int) Segments {
 	return t.TextRankWithPOS(sentence, topK, defaultAllowPOS)
-}
-
-// TextRanker is used to extract tags from sentence.
-type TextRanker struct {
-	seg *pos.Segmenter
-}
-
-// LoadDict reads a given file and create a new dictionary file for Textranker.
-func (t *TextRanker) LoadDict(fileName ...string) error {
-	t.seg = new(pos.Segmenter)
-	return t.seg.LoadDict(fileName...)
 }
