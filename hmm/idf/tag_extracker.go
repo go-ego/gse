@@ -51,6 +51,12 @@ type TagExtracter struct {
 	stopWord *StopWord
 }
 
+// WithGse register gse segmenter
+func (t *TagExtracter) WithGse(segs gse.Segmenter) {
+	t.stopWord = NewStopWord()
+	t.seg = segs
+}
+
 // LoadDict reads the given filename and create a new dictionary.
 func (t *TagExtracter) LoadDict(fileName ...string) error {
 	t.stopWord = NewStopWord()
