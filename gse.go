@@ -27,7 +27,7 @@ import (
 
 const (
 	// Version get the gse version
-	Version = "v0.50.1.344, Nisqually Glacier!"
+	Version = "v0.60.1.392-beta, Nisqually Glacier!"
 
 	// minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
