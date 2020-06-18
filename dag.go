@@ -17,6 +17,7 @@ package gse
 import (
 	"math"
 	"regexp"
+	"strings"
 )
 
 const (
@@ -285,4 +286,60 @@ func (seg *Segmenter) cutForSearch(str string, hmm ...bool) []string {
 	}
 
 	return result
+}
+
+// SuggestFreq suggest the words frequency
+// returns a suggested frequncy of a word or a long word
+// cutted into several short words.
+func (seg *Segmenter) SuggestFreq(words ...string) float64 {
+	frequency := 1.0
+	total := seg.Dict.totalFrequency
+
+	if len(words) > 1 {
+		for _, word := range words {
+			freq, ok := seg.Find(word)
+			if ok {
+				frequency *= freq
+			}
+
+			frequency /= total
+		}
+
+		frequency, _ = math.Modf(frequency * total)
+		wordFreq := 0.0
+		freq, ok := seg.Find(strings.Join(words, ""))
+		if ok {
+			wordFreq = freq
+		}
+
+		if wordFreq < frequency {
+			frequency = wordFreq
+		}
+
+	} else {
+		word := words[0]
+		for _, segment := range seg.Cut(word, false) {
+			freq, ok := seg.Find(segment)
+			if ok {
+				frequency *= freq
+			}
+
+			frequency /= total
+		}
+
+		frequency, _ = math.Modf(frequency * total)
+		frequency += 1.0
+		wordFreq := 1.0
+
+		freq, ok := seg.Find(word)
+		if ok {
+			wordFreq = freq
+		}
+
+		if wordFreq > frequency {
+			frequency = wordFreq
+		}
+	}
+
+	return frequency
 }
