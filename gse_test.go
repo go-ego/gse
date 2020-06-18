@@ -45,8 +45,11 @@ func TestHMM(t *testing.T) {
 		"[纽约 时代 广场 纽约时代广场 ,  纽约 帝国 国大 大厦 帝国大厦 ,  金山 山湾 旧金山 旧金山湾 金门 大桥 金门大桥]",
 		tx)
 
-	f := prodSeg.SuggestFreq("西雅图")
-	tt.Equal(t, 79, f)
+	f1 := prodSeg.SuggestFreq("西雅图")
+	tt.Equal(t, 79, f1)
+
+	f1 = prodSeg.SuggestFreq("西雅图", "西雅图都会区", "旧金山湾")
+	tt.Equal(t, 0, f1)
 }
 
 func TestPos(t *testing.T) {
