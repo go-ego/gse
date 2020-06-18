@@ -147,7 +147,7 @@ func (t *TextRanker) TextRankWithPOS(sentence string, topK int, allowPOS []strin
 	cm := make(map[[2]string]float64)
 	span := 5
 
-	var pairs []pos.Segment
+	var pairs []pos.SegPos
 	for _, pair := range t.seg.Cut(sentence, true) {
 		pairs = append(pairs, pair)
 	}
