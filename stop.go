@@ -15,6 +15,7 @@
 package gse
 
 import (
+	"log"
 	"path"
 	"strings"
 
@@ -39,8 +40,10 @@ func (seg *Segmenter) LoadStop(files ...string) error {
 
 	name := strings.Split(files[0], ", ")
 	for i := 0; i < len(name); i++ {
+		log.Printf("Load the stop word dictionary: \"%s\" ", name[i])
 		s, err := file.Read(name[i])
 		if err != nil {
+			log.Printf("Could not load dictionaries: \"%s\", %v \n", name[i], err)
 			return err
 		}
 

@@ -76,7 +76,8 @@ func TestPos(t *testing.T) {
 }
 
 func TestStop(t *testing.T) {
-	prodSeg.LoadStop()
+	err := prodSeg.LoadStop()
+	tt.Nil(t, err)
 
 	b := prodSeg.IsStop("阿")
 	tt.True(t, b)
