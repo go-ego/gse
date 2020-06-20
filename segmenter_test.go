@@ -93,6 +93,21 @@ func TestSegmentJp(t *testing.T) {
 	tt.Expect(t, "2", len(segments))
 	tt.Expect(t, "0", segments[0].start)
 	tt.Expect(t, "15", segments[0].end)
+
+	token := segments[0].Token()
+	tt.Expect(t, "こんにちは", token.Text())
+	tt.Expect(t, "5704", token.Frequency())
+	tt.Expect(t, "感動詞", token.Pos())
+
+	var tokenArr []*Token
+	for i := 0; i < len(segments); i++ {
+		tokenArr = append(tokenArr, segments[i].Token())
+	}
+	tt.Expect(t, "こんにちは 世界 ", printTokens(tokenArr, 2))
+
+	tseg := token.Segments()
+	tt.Expect(t, "0", tseg[0].Start())
+	tt.Expect(t, "6", tseg[0].End())
 }
 
 func TestLoadDictionary(t *testing.T) {
