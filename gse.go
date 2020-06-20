@@ -163,8 +163,13 @@ func (seg *Segmenter) TrimPunct(se []SegPos) (re []SegPos) {
 
 // TrimPos trim some pos
 func (seg *Segmenter) TrimPos(se []SegPos, pos ...string) (re []SegPos) {
-	for i := 0; i < len(se); i++ {
-		for h := 0; h < len(pos); h++ {
+	for h := 0; h < len(pos); h++ {
+		if h > 0 {
+			se = re
+			re = nil
+		}
+
+		for i := 0; i < len(se); i++ {
 			if se[i].Pos != pos[h] {
 				re = append(re, se[i])
 			}
