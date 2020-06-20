@@ -23,6 +23,7 @@ import (
 // Segmenter 分词器结构体
 type Segmenter struct {
 	Dict *Dictionary
+	Load bool
 }
 
 // jumper 该结构体用于记录 Viterbi 算法中某字元处的向前分词跳转信息
