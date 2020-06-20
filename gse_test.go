@@ -74,3 +74,18 @@ func TestPos(t *testing.T) {
 		"[{纽约 ns} {纽约时代广场 nt} {纽约 ns} {帝国大厦 nr} {金山 nr} {旧金山 ns} {旧金山湾 ns} {大桥 ns} {金门大桥 nz}]", pos)
 
 }
+
+func TestStop(t *testing.T) {
+	err := prodSeg.LoadStop()
+	tt.Nil(t, err)
+
+	b := prodSeg.IsStop("阿")
+	tt.True(t, b)
+
+	b = prodSeg.IsStop("哎")
+	tt.True(t, b)
+
+	prodSeg.AddStop("中心")
+	b = prodSeg.IsStop("中心")
+	tt.True(t, b)
+}
