@@ -17,6 +17,7 @@ package gse
 import (
 	"log"
 	"path"
+	"runtime"
 	"strings"
 
 	"github.com/go-vgo/gt/file"
@@ -49,6 +50,10 @@ func (seg *Segmenter) LoadStop(files ...string) error {
 
 		ns := strings.Split(s, "\n")
 		for h := 0; h < len(ns); h++ {
+			if runtime.GOOS == "windows" {
+				ns[h] = strings.TrimSpace(ns[h])
+			}
+
 			StopWordMap[ns[h]] = true
 		}
 	}
@@ -63,7 +68,7 @@ func (seg *Segmenter) AddStop(text string) {
 
 // IsStop checks if a given word is stop word.
 func (seg *Segmenter) IsStop(s string) bool {
-	// _, ok := StopWordMap[s]
-	// return ok
-	return StopWordMap[s]
+	_, ok := StopWordMap[s]
+	return ok
+	// return StopWordMap[s]
 }
