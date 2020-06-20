@@ -6,9 +6,11 @@ import (
 	"github.com/vcaesar/tt"
 )
 
-func TestHMM(t *testing.T) {
+func init() {
 	prodSeg.LoadDict()
+}
 
+func TestHMM(t *testing.T) {
 	hmm := prodSeg.HMMCutMod("纽约时代广场")
 	tt.Equal(t, 2, len(hmm))
 	tt.Equal(t, "纽约", hmm[0])

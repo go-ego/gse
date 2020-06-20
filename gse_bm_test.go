@@ -8,10 +8,6 @@ import (
 
 var text = "纽约时代广场, 纽约帝国大厦, 旧金山湾金门大桥"
 
-func init() {
-	prodSeg.LoadDict()
-}
-
 func BenchmarkCut(t *testing.B) {
 	fn := func() {
 		prodSeg.Cut(text)

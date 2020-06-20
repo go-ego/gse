@@ -102,7 +102,10 @@ func (seg *Segmenter) RemoveToken(text string) {
 // 词典的格式为（每个分词一行）：
 //	分词文本 频率 词性
 func (seg *Segmenter) LoadDict(files ...string) error {
-	seg.Dict = NewDict()
+	if !seg.Load {
+		seg.Dict = NewDict()
+		seg.Load = true
+	}
 
 	var (
 		dictDir  = path.Join(path.Dir(getCurrentFilePath()), "data")
