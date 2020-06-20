@@ -134,6 +134,8 @@ func TestLoadDictionary(t *testing.T) {
 		[]byte("世界人口")), false))
 
 	dict := seg1.Dictionary()
+	tt.Expect(t, "16", dict.MaxTokenLen())
+	tt.Expect(t, "5.3250731e+07", dict.TotalFreq())
 
 	freq, ok := dict.Find([]byte("世界"))
 	tt.Equal(t, 34387, freq)
