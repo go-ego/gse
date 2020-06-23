@@ -241,27 +241,35 @@ func (seg *Segmenter) cutDAG(sentence string) (result []SegPos) {
 	}
 
 	if len(buf) > 0 {
-		bufString := string(buf)
-		if len(buf) == 1 {
-			if tag, ok := seg.dict.Pos(bufString); ok {
-				result = append(result, SegPos{bufString, tag})
-			} else {
-				result = append(result, SegPos{bufString, "x"})
-			}
+		result = seg.bufn(buf)
+	}
+
+	return
+}
+
+func (seg *Segmenter) bufn(buf []rune) (result []SegPos) {
+	bufString := string(buf)
+	if len(buf) == 1 {
+		if tag, ok := seg.dict.Pos(bufString); ok {
+			result = append(result, SegPos{bufString, tag})
 		} else {
-			if v, ok := seg.dict.Frequency(bufString); !ok || v == 0.0 {
-				for _, t := range seg.cutDetail(bufString) {
-					result = append(result, t)
-				}
+			result = append(result, SegPos{bufString, "x"})
+		}
+
+		return
+	}
+
+	if v, ok := seg.dict.Frequency(bufString); !ok || v == 0.0 {
+		for _, t := range seg.cutDetail(bufString) {
+			result = append(result, t)
+		}
+	} else {
+		for _, elem := range buf {
+			selem := string(elem)
+			if tag, ok := seg.dict.Pos(selem); ok {
+				result = append(result, SegPos{selem, tag})
 			} else {
-				for _, elem := range buf {
-					selem := string(elem)
-					if tag, ok := seg.dict.Pos(selem); ok {
-						result = append(result, SegPos{selem, tag})
-					} else {
-						result = append(result, SegPos{selem, "x"})
-					}
-				}
+				result = append(result, SegPos{selem, "x"})
 			}
 		}
 	}
