@@ -16,7 +16,7 @@ var (
 
 // TextRanker is used to extract tags from sentence.
 type TextRanker struct {
-	seg *pos.Segmenter
+	seg pos.Segmenter
 	HMM bool
 }
 
@@ -27,7 +27,7 @@ func (t *TextRanker) WithGse(segs gse.Segmenter) {
 
 // LoadDict reads a given file and create a new dictionary file for Textranker.
 func (t *TextRanker) LoadDict(fileName ...string) error {
-	t.seg = new(pos.Segmenter)
+	// t.seg = new(pos.Segmenter)
 	return t.seg.LoadDict(fileName...)
 }
 
