@@ -155,7 +155,7 @@ func (t *TextRanker) TextRankWithPOS(sentence string, topK int, allowPOS []strin
 	for i := range pairs {
 		_, ok := posFilt[pairs[i].Pos]
 		if ok {
-			for j := i + 1; j < i+span && j <= len(pairs); j++ {
+			for j := i + 1; j < i+span && j < len(pairs); j++ {
 				if _, ok := posFilt[pairs[j].Pos]; !ok {
 					continue
 				}
