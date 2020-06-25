@@ -162,17 +162,20 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 	for idx := n - 1; idx >= 0; idx-- {
 		for _, i := range dag[idx] {
 			if freq, ok := seg.dict.Frequency(string(runes[idx : i+1])); ok {
-				r = route{frequency: math.Log(freq) - seg.dict.logTotal + rs[i+1].frequency,
-					index: i}
+				r = route{
+					frequency: math.Log(freq) - seg.dict.logTotal + rs[i+1].frequency,
+					index:     i}
 			} else {
-				r = route{frequency: math.Log(1.0) - seg.dict.logTotal + rs[i+1].frequency,
-					index: i}
+				r = route{
+					frequency: math.Log(1.0) - seg.dict.logTotal + rs[i+1].frequency,
+					index:     i}
 			}
 
 			if v, ok := rs[idx]; !ok {
 				rs[idx] = r
 			} else {
-				if v.frequency < r.frequency || (v.frequency == r.frequency && v.index < r.index) {
+				if v.frequency < r.frequency ||
+					(v.frequency == r.frequency && v.index < r.index) {
 					rs[idx] = r
 				}
 			}
