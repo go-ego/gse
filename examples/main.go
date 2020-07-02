@@ -6,10 +6,12 @@ import (
 	"log"
 
 	"github.com/go-ego/gse"
+	"github.com/go-ego/gse/hmm/pos"
 )
 
 var (
-	seg gse.Segmenter
+	seg    gse.Segmenter
+	posSeg pos.Segmenter
 
 	text  = "《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄制作的的科幻片."
 	text1 = flag.String("text", text, "要分词的文本")
@@ -69,10 +71,25 @@ func cut() {
 
 	cut = seg.Trim(cut)
 	fmt.Println("cut all: ", cut)
+
+	posSeg.WithGse(seg)
+	po := posSeg.Cut(text, true)
+	fmt.Println(po)
+
+	po = posSeg.TrimPos(po)
+	fmt.Println(po)
 }
 
 // 使用最短路径和动态规划分词
 func segCut() {
+	fmt.Println(seg.String(text2, true))
+	fmt.Println(seg.Slice(text2, true))
+
+	po := seg.Pos(text2, true)
+	fmt.Println(po)
+	po = seg.TrimPos(po)
+	fmt.Println(po)
+
 	segments := seg.Segment([]byte(*text1))
 	fmt.Println(gse.ToString(segments, true))
 
@@ -85,7 +102,4 @@ func segCut() {
 	// segs := seg.ModeSegment(text2, true)
 	log.Println("搜索模式: ", gse.ToString(segs, true))
 	log.Println("to slice", gse.ToSlice(segs, true))
-
-	fmt.Println(seg.String(text2, true))
-	fmt.Println(seg.Slice(text2, true))
 }
