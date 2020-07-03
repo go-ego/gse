@@ -19,7 +19,6 @@ Package gse Go efficient text segmentation, Go 语言高性能分词
 package gse
 
 import (
-	"strings"
 	"unicode"
 
 	"github.com/go-ego/gse/hmm"
@@ -128,20 +127,14 @@ type SegPos struct {
 
 // Pos return text and pos array
 func (seg *Segmenter) Pos(s string, searchMode ...bool) (pos []SegPos) {
-	st := seg.String(s, searchMode...)
-	sa := strings.Split(st, " ")
+	sa := seg.ModeSegment([]byte(s), searchMode...)
 	for i := 0; i < len(sa); i++ {
-		if sa[i] != "" && sa[i] != " " {
-			po := strings.Split(sa[i], "/")
-			if po[0] != "" && po[0] != " " {
-				pos1 := SegPos{
-					Text: po[0],
-					Pos:  po[1],
-				}
-
-				pos = append(pos, pos1)
-			}
+		pos1 := SegPos{
+			Text: textSliceToString(sa[i].token.text),
+			Pos:  sa[i].token.pos,
 		}
+
+		pos = append(pos, pos1)
 	}
 
 	return
