@@ -57,14 +57,14 @@ func TestHMM(t *testing.T) {
 
 func TestPos(t *testing.T) {
 	pos := prodSeg.Pos(text, false)
-	tt.Equal(t, 7, len(pos))
+	tt.Equal(t, 9, len(pos))
 	tt.Equal(t,
-		"[{纽约时代广场 nt} {, x} {纽约 ns} {帝国大厦 nr} {, x} {旧金山湾 ns} {金门大桥 nz}]", pos)
+		"[{纽约时代广场 nt} {, x} {  x} {纽约 ns} {帝国大厦 nr} {, x} {  x} {旧金山湾 ns} {金门大桥 nz}]", pos)
 
 	pos = prodSeg.Pos(text, true)
-	tt.Equal(t, 18, len(pos))
+	tt.Equal(t, 20, len(pos))
 	tt.Equal(t,
-		"[{纽约 ns} {时代 n} {广场 n} {时代广场 n} {纽约时代广场 nt} {, x} {纽约 ns} {帝国 n} {大厦 n} {帝国大厦 nr} {, x} {金山 nr} {旧金山 ns} {湾 zg} {旧金山湾 ns} {金门 n} {大桥 ns} {金门大桥 nz}]", pos)
+		"[{纽约 ns} {时代 n} {广场 n} {时代广场 n} {纽约时代广场 nt} {, x} {  x} {纽约 ns} {帝国 n} {大厦 n} {帝国大厦 nr} {, x} {  x} {金山 nr} {旧金山 ns} {湾 zg} {旧金山湾 ns} {金门 n} {大桥 ns} {金门大桥 nz}]", pos)
 
 	pos = prodSeg.TrimPunct(pos)
 	tt.Equal(t, 16, len(pos))

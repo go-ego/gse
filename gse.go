@@ -126,18 +126,9 @@ type SegPos struct {
 }
 
 // Pos return text and pos array
-func (seg *Segmenter) Pos(s string, searchMode ...bool) (pos []SegPos) {
+func (seg *Segmenter) Pos(s string, searchMode ...bool) []SegPos {
 	sa := seg.ModeSegment([]byte(s), searchMode...)
-	for i := 0; i < len(sa); i++ {
-		pos1 := SegPos{
-			Text: textSliceToString(sa[i].token.text),
-			Pos:  sa[i].token.pos,
-		}
-
-		pos = append(pos, pos1)
-	}
-
-	return
+	return ToPos(sa, searchMode...)
 }
 
 // TrimPunct not space and punct
