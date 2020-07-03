@@ -3,6 +3,7 @@ package gse
 import (
 	"fmt"
 	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/vcaesar/tt"
@@ -193,6 +194,10 @@ func TestDictPaths(t *testing.T) {
 	paths1 := DictPaths("./dictDir", "zh, jp")
 	tt.Expect(t, "2", len(paths))
 	tt.Equal(t, paths, paths1)
+
+	p := strings.TrimRight(GetCurrentFilePath(), "/segmenter_test.go") +
+		`/gse/data/idf.txt`
+	tt.Equal(t, "["+p+"]", GetIdfPath([]string{}...))
 }
 
 func TestInAlphaNum(t *testing.T) {
