@@ -195,8 +195,8 @@ func TestDictPaths(t *testing.T) {
 	tt.Expect(t, "2", len(paths))
 	tt.Equal(t, paths, paths1)
 
-	p := strings.TrimRight(GetCurrentFilePath(), "/segmenter_test.go") +
-		`/gse/data/idf.txt`
+	p := strings.ReplaceAll(GetCurrentFilePath(), "/segmenter_test.go", "") +
+		`/data/idf.txt`
 	tt.Equal(t, "["+p+"]", GetIdfPath([]string{}...))
 }
 
