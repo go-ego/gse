@@ -33,6 +33,7 @@ func main() {
 
 	cut()
 	//
+	cutPos()
 	segCut()
 }
 
@@ -69,6 +70,10 @@ func cut() {
 	cut = seg.CutAll(text)
 	fmt.Println("cut all: ", cut)
 
+	posAndTrim(cut)
+}
+
+func posAndTrim(cut []string) {
 	cut = seg.Trim(cut)
 	fmt.Println("cut all: ", cut)
 
@@ -80,8 +85,7 @@ func cut() {
 	fmt.Println(po)
 }
 
-// 使用最短路径和动态规划分词
-func segCut() {
+func cutPos() {
 	fmt.Println(seg.String(text2, true))
 	fmt.Println(seg.Slice(text2, true))
 
@@ -89,7 +93,10 @@ func segCut() {
 	fmt.Println(po)
 	po = seg.TrimPos(po)
 	fmt.Println(po)
+}
 
+// 使用最短路径和动态规划分词
+func segCut() {
 	segments := seg.Segment([]byte(*text1))
 	fmt.Println(gse.ToString(segments, true))
 
