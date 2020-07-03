@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/go-ego/gse"
+	"github.com/go-ego/gse/hmm/idf"
 	"github.com/go-ego/gse/hmm/pos"
 )
 
@@ -35,6 +36,8 @@ func main() {
 	//
 	cutPos()
 	segCut()
+
+	extAndRank(seg)
 }
 
 func addToken() {
@@ -79,10 +82,10 @@ func posAndTrim(cut []string) {
 
 	posSeg.WithGse(seg)
 	po := posSeg.Cut(text, true)
-	fmt.Println(po)
+	fmt.Println("pos: ", po)
 
 	po = posSeg.TrimPos(po)
-	fmt.Println(po)
+	fmt.Println("trim pos: ", po)
 }
 
 func cutPos() {
@@ -90,9 +93,9 @@ func cutPos() {
 	fmt.Println(seg.Slice(text2, true))
 
 	po := seg.Pos(text2, true)
-	fmt.Println(po)
+	fmt.Println("pos: ", po)
 	po = seg.TrimPos(po)
-	fmt.Println(po)
+	fmt.Println("trim pos: ", po)
 }
 
 // 使用最短路径和动态规划分词
@@ -109,4 +112,20 @@ func segCut() {
 	// segs := seg.ModeSegment(text2, true)
 	log.Println("搜索模式: ", gse.ToString(segs, true))
 	log.Println("to slice", gse.ToSlice(segs, true))
+}
+
+func extAndRank(segs gse.Segmenter) {
+	var te idf.TagExtracter
+	te.WithGse(segs)
+	err := te.LoadIdf()
+	fmt.Println(err)
+
+	segments := te.ExtractTags(text, 5)
+	fmt.Println("segments: ", len(segments), segments)
+
+	var tr idf.TextRanker
+	tr.WithGse(segs)
+
+	results := tr.TextRank(text, 5)
+	fmt.Println("results: ", results)
 }

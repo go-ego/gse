@@ -20,7 +20,7 @@ func TestExtAndRank(t *testing.T) {
 	tt.Nil(t, err)
 
 	segments := te.ExtractTags(text, 5)
-	fmt.Println("segments:", len(segments), segments)
+	fmt.Println("segments: ", len(segments), segments)
 
 	var tr TextRanker
 	tr.WithGse(segs)
