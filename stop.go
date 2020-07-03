@@ -32,7 +32,7 @@ var StopWordMap = map[string]bool{
 func (seg *Segmenter) LoadStop(files ...string) error {
 	if len(files) <= 0 {
 		var (
-			dictDir  = path.Join(path.Dir(getCurrentFilePath()), "data")
+			dictDir  = path.Join(path.Dir(GetCurrentFilePath()), "data")
 			dictPath = path.Join(dictDir, "dict/stop_word.txt")
 		)
 

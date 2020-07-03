@@ -38,8 +38,12 @@ func (i *Idf) AddToken(text string, frequency float64, pos ...string) {
 	i.median = i.freqs[len(i.freqs)/2]
 }
 
-func (i *Idf) loadDict(fileName ...string) error {
-	return i.seg.LoadDict(fileName...)
+func (i *Idf) loadDict(files ...string) error {
+	if len(files) <= 0 {
+		files = gse.GetIdfPath(files...)
+	}
+
+	return i.seg.LoadDict(files...)
 }
 
 // Frequency returns the IDF of given word.

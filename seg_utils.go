@@ -106,6 +106,53 @@ func tokenToSlice(token *Token) (output []string) {
 	return
 }
 
+// ToPos segments to SegPos
+func ToPos(segs []Segment, searchMode ...bool) (output []SegPos) {
+	var mode bool
+	if len(searchMode) > 0 {
+		mode = searchMode[0]
+	}
+
+	if mode {
+		for _, seg := range segs {
+			output = append(output, tokenToPos(seg.token)...)
+		}
+		return
+	}
+
+	for _, seg := range segs {
+		pos1 := SegPos{
+			Text: textSliceToString(seg.token.text),
+			Pos:  seg.token.pos,
+		}
+
+		output = append(output, pos1)
+	}
+
+	return
+}
+
+func tokenToPos(token *Token) (output []SegPos) {
+	hasOnlyTerminalToken := true
+	for _, s := range token.segments {
+		if len(s.token.segments) > 1 || IsJp(string(s.token.text[0])) {
+			hasOnlyTerminalToken = false
+		}
+
+		if !hasOnlyTerminalToken {
+			output = append(output, tokenToPos(s.token)...)
+		}
+	}
+
+	pos1 := SegPos{
+		Text: textSliceToString(token.text),
+		Pos:  token.pos,
+	}
+	output = append(output, pos1)
+
+	return output
+}
+
 // 将多个字元拼接一个字符串输出
 func textToString(text []Text) string {
 	var output string
