@@ -108,7 +108,7 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	}
 
 	var (
-		dictDir  = path.Join(path.Dir(getCurrentFilePath()), "data")
+		dictDir  = path.Join(path.Dir(GetCurrentFilePath()), "data")
 		dictPath string
 		// load     bool
 	)
@@ -152,10 +152,22 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	return nil
 }
 
-// getCurrentFilePath get current file path
-func getCurrentFilePath() string {
+// GetCurrentFilePath get current file path
+func GetCurrentFilePath() string {
 	_, filePath, _, _ := runtime.Caller(1)
 	return filePath
+}
+
+// GetIdfPath get the idf path
+func GetIdfPath(files ...string) []string {
+	var (
+		dictDir  = path.Join(path.Dir(GetCurrentFilePath()), "data")
+		dictPath = path.Join(dictDir, "idf.txt")
+	)
+
+	files = append(files, dictPath)
+
+	return files
 }
 
 // Read read the dict flie

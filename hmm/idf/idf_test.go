@@ -16,7 +16,7 @@ var (
 func TestExtAndRank(t *testing.T) {
 	var te TagExtracter
 	te.WithGse(segs)
-	err := te.LoadIdf("./idf.txt")
+	err := te.LoadIdf()
 	tt.Nil(t, err)
 
 	segments := te.ExtractTags(text, 5)
