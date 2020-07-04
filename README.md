@@ -64,13 +64,16 @@ import (
 	"fmt"
 
 	"github.com/go-ego/gse"
+	"github.com/go-ego/gse/hmm/pos"
 )
 
 var (
 	text = "Hello world, Helloworld. Winter is coming! 你好世界."
 
 	new = gse.New("zh,testdata/test_dict3.txt", "alpha")
+
 	seg gse.Segmenter
+	posSeg pos.Segmenter
 )
 
 func cut() {
@@ -88,6 +91,28 @@ func main() {
 	cut()
 
 	segCut()
+}
+
+func posAndTrim(cut []string) {
+	cut = seg.Trim(cut)
+	fmt.Println("cut all: ", cut)
+
+	pos.WithGse(seg)
+	po := posSeg.Cut(text, true)
+	fmt.Println("pos: ", po)
+
+	po = posSeg.TrimPos(po)
+	fmt.Println("trim pos: ", po)
+}
+
+func cutPos() {
+	fmt.Println(seg.String(text, true))
+	fmt.Println(seg.Slice(text, true))
+
+	po := seg.Pos(text, true)
+	fmt.Println("pos: ", po)
+	po = seg.TrimPos(po)
+	fmt.Println("trim pos: ", po)
 }
 
 func segCut() {
@@ -130,7 +155,7 @@ func main() {
 	text1 := "你好世界, Hello world"
 	fmt.Println(seg.String(text1, true))
 
-	segments := seg.Segment(text1)
+	segments := seg.Segment([]byte(text1))
 	fmt.Println(gse.ToString(segments))
 }
 ```
