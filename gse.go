@@ -168,7 +168,7 @@ func (seg *Segmenter) PosStr(str []SegPos, separator ...string) (r string) {
 	return
 }
 
-// TrimPunct not space and punct
+// TrimPunct trim SegPos not space and punct
 func (seg *Segmenter) TrimPunct(se []SegPos) (re []SegPos) {
 	for i := 0; i < len(se); i++ {
 		if se[i].Text != "" && se[i].Text != " " {

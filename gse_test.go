@@ -30,6 +30,10 @@ func TestHMM(t *testing.T) {
 	tt.Equal(t, 6, len(tx))
 	tt.Equal(t, "[纽约时代广场 纽约 帝国大厦 旧金山湾 金门大桥  广场]", tx)
 
+	s := prodSeg.CutStr(tx)
+	tt.Equal(t, 72, len(s))
+	tt.Equal(t, "纽约时代广场 纽约 帝国大厦 旧金山湾 金门大桥  广场", s)
+
 	tx = prodSeg.CutAll(text)
 	tt.Equal(t, 21, len(tx))
 	tt.Equal(t,
@@ -77,6 +81,11 @@ func TestPos(t *testing.T) {
 	tt.Equal(t, 16, len(pos))
 	tt.Equal(t,
 		"[{纽约 ns} {时代 n} {广场 n} {时代广场 n} {纽约时代广场 nt} {纽约 ns} {帝国 n} {大厦 n} {帝国大厦 nr} {金山 nr} {旧金山 ns} {湾 zg} {旧金山湾 ns} {金门 n} {大桥 ns} {金门大桥 nz}]", pos)
+
+	s = prodSeg.PosStr(pos)
+	tt.Equal(t, 189, len(s))
+	tt.Equal(t,
+		"纽约/ns 时代/n 广场/n 时代广场/n 纽约时代广场/nt 纽约/ns 帝国/n 大厦/n 帝国大厦/nr 金山/nr 旧金山/ns 湾/zg 旧金山湾/ns 金门/n 大桥/ns 金门大桥/nz", s)
 
 	pos = prodSeg.TrimPos(pos, "n", "zg")
 	tt.Equal(t, 9, len(pos))
