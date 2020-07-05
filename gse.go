@@ -149,6 +149,25 @@ func (seg *Segmenter) Pos(s string, searchMode ...bool) []SegPos {
 	return ToPos(sa, searchMode...)
 }
 
+// PosStr cut []SegPos with Pos return string
+func (seg *Segmenter) PosStr(str []SegPos, separator ...string) (r string) {
+	sep := " "
+	if len(separator) > 0 {
+		sep = separator[0]
+	}
+
+	for i := 0; i < len(str); i++ {
+		add := str[i].Text + "/" + str[i].Pos
+		if i == len(str)-1 {
+			r += add
+		} else {
+			r += add + sep
+		}
+	}
+
+	return
+}
+
 // TrimPunct not space and punct
 func (seg *Segmenter) TrimPunct(se []SegPos) (re []SegPos) {
 	for i := 0; i < len(se); i++ {
