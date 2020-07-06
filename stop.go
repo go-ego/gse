@@ -25,7 +25,7 @@ import (
 
 // StopWordMap default contains some stop words.
 var StopWordMap = map[string]bool{
-	"啊": true,
+	" ": true,
 }
 
 // LoadStop load stop word files add token to map
