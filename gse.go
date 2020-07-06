@@ -171,10 +171,12 @@ func (seg *Segmenter) PosStr(str []SegPos, separator ...string) (r string) {
 // TrimPunct trim SegPos not space and punct
 func (seg *Segmenter) TrimPunct(se []SegPos) (re []SegPos) {
 	for i := 0; i < len(se); i++ {
-		if se[i].Text != "" && se[i].Text != " " {
-			ru := []rune(se[i].Text)[0]
-			if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
-				re = append(re, se[i])
+		if !seg.IsStop(se[i].Text) {
+			if se[i].Text != "" && se[i].Text != " " {
+				ru := []rune(se[i].Text)[0]
+				if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
+					re = append(re, se[i])
+				}
 			}
 		}
 	}
@@ -213,12 +215,14 @@ func notPunct(ru []rune) bool {
 // Trim trim []string exclude space and punct
 func (seg *Segmenter) Trim(s []string) (r []string) {
 	for i := 0; i < len(s); i++ {
-		ru := []rune(s[i])
-		r0 := ru[0]
-		if !unicode.IsSpace(r0) && !unicode.IsPunct(r0) {
-			r = append(r, s[i])
-		} else if len(ru) > 1 && notPunct(ru) {
-			r = append(r, s[i])
+		if !seg.IsStop(s[i]) {
+			ru := []rune(s[i])
+			r0 := ru[0]
+			if !unicode.IsSpace(r0) && !unicode.IsPunct(r0) {
+				r = append(r, s[i])
+			} else if len(ru) > 1 && notPunct(ru) {
+				r = append(r, s[i])
+			}
 		}
 	}
 
