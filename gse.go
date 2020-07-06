@@ -228,3 +228,16 @@ func (seg *Segmenter) Trim(s []string) (r []string) {
 
 	return
 }
+
+// CutTrim cut string and tirm
+func (seg *Segmenter) CutTrim(str string, hmm ...bool) []string {
+	s := seg.Cut(str, hmm...)
+	return seg.Trim(s)
+}
+
+// PosTrim cut string pos and trim
+func (seg *Segmenter) PosTrim(str string, search bool, pos ...string) []SegPos {
+	p := seg.Pos(str, search)
+	p = seg.TrimPos(p, pos...)
+	return seg.TrimPunct(p)
+}
