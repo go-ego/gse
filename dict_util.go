@@ -115,6 +115,11 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 
 	if len(files) > 0 {
 		dictFiles := DictPaths(dictDir, files[0])
+		if len(dictFiles) == 0 {
+			log.Println("Warning: dict files is nil.")
+			// return errors.New("Dict files is nil.")
+		}
+
 		if len(dictFiles) > 0 {
 			// load = true
 			// files = dictFiles
