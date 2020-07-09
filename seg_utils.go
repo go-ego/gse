@@ -150,16 +150,15 @@ func tokenToPos(token *Token) (output []SegPos) {
 	}
 	output = append(output, pos1)
 
-	return output
+	return
 }
 
 // 将多个字元拼接一个字符串输出
-func textToString(text []Text) string {
-	var output string
+func textToString(text []Text) (output string) {
 	for _, word := range text {
 		output += string(word)
 	}
-	return output
+	return
 }
 
 // 将多个字元拼接一个字符串输出

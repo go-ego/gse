@@ -26,7 +26,7 @@ import (
 
 const (
 	// Version get the gse version
-	Version = "v0.60.1.392-beta, Nisqually Glacier!"
+	Version = "v0.60.1.444-rc3, Nisqually Glacier!"
 
 	// minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
@@ -172,7 +172,7 @@ func (seg *Segmenter) PosStr(str []SegPos, separator ...string) (r string) {
 func (seg *Segmenter) TrimPunct(se []SegPos) (re []SegPos) {
 	for i := 0; i < len(se); i++ {
 		if !seg.IsStop(se[i].Text) {
-			if se[i].Text != "" && se[i].Text != " " {
+			if se[i].Text != "" {
 				ru := []rune(se[i].Text)[0]
 				if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
 					re = append(re, se[i])
