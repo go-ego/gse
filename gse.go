@@ -241,3 +241,19 @@ func (seg *Segmenter) PosTrim(str string, search bool, pos ...string) []SegPos {
 	p = seg.TrimPos(p, pos...)
 	return seg.TrimPunct(p)
 }
+
+// PosTrimArr cut string return pos.Text []string
+func (seg *Segmenter) PosTrimArr(str string, search bool, pos ...string) (re []string) {
+	p1 := seg.PosTrim(str, search, pos...)
+	for i := 0; i < len(p1); i++ {
+		re = append(re, p1[i].Text)
+	}
+
+	return
+}
+
+// PosTrimStr cut string return pos.Text string
+func (seg *Segmenter) PosTrimStr(str string, search bool, pos ...string) string {
+	pa := seg.PosTrimArr(str, search, pos...)
+	return seg.CutStr(pa)
+}

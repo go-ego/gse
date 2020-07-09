@@ -101,6 +101,15 @@ func TestPos(t *testing.T) {
 	tt.Equal(t,
 		"[{纽约 ns} {纽约时代广场 nt} {纽约 ns} {帝国大厦 nr} {金山 nr} {旧金山 ns} {旧金山湾 ns} {大桥 ns} {金门大桥 nz}]", pos)
 
+	pos2 := prodSeg.PosTrimArr(text, false, "n", "zg")
+	tt.Equal(t, 5, len(pos2))
+	tt.Equal(t,
+		"[纽约时代广场 纽约 帝国大厦 旧金山湾 金门大桥]", pos2)
+
+	pos3 := prodSeg.PosTrimStr(text, false, "n", "zg")
+	tt.Equal(t, 64, len(pos3))
+	tt.Equal(t,
+		"纽约时代广场 纽约 帝国大厦 旧金山湾 金门大桥", pos3)
 }
 
 func TestStop(t *testing.T) {
