@@ -305,7 +305,7 @@ func DictPaths(dictDir, filePath string) (files []string) {
 			dictPath = fileName[i]
 		}
 
-		if dictPath != "" {
+		if dictPath != "" && dictPath != " " {
 			files = append(files, dictPath)
 		}
 	}
