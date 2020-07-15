@@ -20,6 +20,7 @@ package gse
 
 import (
 	"unicode"
+	"unicode/utf8"
 
 	"github.com/go-ego/gse/hmm"
 )
@@ -256,4 +257,16 @@ func (seg *Segmenter) PosTrimArr(str string, search bool, pos ...string) (re []s
 func (seg *Segmenter) PosTrimStr(str string, search bool, pos ...string) string {
 	pa := seg.PosTrimArr(str, search, pos...)
 	return seg.CutStr(pa)
+}
+
+// FilterEmoji filter the emoji
+func FilterEmoji(content string) (new string) {
+	for _, value := range content {
+		_, size := utf8.DecodeRuneInString(string(value))
+		if size <= 3 {
+			new += string(value)
+		}
+	}
+
+	return
 }
