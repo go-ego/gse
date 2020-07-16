@@ -125,4 +125,8 @@ func TestStop(t *testing.T) {
 	prodSeg.AddStop("中心")
 	b = prodSeg.IsStop("中心")
 	tt.True(t, b)
+
+	t1 := `hi, bot, 123, 👌^_^😆`
+	s := FilterEmoji(t1)
+	tt.Equal(t, "hi, bot, 123, ^_^", s)
 }
