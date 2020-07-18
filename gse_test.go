@@ -26,17 +26,18 @@ func TestHMM(t *testing.T) {
 	tt.Equal(t, "[纽约时代广场 ,   纽约 帝国大厦 ,   旧金山湾 金门大桥]", tx)
 
 	tx = append(tx, " 广场")
+	tx = append(tx, "ok👌")
 	tx = prodSeg.Trim(tx)
-	tt.Equal(t, 6, len(tx))
-	tt.Equal(t, "[纽约时代广场 纽约 帝国大厦 旧金山湾 金门大桥  广场]", tx)
+	tt.Equal(t, 7, len(tx))
+	tt.Equal(t, "[纽约时代广场 纽约 帝国大厦 旧金山湾 金门大桥  广场 ok]", tx)
 
 	tx1 := prodSeg.CutTrim(text, true)
 	tt.Equal(t, 5, len(tx1))
 	tt.Equal(t, "[纽约时代广场 纽约 帝国大厦 旧金山湾 金门大桥]", tx1)
 
 	s := prodSeg.CutStr(tx, ", ")
-	tt.Equal(t, 77, len(s))
-	tt.Equal(t, "纽约时代广场, 纽约, 帝国大厦, 旧金山湾, 金门大桥,  广场", s)
+	tt.Equal(t, 81, len(s))
+	tt.Equal(t, "纽约时代广场, 纽约, 帝国大厦, 旧金山湾, 金门大桥,  广场, ok", s)
 
 	tx = prodSeg.CutAll(text)
 	tt.Equal(t, 21, len(tx))
@@ -86,6 +87,7 @@ func TestPos(t *testing.T) {
 	tt.Equal(t,
 		"[{纽约 ns} {时代 n} {广场 n} {时代广场 n} {纽约时代广场 nt} {纽约 ns} {帝国 n} {大厦 n} {帝国大厦 nr} {金山 nr} {旧金山 ns} {旧金山湾 ns} {金门 n} {大桥 ns} {金门大桥 nz}]", pos1)
 
+	pos = append(pos, SegPos{Text: "👌", Pos: "x"})
 	pos = prodSeg.TrimPunct(pos)
 	tt.Equal(t, 16, len(pos))
 	tt.Equal(t,
@@ -125,4 +127,8 @@ func TestStop(t *testing.T) {
 	prodSeg.AddStop("中心")
 	b = prodSeg.IsStop("中心")
 	tt.True(t, b)
+
+	t1 := `hi, bot, 123, 👌^_^😆`
+	s := FilterEmoji(t1)
+	tt.Equal(t, "hi, bot, 123, ^_^", s)
 }

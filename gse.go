@@ -20,6 +20,7 @@ package gse
 
 import (
 	"unicode"
+	"unicode/utf8"
 
 	"github.com/go-ego/gse/hmm"
 )
@@ -173,9 +174,12 @@ func (seg *Segmenter) TrimPunct(se []SegPos) (re []SegPos) {
 	for i := 0; i < len(se); i++ {
 		if !seg.IsStop(se[i].Text) {
 			if se[i].Text != "" {
-				ru := []rune(se[i].Text)[0]
-				if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
-					re = append(re, se[i])
+				se[i].Text = FilterEmoji(se[i].Text)
+				if len(se[i].Text) > 0 {
+					ru := []rune(se[i].Text)[0]
+					if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
+						re = append(re, se[i])
+					}
 				}
 			}
 		}
@@ -216,12 +220,15 @@ func notPunct(ru []rune) bool {
 func (seg *Segmenter) Trim(s []string) (r []string) {
 	for i := 0; i < len(s); i++ {
 		if !seg.IsStop(s[i]) {
+			s[i] = FilterEmoji(s[i])
 			ru := []rune(s[i])
-			r0 := ru[0]
-			if !unicode.IsSpace(r0) && !unicode.IsPunct(r0) {
-				r = append(r, s[i])
-			} else if len(ru) > 1 && notPunct(ru) {
-				r = append(r, s[i])
+			if len(ru) > 0 {
+				r0 := ru[0]
+				if !unicode.IsSpace(r0) && !unicode.IsPunct(r0) {
+					r = append(r, s[i])
+				} else if len(ru) > 1 && notPunct(ru) {
+					r = append(r, s[i])
+				}
 			}
 		}
 	}
@@ -256,4 +263,16 @@ func (seg *Segmenter) PosTrimArr(str string, search bool, pos ...string) (re []s
 func (seg *Segmenter) PosTrimStr(str string, search bool, pos ...string) string {
 	pa := seg.PosTrimArr(str, search, pos...)
 	return seg.CutStr(pa)
+}
+
+// FilterEmoji filter the emoji
+func FilterEmoji(content string) (new string) {
+	for _, value := range content {
+		_, size := utf8.DecodeRuneInString(string(value))
+		if size <= 3 {
+			new += string(value)
+		}
+	}
+
+	return
 }
