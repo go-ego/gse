@@ -276,3 +276,26 @@ func FilterEmoji(content string) (new string) {
 
 	return
 }
+
+// FilterSymbol filter the symbol
+func FilterSymbol(text string) (new string) {
+	for _, value := range text {
+		if !unicode.IsSymbol(value) &&
+			!unicode.IsSpace(value) && !unicode.IsPunct(value) {
+			new += string(value)
+		}
+	}
+
+	return
+}
+
+// FilterLang filter the language
+func FilterLang(text, lang string) (new string) {
+	for _, value := range []rune(text) {
+		if unicode.IsLetter(value) || unicode.Is(unicode.Scripts[lang], value) {
+			new += string(value)
+		}
+	}
+
+	return
+}
