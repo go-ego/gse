@@ -131,4 +131,10 @@ func TestStop(t *testing.T) {
 	t1 := `hi, bot, 123, 👌^_^😆`
 	s := FilterEmoji(t1)
 	tt.Equal(t, "hi, bot, 123, ^_^", s)
+
+	s = FilterSymbol(t1)
+	tt.Equal(t, "hibot123", s)
+
+	s = FilterLang(t1, "Han")
+	tt.Equal(t, "hibot", s)
 }
