@@ -124,17 +124,17 @@ func TestStop(t *testing.T) {
 	b = prodSeg.IsStop("哎")
 	tt.True(t, b)
 
-	prodSeg.AddStop("中心")
-	b = prodSeg.IsStop("中心")
+	prodSeg.AddStop("lol")
+	b = prodSeg.IsStop("lol")
 	tt.True(t, b)
 
-	t1 := `hi, bot, 123, 👌^_^😆`
+	t1 := `hi, bot, 123; 🤖, 机器人; 👌^_^😆`
 	s := FilterEmoji(t1)
-	tt.Equal(t, "hi, bot, 123, ^_^", s)
+	tt.Equal(t, "hi, bot, 123; , 机器人; ^_^", s)
 
 	s = FilterSymbol(t1)
-	tt.Equal(t, "hibot123", s)
+	tt.Equal(t, "hibot123机器人", s)
 
 	s = FilterLang(t1, "Han")
-	tt.Equal(t, "hibot", s)
+	tt.Equal(t, "hibot机器人", s)
 }
