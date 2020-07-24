@@ -4,6 +4,7 @@ Go efficient text segmentation; support english, chinese, japanese and other.
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
+
 [![Build Status](https://github.com/go-ego/gse/workflows/Go/badge.svg)](https://github.com/go-ego/gse/commits/master)
 [![CircleCI Status](https://circleci.com/gh/go-ego/gse.svg?style=shield)](https://circleci.com/gh/go-ego/gse)
 [![codecov](https://codecov.io/gh/go-ego/gse/branch/master/graph/badge.svg)](https://codecov.io/gh/go-ego/gse)
@@ -12,6 +13,7 @@ Go efficient text segmentation; support english, chinese, japanese and other.
 [![GoDoc](https://godoc.org/github.com/go-ego/gse?status.svg)](https://godoc.org/github.com/go-ego/gse)
 [![GitHub release](https://img.shields.io/github/release/go-ego/gse.svg)](https://github.com/go-ego/gse/releases/latest)
 [![Join the chat at https://gitter.im/go-ego/ego](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/go-ego/ego?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 <!-- [![Release](https://github-release-version.herokuapp.com/github/go-ego/gse/release.svg?style=flat)](https://github.com/go-ego/gse/releases/latest) -->
 <!--<a href="https://github.com/go-ego/ego/releases"><img src="https://img.shields.io/badge/%20version%20-%206.0.0%20-blue.svg?style=flat-square" alt="Releases"></a>-->
 
@@ -37,11 +39,13 @@ go get -u github.com/go-ego/gse
 ```
 
 ## [Build-tools](https://github.com/go-ego/re)
+
 ```
 go get -u github.com/go-ego/re
 ```
 
 ### re gse
+
 To create a new gse application
 
 ```
@@ -51,6 +55,7 @@ $ re gse my-gse
 ### re run
 
 To run the application we just created, you can navigate to the application folder and execute:
+
 ```
 $ cd my-gse && re run
 ```
@@ -165,10 +170,11 @@ func main() {
 [Look at an Japanese example](/examples/jp/main.go)
 
 ## Authors
-* [The author is vz](https://github.com/vcaesar)
-* [Maintainers](https://github.com/orgs/go-ego/people)
-* [Contributors](https://github.com/go-ego/gse/graphs/contributors)
+
+- [The author is vz](https://github.com/vcaesar)
+- [Maintainers](https://github.com/orgs/go-ego/people)
+- [Contributors](https://github.com/go-ego/gse/graphs/contributors)
 
 ## License
 
-Gse is primarily distributed under the terms of both the MIT license and the Apache License (Version 2.0), thanks for [sego](https://github.com/huichen/sego) and [jieba](https://github.com/fxsjy/jieba), [jiebago](https://github.com/wangbin/jiebago).
+Gse is primarily distributed under the terms of both the MIT license and the Apache License (Version 2.0), thanks for [sego](https://github.com/huichen/sego) and [jieba](https://github.com/fxsjy/jieba)([jiebago](https://github.com/wangbin/jiebago)).
