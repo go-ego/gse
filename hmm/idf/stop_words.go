@@ -5,50 +5,50 @@ import (
 )
 
 // StopWordMap default contains some stop words.
-var StopWordMap = map[string]int{
-	"the":   1,
-	"of":    1,
-	"is":    1,
-	"and":   1,
-	"to":    1,
-	"in":    1,
-	"that":  1,
-	"we":    1,
-	"for":   1,
-	"an":    1,
-	"are":   1,
-	"by":    1,
-	"be":    1,
-	"as":    1,
-	"on":    1,
-	"with":  1,
-	"can":   1,
-	"if":    1,
-	"from":  1,
-	"which": 1,
-	"you":   1,
-	"it":    1,
-	"this":  1,
-	"then":  1,
-	"at":    1,
-	"have":  1,
-	"all":   1,
-	"not":   1,
-	"one":   1,
-	"has":   1,
-	"or":    1,
+var StopWordMap = map[string]bool{
+	"the":   true,
+	"of":    true,
+	"is":    true,
+	"and":   true,
+	"to":    true,
+	"in":    true,
+	"that":  true,
+	"we":    true,
+	"for":   true,
+	"an":    true,
+	"are":   true,
+	"by":    true,
+	"be":    true,
+	"as":    true,
+	"on":    true,
+	"with":  true,
+	"can":   true,
+	"if":    true,
+	"from":  true,
+	"which": true,
+	"you":   true,
+	"it":    true,
+	"this":  true,
+	"then":  true,
+	"at":    true,
+	"have":  true,
+	"all":   true,
+	"not":   true,
+	"one":   true,
+	"has":   true,
+	"or":    true,
 }
 
 // StopWord is a dictionary for all stop words.
 type StopWord struct {
-	stopWordMap map[string]int
+	stopWordMap map[string]bool
 
 	seg gse.Segmenter
 }
 
 // AddToken adds a token into StopWord dictionary.
 func (s *StopWord) AddToken(text string) {
-	s.stopWordMap[text] = 1
+	s.stopWordMap[text] = true
 }
 
 // NewStopWord create a new StopWord with default stop words.
@@ -64,6 +64,15 @@ func (s *StopWord) IsStopWord(word string) bool {
 	return ok
 }
 
-func (s *StopWord) loadDict(fileName ...string) error {
-	return s.seg.LoadDict(fileName...)
+func (s *StopWord) loadDict(files ...string) error {
+	err := s.seg.LoadStop(files...)
+	if err != nil {
+		return err
+	}
+
+	for k, v := range gse.StopWordMap {
+		StopWordMap[k] = v
+	}
+
+	return nil
 }
