@@ -30,16 +30,17 @@ var StopWordMap = map[string]bool{
 
 // LoadStop load stop word files add token to map
 func (seg *Segmenter) LoadStop(files ...string) error {
+	dictDir := path.Join(path.Dir(GetCurrentFilePath()), "data")
 	if len(files) <= 0 {
-		var (
-			dictDir  = path.Join(path.Dir(GetCurrentFilePath()), "data")
-			dictPath = path.Join(dictDir, "dict/stop_word.txt")
-		)
-
+		dictPath := path.Join(dictDir, "dict/stop_word.txt")
 		files = append(files, dictPath)
 	}
 
 	name := strings.Split(files[0], ", ")
+	if name[0] == "zh" {
+		name[0] = path.Join(dictDir, "dict/stop_tokens.txt")
+	}
+
 	for i := 0; i < len(name); i++ {
 		log.Printf("Load the stop word dictionary: \"%s\" ", name[i])
 		s, err := file.Read(name[i])

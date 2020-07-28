@@ -118,6 +118,9 @@ func TestStop(t *testing.T) {
 	err := prodSeg.LoadStop()
 	tt.Nil(t, err)
 
+	err = prodSeg.LoadStop("zh")
+	tt.Nil(t, err)
+
 	b := prodSeg.IsStop("阿")
 	tt.True(t, b)
 
