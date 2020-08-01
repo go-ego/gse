@@ -64,7 +64,8 @@ func (s *StopWord) IsStopWord(word string) bool {
 	return ok
 }
 
-func (s *StopWord) loadDict(files ...string) error {
+// LoadDict load idf stop dictionary
+func (s *StopWord) LoadDict(files ...string) error {
 	err := s.seg.LoadStop(files...)
 	if err != nil {
 		return err

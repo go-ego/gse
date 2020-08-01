@@ -69,6 +69,7 @@ func TestPos(t *testing.T) {
 	tt.Equal(t, 206, len(s))
 	tt.Equal(t,
 		"纽约/ns 时代/n 广场/n 时代广场/n 纽约时代广场/nt ,/x  /x 纽约/ns 帝国/n 大厦/n 帝国大厦/nr ,/x  /x 金山/nr 旧金山/ns 湾/zg 旧金山湾/ns 金门/n 大桥/ns 金门大桥/nz ", s)
+
 	c := prodSeg.Slice(text, true)
 	tt.Equal(t, 20, len(c))
 

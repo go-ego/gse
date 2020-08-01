@@ -72,7 +72,7 @@ func (t *TagExtracter) LoadIdf(fileName ...string) error {
 // LoadStopWords reads the given file and create a new StopWord dictionary.
 func (t *TagExtracter) LoadStopWords(fileName ...string) error {
 	t.stopWord = NewStopWord()
-	return t.stopWord.loadDict(fileName...)
+	return t.stopWord.LoadDict(fileName...)
 }
 
 // ExtractTags extracts the topK key words from sentence.
