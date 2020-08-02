@@ -38,7 +38,8 @@ func (i *Idf) AddToken(text string, frequency float64, pos ...string) {
 	i.median = i.freqs[len(i.freqs)/2]
 }
 
-func (i *Idf) loadDict(files ...string) error {
+// LoadDict load idf dictionary
+func (i *Idf) LoadDict(files ...string) error {
 	if len(files) <= 0 {
 		files = gse.GetIdfPath(files...)
 	}

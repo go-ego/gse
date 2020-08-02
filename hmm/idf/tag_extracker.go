@@ -66,7 +66,7 @@ func (t *TagExtracter) LoadDict(fileName ...string) error {
 // LoadIdf reads the given file and create a new Idf dictionary.
 func (t *TagExtracter) LoadIdf(fileName ...string) error {
 	t.Idf = NewIdf()
-	return t.Idf.loadDict(fileName...)
+	return t.Idf.LoadDict(fileName...)
 }
 
 // LoadStopWords reads the given file and create a new StopWord dictionary.
