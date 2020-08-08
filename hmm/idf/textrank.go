@@ -32,9 +32,8 @@ func (t *TextRanker) LoadDict(fileName ...string) error {
 }
 
 type edge struct {
-	start  string
-	end    string
-	weight float64
+	start, end string
+	weight     float64
 }
 
 type edges []edge
@@ -127,8 +126,8 @@ func (u *undirectWeightedGraph) rank() Segments {
 	result := make(Segments, 0)
 	for n, w := range ws {
 		result = append(result,
-			Segment{text: n,
-				weight: (w - minRank/10.0) / (maxRank - minRank/10.0)})
+			Segment{text: n, weight: (w - minRank/10.0) / (maxRank - minRank/10.0)},
+		)
 	}
 
 	sort.Sort(sort.Reverse(result))
@@ -148,9 +147,7 @@ func (t *TextRanker) TextRankWithPOS(sentence string, topK int, allowPOS []strin
 	span := 5
 
 	var pairs []pos.SegPos
-	for _, pair := range t.seg.Cut(sentence, true) {
-		pairs = append(pairs, pair)
-	}
+	pairs = append(pairs, t.seg.Cut(sentence, true)...)
 
 	for i := range pairs {
 		_, ok := posFilt[pairs[i].Pos]
