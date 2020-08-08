@@ -50,6 +50,7 @@ func viterbi(obs []rune) []tag {
 	obsLen := len(obs)
 	vtb := make([]map[uint16]float64, obsLen)
 	vtb[0] = make(map[uint16]float64)
+
 	memPath := make([]map[uint16]uint16, obsLen)
 	memPath[0] = make(map[uint16]uint16)
 
@@ -97,8 +98,8 @@ func probs(obs []rune, vtb []map[uint16]float64, memPath []map[uint16]uint16,
 				prevStatesExpectNext[y] = 1
 			}
 		}
-		tmpObsStates := charStateTab.get(obs[t])
 
+		tmpObsStates := charStateTab.get(obs[t])
 		var obsStates []uint16
 		for index := range tmpObsStates {
 			if _, ok := prevStatesExpectNext[tmpObsStates[index]]; ok {

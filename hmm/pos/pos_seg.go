@@ -153,6 +153,7 @@ type route struct {
 func (seg *Segmenter) calc(runes []rune) map[int]route {
 	dag := seg.dag(runes)
 	n := len(runes)
+
 	rs := make(map[int]route)
 	rs[n] = route{frequency: 0.0, index: 0}
 	var r route

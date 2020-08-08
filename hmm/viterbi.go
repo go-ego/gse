@@ -109,8 +109,7 @@ func Viterbi(obs []rune, states []byte) (float64, []byte) {
 	return v.prob, path[v.state]
 }
 
-func probs(obs []rune, vtb []map[byte]float64, y byte, t int) probStates {
-	ps0 := make(probStates, 0)
+func probs(obs []rune, vtb []map[byte]float64, y byte, t int) (ps0 probStates) {
 	var emP float64
 
 	if val, ok := probEmit[y][obs[t]]; ok {
@@ -131,5 +130,5 @@ func probs(obs []rune, vtb []map[byte]float64, y byte, t int) probStates {
 		ps0 = append(ps0, &probState{prob: prob0, state: y0})
 	}
 
-	return ps0
+	return
 }
