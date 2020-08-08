@@ -85,9 +85,7 @@ func (seg *Segmenter) cutDetailInternal(sentence string) (result []SegPos) {
 func (seg *Segmenter) cutDetail(sentence string) (result []SegPos) {
 	for _, blk := range util.RegexpSplit(reHanDetail, sentence, -1) {
 		if reHanDetail.MatchString(blk) {
-			for _, segment := range seg.cutDetailInternal(blk) {
-				result = append(result, segment)
-			}
+			result = append(result, seg.cutDetailInternal(blk)...)
 			continue
 		}
 
@@ -190,8 +188,9 @@ type cutFunc func(sentence string) []SegPos
 func (seg *Segmenter) cutDAG(sentence string) (result []SegPos) {
 	runes := []rune(sentence)
 	routes := seg.calc(runes)
-	var y int
 	length := len(runes)
+
+	var y int
 	var buf []rune
 
 	for x := 0; x < length; {
@@ -217,10 +216,7 @@ func (seg *Segmenter) cutDAG(sentence string) (result []SegPos) {
 			}
 
 			if v, ok := seg.dict.Frequency(bufString); !ok || v == 0.0 {
-				for _, t := range seg.cutDetail(bufString) {
-					result = append(result, t)
-				}
-
+				result = append(result, seg.cutDetail(bufString)...)
 			} else {
 				for _, elem := range buf {
 					selem := string(elem)
@@ -263,9 +259,7 @@ func (seg *Segmenter) bufn(buf []rune) (result []SegPos) {
 	}
 
 	if v, ok := seg.dict.Frequency(bufString); !ok || v == 0.0 {
-		for _, t := range seg.cutDetail(bufString) {
-			result = append(result, t)
-		}
+		result = append(result, seg.cutDetail(bufString)...)
 	} else {
 		for _, elem := range buf {
 			selem := string(elem)
@@ -330,9 +324,7 @@ func (seg *Segmenter) Cut(sentence string, hmm bool) (result []SegPos) {
 
 	for _, blk := range util.RegexpSplit(reHanInternal, sentence, -1) {
 		if reHanInternal.MatchString(blk) {
-			for _, wordTag := range cut(blk) {
-				result = append(result, wordTag)
-			}
+			result = append(result, cut(blk)...)
 			continue
 		}
 
