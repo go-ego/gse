@@ -19,13 +19,14 @@ import (
 	"github.com/go-ego/cedar"
 )
 
-// Dictionary 结构体实现了一个字串前缀树，
+// Dictionary 结构体实现了一个字串双数组树，
 // 一个分词可能出现在叶子节点也有可能出现在非叶节点
 type Dictionary struct {
-	trie           *cedar.Cedar // Cedar 前缀树
-	maxTokenLen    int          // 词典中最长的分词
-	Tokens         []Token      // 词典中所有的分词，方便遍历
-	totalFrequency float64      // 词典中所有分词的频率之和
+	trie *cedar.Cedar // Cedar 双数组树
+
+	maxTokenLen    int     // 词典中最长的分词
+	Tokens         []Token // 词典中所有的分词，方便遍历
+	totalFrequency float64 // 词典中所有分词的频率之和
 }
 
 // NewDict new dictionary
@@ -121,7 +122,6 @@ func (dict *Dictionary) Find(word []byte) (float64, bool) {
 	}
 
 	freq = dict.Tokens[value].frequency
-
 	return freq, true
 }
 

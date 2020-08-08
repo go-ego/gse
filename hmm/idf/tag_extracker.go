@@ -84,7 +84,6 @@ func (t *TagExtracter) ExtractTags(sentence string, topK int) (tags Segments) {
 		if utf8.RuneCountInString(w) < 2 {
 			continue
 		}
-
 		if t.stopWord.IsStopWord(w) {
 			continue
 		}
