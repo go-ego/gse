@@ -37,8 +37,9 @@ func TestCut(t *testing.T) {
 	result := Cut(testText)
 	tt.Equal(t, 2, len(result))
 
-	result2 := Cut("New York City.")
-	tt.Equal(t, 6, len(result2))
+	result2 := Cut("西雅图太空针, 纽约时代广场, New York City.")
+	tt.Equal(t, "[西雅图 太空针 ,  纽约 时代广场 ,  New   York   City .]", result2)
+	tt.Equal(t, 12, len(result2))
 }
 
 func Benchmark_Hmm(b *testing.B) {

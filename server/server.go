@@ -48,6 +48,7 @@ var (
 // JsonResponse []*segments json response
 type JsonResponse struct {
 	Segments []*Segment `json:"segments"`
+	Err      error      `json:"err"`
 }
 
 // Segment segment json struct

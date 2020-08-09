@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	segmenter  = gse.Segmenter{}
+	seg        = gse.Segmenter{}
 	numThreads = runtime.NumCPU()
 	task       = make(chan []byte, numThreads*40)
 	done       = make(chan bool, numThreads)
@@ -23,7 +23,7 @@ var (
 
 func worker() {
 	for line := range task {
-		segmenter.Segment(line)
+		seg.Segment(line)
 	}
 	done <- true
 }
@@ -56,7 +56,7 @@ func main() {
 	runtime.GOMAXPROCS(numThreads)
 
 	// 载入词典
-	segmenter.LoadDict("../../data/dict/dictionary.txt")
+	seg.LoadDict("../../data/dict/dictionary.txt")
 	size, lines := openBook()
 
 	// 启动工作线程
