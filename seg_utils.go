@@ -55,8 +55,8 @@ func tokenToBytes(token *Token) (output []byte) {
 	for _, s := range token.segments {
 		output = append(output, tokenToBytes(s.token)...)
 	}
-	output = append(output, []byte(fmt.Sprintf("%s/%s ",
-		textSliceToString(token.text), token.pos))...)
+	output = append(output,
+		[]byte(fmt.Sprintf("%s/%s ", textSliceToString(token.text), token.pos))...)
 
 	return
 }

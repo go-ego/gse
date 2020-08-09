@@ -291,7 +291,7 @@ func FilterSymbol(text string) (new string) {
 
 // FilterLang filter the language
 func FilterLang(text, lang string) (new string) {
-	for _, value := range []rune(text) {
+	for _, value := range text {
 		if unicode.IsLetter(value) || unicode.Is(unicode.Scripts[lang], value) {
 			new += string(value)
 		}

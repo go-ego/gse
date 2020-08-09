@@ -124,10 +124,7 @@ func (seg *Segmenter) hmm(bufString string, buf []rune) (result []string) {
 
 	v, ok := seg.Find(bufString)
 	if !ok || v == 0 {
-		for _, t := range seg.HMMCut(bufString) {
-			result = append(result, t)
-		}
-
+		result = append(result, seg.HMMCut(bufString)...)
 		return
 	}
 
@@ -158,7 +155,6 @@ func (seg *Segmenter) cutDAG(str string) []string {
 		} else {
 			if len(buf) > 0 {
 				bufString := string(buf)
-
 				if len(buf) == 1 {
 					result = append(result, bufString)
 				} else {

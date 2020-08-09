@@ -94,9 +94,7 @@ func Cut(sentence string) []string {
 		} else if hanLoc[0] == 0 {
 			hans = sentence[hanLoc[0]:hanLoc[1]]
 			sentence = sentence[hanLoc[1]:]
-			for _, han := range internalCut(hans) {
-				result = append(result, han)
-			}
+			result = append(result, internalCut(hans)...)
 			continue
 		}
 
