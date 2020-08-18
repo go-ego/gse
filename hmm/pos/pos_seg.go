@@ -353,7 +353,7 @@ func (seg *Segmenter) Cut(sentence string, hmm bool) (result []SegPos) {
 	return
 }
 
-// Trim not space and punct
+// TrimPunct not space and punct
 func (seg *Segmenter) TrimPunct(se []SegPos) (re []SegPos) {
 	for i := 0; i < len(se); i++ {
 		if se[i].Text != "" && len(se[i].Text) > 0 {
@@ -381,7 +381,7 @@ func (seg *Segmenter) Trim(se []SegPos) (re []SegPos) {
 	return
 }
 
-// TrimPos trim some pos
+// TrimWithPos trim some pos
 func (seg *Segmenter) TrimWithPos(se []SegPos, pos ...string) (re []SegPos) {
 	for h := 0; h < len(pos); h++ {
 		if h > 0 {

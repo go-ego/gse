@@ -46,7 +46,7 @@ func (seg *Segmenter) TrimPunct(s []string) (r []string) {
 	return
 }
 
-// TrimPunct trim SegPos not space and punct
+// TrimPosPunct trim SegPos not space and punct
 func (seg *Segmenter) TrimPosPunct(se []SegPos) (re []SegPos) {
 	for i := 0; i < len(se); i++ {
 		if !seg.IsStop(se[i].Text) {
