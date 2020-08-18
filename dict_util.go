@@ -29,13 +29,6 @@ import (
 )
 
 var (
-	// LoadNoFreq load not have freq dict word
-	LoadNoFreq bool
-	// MinTokenFreq load min freq token
-	MinTokenFreq = 2.0
-	// TextFreq add token frenquency when not specified freq
-	TextFreq = "2.0"
-
 	// AlphaNum set splitTextToWords can add token
 	// when words in alphanum
 	// set up alphanum dictionary word segmentation
@@ -43,9 +36,18 @@ var (
 
 	// ToLower set alpha tolower
 	ToLower = true
-	// SkipLog set skip log print
-	SkipLog bool
 )
+
+// Init init seg config
+func (seg *Segmenter) Init() {
+	if seg.MinTokenFreq == 0 {
+		seg.MinTokenFreq = 2.0
+	}
+
+	if seg.TextFreq == "" {
+		seg.TextFreq = "2.0"
+	}
+}
 
 // Dictionary 返回分词器使用的词典
 func (seg *Segmenter) Dictionary() *Dictionary {
@@ -105,6 +107,7 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	if !seg.Load {
 		seg.Dict = NewDict()
 		seg.Load = true
+		seg.Init()
 	}
 
 	var (
@@ -205,7 +208,7 @@ func (seg *Segmenter) Read(file string) error {
 			}
 
 			if size > 0 {
-				if SkipLog {
+				if seg.SkipLog {
 					log.Printf("File '%v' line \"%v\" read error: %v, skip",
 						file, line, fsErr.Error())
 				}
@@ -220,11 +223,11 @@ func (seg *Segmenter) Read(file string) error {
 			// break
 			continue
 		} else if size < 2 {
-			if !LoadNoFreq {
+			if !seg.LoadNoFreq {
 				// 无效行
 				continue
 			} else {
-				freqText = TextFreq
+				freqText = seg.TextFreq
 			}
 		} else if size == 2 {
 			// 没有词性标注时设为空字符串
@@ -239,7 +242,7 @@ func (seg *Segmenter) Read(file string) error {
 		}
 
 		// 过滤频率太小的词
-		if frequency < MinTokenFreq {
+		if frequency < seg.MinTokenFreq {
 			continue
 		}
 		// 过滤, 降低词频

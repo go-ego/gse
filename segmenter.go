@@ -24,6 +24,16 @@ import (
 type Segmenter struct {
 	Dict *Dictionary
 	Load bool
+
+	// LoadNoFreq load not have freq dict word
+	LoadNoFreq bool
+	// MinTokenFreq load min freq token
+	MinTokenFreq float64
+	// TextFreq add token frenquency when not specified freq
+	TextFreq string
+
+	// SkipLog set skip log print
+	SkipLog bool
 }
 
 // jumper 该结构体用于记录 Viterbi 算法中某字元处的向前分词跳转信息

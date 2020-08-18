@@ -184,7 +184,7 @@ func TestLoadDictionary(t *testing.T) {
 }
 
 func TestDictPaths(t *testing.T) {
-	SkipLog = true
+	// seg.SkipLog = true
 	paths := DictPaths("./dictDir", "zh, jp")
 	tt.Expect(t, "2", len(paths))
 
@@ -206,7 +206,12 @@ func TestInAlphaNum(t *testing.T) {
 	// seg.LoadDict("zh,./testdata/test_dict3.txt")
 	//
 	// AlphaNum = true
+	// ToLower = true
 	seg := New("zh,./testdata/test_dict3.txt", "alpha")
+	seg.LoadNoFreq = true
+	seg.TextFreq = "2.0"
+	seg.MinTokenFreq = 1.0
+	seg.SkipLog = true
 
 	freq, ok := seg.Find("hello")
 	tt.Equal(t, 20, freq)
