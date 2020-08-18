@@ -84,7 +84,7 @@ func posAndTrim(cut []string) {
 	po := posSeg.Cut(text, true)
 	fmt.Println("pos: ", po)
 
-	po = posSeg.TrimPos(po)
+	po = posSeg.TrimWithPos(po)
 	fmt.Println("trim pos: ", po)
 }
 

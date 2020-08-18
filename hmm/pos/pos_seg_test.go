@@ -27,7 +27,7 @@ func TestCut(t *testing.T) {
 	tt.Equal(t,
 		"[{工信处 n} {女干事 n} {每月 r} {经过 p} {下属 v} {科室 n} {都 d} {要 v} {亲口 n} {交代 n} {24 eng} {口 q} {交换 v} {机 n} {等 u} {技术 n} {性 n} {器件 n} {的 uj} {安装 v} {工作 vn}]", s)
 
-	pos := seg.TrimPos(s, "n", "r", "uj")
+	pos := seg.TrimWithPos(s, "n", "r", "uj")
 	tt.Equal(t, 10, len(pos))
 	tt.Equal(t, "[{经过 p} {下属 v} {都 d} {要 v} {24 eng} {口 q} {交换 v} {等 u} {安装 v} {工作 vn}]", pos)
 }

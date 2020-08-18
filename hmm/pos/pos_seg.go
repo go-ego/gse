@@ -354,9 +354,9 @@ func (seg *Segmenter) Cut(sentence string, hmm bool) (result []SegPos) {
 }
 
 // Trim not space and punct
-func (seg *Segmenter) Trim(se []SegPos) (re []SegPos) {
+func (seg *Segmenter) TrimPunct(se []SegPos) (re []SegPos) {
 	for i := 0; i < len(se); i++ {
-		if se[i].Text != "" && se[i].Text != " " {
+		if se[i].Text != "" && len(se[i].Text) > 0 {
 			ru := []rune(se[i].Text)[0]
 			if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
 				re = append(re, se[i])
@@ -367,8 +367,22 @@ func (seg *Segmenter) Trim(se []SegPos) (re []SegPos) {
 	return
 }
 
+// Trim not space and punct
+func (seg *Segmenter) Trim(se []SegPos) (re []SegPos) {
+	for i := 0; i < len(se); i++ {
+		if !seg.dict.seg.IsStop(se[i].Text) {
+			si := gse.FilterSymbol(se[i].Text)
+			if si != "" {
+				re = append(re, se[i])
+			}
+		}
+	}
+
+	return
+}
+
 // TrimPos trim some pos
-func (seg *Segmenter) TrimPos(se []SegPos, pos ...string) (re []SegPos) {
+func (seg *Segmenter) TrimWithPos(se []SegPos, pos ...string) (re []SegPos) {
 	for h := 0; h < len(pos); h++ {
 		if h > 0 {
 			se = re
