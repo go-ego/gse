@@ -17,7 +17,6 @@ package gse
 import (
 	"log"
 	"path"
-	"runtime"
 	"strings"
 
 	"github.com/go-vgo/gt/file"
@@ -51,11 +50,10 @@ func (seg *Segmenter) LoadStop(files ...string) error {
 
 		ns := strings.Split(s, "\n")
 		for h := 0; h < len(ns); h++ {
-			if runtime.GOOS == "windows" {
-				ns[h] = strings.TrimSpace(ns[h])
+			text := strings.TrimSpace(ns[h])
+			if text != "" {
+				StopWordMap[text] = true
 			}
-
-			StopWordMap[ns[h]] = true
 		}
 	}
 
