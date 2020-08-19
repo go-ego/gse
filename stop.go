@@ -15,11 +15,11 @@
 package gse
 
 import (
+	"bufio"
 	"log"
+	"os"
 	"path"
 	"strings"
-
-	"github.com/go-vgo/gt/file"
 )
 
 // StopWordMap default contains some stop words.
@@ -29,6 +29,10 @@ var StopWordMap = map[string]bool{
 
 // LoadStop load stop word files add token to map
 func (seg *Segmenter) LoadStop(files ...string) error {
+	if seg.StopWordMap == nil {
+		seg.StopWordMap = make(map[string]bool)
+	}
+
 	dictDir := path.Join(path.Dir(GetCurrentFilePath()), "data")
 	if len(files) <= 0 {
 		dictPath := path.Join(dictDir, "dict/stop_word.txt")
@@ -42,17 +46,18 @@ func (seg *Segmenter) LoadStop(files ...string) error {
 
 	for i := 0; i < len(name); i++ {
 		log.Printf("Load the stop word dictionary: \"%s\" ", name[i])
-		s, err := file.Read(name[i])
+		file, err := os.Open(name[i])
 		if err != nil {
 			log.Printf("Could not load dictionaries: \"%s\", %v \n", name[i], err)
 			return err
 		}
+		defer file.Close()
 
-		ns := strings.Split(s, "\n")
-		for h := 0; h < len(ns); h++ {
-			text := strings.TrimSpace(ns[h])
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			text := scanner.Text()
 			if text != "" {
-				StopWordMap[text] = true
+				seg.StopWordMap[text] = true
 			}
 		}
 	}
@@ -62,12 +67,12 @@ func (seg *Segmenter) LoadStop(files ...string) error {
 
 // AddStop adds a token into StopWord dictionary.
 func (seg *Segmenter) AddStop(text string) {
-	StopWordMap[text] = true
+	seg.StopWordMap[text] = true
 }
 
 // IsStop checks if a given word is stop word.
 func (seg *Segmenter) IsStop(s string) bool {
-	_, ok := StopWordMap[s]
+	_, ok := seg.StopWordMap[s]
 	return ok
 	// return StopWordMap[s]
 }

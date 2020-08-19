@@ -71,7 +71,7 @@ func (s *StopWord) LoadDict(files ...string) error {
 		return err
 	}
 
-	for k, v := range gse.StopWordMap {
+	for k, v := range s.seg.StopWordMap {
 		StopWordMap[k] = v
 	}
 

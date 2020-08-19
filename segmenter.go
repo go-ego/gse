@@ -34,6 +34,9 @@ type Segmenter struct {
 
 	// SkipLog set skip log print
 	SkipLog bool
+
+	// StopWordMap stop word map
+	StopWordMap map[string]bool
 }
 
 // jumper 该结构体用于记录 Viterbi 算法中某字元处的向前分词跳转信息
