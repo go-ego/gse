@@ -8,9 +8,13 @@ import (
 
 func init() {
 	prodSeg.LoadDict()
+	prodSeg.LoadStop("zh")
 }
 
 func TestHMM(t *testing.T) {
+	tt.Equal(t, 587878, len(prodSeg.Dict.Tokens))
+	tt.Equal(t, 5.3250719e+07, prodSeg.Dict.totalFrequency)
+
 	hmm := prodSeg.HMMCutMod("纽约时代广场")
 	tt.Equal(t, 2, len(hmm))
 	tt.Equal(t, "纽约", hmm[0])
@@ -30,7 +34,9 @@ func TestHMM(t *testing.T) {
 	tt.Equal(t, "[纽约时代广场 ,   纽约 帝国大厦 ,   旧金山湾 金门大桥]", tx)
 
 	tx = append(tx, " 广场")
-	tx = append(tx, "ok👌")
+	tx = append(tx, "ok👌", "的")
+	tt.Bool(t, prodSeg.IsStop("的"))
+
 	tx = prodSeg.Trim(tx)
 	tt.Equal(t, 7, len(tx))
 	tt.Equal(t, "[纽约时代广场 纽约 帝国大厦 旧金山湾 金门大桥 广场 ok]", tx)
@@ -124,16 +130,25 @@ func TestPos(t *testing.T) {
 }
 
 func TestStop(t *testing.T) {
-	err := prodSeg.LoadStop()
+	var seg Segmenter
+	err := seg.LoadStop()
 	tt.Nil(t, err)
+	tt.Equal(t, 88, len(seg.StopWordMap))
 
-	err = prodSeg.LoadStop("zh")
+	err = seg.LoadStop("testdata/stop.txt")
 	tt.Nil(t, err)
+	tt.Equal(t, 89, len(seg.StopWordMap))
+	tt.Bool(t, seg.IsStop("离开"))
+
+	// err := prodSeg.LoadStop("zh")
+	// tt.Nil(t, err)
+	tt.Equal(t, 1161, len(prodSeg.StopWordMap))
 
 	b := prodSeg.IsStop("阿")
 	tt.True(t, b)
 
-	b = prodSeg.IsStop("哎")
+	tt.True(t, prodSeg.IsStop("哎"))
+	b = prodSeg.IsStop("的")
 	tt.True(t, b)
 
 	prodSeg.AddStop("lol")
