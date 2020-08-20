@@ -113,6 +113,12 @@ func TestPos(t *testing.T) {
 	tt.Equal(t,
 		"纽约/ns, 时代/n, 广场/n, 时代广场/n, 纽约时代广场/nt, 纽约/ns, 帝国/n, 大厦/n, 帝国大厦/nr, 金山/nr, 旧金山/ns, 湾/zg, 旧金山湾/ns, 金门/n, 大桥/ns, 金门大桥/nz", s)
 
+	prodSeg.SkipPos = true
+	s = prodSeg.PosStr(pos, ", ")
+	tt.Equal(t, 162, len(s))
+	tt.Equal(t,
+		"纽约, 时代, 广场, 时代广场, 纽约时代广场, 纽约, 帝国, 大厦, 帝国大厦, 金山, 旧金山, 湾, 旧金山湾, 金门, 大桥, 金门大桥", s)
+
 	pos = prodSeg.TrimWithPos(pos, "n", "zg")
 	tt.Equal(t, 9, len(pos))
 	tt.Equal(t,

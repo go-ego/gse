@@ -35,6 +35,8 @@ type Segmenter struct {
 	// SkipLog set skip log print
 	SkipLog bool
 
+	// SkipPos skip PosStr pos
+	SkipPos bool
 	// StopWordMap stop word map
 	StopWordMap map[string]bool
 }

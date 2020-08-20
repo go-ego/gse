@@ -155,7 +155,11 @@ func (seg *Segmenter) PosStr(str []SegPos, separator ...string) (r string) {
 	}
 
 	for i := 0; i < len(str); i++ {
-		add := str[i].Text + "/" + str[i].Pos
+		add := str[i].Text
+		if !seg.SkipPos {
+			add += "/" + str[i].Pos
+		}
+
 		if i == len(str)-1 {
 			r += add
 		} else {
