@@ -170,4 +170,8 @@ func TestStop(t *testing.T) {
 
 	s = FilterLang(t1, "Han")
 	tt.Equal(t, "hibot机器人", s)
+
+	t2 := `<p>test: </p> <div> bot 机器人 <<银河系漫游指南>> </div>`
+	s = FilterHtml(t2)
+	tt.Equal(t, "test:   bot 机器人 <<银河系漫游指南>> ", s)
 }
