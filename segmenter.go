@@ -34,6 +34,7 @@ type Segmenter struct {
 
 	// SkipLog set skip log print
 	SkipLog bool
+	MoreLog bool
 
 	// SkipPos skip PosStr pos
 	SkipPos bool

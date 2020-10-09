@@ -118,6 +118,10 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 
 	if len(files) > 0 {
 		dictFiles := DictPaths(dictDir, files[0])
+		if !seg.SkipLog {
+			log.Println("Dict files path: ", dictFiles)
+		}
+
 		if len(dictFiles) == 0 {
 			log.Println("Warning: dict files is nil.")
 			// return errors.New("Dict files is nil.")
@@ -155,7 +159,9 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	// }
 
 	seg.CalcToken()
-	log.Println("Gse dictionary loaded finished.")
+	if !seg.SkipLog {
+		log.Println("Gse dictionary loaded finished.")
+	}
 
 	return nil
 }
@@ -180,7 +186,10 @@ func GetIdfPath(files ...string) []string {
 
 // Read read the dict flie
 func (seg *Segmenter) Read(file string) error {
-	log.Printf("Load the gse dictionary: \"%s\" ", file)
+	if !seg.SkipLog {
+		log.Printf("Load the gse dictionary: \"%s\" ", file)
+	}
+
 	dictFile, err := os.Open(file)
 	if err != nil {
 		log.Printf("Could not load dictionaries: \"%s\", %v \n", file, err)
@@ -208,7 +217,7 @@ func (seg *Segmenter) Read(file string) error {
 			}
 
 			if size > 0 {
-				if seg.SkipLog {
+				if seg.MoreLog {
 					log.Printf("File '%v' line \"%v\" read error: %v, skip",
 						file, line, fsErr.Error())
 				}
@@ -313,7 +322,6 @@ func DictPaths(dictDir, filePath string) (files []string) {
 		}
 	}
 	// }
-	log.Println("Dict files path: ", files)
 
 	return
 }
