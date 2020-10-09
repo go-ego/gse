@@ -155,7 +155,7 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	// }
 
 	seg.CalcToken()
-	log.Println("Gse dictionary loaded finished.")
+	// log.Println("Gse dictionary loaded finished.")
 
 	return nil
 }
@@ -180,7 +180,7 @@ func GetIdfPath(files ...string) []string {
 
 // Read read the dict flie
 func (seg *Segmenter) Read(file string) error {
-	log.Printf("Load the gse dictionary: \"%s\" ", file)
+	// log.Printf("Load the gse dictionary: \"%s\" ", file)
 	dictFile, err := os.Open(file)
 	if err != nil {
 		log.Printf("Could not load dictionaries: \"%s\", %v \n", file, err)
@@ -313,7 +313,7 @@ func DictPaths(dictDir, filePath string) (files []string) {
 		}
 	}
 	// }
-	log.Println("Dict files path: ", files)
+	// log.Println("Dict files path: ", files)
 
 	return
 }

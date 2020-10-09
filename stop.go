@@ -45,7 +45,7 @@ func (seg *Segmenter) LoadStop(files ...string) error {
 	}
 
 	for i := 0; i < len(name); i++ {
-		log.Printf("Load the stop word dictionary: \"%s\" ", name[i])
+		// log.Printf("Load the stop word dictionary: \"%s\" ", name[i])
 		file, err := os.Open(name[i])
 		if err != nil {
 			log.Printf("Could not load dictionaries: \"%s\", %v \n", name[i], err)
