@@ -15,6 +15,7 @@
 package gse
 
 import (
+	"regexp"
 	"unicode"
 	"unicode/utf8"
 )
@@ -159,6 +160,13 @@ func FilterSymbol(text string) (new string) {
 	}
 
 	return
+}
+
+// FilterHtml filter the html tag
+func FilterHtml(text string) string {
+	regHtml := regexp.MustCompile(`(?U)\<[^>]*\w+\>`)
+	text = regHtml.ReplaceAllString(text, "")
+	return text
 }
 
 // FilterLang filter the language
