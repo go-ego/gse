@@ -164,7 +164,7 @@ func FilterSymbol(text string) (new string) {
 
 // FilterHtml filter the html tag
 func FilterHtml(text string) string {
-	regHtml := regexp.MustCompile(`(?U)\<[^>]*\w+\>`)
+	regHtml := regexp.MustCompile(`(?U)\<[^>]*[\w|=|"]+\>`)
 	text = regHtml.ReplaceAllString(text, "")
 	return text
 }
