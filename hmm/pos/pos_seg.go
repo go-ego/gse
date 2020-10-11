@@ -47,7 +47,7 @@ type Segmenter struct {
 
 // WithGse register gse segmenter
 func (seg *Segmenter) WithGse(segs gse.Segmenter) {
-	seg.dict.seg = segs
+	seg.dict.Seg = segs
 }
 
 // LoadDict loads dictionary from given file name.
@@ -371,11 +371,13 @@ func (seg *Segmenter) TrimPunct(se []gse.SegPos) (re []gse.SegPos) {
 // Trim not space and punct
 func (seg *Segmenter) Trim(se []gse.SegPos) (re []gse.SegPos) {
 	for i := 0; i < len(se); i++ {
-		if !seg.dict.seg.IsStop(se[i].Text) {
-			si := gse.FilterSymbol(se[i].Text)
-			if si != "" {
-				re = append(re, se[i])
-			}
+		si := gse.FilterSymbol(se[i].Text)
+		if !seg.dict.Seg.NotStop && seg.dict.Seg.IsStop(si) {
+			si = ""
+		}
+
+		if si != "" {
+			re = append(re, se[i])
 		}
 	}
 

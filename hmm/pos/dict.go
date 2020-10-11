@@ -23,7 +23,7 @@ import (
 // Dict represents a dictionary used for word segmentation.
 type Dict struct {
 	total, logTotal float64
-	seg             gse.Segmenter
+	Seg             gse.Segmenter
 }
 
 // func New(files ...string) gse.Segmenter {
@@ -32,7 +32,7 @@ type Dict struct {
 
 // AddToken adds one token
 func (d *Dict) AddToken(text string, frequency float64, pos ...string) {
-	d.seg.AddToken(text, frequency, pos...)
+	d.Seg.AddToken(text, frequency, pos...)
 }
 
 func (d *Dict) updateLogTotal() {
@@ -41,20 +41,20 @@ func (d *Dict) updateLogTotal() {
 
 // Frequency returns the frequency and existence of give word
 func (d *Dict) Frequency(key string) (float64, bool) {
-	return d.seg.Find(key)
+	return d.Seg.Find(key)
 }
 
 // Pos returns the POS and existence of give word
 func (d *Dict) Pos(key string) (string, bool) {
-	value, _, _ := d.seg.Value(key)
+	value, _, _ := d.Seg.Value(key)
 	if value == 0 {
 		return "", false
 	}
 
-	pos := d.seg.Dict.Tokens[value].Pos()
+	pos := d.Seg.Dict.Tokens[value].Pos()
 	return pos, true
 }
 
 func (d *Dict) loadDict(files ...string) error {
-	return d.seg.LoadDict(files...)
+	return d.Seg.LoadDict(files...)
 }
