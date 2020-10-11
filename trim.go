@@ -84,11 +84,13 @@ func (seg *Segmenter) TrimWithPos(se []SegPos, pos ...string) (re []SegPos) {
 // Trim trim []string exclude symbol, space and punct
 func (seg *Segmenter) Trim(s []string) (r []string) {
 	for i := 0; i < len(s); i++ {
-		if !seg.IsStop(s[i]) {
-			si := FilterSymbol(s[i])
-			if si != "" {
-				r = append(r, si)
-			}
+		si := FilterSymbol(s[i])
+		if !seg.NotStop && seg.IsStop(s[i]) {
+			si = ""
+		}
+
+		if si != "" {
+			r = append(r, si)
 		}
 	}
 
