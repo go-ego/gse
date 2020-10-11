@@ -50,12 +50,14 @@ func (seg *Segmenter) TrimPunct(s []string) (r []string) {
 // TrimPosPunct trim SegPos not space and punct
 func (seg *Segmenter) TrimPosPunct(se []SegPos) (re []SegPos) {
 	for i := 0; i < len(se); i++ {
-		if !seg.IsStop(se[i].Text) {
-			if se[i].Text != "" && len(se[i].Text) > 0 {
-				ru := []rune(se[i].Text)[0]
-				if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
-					re = append(re, se[i])
-				}
+		if !seg.NotStop && seg.IsStop(se[i].Text) {
+			se[i].Text = ""
+		}
+
+		if se[i].Text != "" && len(se[i].Text) > 0 {
+			ru := []rune(se[i].Text)[0]
+			if !unicode.IsSpace(ru) && !unicode.IsPunct(ru) {
+				re = append(re, se[i])
 			}
 		}
 	}
@@ -85,7 +87,7 @@ func (seg *Segmenter) TrimWithPos(se []SegPos, pos ...string) (re []SegPos) {
 func (seg *Segmenter) Trim(s []string) (r []string) {
 	for i := 0; i < len(s); i++ {
 		si := FilterSymbol(s[i])
-		if !seg.NotStop && seg.IsStop(s[i]) {
+		if !seg.NotStop && seg.IsStop(si) {
 			si = ""
 		}
 
@@ -100,11 +102,13 @@ func (seg *Segmenter) Trim(s []string) (r []string) {
 // TrimPos trim SegPos not symbol, space and punct
 func (seg *Segmenter) TrimPos(s []SegPos) (r []SegPos) {
 	for i := 0; i < len(s); i++ {
-		if !seg.IsStop(s[i].Text) {
-			si := FilterSymbol(s[i].Text)
-			if si != "" {
-				r = append(r, s[i])
-			}
+		si := FilterSymbol(s[i].Text)
+		if !seg.NotStop && seg.IsStop(si) {
+			si = ""
+		}
+
+		if si != "" {
+			r = append(r, s[i])
 		}
 	}
 
