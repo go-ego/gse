@@ -99,6 +99,18 @@ func (seg *Segmenter) Trim(s []string) (r []string) {
 	return
 }
 
+// TrimSymbol trim []string exclude symbol, space and punct
+func (seg *Segmenter) TrimSymbol(s []string) (r []string) {
+	for i := 0; i < len(s); i++ {
+		si := FilterSymbol(s[i])
+		if si != "" {
+			r = append(r, si)
+		}
+	}
+
+	return
+}
+
 // TrimPos trim SegPos not symbol, space and punct
 func (seg *Segmenter) TrimPos(s []SegPos) (r []SegPos) {
 	for i := 0; i < len(s); i++ {
@@ -142,6 +154,19 @@ func (seg *Segmenter) PosTrimArr(str string, search bool, pos ...string) (re []s
 func (seg *Segmenter) PosTrimStr(str string, search bool, pos ...string) string {
 	pa := seg.PosTrimArr(str, search, pos...)
 	return seg.CutStr(pa)
+}
+
+// CutTrimHtml cut string trim html and symbol return []string
+func (seg *Segmenter) CutTrimHtml(str string, hmm ...bool) []string {
+	str = FilterHtml(str)
+	s := seg.Cut(str, hmm...)
+	return seg.TrimSymbol(s)
+}
+
+// CutTrimHtmls cut string trim html and symbol return string
+func (seg *Segmenter) CutTrimHtmls(str string, hmm ...bool) string {
+	s := seg.CutTrimHtml(str, hmm...)
+	return seg.CutStr(s, " ")
 }
 
 // FilterEmoji filter the emoji
