@@ -174,4 +174,7 @@ func TestStop(t *testing.T) {
 	t2 := `<p>test: </p> <div class="bot"> bot 机器人 <<银河系漫游指南>> </div>`
 	s = FilterHtml(t2)
 	tt.Equal(t, "test:   bot 机器人 <<银河系漫游指南>> ", s)
+
+	s = prodSeg.CutTrimHtmls(t2, true)
+	tt.Equal(t, "test bot 机器人 银河系 漫游 指南", s)
 }
