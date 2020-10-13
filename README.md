@@ -171,7 +171,6 @@ func main() {
 
 ## Authors
 
-- [The author is vz](https://github.com/vcaesar)
 - [Maintainers](https://github.com/orgs/go-ego/people)
 - [Contributors](https://github.com/go-ego/gse/graphs/contributors)
 
