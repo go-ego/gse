@@ -63,7 +63,7 @@ func (seg *Segmenter) Cut(str string, hmm ...bool) []string {
 		// return seg.cutDAGNoHMM(str)
 	}
 
-	if len(hmm) > 0 && hmm[0] == false {
+	if len(hmm) > 0 && !hmm[0] {
 		return seg.cutDAGNoHMM(str)
 	}
 

@@ -80,6 +80,10 @@ func cut() {
 	fmt.Println("cut all: ", cut)
 	// cut all:  [《复仇者联盟3：无限战争》 复仇 复仇者 仇者 联盟 3 ： 无限 战争 》 是 全片 使用 I M A X 摄影 摄影机 拍摄 摄制 制作 的 的 科幻 科幻片 .]
 
+	s := seg.CutStr(cut, ", ")
+	fmt.Println("cut all to string: ", s)
+	// cut all to string:  《复仇者联盟3：无限战争》, 复仇, 复仇者, 仇者, 联盟, 3, ：, 无限, 战争, 》, 是, 全片, 使用, I, M, A, X, 摄影, 摄影机, 拍摄, 摄制, 制作, 的, 的, 科幻, 科幻片, .
+
 	posAndTrim(cut)
 }
 
