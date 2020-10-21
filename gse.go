@@ -24,7 +24,7 @@ import (
 
 const (
 	// Version get the gse version
-	Version = "v0.60.0.497, Green Lake!"
+	Version = "v0.62.1.510, Green Lake!"
 
 	// minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
