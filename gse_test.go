@@ -161,6 +161,10 @@ func TestStop(t *testing.T) {
 	b = prodSeg.IsStop("lol")
 	tt.True(t, b)
 
+	prodSeg.RemoveStop("lol")
+	b = prodSeg.IsStop("lol")
+	tt.False(t, b)
+
 	t1 := `hi, bot, 123; 🤖, 机器人; 👌^_^😆`
 	s := FilterEmoji(t1)
 	tt.Equal(t, "hi, bot, 123; , 机器人; ^_^", s)

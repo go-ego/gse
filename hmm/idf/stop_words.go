@@ -46,9 +46,14 @@ type StopWord struct {
 	seg gse.Segmenter
 }
 
-// AddToken adds a token into StopWord dictionary.
-func (s *StopWord) AddToken(text string) {
+// AddStop adds a token into StopWord dictionary.
+func (s *StopWord) AddStop(text string) {
 	s.stopWordMap[text] = true
+}
+
+// RemoveStop remove a token into StopWord dictionary.
+func (s *StopWord) RemoveStop(text string) {
+	delete(s.stopWordMap, text)
 }
 
 // NewStopWord create a new StopWord with default stop words.

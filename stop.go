@@ -68,9 +68,14 @@ func (seg *Segmenter) LoadStop(files ...string) error {
 	return nil
 }
 
-// AddStop adds a token into StopWord dictionary.
+// AddStop add a token into StopWord dictionary.
 func (seg *Segmenter) AddStop(text string) {
 	seg.StopWordMap[text] = true
+}
+
+// RemoveStop remove a token into StopWord dictionary.
+func (seg *Segmenter) RemoveStop(text string) {
+	delete(seg.StopWordMap, text)
 }
 
 // IsStop checks if a given word is stop word.
