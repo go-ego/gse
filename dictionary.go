@@ -50,20 +50,26 @@ func (dict *Dictionary) TotalFreq() float64 {
 }
 
 // addToken 向词典中加入一个分词
-func (dict *Dictionary) addToken(token Token) {
+func (dict *Dictionary) addToken(token Token) error {
 	bytes := textSliceToBytes(token.text)
-	_, err := dict.trie.Get(bytes)
-	if err == nil {
-		return
+	val, err := dict.trie.Get(bytes)
+	if err == nil || val > 0 {
+		return nil
 	}
 
-	dict.trie.Insert(bytes, dict.NumTokens())
+	err = dict.trie.Insert(bytes, dict.NumTokens())
+	if err != nil {
+		return err
+	}
+
 	dict.Tokens = append(dict.Tokens, token)
 	dict.totalFrequency += token.frequency
 
 	if len(token.text) > dict.maxTokenLen {
 		dict.maxTokenLen = len(token.text)
 	}
+
+	return nil
 }
 
 // RemoveToken remove token in dictionary
