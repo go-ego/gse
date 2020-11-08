@@ -55,7 +55,7 @@ func (seg *Segmenter) Dictionary() *Dictionary {
 }
 
 // AddToken add new text to token
-func (seg *Segmenter) AddToken(text string, frequency float64, pos ...string) {
+func (seg *Segmenter) AddToken(text string, frequency float64, pos ...string) error {
 	var po string
 	if len(pos) > 0 {
 		po = pos[0]
@@ -64,7 +64,7 @@ func (seg *Segmenter) AddToken(text string, frequency float64, pos ...string) {
 	words := SplitTextToWords([]byte(text))
 	token := Token{text: words, frequency: frequency, pos: po}
 
-	seg.Dict.addToken(token)
+	return seg.Dict.addToken(token)
 }
 
 // AddTokenForce add new text to token and force
@@ -75,11 +75,11 @@ func (seg *Segmenter) AddTokenForce(text string, frequency float64, pos ...strin
 }
 
 // RemoveToken remove token in dictionary
-func (seg *Segmenter) RemoveToken(text string) {
+func (seg *Segmenter) RemoveToken(text string) error {
 	words := SplitTextToWords([]byte(text))
 	token := Token{text: words}
 
-	seg.Dict.RemoveToken(token)
+	return seg.Dict.RemoveToken(token)
 }
 
 // LoadDict load the dictionary from the file
