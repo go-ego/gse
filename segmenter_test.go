@@ -114,19 +114,7 @@ func TestSegmentJp(t *testing.T) {
 func TestLoadDictionary(t *testing.T) {
 	var seg, seg1 Segmenter
 
-	ToLower = false
-	defer func() { ToLower = true }()
-
-	err := seg.LoadDict("en")
-	tt.Nil(t, err)
-	seg.Load = false
-
-	seg.LoadNoFreq = true
-	seg.TextFreq = "2.0"
-	seg.MinTokenFreq = 1.0
-	seg.MoreLog = true
-	seg.SkipLog = true
-	err = seg.LoadDict("zh")
+	err := seg.LoadDict("zh")
 	tt.Nil(t, err)
 
 	err = seg1.LoadDict("jp")
@@ -136,12 +124,29 @@ func TestLoadDictionary(t *testing.T) {
 	err = seg1.LoadDict()
 	tt.Nil(t, err)
 
+	err = seg.LoadDict("en")
+	tt.Nil(t, err)
+}
+
+func TestToken(t *testing.T) {
+	ToLower = false
+	defer func() { ToLower = true }()
+
+	var seg = prodSeg
+	seg.Load = false
+
+	seg.LoadNoFreq = true
+	seg.TextFreq = "2.0"
+	seg.MinTokenFreq = 1.0
+	seg.MoreLog = true
+	seg.SkipLog = true
+
 	tt.Expect(t, "世界/n 人口/n ", ToString(prodSeg.Segment(
 		[]byte("世界人口")), false))
 
-	dict := seg1.Dictionary()
+	dict := seg.Dictionary()
 	tt.Expect(t, "16", dict.MaxTokenLen())
-	tt.Expect(t, "5.3250731e+07", dict.TotalFreq())
+	tt.Expect(t, "5.3250719e+07", dict.TotalFreq())
 
 	freq, ok := dict.Find([]byte("世界"))
 	tt.Equal(t, 34387, freq)
@@ -155,35 +160,41 @@ func TestLoadDictionary(t *testing.T) {
 	tt.Equal(t, 3, freq)
 	tt.True(t, ok)
 
-	freq, ok = seg1.Find("帝国大厦大")
+	freq, ok = seg.Find("帝国大厦大")
 	tt.Equal(t, 0, freq)
 	tt.False(t, ok)
 
-	val, id, err := seg1.Value("帝国")
-	tt.Equal(t, 147102, val)
-	tt.Equal(t, 256572, id)
+	val, id, err := seg.Value("帝国")
+	tt.Equal(t, 147099, val)
+	tt.Equal(t, 42712, id)
 	tt.Nil(t, err)
 
-	seg.AddToken("伦敦摘星塔", 100)
-	seg.AddToken("Winter is coming", 100)
-	seg.AddToken("Winter is coming", 100)
+	err = seg.AddToken("伦敦摘星塔", 100)
+	tt.Nil(t, err)
+	err = seg.AddToken("Winter is coming", 100)
+	tt.Nil(t, err)
+	err = seg.AddToken("Winter is coming", 200)
+	tt.Nil(t, err)
 
 	freq, ok = seg.Find("Winter is coming")
 	tt.Equal(t, 100, freq)
 	tt.True(t, ok)
 
-	freq, ok = seg.Find("伦敦摘星塔")
+	freq, ok = prodSeg.Find("伦敦摘星塔")
 	tt.Equal(t, 100, freq)
 	tt.True(t, ok)
 
-	seg.AddToken("西雅图中心", 100)
-	seg.AddToken("西雅图太空针", 100, "n")
-	freq, ok = seg.Find("西雅图太空针")
+	err = prodSeg.AddToken("西雅图中心", 100)
+	tt.Nil(t, err)
+	err = prodSeg.AddToken("西雅图太空针", 100, "n")
+	tt.Nil(t, err)
+	freq, ok = prodSeg.Find("西雅图太空针")
 	tt.Equal(t, 100, freq)
 	tt.True(t, ok)
 
-	seg.AddTokenForce("Space Needle", 100, "n")
-	seg.RemoveToken("西雅图太空针")
+	prodSeg.AddTokenForce("Space Needle", 100, "n")
+	err = prodSeg.RemoveToken("西雅图太空针")
+	tt.Nil(t, err)
 	freq, ok = dict.Find([]byte("西雅图太空针"))
 	tt.Equal(t, 0, freq)
 	tt.False(t, ok)
