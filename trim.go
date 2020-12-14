@@ -210,3 +210,21 @@ func FilterLang(text, lang string) (new string) {
 
 	return
 }
+
+// Rang rang text to []string
+func Range(text string) (new []string) {
+	for _, value := range text {
+		new = append(new, string(value))
+	}
+
+	return
+}
+
+// RangText rang text to string
+func RangeText(text string) (new string) {
+	for _, value := range text {
+		new += string(value) + " "
+	}
+
+	return
+}

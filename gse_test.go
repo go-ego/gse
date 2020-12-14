@@ -181,4 +181,9 @@ func TestStop(t *testing.T) {
 
 	s = prodSeg.CutTrimHtmls(t2, true)
 	tt.Equal(t, "test bot 机器人 银河系 漫游 指南", s)
+
+	s1 := Range("hibot, 机器人")
+	tt.Equal(t, "[h i b o t ,   机 器 人]", s1)
+	s = RangeText("hibot, 机器人")
+	tt.Equal(t, "h i b o t ,   机 器 人 ", s)
 }
