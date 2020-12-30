@@ -25,34 +25,35 @@ func TestGetVer(t *testing.T) {
 }
 
 func TestSplit(t *testing.T) {
+	var seg1 Segmenter
 	tt.Expect(t, "世/界/有/七/十/亿/人/口/",
-		bytesToString(SplitTextToWords([]byte("世界有七十亿人口"))))
+		bytesToString(seg1.SplitTextToWords([]byte("世界有七十亿人口"))))
 
 	tt.Expect(t, "github/ /is/ /a/ /web/-/based/ /hosting/ /service/,/ /for/ /software/ /development/ /projects/./",
-		bytesToString(SplitTextToWords([]byte(
+		bytesToString(seg1.SplitTextToWords([]byte(
 			"GitHub is a web-based hosting service, for software development projects."))))
 
 	tt.Expect(t, "雅/虎/yahoo/!/ /致/力/于/，/领/先/的/门/户/网/站/。/",
-		bytesToString(SplitTextToWords([]byte(
+		bytesToString(seg1.SplitTextToWords([]byte(
 			"雅虎Yahoo! 致力于，领先的门户网站。"))))
 
 	tt.Expect(t, "こ/ん/に/ち/は/",
-		bytesToString(SplitTextToWords([]byte("こんにちは"))))
+		bytesToString(seg1.SplitTextToWords([]byte("こんにちは"))))
 
 	tt.Expect(t, "안/녕/하/세/요/",
-		bytesToString(SplitTextToWords([]byte("안녕하세요"))))
+		bytesToString(seg1.SplitTextToWords([]byte("안녕하세요"))))
 
 	tt.Expect(t, "Я/ /тоже/ /рада/ /Вас/ /видеть/",
-		bytesToString(SplitTextToWords([]byte("Я тоже рада Вас видеть"))))
+		bytesToString(seg1.SplitTextToWords([]byte("Я тоже рада Вас видеть"))))
 
 	tt.Expect(t, "¿/cómo/ /van/ /las/ /cosas/",
-		bytesToString(SplitTextToWords([]byte("¿Cómo van las cosas"))))
+		bytesToString(seg1.SplitTextToWords([]byte("¿Cómo van las cosas"))))
 
 	tt.Expect(t, "wie/ /geht/ /es/ /ihnen/",
-		bytesToString(SplitTextToWords([]byte("Wie geht es Ihnen"))))
+		bytesToString(seg1.SplitTextToWords([]byte("Wie geht es Ihnen"))))
 
 	tt.Expect(t, "je/ /suis/ /enchanté/ /de/ /cette/ /pièce/",
-		bytesToString(SplitTextToWords([]byte("Je suis enchanté de cette pièce"))))
+		bytesToString(seg1.SplitTextToWords([]byte("Je suis enchanté de cette pièce"))))
 
 	tt.Expect(t, "[[116 111 32 119 111 114 100 115]]", toWords("to words"))
 }

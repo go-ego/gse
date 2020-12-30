@@ -187,3 +187,17 @@ func TestStop(t *testing.T) {
 	s = RangeText("hibot, 机器人")
 	tt.Equal(t, "h i b o t ,   机 器 人 ", s)
 }
+
+func TestNum(t *testing.T) {
+	seg := New("./testdata/test_dict3.txt")
+	seg.Num = true
+	text := "ttest num123-1"
+	s := seg.Cut(text)
+	tt.Equal(t, "[test   num 1 2 3 - 1]", s)
+
+	s = seg.CutAll(text)
+	tt.Equal(t, "[t e s t   n u m 1 2 3 - 1]", s)
+
+	s = seg.CutSearch(text)
+	tt.Equal(t, "[test   num 1 2 3 - 1]", s)
+}

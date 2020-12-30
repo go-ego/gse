@@ -29,10 +29,6 @@ import (
 )
 
 var (
-	// AlphaNum set splitTextToWords can add token
-	// when words in alphanum
-	// set up alphanum dictionary word segmentation
-	AlphaNum = false
 
 	// ToLower set alpha tolower
 	ToLower = true
@@ -61,7 +57,7 @@ func (seg *Segmenter) AddToken(text string, frequency float64, pos ...string) er
 		po = pos[0]
 	}
 
-	words := SplitTextToWords([]byte(text))
+	words := seg.SplitTextToWords([]byte(text))
 	token := Token{text: words, frequency: frequency, pos: po}
 
 	return seg.Dict.addToken(token)
@@ -76,7 +72,7 @@ func (seg *Segmenter) AddTokenForce(text string, frequency float64, pos ...strin
 
 // RemoveToken remove token in dictionary
 func (seg *Segmenter) RemoveToken(text string) error {
-	words := SplitTextToWords([]byte(text))
+	words := seg.SplitTextToWords([]byte(text))
 	token := Token{text: words}
 
 	return seg.Dict.RemoveToken(token)
@@ -261,7 +257,7 @@ func (seg *Segmenter) Read(file string) error {
 		}
 
 		// 将分词添加到字典中
-		words := SplitTextToWords([]byte(text))
+		words := seg.SplitTextToWords([]byte(text))
 		token := Token{text: words, frequency: frequency, pos: pos}
 		seg.Dict.addToken(token)
 	}
