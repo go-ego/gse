@@ -191,13 +191,13 @@ func TestStop(t *testing.T) {
 func TestNum(t *testing.T) {
 	seg := New("./testdata/test_dict3.txt")
 	seg.Num = true
-	text := "ttest num123-1"
+	text := "t123test123 num123-1"
 	s := seg.Cut(text)
-	tt.Equal(t, "[test   num 1 2 3 - 1]", s)
+	tt.Equal(t, "[t 1 2 3 test 1 2 3   num 1 2 3 - 1]", s)
 
 	s = seg.CutAll(text)
-	tt.Equal(t, "[t e s t   n u m 1 2 3 - 1]", s)
+	tt.Equal(t, "[t 1 2 3 t e s t 1 2 3   n u m 1 2 3 - 1]", s)
 
 	s = seg.CutSearch(text)
-	tt.Equal(t, "[test   num 1 2 3 - 1]", s)
+	tt.Equal(t, "[t 1 2 3 test 1 2 3   num 1 2 3 - 1]", s)
 }
