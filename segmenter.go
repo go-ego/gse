@@ -25,6 +25,14 @@ type Segmenter struct {
 	Dict *Dictionary
 	Load bool
 
+	// AlphaNum set splitTextToWords can add token
+	// when words in alphanum
+	// set up alphanum dictionary word segmentation
+	AlphaNum bool
+	Num      bool
+	// ToLower set alpha tolower
+	// ToLower bool
+
 	// LoadNoFreq load not have freq dict word
 	LoadNoFreq bool
 	// MinTokenFreq load min freq token
@@ -78,7 +86,7 @@ func (seg *Segmenter) internalSegment(bytes []byte, searchMode bool) []Segment {
 	}
 
 	// 划分字元
-	text := SplitTextToWords(bytes)
+	text := seg.SplitTextToWords(bytes)
 
 	return seg.segmentWords(text, searchMode)
 }
@@ -169,28 +177,28 @@ func updateJumper(jumper *jumper, baseDistance float32, token *Token) {
 }
 
 // SplitTextToWords 将文本划分成字元
-func SplitTextToWords(text Text) []Text {
+func (seg *Segmenter) SplitTextToWords(text Text) []Text {
 	output := make([]Text, 0, len(text)/3)
-	current := 0
+	current, alphanumericStart := 0, 0
 	inAlphanumeric := true
-	alphanumericStart := 0
 
 	for current < len(text) {
 		r, size := utf8.DecodeRune(text[current:])
-		if size <= 2 && (unicode.IsLetter(r) || unicode.IsNumber(r)) {
+		isNum := unicode.IsNumber(r) && !seg.Num
+		if size <= 2 && (unicode.IsLetter(r) || isNum) {
 			// 当前是拉丁字母或数字（非中日韩文字）
 			if !inAlphanumeric {
 				alphanumericStart = current
 				inAlphanumeric = true
 			}
 
-			if AlphaNum {
+			if seg.AlphaNum {
 				output = append(output, toLow(text[current:current+size]))
 			}
 		} else {
 			if inAlphanumeric {
 				inAlphanumeric = false
-				if current != 0 && !AlphaNum {
+				if current != 0 && !seg.AlphaNum {
 					output = append(output, toLow(text[alphanumericStart:current]))
 				}
 			}
@@ -201,7 +209,7 @@ func SplitTextToWords(text Text) []Text {
 	}
 
 	// 处理最后一个字元是英文的情况
-	if inAlphanumeric && !AlphaNum {
+	if inAlphanumeric && !seg.AlphaNum {
 		if current != 0 {
 			output = append(output, toLow(text[alphanumericStart:current]))
 		}

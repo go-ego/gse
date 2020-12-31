@@ -47,7 +47,7 @@ type Prob struct {
 func New(files ...string) Segmenter {
 	var seg Segmenter
 	if len(files) > 1 && files[1] == "alpha" {
-		AlphaNum = true
+		seg.AlphaNum = true
 	}
 	seg.LoadDict(files...)
 
