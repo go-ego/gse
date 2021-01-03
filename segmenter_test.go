@@ -30,7 +30,7 @@ func TestSplit(t *testing.T) {
 		bytesToString(seg1.SplitTextToWords([]byte("世界有七十亿人口"))))
 
 	tt.Expect(t, "github/ /is/ /a/ /web/-/based/ /hosting/ /service/,/ /for/ /software/ /development/ /projects/./",
-		bytesToString(seg1.SplitTextToWords([]byte(
+		bytesToString(SplitWords([]byte(
 			"GitHub is a web-based hosting service, for software development projects."))))
 
 	tt.Expect(t, "雅/虎/yahoo/!/ /致/力/于/，/领/先/的/门/户/网/站/。/",
