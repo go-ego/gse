@@ -176,6 +176,12 @@ func updateJumper(jumper *jumper, baseDistance float32, token *Token) {
 	}
 }
 
+// SplitWords 将文本划分成字元
+func SplitWords(text Text) []Text {
+	var seg Segmenter
+	return seg.SplitTextToWords(text)
+}
+
 // SplitTextToWords 将文本划分成字元
 func (seg *Segmenter) SplitTextToWords(text Text) []Text {
 	output := make([]Text, 0, len(text)/3)
