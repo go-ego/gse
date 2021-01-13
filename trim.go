@@ -169,6 +169,18 @@ func (seg *Segmenter) CutTrimHtmls(str string, hmm ...bool) string {
 	return seg.CutStr(s, " ")
 }
 
+// CutUrl cut url string trim symbol return []string
+func (seg *Segmenter) CutUrl(str string) []string {
+	seg.Num = true
+	s := seg.Cut(str)
+	return seg.TrimSymbol(s)
+}
+
+// CutUrls cut url string trim symbol return string
+func (seg *Segmenter) CutUrls(str string) string {
+	return seg.CutStr(seg.CutUrl(str), " ")
+}
+
 // FilterEmoji filter the emoji
 func FilterEmoji(text string) (new string) {
 	for _, value := range text {
