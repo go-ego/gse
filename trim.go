@@ -16,6 +16,7 @@ package gse
 
 import (
 	"regexp"
+	"strings"
 	"unicode"
 	"unicode/utf8"
 )
@@ -167,6 +168,30 @@ func (seg *Segmenter) CutTrimHtml(str string, hmm ...bool) []string {
 func (seg *Segmenter) CutTrimHtmls(str string, hmm ...bool) string {
 	s := seg.CutTrimHtml(str, hmm...)
 	return seg.CutStr(s, " ")
+}
+
+// CutUrl cut url string trim symbol return []string
+func (seg *Segmenter) CutUrl(str string) []string {
+	// seg.Num = true
+	str = SplitNums(str)
+	s := seg.Cut(str)
+	return seg.TrimSymbol(s)
+}
+
+// CutUrls cut url string trim symbol return string
+func (seg *Segmenter) CutUrls(str string) string {
+	return seg.CutStr(seg.CutUrl(str), " ")
+}
+
+// SplitNum cut string by num to []string
+func SplitNum(text string) []string {
+	r := regexp.MustCompile(`\d+|\D+`)
+	return r.FindAllString(text, -1)
+}
+
+// SplitNums cut string by num to string
+func SplitNums(text string) string {
+	return strings.Join(SplitNum(text), " ")
 }
 
 // FilterEmoji filter the emoji
