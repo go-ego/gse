@@ -201,3 +201,10 @@ func TestNum(t *testing.T) {
 	s = seg.CutSearch(text)
 	tt.Equal(t, "[t 1 2 3 test 1 2 3   num 1 2 3 - 1]", s)
 }
+
+func TestUrl(t *testing.T) {
+	seg := New("./testdata/test_dict3.txt")
+
+	s1 := seg.CutUrls("https://www.g.com/search?q=test%m11.42&ie=UTF-8")
+	tt.Equal(t, "https www g com search q test m 11 42 ie utf 8", s1)
+}
