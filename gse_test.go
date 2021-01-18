@@ -198,8 +198,9 @@ func TestNum(t *testing.T) {
 	s = seg.CutAll(text)
 	tt.Equal(t, "[t 1 2 3 t e s t 1 2 3   n u m 1 2 3 - 1]", s)
 
+	seg.Alpha = true
 	s = seg.CutSearch(text)
-	tt.Equal(t, "[t 1 2 3 test 1 2 3   num 1 2 3 - 1]", s)
+	tt.Equal(t, "[t 1 2 3 t e s t 1 2 3   n u m 1 2 3 - 1]", s)
 }
 
 func TestUrl(t *testing.T) {

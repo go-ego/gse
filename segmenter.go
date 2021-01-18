@@ -29,6 +29,7 @@ type Segmenter struct {
 	// when words in alphanum
 	// set up alphanum dictionary word segmentation
 	AlphaNum bool
+	Alpha    bool
 	Num      bool
 	// ToLower set alpha tolower
 	// ToLower bool
@@ -191,7 +192,8 @@ func (seg *Segmenter) SplitTextToWords(text Text) []Text {
 	for current < len(text) {
 		r, size := utf8.DecodeRune(text[current:])
 		isNum := unicode.IsNumber(r) && !seg.Num
-		if size <= 2 && (unicode.IsLetter(r) || isNum) {
+		isAlpha := unicode.IsLetter(r) && !seg.Alpha
+		if size <= 2 && (isAlpha || isNum) {
 			// 当前是拉丁字母或数字（非中日韩文字）
 			if !inAlphanumeric {
 				alphanumericStart = current
