@@ -23,28 +23,27 @@ func RegexpSplit(re *regexp.Regexp, s string, n int) []string {
 	} else {
 		matches = re.FindAllStringIndex(s, n)
 	}
-	strings := make([]string, 0, len(matches))
+	strs := make([]string, 0, len(matches))
 
-	beg := 0
-	end := 0
+	begin, end := 0, 0
 	for _, match := range matches {
-		if n > 0 && len(strings) >= n-1 {
+		if n > 0 && len(strs) >= n-1 {
 			break
 		}
 
 		end = match[0]
 		if match[1] != 0 {
-			strings = append(strings, s[beg:end])
+			strs = append(strs, s[begin:end])
 		}
-		beg = match[1]
+		begin = match[1]
 		if len(re.SubexpNames()) > 1 {
-			strings = append(strings, s[match[0]:match[1]])
+			strs = append(strs, s[match[0]:match[1]])
 		}
 	}
 
 	if end != len(s) {
-		strings = append(strings, s[beg:])
+		strs = append(strs, s[begin:])
 	}
 
-	return strings
+	return strs
 }
