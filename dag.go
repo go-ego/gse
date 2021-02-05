@@ -285,7 +285,7 @@ func (seg *Segmenter) cutForSearch(str string, hmm ...bool) []string {
 }
 
 // SuggestFreq suggest the words frequency
-// returns a suggested frequncy of a word or a long word
+// returns a suggested frequncy of a word
 // cutted into several short words.
 func (seg *Segmenter) SuggestFreq(words ...string) float64 {
 	frequency := 1.0
@@ -312,29 +312,30 @@ func (seg *Segmenter) SuggestFreq(words ...string) float64 {
 			frequency = wordFreq
 		}
 
-	} else {
-		word := words[0]
-		for _, segment := range seg.Cut(word, false) {
-			freq, ok := seg.Find(segment)
-			if ok {
-				frequency *= freq
-			}
+		return frequency
+	}
 
-			frequency /= total
-		}
-
-		frequency, _ = math.Modf(frequency * total)
-		frequency += 1.0
-		wordFreq := 1.0
-
-		freq, ok := seg.Find(word)
+	word := words[0]
+	for _, segment := range seg.Cut(word, false) {
+		freq, ok := seg.Find(segment)
 		if ok {
-			wordFreq = freq
+			frequency *= freq
 		}
 
-		if wordFreq > frequency {
-			frequency = wordFreq
-		}
+		frequency /= total
+	}
+
+	frequency, _ = math.Modf(frequency * total)
+	frequency += 1.0
+	wordFreq := 1.0
+
+	freq, ok := seg.Find(word)
+	if ok {
+		wordFreq = freq
+	}
+
+	if wordFreq > frequency {
+		frequency = wordFreq
 	}
 
 	return frequency

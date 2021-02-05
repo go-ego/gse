@@ -23,6 +23,8 @@ type Segment struct {
 	// 分词在文本中的结束字节位置（不包括该位置）
 	end int
 
+	Position int
+
 	// 分词信息
 	token *Token
 }
