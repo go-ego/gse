@@ -29,7 +29,6 @@ import (
 )
 
 var (
-
 	// ToLower set alpha tolower
 	ToLower = true
 )
@@ -227,14 +226,16 @@ func (seg *Segmenter) Read(file string) error {
 			// 文件结束或错误行
 			// break
 			continue
-		} else if size < 2 {
+		}
+		if size < 2 {
 			if !seg.LoadNoFreq {
 				// 无效行
 				continue
 			} else {
 				freqText = seg.TextFreq
 			}
-		} else if size == 2 {
+		}
+		if size == 2 {
 			// 没有词性标注时设为空字符串
 			pos = ""
 		}
