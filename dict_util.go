@@ -77,6 +77,28 @@ func (seg *Segmenter) RemoveToken(text string) error {
 	return seg.Dict.RemoveToken(token)
 }
 
+// LoadDictMap load dictionary from []map[string]string
+func (seg *Segmenter) LoadDictMap(dict []map[string]string) {
+	seg.Dict = NewDict()
+	for _, d := range dict {
+		// Parse word frequency
+		frequency, err := strconv.ParseFloat(d["freqText"], 64)
+		if err != nil {
+			continue
+		}
+
+		if frequency < seg.MinTokenFreq {
+			continue
+		}
+
+		words := seg.SplitTextToWords([]byte(d["text"]))
+		token := Token{text: words, frequency: frequency, pos: d["pos"]}
+		seg.Dict.addToken(token)
+	}
+
+	seg.CalcToken()
+}
+
 // LoadDict load the dictionary from the file
 //
 // The format of the dictionary is (one for each participle):
