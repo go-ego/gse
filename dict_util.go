@@ -82,7 +82,7 @@ func (seg *Segmenter) LoadDictMap(dict []map[string]string) {
 	seg.Dict = NewDict()
 	for _, d := range dict {
 		// Parse word frequency
-		frequency, err := strconv.ParseFloat(d["freqText"], 64)
+		frequency, err := strconv.ParseFloat(d["frequency"], 64)
 		if err != nil {
 			continue
 		}
@@ -215,12 +215,21 @@ func (seg *Segmenter) Read(file string) error {
 	defer dictFile.Close()
 
 	reader := bufio.NewReader(dictFile)
+	return seg.Reader(reader, file)
+}
+
+// Reader load dictionary from io.Reader
+func (seg *Segmenter) Reader(reader io.Reader, files ...string) error {
 	var (
-		text      string
-		freqText  string
-		frequency float64
-		pos       string
+		file           string
+		text, freqText string
+		frequency      float64
+		pos            string
 	)
+
+	if len(files) > 0 {
+		file = files[0]
+	}
 
 	// 逐行读入分词
 	line := 0
