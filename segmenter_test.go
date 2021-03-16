@@ -147,7 +147,7 @@ func TestToken(t *testing.T) {
 
 	dict := seg.Dictionary()
 	tt.Expect(t, "16", dict.MaxTokenLen())
-	tt.Expect(t, "5.3250719e+07", dict.TotalFreq())
+	tt.Expect(t, "5.3250742e+07", dict.TotalFreq())
 
 	freq, ok := dict.Find([]byte("世界"))
 	tt.Equal(t, 34387, freq)

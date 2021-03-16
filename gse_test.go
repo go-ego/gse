@@ -11,9 +11,33 @@ func init() {
 	prodSeg.LoadStop("zh")
 }
 
+func TestLoadDictMap(t *testing.T) {
+	m := []map[string]string{
+		{
+			"text":      "一城山水",
+			"frequency": "10",
+			"pos":       "n",
+		},
+		{
+			"text":      "山河日月",
+			"frequency": "13",
+		},
+	}
+
+	prodSeg.LoadDictMap(m)
+
+	f, ok := prodSeg.Find("一城山水")
+	tt.Bool(t, ok)
+	tt.Equal(t, 10, f)
+
+	f, ok = prodSeg.Find("山河日月")
+	tt.Bool(t, ok)
+	tt.Equal(t, 13, f)
+}
+
 func TestHMM(t *testing.T) {
-	tt.Equal(t, 587878, len(prodSeg.Dict.Tokens))
-	tt.Equal(t, 5.3250719e+07, prodSeg.Dict.totalFrequency)
+	tt.Equal(t, 587880, len(prodSeg.Dict.Tokens))
+	tt.Equal(t, 5.3250742e+07, prodSeg.Dict.totalFrequency)
 
 	hmm := prodSeg.HMMCutMod("纽约时代广场")
 	tt.Equal(t, 2, len(hmm))

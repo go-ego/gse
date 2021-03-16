@@ -138,5 +138,5 @@ func locJudge(str string, hanLoc, nonHanLoc []int) (loc []int) {
 		loc = nonHanLoc
 	}
 
-	return loc
+	return
 }

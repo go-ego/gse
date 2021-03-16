@@ -29,7 +29,6 @@ import (
 )
 
 var (
-
 	// ToLower set alpha tolower
 	ToLower = true
 )
@@ -76,6 +75,29 @@ func (seg *Segmenter) RemoveToken(text string) error {
 	token := Token{text: words}
 
 	return seg.Dict.RemoveToken(token)
+}
+
+// LoadDictMap load dictionary from []map[string]string
+func (seg *Segmenter) LoadDictMap(dict []map[string]string) error {
+	if seg.Dict == nil {
+		seg.Dict = NewDict()
+		seg.Init()
+	}
+
+	for _, d := range dict {
+		// Parse word frequency
+		frequency := seg.Size(len(d), d["text"], d["frequency"])
+		if frequency == 0.0 {
+			continue
+		}
+
+		words := seg.SplitTextToWords([]byte(d["text"]))
+		token := Token{text: words, frequency: frequency, pos: d["pos"]}
+		seg.Dict.addToken(token)
+	}
+
+	seg.CalcToken()
+	return nil
 }
 
 // LoadDict load the dictionary from the file
@@ -194,12 +216,59 @@ func (seg *Segmenter) Read(file string) error {
 	defer dictFile.Close()
 
 	reader := bufio.NewReader(dictFile)
+	return seg.Reader(reader, file)
+}
+
+// Size frequency is calculated based on the size of the text
+func (seg *Segmenter) Size(size int, text, freqText string) (frequency float64) {
+	if size == 0 {
+		// 文件结束或错误行
+		// continue
+		return
+	}
+
+	if size < 2 {
+		if !seg.LoadNoFreq {
+			// 无效行
+			return
+		} else {
+			freqText = seg.TextFreq
+		}
+	}
+
+	// 解析词频
+	var err error
+	frequency, err = strconv.ParseFloat(freqText, 64)
+	if err != nil {
+		// continue
+		return
+	}
+
+	// 过滤频率太小的词
+	if frequency < seg.MinTokenFreq {
+		return 0.0
+	}
+
+	// 过滤长度为1的词, 降低词频
+	if len([]rune(text)) < 2 {
+		frequency = 2
+	}
+
+	return
+}
+
+// Reader load dictionary from io.Reader
+func (seg *Segmenter) Reader(reader io.Reader, files ...string) error {
 	var (
-		text      string
-		freqText  string
-		frequency float64
-		pos       string
+		file           string
+		text, freqText string
+		frequency      float64
+		pos            string
 	)
+
+	if len(files) > 0 {
+		file = files[0]
+	}
 
 	// 逐行读入分词
 	line := 0
@@ -223,37 +292,14 @@ func (seg *Segmenter) Read(file string) error {
 			}
 		}
 
-		if size == 0 {
-			// 文件结束或错误行
-			// break
+		frequency = seg.Size(size, text, freqText)
+		if frequency == 0.0 {
 			continue
-		} else if size < 2 {
-			if !seg.LoadNoFreq {
-				// 无效行
-				continue
-			} else {
-				freqText = seg.TextFreq
-			}
-		} else if size == 2 {
+		}
+
+		if size == 2 {
 			// 没有词性标注时设为空字符串
 			pos = ""
-		}
-
-		// 解析词频
-		var err error
-		frequency, err = strconv.ParseFloat(freqText, 64)
-		if err != nil {
-			continue
-		}
-
-		// 过滤频率太小的词
-		if frequency < seg.MinTokenFreq {
-			continue
-		}
-		// 过滤, 降低词频
-		if len([]rune(text)) < 2 {
-			// continue
-			frequency = 2
 		}
 
 		// 将分词添加到字典中

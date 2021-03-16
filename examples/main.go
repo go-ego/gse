@@ -41,7 +41,8 @@ func main() {
 }
 
 func addToken() {
-	seg.AddToken("《复仇者联盟3：无限战争》", 100, "n")
+	err := seg.AddToken("《复仇者联盟3：无限战争》", 100, "n")
+	fmt.Println("add token: ", err)
 	seg.AddToken("西雅图中心", 100)
 	seg.AddToken("西雅图太空针", 100, "n")
 	seg.AddToken("Space Needle", 100, "n")
@@ -52,7 +53,8 @@ func addToken() {
 	fmt.Println("seg.Find: ", freq, ok)
 
 	// seg.CalcToken()
-	seg.RemoveToken("太空针")
+	err = seg.RemoveToken("太空针")
+	fmt.Println("remove token: ", err)
 }
 
 // 使用 DAG 或 HMM 模式分词
@@ -144,7 +146,7 @@ func extAndRank(segs gse.Segmenter) {
 	var te idf.TagExtracter
 	te.WithGse(segs)
 	err := te.LoadIdf()
-	fmt.Println(err)
+	fmt.Println("load idf: ", err)
 
 	segments := te.ExtractTags(text, 5)
 	fmt.Println("segments: ", len(segments), segments)
