@@ -231,9 +231,9 @@ func (seg *Segmenter) Size(size int, text, freqText string) (frequency float64) 
 		if !seg.LoadNoFreq {
 			// 无效行
 			return
-		} else {
-			freqText = seg.TextFreq
 		}
+
+		freqText = seg.TextFreq
 	}
 
 	// 解析词频
