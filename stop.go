@@ -27,6 +27,17 @@ var StopWordMap = map[string]bool{
 	" ": true,
 }
 
+// LoadStopArr load stop word by []string
+func (seg *Segmenter) LoadStopArr(dict []string) {
+	if seg.StopWordMap == nil {
+		seg.StopWordMap = make(map[string]bool)
+	}
+
+	for _, d := range dict {
+		seg.StopWordMap[d] = true
+	}
+}
+
 // LoadStop load stop word files add token to map
 func (seg *Segmenter) LoadStop(files ...string) error {
 	if seg.StopWordMap == nil {
