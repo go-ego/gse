@@ -21,3 +21,10 @@ func TestLoadDictEmbed(t *testing.T) {
 	tt.Bool(t, ok)
 	tt.Equal(t, 2, f)
 }
+
+func TestLoadStopEmbed(t *testing.T) {
+	var seg1 Segmenter
+	err := seg1.LoadStopEmbed()
+	tt.Nil(t, err)
+	tt.Bool(t, seg1.IsStop("比如"))
+}
