@@ -10,6 +10,9 @@ import (
 //go:embed data/dict/dictionary.txt
 var dataDict string
 
+//go:embed data/dict/stop_tokens.txt
+var stopDict string
+
 // LoadDictEmbed load dictionary by embed file
 func (seg *Segmenter) LoadDictEmbed() error {
 	return seg.LoadDictStr(dataDict)
@@ -53,5 +56,22 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 	}
 
 	seg.CalcToken()
+	return nil
+}
+
+// LoadStopEmbed load stop dictionary from embed file
+func (seg *Segmenter) LoadStopEmbed() error {
+	if seg.StopWordMap == nil {
+		seg.StopWordMap = make(map[string]bool)
+	}
+
+	arr := strings.Split(stopDict, "\n")
+	for i := 0; i < len(arr); i++ {
+		key := strings.TrimSpace(arr[i])
+		if key != "" {
+			seg.StopWordMap[key] = true
+		}
+	}
+
 	return nil
 }
