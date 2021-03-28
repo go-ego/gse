@@ -9,12 +9,19 @@ import (
 var (
 	text = "旧金山湾金门大桥"
 	new  = gse.New("zh,../../testdata/test_dict.txt")
+
+	seg gse.Segmenter
 )
 
 func main() {
 	cut()
 
 	segment()
+}
+
+func LoadDictEmbed() {
+	seg.LoadDictEmbed()
+	seg.LoadStopEmbed()
 }
 
 func cut() {
@@ -24,7 +31,7 @@ func cut() {
 }
 
 func segment() {
-	var seg gse.Segmenter
+	// var seg gse.Segmenter
 	seg.LoadDict("zh,../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
 
 	text1 := []byte(text)
