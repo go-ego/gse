@@ -16,12 +16,20 @@ var (
 func main() {
 	cut()
 
+	// LoadDict()
+	LoadDictEmbed()
 	segment()
 }
 
 func LoadDictEmbed() {
 	seg.LoadDictEmbed()
 	seg.LoadStopEmbed()
+}
+
+func LoadDict() {
+	// var seg gse.Segmenter
+	seg.LoadDict("zh,../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
+	seg.LoadStop()
 }
 
 func cut() {
@@ -31,9 +39,6 @@ func cut() {
 }
 
 func segment() {
-	// var seg gse.Segmenter
-	seg.LoadDict("zh,../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
-
 	text1 := []byte(text)
 	fmt.Println(seg.String(text, true))
 	// 金山/nr 旧金山/ns 湾/zg 旧金山湾/ns 金门/n 大桥/ns 金门大桥/nz
