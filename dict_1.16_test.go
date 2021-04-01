@@ -9,9 +9,11 @@ import (
 )
 
 func TestLoadDictEmbed(t *testing.T) {
-	var seg1 Segmenter
-	err := seg1.LoadDictEmbed()
-	tt.Nil(t, err)
+	// var seg1 Segmenter
+	// err := seg1.LoadDictEmbed()
+	// tt.Nil(t, err)
+
+	seg1 := NewEmbed("en")
 
 	f, ok := seg1.Find("1号店")
 	tt.Bool(t, ok)
