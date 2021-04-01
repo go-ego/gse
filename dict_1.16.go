@@ -13,6 +13,16 @@ var dataDict string
 //go:embed data/dict/stop_tokens.txt
 var stopDict string
 
+// NewEmbed return new gse segmenter by embed dictionary
+func NewEmbed(alpha ...string) (seg Segmenter) {
+	if len(alpha) > 1 && (alpha[1] == "alpha" || alpha[1] == "en") {
+		seg.AlphaNum = true
+	}
+
+	seg.LoadDictEmbed()
+	return
+}
+
 // LoadDictEmbed load dictionary by embed file
 func (seg *Segmenter) LoadDictEmbed() error {
 	return seg.LoadDictStr(dataDict)
