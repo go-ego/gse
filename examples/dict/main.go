@@ -16,17 +16,17 @@ var (
 func main() {
 	cut()
 
-	// LoadDict()
-	LoadDictEmbed()
+	// loadDict()
+	loadDictEmbed()
 	segment()
 }
 
-func LoadDictEmbed() {
+func loadDictEmbed() {
 	seg.LoadDictEmbed()
 	seg.LoadStopEmbed()
 }
 
-func LoadDict() {
+func loadDict() {
 	// var seg gse.Segmenter
 	seg.LoadDict("zh,../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
 	seg.LoadStop()
