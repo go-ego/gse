@@ -32,6 +32,25 @@ func loadDict() {
 	seg.LoadStop()
 }
 
+func loadDictMap() {
+	m := []map[string]string{
+		{
+			"text":      "一城山水",
+			"frequency": "10",
+			"pos":       "n",
+		},
+		{
+			"text":      "山河日月",
+			"frequency": "13",
+		},
+	}
+
+	seg.LoadDictMap(m)
+
+	a := []string{"abc", "123"}
+	seg.LoadStopArr(a)
+}
+
 func cut() {
 	fmt.Println("cut: ", new.Cut(text, true))
 	fmt.Println("cut all: ", new.CutAll(text))
