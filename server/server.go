@@ -3,6 +3,7 @@
 gse 分词服务器同时提供了两种模式：
 
 	"/"	分词演示网页
+	"/add" 把词语添加到字典中
 	"/json"	JSON 格式的 RPC 服务
 		输入：
 			POST 或 GET 模式输入 text 参数
@@ -28,6 +29,7 @@ import (
 	"io"
 	"log"
 	"runtime"
+	"strconv"
 
 	"encoding/json"
 	"net/http"
@@ -60,6 +62,11 @@ type Segment struct {
 // JsonResp []string json response
 type JsonResp struct {
 	Seg []string
+}
+
+type Resp struct {
+	Code int    `json:"code"`
+	Text string `json:"text"`
 }
 
 // JsonRpcServer start json rpc server
@@ -95,6 +102,17 @@ func JsonRpcServer(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, string(response))
 }
 
+func addToken(w http.ResponseWriter, req *http.Request) {
+	text := req.URL.Query().Get("text")
+	frequency, _ := strconv.ParseFloat(req.URL.Query().Get("freq"), 64)
+	pos := req.URL.Query().Get("pos")
+	seg.AddTokenForce(text, frequency, pos)
+
+	response, _ := json.Marshal(&Resp{Code: 200, Text: "ok"})
+	w.Header().Set("Content-Type", "application/json")
+	io.WriteString(w, string(response))
+}
+
 func main() {
 	flag.Parse()
 
@@ -104,6 +122,7 @@ func main() {
 	// 初始化分词器
 	seg.LoadDict(*dict)
 
+	http.HandleFunc("/add", addToken)
 	http.HandleFunc("/json", JsonRpcServer)
 	http.Handle("/", http.FileServer(http.Dir(*staticFolder)))
 
