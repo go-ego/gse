@@ -4,6 +4,9 @@ gse 分词服务器同时提供了两种模式：
 
 	"/"	分词演示网页
 	"/add" 把词语添加到字典中
+		输入 text, freq, pos 参数
+		输出 JSON :
+			{"code":200,"text":"ok"}
 	"/json"	JSON 格式的 RPC 服务
 		输入：
 			POST 或 GET 模式输入 text 参数
@@ -40,8 +43,9 @@ import (
 var (
 	seg = gse.Segmenter{}
 
-	host         = flag.String("host", "", "HTTP服务器主机名")
-	port         = flag.Int("port", 8080, "HTTP服务器端口")
+	host = flag.String("host", "", "HTTP服务器主机名")
+	port = flag.Int("port", 8080, "HTTP服务器端口")
+
 	hmm          = flag.Bool("hmm", false, "use hmm")
 	dict         = flag.String("dict", "../data/dict/dictionary.txt", "词典文件")
 	staticFolder = flag.String("static_folder", "static", "静态页面存放的目录")
@@ -59,11 +63,12 @@ type Segment struct {
 	Pos  string `json:"pos"`
 }
 
-// JsonResp []string json response
+// JsonResp json response return []string
 type JsonResp struct {
 	Seg []string
 }
 
+// Resp http response
 type Resp struct {
 	Code int    `json:"code"`
 	Text string `json:"text"`
