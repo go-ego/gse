@@ -1,6 +1,6 @@
 # gse
 
-Go efficient text segmentation; support english, chinese, japanese and other.
+Go efficient text segmentation; support english, chinese, japanese and other. And supports with elasticsearch.
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
@@ -172,15 +172,15 @@ func main() {
 
 [Look at an Japanese example](/examples/jp/main.go)
 
+## Elasticsearch
+How to use it with elasticsearch?
+
+[go-gse-elastic](https://github.com/vcaesar/go-gse-elastic)
+
 ## Authors
 
 - [Maintainers](https://github.com/orgs/go-ego/people)
 - [Contributors](https://github.com/go-ego/gse/graphs/contributors)
-
-# Elasticsearch
-How to use it with elasticsearch?
-
-[go-gse-elastic](https://github.com/vcaesar/go-gse-elastic)
 
 ## License
 
