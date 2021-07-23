@@ -8,6 +8,9 @@ import (
 
 func main() {
 	seg := gse.New("zh,../../testdata/test_dict3.txt", "alpha")
+	// var seg gse.Segmenter
+	// seg.AlphaNum = true
+	// seg.LoadDict("../../testdata/test_dict3.txt")
 	seg.AddToken("winter is coming!", 100, "n")
 
 	freq, ok := seg.Find("hello")
