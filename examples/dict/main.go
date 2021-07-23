@@ -18,9 +18,11 @@ func main() {
 
 	// loadDict()
 	loadDictEmbed()
+	// loadDictMap()
 	segment()
 }
 
+// loadDictEmbed supported from go1.16
 func loadDictEmbed() {
 	seg.LoadDictEmbed()
 	seg.LoadStopEmbed()
@@ -28,7 +30,7 @@ func loadDictEmbed() {
 
 func loadDict() {
 	// var seg gse.Segmenter
-	seg.LoadDict("zh,../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
+	seg.LoadDict("zh, ../../testdata/test_dict.txt, ../../testdata/test_dict1.txt")
 	seg.LoadStop()
 }
 
