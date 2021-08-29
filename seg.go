@@ -15,6 +15,21 @@
 
 package gse
 
+// AnalyzeToken analyze the segment info structure
+type AnalyzeToken struct {
+	// 分词在文本中的起始位置
+	Start int
+	End   int
+
+	Position int
+	Len      int
+
+	Type string
+
+	Text string
+	Freq float64
+}
+
 // Segment 文本中的一个分词
 type Segment struct {
 	// 分词在文本中的起始字节位置
