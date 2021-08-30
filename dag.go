@@ -44,6 +44,33 @@ func (seg *Segmenter) Value(str string) (int, int, error) {
 	return seg.Dict.Value([]byte(str))
 }
 
+// Analyze analyze the token segment info
+func (seg *Segmenter) Analyze(text []string) (az []AnalyzeToken) {
+	if len(text) <= 0 {
+		return
+	}
+
+	start := 0
+	end := len([]rune(text[0]))
+	for k, v := range text {
+		if k > 0 {
+			start = az[k-1].End
+			end = az[k-1].End + len([]rune(v))
+		}
+
+		freq, _ := seg.Find(v)
+		az = append(az, AnalyzeToken{
+			Position: k,
+			Start:    start,
+			End:      end,
+			Text:     v,
+			Freq:     freq,
+		})
+	}
+
+	return
+}
+
 func (seg *Segmenter) getDag(runes []rune) map[int][]int {
 	dag := make(map[int][]int)
 	n := len(runes)

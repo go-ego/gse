@@ -35,6 +35,26 @@ func TestLoadDictMap(t *testing.T) {
 	tt.Equal(t, 13, f)
 }
 
+func TestAnalyze(t *testing.T) {
+	txt := `城市地标建筑: 纽约帝国大厦, 旧金山湾金门大桥, Seattle Space Needle, Toronto CN Tower, 伦敦大笨钟`
+
+	s := prodSeg.Cut(txt, true)
+	tt.Equal(t, 23, len(s))
+	tt.Equal(t, "[城市地标 建筑 :  纽约 帝国大厦 ,  旧金山湾 金门大桥 ,  Seattle   Space   Needle ,  Toronto   CN   Tower ,  伦敦 大笨钟]", s)
+
+	a := prodSeg.Analyze(s)
+	tt.Equal(t, 23, len(a))
+	tt.Equal(t, "[{0 4 0 0  城市地标 3} {4 6 1 0  建筑 14397} {6 8 2 0  :  0} {8 10 3 0  纽约 1758} {10 14 4 0  帝国大厦 3} {14 16 5 0  ,  0} {16 20 6 0  旧金山湾 3} {20 24 7 0  金门大桥 38} {24 26 8 0  ,  0} {26 33 9 0  Seattle 0} {33 34 10 0    0} {34 39 11 0  Space 0} {39 40 12 0    0} {40 46 13 0  Needle 0} {46 48 14 0  ,  0} {48 55 15 0  Toronto 0} {55 56 16 0    0} {56 58 17 0  CN 0} {58 59 18 0    0} {59 64 19 0  Tower 0} {64 66 20 0  ,  0} {66 68 21 0  伦敦 2255} {68 71 22 0  大笨钟 0}]", a)
+
+	tt.Equal(t, 0, a[0].Start)
+	tt.Equal(t, 4, a[0].End)
+	tt.Equal(t, 0, a[0].Position)
+	tt.Equal(t, 0, a[0].Len)
+	tt.Equal(t, "城市地标", a[0].Text)
+	tt.Equal(t, 3, a[0].Freq)
+	tt.Equal(t, "", a[0].Type)
+}
+
 func TestHMM(t *testing.T) {
 	tt.Equal(t, 587880, len(prodSeg.Dict.Tokens))
 	tt.Equal(t, 5.3250742e+07, prodSeg.Dict.totalFrequency)
