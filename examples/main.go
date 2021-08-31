@@ -25,6 +25,7 @@ func main() {
 
 	// 加载默认词典
 	seg.LoadDict()
+	// seg.LoadDictEmbed()
 	// seg.LoadDict("../data/dict/dictionary.txt")
 	//
 	// 使用自定义字典
@@ -86,31 +87,26 @@ func cut() {
 	fmt.Println("cut all to string: ", s)
 	// cut all to string:  《复仇者联盟3：无限战争》, 复仇, 复仇者, 仇者, 联盟, 3, ：, 无限, 战争, 》, 是, 全片, 使用, I, M, A, X, 摄影, 摄影机, 拍摄, 摄制, 制作, 的, 的, 科幻, 科幻片, .
 
-	posAndTrim(cut)
+	analyzeAndTrim(cut)
 }
 
-func posAndTrim(cut []string) {
+func analyzeAndTrim(cut []string) {
+	a := seg.Analyze(cut)
+	fmt.Println("analyze the segment: ", a)
+	// analyze the segment:
+
 	cut = seg.Trim(cut)
 	fmt.Println("cut all: ", cut)
 	// cut all:  [复仇者联盟3无限战争 复仇 复仇者 仇者 联盟 3 无限 战争 是 全片 使用 I M A X 摄影 摄影机 拍摄 摄制 制作 的 的 科幻 科幻片]
-
-	posSeg.WithGse(seg)
-	po := posSeg.Cut(text, true)
-	fmt.Println("pos: ", po)
-	// pos:  [{《 x} {复仇 v} {者 k} {联盟 j} {3 x} {： x} {无限 v} {战争 n} {》 x} {是 v} {全片 n} {使用 v} {IMAX eng} {摄影 n} {机 n} {拍摄 v} {制作 vn} {的的 u} {科幻 n} {片 q} {. m}]
-
-	po = posSeg.TrimWithPos(po, "zg")
-	fmt.Println("trim pos: ", po)
-	// trim pos:  [{《 x} {复仇 v} {者 k} {联盟 j} {3 x} {： x} {无限 v} {战争 n} {》 x} {是 v} {全片 n} {使用 v} {IMAX eng} {摄影 n} {机 n} {拍摄 v} {制作 vn} {的的 u} {科幻 n} {片 q} {. m}]
-}
-
-func cutPos() {
-	// "西雅图地标建筑, Seattle Space Needle, 西雅图太空针. Sky tree."
 
 	fmt.Println(seg.String(text2, true))
 	// 西雅图/nr 地标/n 建筑/n ,/x  /x seattle/x  /x space needle/n ,/x  /x 西雅图太空针/n ./x  /x sky/x  /x tree/x ./x
 	fmt.Println(seg.Slice(text2, true))
 	// [西雅图 地标 建筑 ,   seattle   space needle ,   西雅图太空针 .   sky   tree .]
+}
+
+func cutPos() {
+	// "西雅图地标建筑, Seattle Space Needle, 西雅图太空针. Sky tree."
 
 	po := seg.Pos(text2, true)
 	fmt.Println("pos: ", po)
@@ -120,6 +116,14 @@ func cutPos() {
 	fmt.Println("trim pos: ", po)
 	// trim pos:  [{西雅图 nr} {地标 n} {建筑 n} {, x} {  x} {seattle x} {  x} {space needle n} {, x} {  x} {西雅图太空针 n} {. x} {  x} {sky x} {  x} {tree x} {. x}]
 
+	posSeg.WithGse(seg)
+	po = posSeg.Cut(text, true)
+	fmt.Println("pos: ", po)
+	// pos:  [{《 x} {复仇 v} {者 k} {联盟 j} {3 x} {： x} {无限 v} {战争 n} {》 x} {是 v} {全片 n} {使用 v} {IMAX eng} {摄影 n} {机 n} {拍摄 v} {制作 vn} {的的 u} {科幻 n} {片 q} {. m}]
+
+	po = posSeg.TrimWithPos(po, "zg")
+	fmt.Println("trim pos: ", po)
+	// trim pos:  [{《 x} {复仇 v} {者 k} {联盟 j} {3 x} {： x} {无限 v} {战争 n} {》 x} {是 v} {全片 n} {使用 v} {IMAX eng} {摄影 n} {机 n} {拍摄 v} {制作 vn} {的的 u} {科幻 n} {片 q} {. m}]
 }
 
 // 使用最短路径和动态规划分词
