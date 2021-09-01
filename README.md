@@ -81,6 +81,12 @@ var (
 	posSeg pos.Segmenter
 )
 
+func main() {
+	cut()
+
+	segCut()
+}
+
 func cut() {
 	hmm := new.Cut(text, true)
 	fmt.Println("cut use hmm: ", hmm)
@@ -92,31 +98,28 @@ func cut() {
 	fmt.Println("cut all: ", hmm)
 }
 
-func main() {
-	cut()
+func analyzeAndTrim(cut []string) {
+	a := seg.Analyze(cut)
+	fmt.Println("analyze the segment: ", a)
 
-	segCut()
-}
-
-func posAndTrim(cut []string) {
 	cut = seg.Trim(cut)
 	fmt.Println("cut all: ", cut)
 
-	pos.WithGse(seg)
-	po := posSeg.Cut(text, true)
-	fmt.Println("pos: ", po)
-
-	po = posSeg.TrimWithPos(po, "zg")
-	fmt.Println("trim pos: ", po)
+	fmt.Println(seg.String(text, true))
+	fmt.Println(seg.Slice(text, true))
 }
 
 func cutPos() {
-	fmt.Println(seg.String(text, true))
-	fmt.Println(seg.Slice(text, true))
-
 	po := seg.Pos(text, true)
 	fmt.Println("pos: ", po)
 	po = seg.TrimPos(po)
+	fmt.Println("trim pos: ", po)
+
+	pos.WithGse(seg)
+	po = posSeg.Cut(text, true)
+	fmt.Println("pos: ", po)
+
+	po = posSeg.TrimWithPos(po, "zg")
 	fmt.Println("trim pos: ", po)
 }
 
