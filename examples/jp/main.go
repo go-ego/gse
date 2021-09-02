@@ -19,11 +19,15 @@ func main() {
 
 	var seg gse.Segmenter
 	// seg.LoadDict("../data/dict/dictionary.txt")
-	seg.LoadDict("jp")
+	err := seg.LoadDict("jp")
+	fmt.Println("load dictionary error: ", err)
+
+	fmt.Println(seg.Cut(*text, true))
+	fmt.Println(seg.CutAll(*text))
+	fmt.Println(seg.CutSearch(*text))
 
 	fmt.Println(seg.String(*text, true))
 	fmt.Println(seg.Slice(*text, true))
-	fmt.Println(seg.CutAll(*text))
 
 	segments := seg.Segment([]byte(*text))
 	fmt.Println(gse.ToString(segments, true))
