@@ -7,7 +7,8 @@ import (
 )
 
 func main() {
-	seg := gse.New("zh,../../testdata/test_dict3.txt", "alpha")
+	seg, err := gse.New("zh,../../testdata/test_dict3.txt", "alpha")
+	fmt.Println("new gse error: ", err)
 	// var seg gse.Segmenter
 	// seg.AlphaNum = true
 	// seg.LoadDict("zh, ../../testdata/test_dict3.txt")

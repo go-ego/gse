@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	segs = gse.New()
-	text = "那里湖面总是澄清, 那里空气充满宁静"
+	segs, _ = gse.New()
+	text    = "那里湖面总是澄清, 那里空气充满宁静"
 )
 
 func TestExtAndRank(t *testing.T) {

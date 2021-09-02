@@ -51,7 +51,7 @@ var (
 	seg gse.Segmenter
 	posSeg pos.Segmenter
 
-	new = gse.New("zh,testdata/test_dict3.txt", "alpha")
+	new, _ = gse.New("zh,testdata/test_dict3.txt", "alpha")
 
 	text = "你好世界, Hello world, Helloworld."
 )

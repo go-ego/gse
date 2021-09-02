@@ -238,7 +238,9 @@ func TestStop(t *testing.T) {
 }
 
 func TestNum(t *testing.T) {
-	seg := New("./testdata/test_dict3.txt")
+	seg, err := New("./testdata/test_dict3.txt")
+	tt.Nil(t, err)
+
 	seg.Num = true
 	text := "t123test123 num123-1"
 	s := seg.Cut(text)
@@ -253,7 +255,8 @@ func TestNum(t *testing.T) {
 }
 
 func TestUrl(t *testing.T) {
-	seg := New("./testdata/test_dict3.txt")
+	seg, err := New("./testdata/test_dict3.txt")
+	tt.Nil(t, err)
 
 	s1 := seg.CutUrls("https://www.g.com/search?q=test%m11.42&ie=UTF-8")
 	tt.Equal(t, "https www g com search q test m 11 42 ie utf 8", s1)
