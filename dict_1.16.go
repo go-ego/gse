@@ -14,12 +14,29 @@ var dataDict string
 var stopDict string
 
 // NewEmbed return new gse segmenter by embed dictionary
-func NewEmbed(alpha ...string) (seg Segmenter) {
-	if len(alpha) > 1 && (alpha[1] == "alpha" || alpha[1] == "en") {
+func NewEmbed(dict ...string) (seg Segmenter, err error) {
+	if len(dict) > 1 && (dict[1] == "alpha" || dict[1] == "en") {
 		seg.AlphaNum = true
 	}
 
-	seg.LoadDictEmbed()
+	if len(dict) > 0 {
+		d := dict[0]
+		if strings.Contains(d, "zh,") {
+			s := strings.Split(d, ", ")
+			err = seg.LoadDictEmbed()
+			if err != nil {
+				return
+			}
+
+			err = seg.LoadDictStr(s[1])
+			return
+		}
+
+		err = seg.LoadDictStr(d)
+		return
+	}
+
+	err = seg.LoadDictEmbed()
 	return
 }
 
@@ -71,11 +88,16 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 
 // LoadStopEmbed load stop dictionary from embed file
 func (seg *Segmenter) LoadStopEmbed() error {
+	return seg.LoadStopStr(stopDict)
+}
+
+// LoadDictStr load the stop dictionary from string
+func (seg *Segmenter) LoadStopStr(dict string) error {
 	if seg.StopWordMap == nil {
 		seg.StopWordMap = make(map[string]bool)
 	}
 
-	arr := strings.Split(stopDict, "\n")
+	arr := strings.Split(dict, "\n")
 	for i := 0; i < len(arr); i++ {
 		key := strings.TrimSpace(arr[i])
 		if key != "" {
