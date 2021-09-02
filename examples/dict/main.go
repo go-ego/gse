@@ -7,8 +7,8 @@ import (
 )
 
 var (
-	text = "旧金山湾金门大桥"
-	new  = gse.New("zh,../../testdata/test_dict.txt")
+	text   = "旧金山湾金门大桥"
+	new, _ = gse.New("zh,../../testdata/test_dict.txt")
 
 	seg gse.Segmenter
 )

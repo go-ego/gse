@@ -24,7 +24,7 @@ import (
 
 const (
 	// Version get the gse version
-	Version = "v0.62.1.510, Green Lake!"
+	Version = "v0.69.1.593, Green Lake!"
 
 	// minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
@@ -44,14 +44,13 @@ type Prob struct {
 }
 
 // New return new gse segmenter
-func New(files ...string) Segmenter {
-	var seg Segmenter
+func New(files ...string) (seg Segmenter, err error) {
 	if len(files) > 1 && files[1] == "alpha" {
 		seg.AlphaNum = true
 	}
-	seg.LoadDict(files...)
 
-	return seg
+	err = seg.LoadDict(files...)
+	return
 }
 
 // Cut cuts a str into words using accurate mode.
