@@ -35,28 +35,6 @@ Go 语言高效分词, 支持英文、中文、日文等, 支持接入 elasticse
 go get -u github.com/go-ego/gse
 ```
 
-## [Build-tools](https://github.com/go-ego/re)
-
-```
-go get -u github.com/go-ego/re
-```
-
-### re gse
-
-创建一个新的 gse 程序
-
-```
-$ re gse my-gse
-```
-
-### re run
-
-运行我们刚刚创建的应用程序, CD 到程序文件夹并执行:
-
-```
-$ cd my-gse && re run
-```
-
 ## 使用
 
 ```go
@@ -181,6 +159,29 @@ func main() {
 How to use it with elasticsearch?
 
 [go-gse-elastic](https://github.com/vcaesar/go-gse-elastic)
+
+
+## [Build-tools](https://github.com/go-ego/re)
+
+```
+go get -u github.com/go-ego/re
+```
+
+### re gse
+
+创建一个新的 gse 程序
+
+```
+$ re gse my-gse
+```
+
+### re run
+
+运行我们刚刚创建的应用程序, CD 到程序文件夹并执行:
+
+```
+$ cd my-gse && re run
+```
 
 ## Authors
 

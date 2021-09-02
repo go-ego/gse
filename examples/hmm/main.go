@@ -13,7 +13,9 @@ var (
 )
 
 func main() {
-	seg.LoadDict()
+	err := seg.LoadDict()
+	fmt.Println("load dictionary error: ", err)
+	// seg.LoadModel() // load the hmm model
 
 	hmm := seg.Cut(text, true)
 	fmt.Println("hmm cut: ", hmm)
@@ -25,6 +27,6 @@ func main() {
 	fmt.Println("cut all: ", hmm)
 
 	//
-	hmm = seg.HMMCutMod(text)
-	fmt.Println("hmm cut: ", hmm)
+	// hmm = seg.HMMCutMod(text)
+	// fmt.Println("hmm cut: ", hmm)
 }
