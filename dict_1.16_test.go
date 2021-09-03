@@ -18,12 +18,12 @@ func TestLoadDictEmbed(t *testing.T) {
 
 	f, pos, ok := seg1.Find("1号店")
 	tt.Bool(t, ok)
-	tt.Equal(t, pos, "n")
+	tt.Equal(t, "n", pos)
 	tt.Equal(t, 3, f)
 
 	f, pos, ok = seg1.Find("world")
 	tt.Bool(t, ok)
-	tt.Equal(t, pos, "n")
+	tt.Equal(t, "n", pos)
 	tt.Equal(t, 20, f)
 
 	f, _, ok = seg1.Find("八千一百三十七万七千二百三十六口")
