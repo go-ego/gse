@@ -26,11 +26,12 @@ func TestLoadDictMap(t *testing.T) {
 
 	prodSeg.LoadDictMap(m)
 
-	f, ok := prodSeg.Find("一城山水")
+	f, pos, ok := prodSeg.Find("一城山水")
 	tt.Bool(t, ok)
+	tt.Equal(t, pos, "n")
 	tt.Equal(t, 10, f)
 
-	f, ok = prodSeg.Find("山河日月")
+	f, _, ok = prodSeg.Find("山河日月")
 	tt.Bool(t, ok)
 	tt.Equal(t, 13, f)
 }

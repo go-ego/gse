@@ -50,8 +50,8 @@ func addToken() {
 	// seg.AddTokenForce("上海东方明珠广播电视塔", 100, "n")
 	//
 	seg.AddToken("太空针", 100)
-	freq, ok := seg.Find("太空针")
-	fmt.Println("seg.Find: ", freq, ok)
+	freq, pos, ok := seg.Find("太空针")
+	fmt.Println("seg.Find: ", freq, pos, ok)
 
 	// seg.CalcToken()
 	err = seg.RemoveToken("太空针")

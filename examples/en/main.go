@@ -14,11 +14,11 @@ func main() {
 	// seg.LoadDict("zh, ../../testdata/test_dict3.txt")
 	seg.AddToken("winter is coming!", 100, "n")
 
-	freq, ok := seg.Find("hello")
-	fmt.Println(freq, ok)
+	freq, pos, ok := seg.Find("hello")
+	fmt.Println(freq, pos, ok)
 
-	freq, ok = seg.Find("world")
-	fmt.Println(freq, ok)
+	freq, pos, ok = seg.Find("world")
+	fmt.Println(freq, pos, ok)
 
 	text := "Helloworld, winter is coming! 你好世界."
 

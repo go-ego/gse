@@ -149,19 +149,20 @@ func TestToken(t *testing.T) {
 	tt.Expect(t, "16", dict.MaxTokenLen())
 	tt.Expect(t, "5.3250742e+07", dict.TotalFreq())
 
-	freq, ok := dict.Find([]byte("世界"))
+	freq, pos, ok := dict.Find([]byte("世界"))
 	tt.Equal(t, 34387, freq)
+	tt.Equal(t, pos, "n")
 	tt.True(t, ok)
 
-	freq, ok = dict.Find([]byte("帝国大"))
+	freq, _, ok = dict.Find([]byte("帝国大"))
 	tt.Equal(t, 0, freq)
 	tt.True(t, ok)
 
-	freq, ok = dict.Find([]byte("帝国大厦"))
+	freq, _, ok = dict.Find([]byte("帝国大厦"))
 	tt.Equal(t, 3, freq)
 	tt.True(t, ok)
 
-	freq, ok = seg.Find("帝国大厦大")
+	freq, _, ok = seg.Find("帝国大厦大")
 	tt.Equal(t, 0, freq)
 	tt.False(t, ok)
 
@@ -177,11 +178,11 @@ func TestToken(t *testing.T) {
 	err = seg.AddToken("Winter is coming", 200)
 	tt.Nil(t, err)
 
-	freq, ok = seg.Find("Winter is coming")
+	freq, _, ok = seg.Find("Winter is coming")
 	tt.Equal(t, 100, freq)
 	tt.True(t, ok)
 
-	freq, ok = prodSeg.Find("伦敦摘星塔")
+	freq, _, ok = prodSeg.Find("伦敦摘星塔")
 	tt.Equal(t, 100, freq)
 	tt.True(t, ok)
 
@@ -189,14 +190,15 @@ func TestToken(t *testing.T) {
 	tt.Nil(t, err)
 	err = prodSeg.AddToken("西雅图太空针", 100, "n")
 	tt.Nil(t, err)
-	freq, ok = prodSeg.Find("西雅图太空针")
+	freq, pos, ok = prodSeg.Find("西雅图太空针")
 	tt.Equal(t, 100, freq)
+	tt.Equal(t, pos, "n")
 	tt.True(t, ok)
 
 	prodSeg.AddTokenForce("Space Needle", 100, "n")
 	err = prodSeg.RemoveToken("西雅图太空针")
 	tt.Nil(t, err)
-	freq, ok = dict.Find([]byte("西雅图太空针"))
+	freq, _, ok = dict.Find([]byte("西雅图太空针"))
 	tt.Equal(t, 0, freq)
 	tt.False(t, ok)
 }
@@ -228,11 +230,11 @@ func TestInAlphaNum(t *testing.T) {
 	seg, err := New("zh,./testdata/test_dict3.txt", "alpha")
 	tt.Nil(t, err)
 
-	freq, ok := seg.Find("hello")
+	freq, _, ok := seg.Find("hello")
 	tt.Equal(t, 20, freq)
 	tt.True(t, ok)
 
-	freq, ok = seg.Find("world")
+	freq, _, ok = seg.Find("world")
 	tt.Equal(t, 20, freq)
 	tt.True(t, ok)
 
