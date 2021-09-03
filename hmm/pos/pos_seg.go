@@ -120,7 +120,7 @@ func (seg *Segmenter) getDag(runes []rune) map[int][]int {
 		frag = runes[k : k+1]
 
 		for {
-			freq, ok := seg.dict.Frequency(string(frag))
+			freq, _, ok := seg.dict.Frequency(string(frag))
 			if !ok {
 				break
 			}
@@ -160,7 +160,7 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 
 	for idx := n - 1; idx >= 0; idx-- {
 		for _, i := range dag[idx] {
-			if freq, ok := seg.dict.Frequency(string(runes[idx : i+1])); ok {
+			if freq, _, ok := seg.dict.Frequency(string(runes[idx : i+1])); ok {
 				r = route{
 					frequency: math.Log(freq) - seg.dict.logTotal + rs[i+1].frequency,
 					index:     i}
@@ -216,7 +216,7 @@ func (seg *Segmenter) cutDAG(sentence string) (result []gse.SegPos) {
 				continue
 			}
 
-			if v, ok := seg.dict.Frequency(bufString); !ok || v == 0.0 {
+			if v, _, ok := seg.dict.Frequency(bufString); !ok || v == 0.0 {
 				result = append(result, seg.cutDetail(bufString)...)
 			} else {
 				for _, elem := range buf {
@@ -259,7 +259,7 @@ func (seg *Segmenter) bufn(buf []rune) (result []gse.SegPos) {
 		return
 	}
 
-	if v, ok := seg.dict.Frequency(bufString); !ok || v == 0.0 {
+	if v, _, ok := seg.dict.Frequency(bufString); !ok || v == 0.0 {
 		result = append(result, seg.cutDetail(bufString)...)
 		return
 	}

@@ -28,6 +28,7 @@ type AnalyzeToken struct {
 
 	Text string
 	Freq float64
+	Pos  string
 }
 
 // Segment 文本中的一个分词

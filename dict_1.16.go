@@ -73,7 +73,7 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 
 		pos := ""
 		if size > 2 {
-			pos = strings.Trim(s1[2], "\n")
+			pos = strings.TrimSpace(strings.Trim(s1[2], "\n"))
 		}
 
 		// 将分词添加到字典中

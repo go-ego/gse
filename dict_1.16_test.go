@@ -16,15 +16,17 @@ func TestLoadDictEmbed(t *testing.T) {
 	seg1, err := NewEmbed("zh, world 20 n", "en")
 	tt.Nil(t, err)
 
-	f, ok := seg1.Find("1号店")
+	f, pos, ok := seg1.Find("1号店")
 	tt.Bool(t, ok)
+	tt.Equal(t, "n", pos)
 	tt.Equal(t, 3, f)
 
-	f, ok = seg1.Find("world")
+	f, pos, ok = seg1.Find("world")
 	tt.Bool(t, ok)
+	tt.Equal(t, "n", pos)
 	tt.Equal(t, 20, f)
 
-	f, ok = seg1.Find("八千一百三十七万七千二百三十六口")
+	f, _, ok = seg1.Find("八千一百三十七万七千二百三十六口")
 	tt.Bool(t, ok)
 	tt.Equal(t, 2, f)
 }

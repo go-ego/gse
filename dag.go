@@ -35,7 +35,7 @@ type route struct {
 }
 
 // Find find word in dictionary return word's frequency and existence
-func (seg *Segmenter) Find(str string) (float64, bool) {
+func (seg *Segmenter) Find(str string) (float64, string, bool) {
 	return seg.Dict.Find([]byte(str))
 }
 
@@ -58,13 +58,14 @@ func (seg *Segmenter) Analyze(text []string) (az []AnalyzeToken) {
 			end = az[k-1].End + len([]rune(v))
 		}
 
-		freq, _ := seg.Find(v)
+		freq, pos, _ := seg.Find(v)
 		az = append(az, AnalyzeToken{
 			Position: k,
 			Start:    start,
 			End:      end,
 			Text:     v,
 			Freq:     freq,
+			Pos:      pos,
 		})
 	}
 
@@ -86,7 +87,7 @@ func (seg *Segmenter) getDag(runes []rune) map[int][]int {
 		frag = runes[k : k+1]
 
 		for {
-			freq, ok := seg.Find(string(frag))
+			freq, _, ok := seg.Find(string(frag))
 			if !ok {
 				break
 			}
@@ -123,7 +124,7 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 	logT := math.Log(seg.Dict.totalFrequency)
 	for idx := n - 1; idx >= 0; idx-- {
 		for _, i := range dag[idx] {
-			freq, ok := seg.Find(string(runes[idx : i+1]))
+			freq, _, ok := seg.Find(string(runes[idx : i+1]))
 
 			if ok {
 				f := math.Log(freq) - logT + rs[i+1].frequency
@@ -149,7 +150,7 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 
 func (seg *Segmenter) hmm(bufString string, buf []rune) (result []string) {
 
-	v, ok := seg.Find(bufString)
+	v, _, ok := seg.Find(bufString)
 	if !ok || v == 0 {
 		result = append(result, seg.HMMCut(bufString)...)
 		return
@@ -298,7 +299,7 @@ func (seg *Segmenter) cutForSearch(str string, hmm ...bool) []string {
 			var gram string
 			for i := 0; i < len(runes)-incr+1; i++ {
 				gram = string(runes[i : i+incr])
-				v, ok := seg.Find(gram)
+				v, _, ok := seg.Find(gram)
 				if ok && v > 0 {
 					result = append(result, gram)
 				}
@@ -320,7 +321,7 @@ func (seg *Segmenter) SuggestFreq(words ...string) float64 {
 
 	if len(words) > 1 {
 		for _, word := range words {
-			freq, ok := seg.Find(word)
+			freq, _, ok := seg.Find(word)
 			if ok {
 				frequency *= freq
 			}
@@ -330,7 +331,7 @@ func (seg *Segmenter) SuggestFreq(words ...string) float64 {
 
 		frequency, _ = math.Modf(frequency * total)
 		wordFreq := 0.0
-		freq, ok := seg.Find(strings.Join(words, ""))
+		freq, _, ok := seg.Find(strings.Join(words, ""))
 		if ok {
 			wordFreq = freq
 		}
@@ -344,7 +345,7 @@ func (seg *Segmenter) SuggestFreq(words ...string) float64 {
 
 	word := words[0]
 	for _, segment := range seg.Cut(word, false) {
-		freq, ok := seg.Find(segment)
+		freq, _, ok := seg.Find(segment)
 		if ok {
 			frequency *= freq
 		}
@@ -356,7 +357,7 @@ func (seg *Segmenter) SuggestFreq(words ...string) float64 {
 	frequency += 1.0
 	wordFreq := 1.0
 
-	freq, ok := seg.Find(word)
+	freq, _, ok := seg.Find(word)
 	if ok {
 		wordFreq = freq
 	}
