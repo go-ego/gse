@@ -151,7 +151,7 @@ func TestToken(t *testing.T) {
 
 	freq, pos, ok := dict.Find([]byte("世界"))
 	tt.Equal(t, 34387, freq)
-	tt.Equal(t, pos, "n")
+	tt.Equal(t, "n", pos)
 	tt.True(t, ok)
 
 	freq, _, ok = dict.Find([]byte("帝国大"))
@@ -192,7 +192,7 @@ func TestToken(t *testing.T) {
 	tt.Nil(t, err)
 	freq, pos, ok = prodSeg.Find("西雅图太空针")
 	tt.Equal(t, 100, freq)
-	tt.Equal(t, pos, "n")
+	tt.Equal(t, "n", pos)
 	tt.True(t, ok)
 
 	prodSeg.AddTokenForce("Space Needle", 100, "n")
