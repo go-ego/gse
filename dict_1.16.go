@@ -63,11 +63,11 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 		if size == 0 {
 			continue
 		}
-		text := strings.Trim(s1[0], " ")
+		text := strings.TrimSpace(s1[0])
 
 		freqText := ""
 		if len(s1) > 1 {
-			freqText = s1[1]
+			freqText = strings.TrimSpace(s1[1])
 		}
 
 		frequency := seg.Size(size, text, freqText)
