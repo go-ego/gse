@@ -87,6 +87,7 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 
 		// 将分词添加到字典中
 		words := seg.SplitTextToWords([]byte(text))
+		log.Println("token:", text, frequency, pos, words)
 		token := Token{text: words, frequency: frequency, pos: pos}
 		seg.Dict.addToken(token)
 	}
