@@ -5,6 +5,7 @@ package gse
 
 import (
 	_ "embed"
+	"log"
 	"strings"
 )
 
@@ -28,9 +29,11 @@ func NewEmbed(dict ...string) (seg Segmenter, err error) {
 func (seg *Segmenter) LoadDictEmbed(dict ...string) (err error) {
 	if len(dict) > 0 {
 		d := dict[0]
+		log.Println("d: ", d)
 		if strings.Contains(d, ", ") {
 			begin := 0
 			s := strings.Split(d, ", ")
+			log.Println("s: ", s)
 			if strings.Contains(d, "zh,") {
 				begin = 1
 				err = seg.LoadDictStr(dataDict)
@@ -59,11 +62,13 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 	arr := strings.Split(dict, "\n")
 	for i := 0; i < len(arr); i++ {
 		s1 := strings.Split(arr[i], " ")
+		log.Println("s1: ", s1)
 		size := len(s1)
 		if size == 0 {
 			continue
 		}
 		text := strings.Trim(s1[0], " ")
+		log.Println("text: ", text)
 
 		freqText := ""
 		if len(s1) > 1 {
