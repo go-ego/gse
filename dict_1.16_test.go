@@ -27,12 +27,12 @@ func TestLoadDictEmbed(t *testing.T) {
 	seg1, err := NewEmbed("zh1 10 n, word1 20 n, "+testDict+", "+testDict2, "en")
 	tt.Nil(t, err)
 
-	f, pos, ok := seg1.Find("1号店")
-	tt.Bool(t, ok)
-	tt.Equal(t, "n", pos)
-	tt.Equal(t, 3, f)
+	// f, pos, ok := seg1.Find("1号店")
+	// tt.Bool(t, ok)
+	// tt.Equal(t, "n", pos)
+	// tt.Equal(t, 3, f)
 
-	f, pos, ok = seg1.Find("hello")
+	f, pos, ok := seg1.Find("hello")
 	tt.Bool(t, ok)
 	tt.Equal(t, "", pos)
 	tt.Equal(t, 20, f)
@@ -52,9 +52,9 @@ func TestLoadDictEmbed(t *testing.T) {
 	tt.Equal(t, "ns", pos)
 	tt.Equal(t, 32, f)
 
-	f, _, ok = seg1.Find("八千一百三十七万七千二百三十六口")
-	tt.Bool(t, ok)
-	tt.Equal(t, 2, f)
+	// f, _, ok = seg1.Find("八千一百三十七万七千二百三十六口")
+	// tt.Bool(t, ok)
+	// tt.Equal(t, 2, f)
 }
 
 func TestLoadStopEmbed(t *testing.T) {
