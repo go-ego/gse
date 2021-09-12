@@ -1,3 +1,4 @@
+//go:build go1.16
 // +build go1.16
 
 package gse
@@ -19,16 +20,25 @@ func NewEmbed(dict ...string) (seg Segmenter, err error) {
 		seg.AlphaNum = true
 	}
 
+	err = seg.LoadDictEmbed(dict...)
+	return
+}
+
+// LoadDictEmbed load dictionary by embed file
+func (seg *Segmenter) LoadDictEmbed(dict ...string) (err error) {
 	if len(dict) > 0 {
 		d := dict[0]
-		if strings.Contains(d, "zh,") {
+		if strings.Contains(d, ", ") {
+			begin := 0
 			s := strings.Split(d, ", ")
-			err = seg.LoadDictEmbed()
-			if err != nil {
-				return
+			if strings.Contains(d, "zh,") {
+				begin = 1
+				err = seg.LoadDictStr(dataDict)
 			}
 
-			err = seg.LoadDictStr(s[1])
+			for i := begin; i < len(s); i++ {
+				err = seg.LoadDictStr(s[i])
+			}
 			return
 		}
 
@@ -36,12 +46,6 @@ func NewEmbed(dict ...string) (seg Segmenter, err error) {
 		return
 	}
 
-	err = seg.LoadDictEmbed()
-	return
-}
-
-// LoadDictEmbed load dictionary by embed file
-func (seg *Segmenter) LoadDictEmbed() error {
 	return seg.LoadDictStr(dataDict)
 }
 
@@ -59,11 +63,11 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 		if size == 0 {
 			continue
 		}
-		text := strings.Trim(s1[0], " ")
+		text := strings.TrimSpace(s1[0])
 
 		freqText := ""
 		if len(s1) > 1 {
-			freqText = s1[1]
+			freqText = strings.TrimSpace(s1[1])
 		}
 
 		frequency := seg.Size(size, text, freqText)
@@ -87,7 +91,27 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 }
 
 // LoadStopEmbed load stop dictionary from embed file
-func (seg *Segmenter) LoadStopEmbed() error {
+func (seg *Segmenter) LoadStopEmbed(dict ...string) (err error) {
+	if len(dict) > 0 {
+		d := dict[0]
+		if strings.Contains(d, ", ") {
+			begin := 0
+			s := strings.Split(d, ", ")
+			if strings.Contains(d, "zh,") {
+				begin = 1
+				err = seg.LoadStopStr(stopDict)
+			}
+
+			for i := begin; i < len(s); i++ {
+				err = seg.LoadStopStr(s[i])
+			}
+			return
+		}
+
+		err = seg.LoadStopStr(d)
+		return
+	}
+
 	return seg.LoadStopStr(stopDict)
 }
 
