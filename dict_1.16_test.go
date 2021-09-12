@@ -24,7 +24,7 @@ func TestLoadDictEmbed(t *testing.T) {
 	err := seg2.LoadDictEmbed(testDict)
 	tt.Nil(t, err)
 
-	seg1, err := NewEmbed("zh, word1 20 n, "+testDict+", "+testDict2, "en")
+	seg1, err := NewEmbed("zh1 10 n, word1 20 n, "+testDict+", "+testDict2, "en")
 	tt.Nil(t, err)
 
 	f, pos, ok := seg1.Find("1号店")
