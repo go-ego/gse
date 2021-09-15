@@ -132,18 +132,24 @@ package main
 
 import (
 	"fmt"
+	_ "embed"
 
 	"github.com/go-ego/gse"
 )
 
+//go:embed test_dict3.txt
+var testDict string
+
 func main() {
-	var seg gse.Segmenter
-	seg.LoadDict("zh,testdata/test_dict.txt,testdata/test_dict1.txt")
-	seg.LoadStop()
+	// var seg gse.Segmenter
+	// seg.LoadDict("zh, testdata/test_dict.txt, testdata/test_dict1.txt")
+	// seg.LoadStop()
+	seg, err := gse.NewEmbed("zh, word 20 n"+testDict, "en")
 	// seg.LoadDictEmbed()
-	// seg.LoadStopEmbed()
+	seg.LoadStopEmbed()
 
 	text1 := "所以, 你好, 再见"
+	fmt.Println(seg.Cut(text1, true))
 	fmt.Println(seg.String(text1, true))
 
 	segments := seg.Segment([]byte(text1))
@@ -190,7 +196,7 @@ $ cd my-gse && re run
 
 ## License
 
-Gse is primarily distributed under the terms of "both the MIT license and the Apache License (Version 2.0)". 
+Gse is primarily distributed under the terms of "both the MIT license and the Apache License (Version 2.0)".
 See [LICENSE-APACHE](http://www.apache.org/licenses/LICENSE-2.0), [LICENSE-MIT](https://github.com/go-vgo/robotgo/blob/master/LICENSE).
 
 Thanks for [sego](https://github.com/huichen/sego) and [jieba](https://github.com/fxsjy/jieba)([jiebago](https://github.com/wangbin/jiebago)).

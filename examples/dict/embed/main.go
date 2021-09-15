@@ -1,3 +1,4 @@
+//go:build go1.16
 // +build go1.16
 
 package main
@@ -19,11 +20,22 @@ var (
 
 func main() {
 	var err error
-	seg, err = gse.NewEmbed("zh, "+testDict, "en")
+	seg, err = gse.NewEmbed("zh, word 20 n"+testDict, "en")
+	// err := seg.LoadDictEmbed()
+	// seg.LoadDictStr(testDict)
 	fmt.Println("gse NewEmbed error: ", err)
 
+	freq, pos, ok := seg.Find("hello")
+	fmt.Println(freq, pos, ok)
+	freq, pos, ok = seg.Find("world")
+	fmt.Println(freq, pos, ok)
+
+	freq, pos, ok = seg.Find("1号店")
+	fmt.Println(freq, pos, ok)
+
 	s := seg.Cut(text, true)
-	fmt.Println(s)
+	// s := seg.Cut(text)
+	fmt.Println("cut: ", s, len(s))
 }
 
 func load1() {
