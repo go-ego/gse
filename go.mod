@@ -1,6 +1,6 @@
 module github.com/go-ego/gse
 
-go 1.16
+go 1.17
 
 require (
 	github.com/go-ego/cedar v0.10.2
