@@ -130,18 +130,24 @@ package main
 
 import (
 	"fmt"
+	_ "embed"
 
 	"github.com/go-ego/gse"
 )
 
+//go:embed test_dict3.txt
+var testDict string
+
 func main() {
-	var seg gse.Segmenter
-	seg.LoadDict("zh,testdata/test_dict.txt,testdata/test_dict1.txt")
-	seg.LoadStop()
+	// var seg gse.Segmenter
+	// seg.LoadDict("zh, testdata/test_dict.txt, testdata/test_dict1.txt")
+	// seg.LoadStop()
+	seg, err := gse.NewEmbed("zh, word 20 n"+testDict, "en")
 	// seg.LoadDictEmbed()
-	// seg.LoadStopEmbed()
+	seg.LoadStopEmbed()
 
 	text1 := "你好世界, Hello world"
+	fmt.Println(seg.Cut(text1, true))
 	fmt.Println(seg.String(text1, true))
 
 	segments := seg.Segment([]byte(text1))
