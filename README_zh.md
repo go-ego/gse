@@ -1,6 +1,6 @@
 # [gse](https://github.com/go-ego/gse)
 
-Go 语言高效分词, 支持英文、中文、日文等, 支持接入 elasticsearch
+Go 语言高性能 NLP 和分词, 支持英文、中文、日文等, 支持接入 elasticsearch
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
