@@ -77,6 +77,12 @@ func (seg *Segmenter) RemoveToken(text string) error {
 	return seg.Dict.RemoveToken(token)
 }
 
+// Empty empty the seg dictionary
+func (seg *Segmenter) Empty() error {
+	seg.Dict = nil
+	return nil
+}
+
 // LoadDictMap load dictionary from []map[string]string
 func (seg *Segmenter) LoadDictMap(dict []map[string]string) error {
 	if seg.Dict == nil {
