@@ -15,6 +15,51 @@
 
 package gse
 
+// AnalyzeToken analyze the segment info structure
+type AnalyzeToken struct {
+	// 分词在文本中的起始位置
+	Start int
+	End   int
+
+	Position int
+	Len      int
+
+	Type string
+
+	Text string
+	Freq float64
+	Pos  string
+}
+
+// Segment 文本中的一个分词
+type Segment struct {
+	// 分词在文本中的起始字节位置
+	start int
+
+	// 分词在文本中的结束字节位置（不包括该位置）
+	end int
+
+	Position int
+
+	// 分词信息
+	token *Token
+}
+
+// Start 返回分词在文本中的起始字节位置
+func (s *Segment) Start() int {
+	return s.start
+}
+
+// End 返回分词在文本中的结束字节位置（不包括该位置）
+func (s *Segment) End() int {
+	return s.end
+}
+
+// Token 返回分词信息
+func (s *Segment) Token() *Token {
+	return s.token
+}
+
 // Text 字串类型，可以用来表达
 //	1. 一个字元，比如 "世" 又如 "界", 英文的一个字元是一个词
 //	2. 一个分词，比如 "世界" 又如 "人口"
