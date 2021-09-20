@@ -20,7 +20,7 @@ func TestGetVer(t *testing.T) {
 	ver := GetVersion()
 
 	tt.Expect(t, Version, ver)
-	expect(t, Version, ver)
+	tt.Expect(t, Version, ver)
 	tt.Equal(t, Version, ver)
 }
 
