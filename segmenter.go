@@ -47,8 +47,9 @@ type Segmenter struct {
 
 	// SkipPos skip PosStr pos
 	SkipPos bool
+
 	NotStop bool
-	// StopWordMap stop word map
+	// StopWordMap the stop word map
 	StopWordMap map[string]bool
 }
 
