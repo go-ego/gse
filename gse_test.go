@@ -192,6 +192,10 @@ func TestStop(t *testing.T) {
 	tt.Equal(t, 89, len(seg.StopWordMap))
 	tt.Bool(t, seg.IsStop("离开"))
 
+	err = seg.EmptyStop()
+	tt.Nil(t, err)
+	tt.Equal(t, "map[]", seg.StopWordMap)
+
 	// err := prodSeg.LoadStop("zh")
 	// tt.Nil(t, err)
 	tt.Equal(t, 1161, len(prodSeg.StopWordMap))
