@@ -1,6 +1,6 @@
 # [gse](https://github.com/go-ego/gse)
 
-Go 语言高性能 NLP 和分词, 支持英文、中文、日文等, 支持接入 elasticsearch
+Go 语言高性能多语言 NLP 和分词, 支持英文、中文、日文等, 支持接入 elasticsearch
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
@@ -16,14 +16,23 @@ Go 语言高性能 NLP 和分词, 支持英文、中文、日文等, 支持接�
 
 <!--<a href="https://github.com/go-ego/ego/releases"><img src="https://img.shields.io/badge/%20version%20-%206.0.0%20-blue.svg?style=flat-square" alt="Releases"></a>-->
 
-<a href="https://github.com/go-ego/gse/blob/master/dictionary.go">词典</a>用双数组 trie（Double-Array Trie）实现，
-<a href="https://github.com/go-ego/gse/blob/master/segmenter.go">分词器</a>算法为基于词频的最短路径加动态规划, 以及 DAG 和 HMM 算法分词.
+Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多属性
 
-支持 HMM 分词, 使用 viterbi 算法.
+## 特征:
+- 支持普通、搜索引擎、全模式、精确模式和 HMM 模式多种分词模式
+- 支持自定义词典、embed 词典、词性标注、停用词和整理分析分词、支持繁体字
+- NLP 和 TensorFlow 支持 (进行中)
+- 可运行<a href="https://github.com/go-ego/gse/blob/master/server/server.go"> JSON RPC 服务</a>。
 
-支持普通、搜索引擎、全模式、精确模式和 HMM 模式多种分词模式，支持用户词典、embed 词典、词性标注、停用词和整理分析分词，可运行<a href="https://github.com/go-ego/gse/blob/master/server/server.go"> JSON RPC 服务</a>。
+## 算法: 
+- [词典](https://github.com/go-ego/gse/blob/master/dictionary.go)用双数组 trie（Double-Array Trie）实现，
+- [分词器](https://github.com/go-ego/gse/blob/master/segmenter.go)算法为基于词频的最短路径加动态规划, 以及 DAG 和 HMM 算法分词.
+- 支持 HMM 分词, 使用 viterbi 算法.
 
-分词速度<a href="https://github.com/go-ego/gse/blob/master/benchmark/benchmark.go">单线程</a> 9.2MB/s，<a href="https://github.com/go-ego/gse/blob/master/benchmark/goroutines/goroutines.go">goroutines 并发</a> 26.8MB/s. HMM 模式单线程分词速度 3.2MB/s.（双核 4 线程 Macbook Pro）。
+## 分词速度:
+- <a href="https://github.com/go-ego/gse/blob/master/benchmark/benchmark.go">单线程</a> 9.2MB/s
+- <a href="https://github.com/go-ego/gse/blob/master/benchmark/goroutines/goroutines.go">goroutines 并发</a> 26.8MB/s. 
+- HMM 模式单线程分词速度 3.2MB/s.（双核 4 线程 Macbook Pro）。
 
 ## Binding:
 

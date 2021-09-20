@@ -89,6 +89,12 @@ func (seg *Segmenter) RemoveStop(text string) {
 	delete(seg.StopWordMap, text)
 }
 
+// EmptyStop empty the stop dictionary
+func (seg *Segmenter) EmptyStop() error {
+	seg.StopWordMap = nil
+	return nil
+}
+
 // IsStop checks if a given word is stop word.
 func (seg *Segmenter) IsStop(s string) bool {
 	_, ok := seg.StopWordMap[s]

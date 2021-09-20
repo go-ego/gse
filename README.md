@@ -1,6 +1,6 @@
 # gse
 
-Go efficient NLP and text segmentation; support english, chinese, japanese and other. And supports with elasticsearch.
+Go efficient multilingual NLP and text segmentation; support english, chinese, japanese and other. And supports with elasticsearch.
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
@@ -19,14 +19,23 @@ Go efficient NLP and text segmentation; support english, chinese, japanese and o
 
 [简体中文](https://github.com/go-ego/gse/blob/master/README_zh.md)
 
-<a href="https://github.com/go-ego/gse/blob/master/dictionary.go">Dictionary </a> with double array trie (Double-Array Trie) to achieve,
-<a href="https://github.com/go-ego/gse/blob/master/segmenter.go">Segmenter</a> algorithm is the shortest path (based on word frequency and dynamic programming), and DAG and HMM algorithm word segmentation.
+Gse is implements jieba by golang, and try add NLP support and more feature
 
-Support common, search engine, full mode, precise mode and HMM mode multiple word segmentation modes; support user and embed dictionary, POS tagging, analyze segment info, stop and trim, run<a href="https://github.com/go-ego/gse/blob/master/server/server.go"> JSON RPC service</a>.
+## Feature:
+- Support common, search engine, full mode, precise mode and HMM mode multiple word segmentation modes; 
+- support user and embed dictionary, POS tagging, analyze segment info, stop and trim
+- Support HMM cut text use Viterbi algorithm.
+- Support NLP by TensorFlow (in work)
+- run<a href="https://github.com/go-ego/gse/blob/master/server/server.go"> JSON RPC service</a>.
 
-Support HMM cut text use Viterbi algorithm.
+## Algorithm:
+- [Dictionary](https://github.com/go-ego/gse/blob/master/dictionary.go) with double array trie (Double-Array Trie) to achieve
+- [Segmenter](https://github.com/go-ego/gse/blob/master/segmenter.go) algorithm is the shortest path (based on word frequency and dynamic programming), and DAG and HMM algorithm word segmentation.
 
-Text Segmentation speed<a href="https://github.com/go-ego/gse/blob/master/benchmark/benchmark.go"> single thread</a> 9.2MB/s，<a href="https://github.com/go-ego/gse/blob/master/benchmark/goroutines/goroutines.go">goroutines concurrent</a> 26.8MB/s. HMM text segmentation single thread 3.2MB/s. (2core 4threads Macbook Pro).
+## Text Segmentation speed:
+- <a href="https://github.com/go-ego/gse/blob/master/benchmark/benchmark.go"> single thread</a> 9.2MB/s
+- <a href="https://github.com/go-ego/gse/blob/master/benchmark/goroutines/goroutines.go">goroutines concurrent</a> 26.8MB/s. 
+- HMM text segmentation single thread 3.2MB/s. (2core 4threads Macbook Pro).
 
 ## Binding:
 

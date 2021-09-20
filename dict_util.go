@@ -304,7 +304,7 @@ func (seg *Segmenter) Reader(reader io.Reader, files ...string) error {
 		}
 
 		if size == 2 {
-			// 没有词性标注时设为空字符串
+			// 没有词性, 标注为空字符串
 			pos = ""
 		}
 
@@ -374,7 +374,7 @@ func DictPaths(dictDir, filePath string) (files []string) {
 	return
 }
 
-// IsJp is jp char return true
+// IsJp is Japan char return true
 func IsJp(segText string) bool {
 	for _, r := range segText {
 		jp := unicode.Is(unicode.Scripts["Hiragana"], r) ||
@@ -404,9 +404,6 @@ func (seg *Segmenter) CalcToken() {
 		// 计算需要添加的子分词数目
 		numTokensToAdd := 0
 		for iToken := 0; iToken < len(segments); iToken++ {
-			// if len(segments[iToken].token.text) > 1 {
-			// 略去字元长度为一的分词
-			// TODO: 这值得进一步推敲，特别是当字典中有英文复合词的时候
 			if len(segments[iToken].token.text) > 0 {
 				hasJp := false
 				if len(segments[iToken].token.text) == 1 {
@@ -424,7 +421,6 @@ func (seg *Segmenter) CalcToken() {
 		// 添加子分词
 		iSegmentsToAdd := 0
 		for iToken := 0; iToken < len(segments); iToken++ {
-			// if len(segments[iToken].token.text) > 1 {
 			if len(segments[iToken].token.text) > 0 {
 				hasJp := false
 				if len(segments[iToken].token.text) == 1 {

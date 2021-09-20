@@ -14,8 +14,9 @@ import (
 var testDict string
 
 var (
-	text = "沙漠的那边还是沙漠, hello world"
-	seg  gse.Segmenter
+	text  = "他在命运的沉浮中随波逐流, 扮演着受害与加害者的双重角色"
+	text1 = "沙漠的那边还是沙漠, hello world"
+	seg   gse.Segmenter
 )
 
 func main() {
@@ -34,7 +35,9 @@ func main() {
 	fmt.Println(freq, pos, ok)
 
 	s := seg.Cut(text, true)
-	// s := seg.Cut(text)
+	fmt.Println("cut: ", s)
+
+	s = seg.Cut(text1)
 	fmt.Println("cut: ", s, len(s))
 }
 
