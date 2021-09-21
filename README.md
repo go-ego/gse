@@ -69,6 +69,13 @@ var (
 )
 
 func main() {
+	// Loading the default dictionary
+	seg.LoadDict()
+	// seg.LoadDictEmbed()
+	// 
+	// Load the dictionary
+	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
+
 	cut()
 
 	segCut()
@@ -111,22 +118,12 @@ func cutPos() {
 }
 
 func segCut() {
-	// Loading the default dictionary
-	seg.LoadDict()
-	// Load the dictionary
-	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
-
 	// Text Segmentation
 	tb := []byte(text)
 	fmt.Println(seg.String(text, true))
 
 	segments := seg.Segment(tb)
-
-	// Handle word segmentation results
-	// Support for normal mode and search mode two participle,
-	// see the comments in the code ToString function.
-	// The search mode is mainly used to provide search engines
-	// with as many keywords as possible
+	// Handle word segmentation results, search mode
 	fmt.Println(gse.ToString(segments, true))
 }
 

@@ -47,8 +47,8 @@ func (dict *Dictionary) TotalFreq() float64 {
 	return dict.totalFrequency
 }
 
-// addToken 向词典中加入一个分词
-func (dict *Dictionary) addToken(token Token) error {
+// AddToken 向词典中加入一个分词
+func (dict *Dictionary) AddToken(token Token) error {
 	bytes := textSliceToBytes(token.text)
 	val, err := dict.trie.Get(bytes)
 	if err == nil || val > 0 {
