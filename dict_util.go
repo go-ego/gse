@@ -59,7 +59,7 @@ func (seg *Segmenter) AddToken(text string, frequency float64, pos ...string) er
 	words := seg.SplitTextToWords([]byte(text))
 	token := Token{text: words, frequency: frequency, pos: po}
 
-	return seg.Dict.addToken(token)
+	return seg.Dict.AddToken(token)
 }
 
 // AddTokenForce add new text to token and force
@@ -99,7 +99,7 @@ func (seg *Segmenter) LoadDictMap(dict []map[string]string) error {
 
 		words := seg.SplitTextToWords([]byte(d["text"]))
 		token := Token{text: words, frequency: frequency, pos: d["pos"]}
-		seg.Dict.addToken(token)
+		seg.Dict.AddToken(token)
 	}
 
 	seg.CalcToken()
@@ -311,7 +311,7 @@ func (seg *Segmenter) Reader(reader io.Reader, files ...string) error {
 		// 将分词添加到字典中
 		words := seg.SplitTextToWords([]byte(text))
 		token := Token{text: words, frequency: frequency, pos: pos}
-		seg.Dict.addToken(token)
+		seg.Dict.AddToken(token)
 	}
 
 	return nil
