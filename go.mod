@@ -3,6 +3,6 @@ module github.com/go-ego/gse
 go 1.17
 
 require (
-	github.com/go-ego/cedar v0.10.2
-	github.com/vcaesar/tt v0.11.0
+	github.com/vcaesar/cedar v0.10.0
+	github.com/vcaesar/tt v0.20.0
 )

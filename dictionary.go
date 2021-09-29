@@ -14,7 +14,7 @@
 package gse
 
 import (
-	"github.com/go-ego/cedar"
+	"github.com/vcaesar/cedar"
 )
 
 // Dictionary 结构体实现了一个字串双数组树，
