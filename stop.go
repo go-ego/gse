@@ -22,7 +22,7 @@ import (
 	"strings"
 )
 
-// StopWordMap default contains some stop words.
+// StopWordMap the default stop words.
 var StopWordMap = map[string]bool{
 	" ": true,
 }

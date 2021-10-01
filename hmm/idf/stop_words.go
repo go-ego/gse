@@ -4,7 +4,7 @@ import (
 	"github.com/go-ego/gse"
 )
 
-// StopWordMap default contains some stop words.
+// StopWordMap the default stop words.
 var StopWordMap = map[string]bool{
 	"the":   true,
 	"of":    true,
@@ -46,30 +46,30 @@ type StopWord struct {
 	seg gse.Segmenter
 }
 
-// AddStop adds a token into StopWord dictionary.
+// AddStop add a token to StopWord dictionary.
 func (s *StopWord) AddStop(text string) {
 	s.stopWordMap[text] = true
 }
 
-// RemoveStop remove a token into StopWord dictionary.
+// RemoveStop remove a token from StopWord dictionary.
 func (s *StopWord) RemoveStop(text string) {
 	delete(s.stopWordMap, text)
 }
 
-// NewStopWord create a new StopWord with default stop words.
+// NewStopWord create a new StopWord with the default stop words.
 func NewStopWord() *StopWord {
 	s := new(StopWord)
 	s.stopWordMap = StopWordMap
 	return s
 }
 
-// IsStopWord checks if a given word is stop word.
+// IsStopWord check if the word in the stop word
 func (s *StopWord) IsStopWord(word string) bool {
 	_, ok := s.stopWordMap[word]
 	return ok
 }
 
-// LoadDict load idf stop dictionary
+// LoadDict load the idf stop dictionary
 func (s *StopWord) LoadDict(files ...string) error {
 	err := s.seg.LoadStop(files...)
 	if err != nil {

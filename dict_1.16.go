@@ -80,8 +80,8 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 			freqText = strings.TrimSpace(s1[1])
 		}
 
-		frequency := seg.Size(size, text, freqText)
-		if frequency == 0.0 {
+		freq := seg.Size(size, text, freqText)
+		if freq == 0.0 {
 			continue
 		}
 
@@ -92,7 +92,7 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 
 		// 将分词添加到字典中
 		words := seg.SplitTextToWords([]byte(text))
-		token := Token{text: words, frequency: frequency, pos: pos}
+		token := Token{text: words, freq: freq, pos: pos}
 		seg.Dict.AddToken(token)
 	}
 

@@ -30,11 +30,11 @@ const (
 var reEng = regexp.MustCompile(`[[:alnum:]]`)
 
 type route struct {
-	frequency float64
-	index     int
+	freq  float64
+	index int
 }
 
-// Find find word in dictionary return word's frequency and existence
+// Find find word in dictionary return word's freq, pos and existence
 func (seg *Segmenter) Find(str string) (float64, string, bool) {
 	return seg.Dict.Find([]byte(str))
 }
@@ -118,27 +118,27 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 	n := len(runes)
 	rs := make(map[int]route)
 
-	rs[n] = route{frequency: 0.0, index: 0}
+	rs[n] = route{freq: 0.0, index: 0}
 	var r route
 
-	logT := math.Log(seg.Dict.totalFrequency)
+	logT := math.Log(seg.Dict.totalFreq)
 	for idx := n - 1; idx >= 0; idx-- {
 		for _, i := range dag[idx] {
 			freq, _, ok := seg.Find(string(runes[idx : i+1]))
 
 			if ok {
-				f := math.Log(freq) - logT + rs[i+1].frequency
-				r = route{frequency: f, index: i}
+				f := math.Log(freq) - logT + rs[i+1].freq
+				r = route{freq: f, index: i}
 			} else {
-				f := math.Log(1.0) - logT + rs[i+1].frequency
-				r = route{frequency: f, index: i}
+				f := math.Log(1.0) - logT + rs[i+1].freq
+				r = route{freq: f, index: i}
 			}
 
 			if v, ok := rs[idx]; !ok {
 				rs[idx] = r
 			} else {
-				f := v.frequency == r.frequency && v.index < r.index
-				if v.frequency < r.frequency || f {
+				f := v.freq == r.freq && v.index < r.index
+				if v.freq < r.freq || f {
 					rs[idx] = r
 				}
 			}
@@ -316,55 +316,55 @@ func (seg *Segmenter) cutForSearch(str string, hmm ...bool) []string {
 // returns a suggested frequncy of a word
 // cutted into several short words.
 func (seg *Segmenter) SuggestFreq(words ...string) float64 {
-	frequency := 1.0
-	total := seg.Dict.totalFrequency
+	freq := 1.0
+	total := seg.Dict.totalFreq
 
 	if len(words) > 1 {
 		for _, word := range words {
-			freq, _, ok := seg.Find(word)
+			v, _, ok := seg.Find(word)
 			if ok {
-				frequency *= freq
+				freq *= v
 			}
 
-			frequency /= total
+			freq /= total
 		}
 
-		frequency, _ = math.Modf(frequency * total)
+		freq, _ = math.Modf(freq * total)
 		wordFreq := 0.0
-		freq, _, ok := seg.Find(strings.Join(words, ""))
+		v, _, ok := seg.Find(strings.Join(words, ""))
 		if ok {
-			wordFreq = freq
+			wordFreq = v
 		}
 
-		if wordFreq < frequency {
-			frequency = wordFreq
+		if wordFreq < freq {
+			freq = wordFreq
 		}
 
-		return frequency
+		return freq
 	}
 
 	word := words[0]
 	for _, segment := range seg.Cut(word, false) {
-		freq, _, ok := seg.Find(segment)
+		v, _, ok := seg.Find(segment)
 		if ok {
-			frequency *= freq
+			freq *= v
 		}
 
-		frequency /= total
+		freq /= total
 	}
 
-	frequency, _ = math.Modf(frequency * total)
-	frequency += 1.0
+	freq, _ = math.Modf(freq * total)
+	freq += 1.0
 	wordFreq := 1.0
 
-	freq, _, ok := seg.Find(word)
+	v, _, ok := seg.Find(word)
 	if ok {
-		wordFreq = freq
+		wordFreq = v
 	}
 
-	if wordFreq > frequency {
-		frequency = wordFreq
+	if wordFreq > freq {
+		freq = wordFreq
 	}
 
-	return frequency
+	return freq
 }
