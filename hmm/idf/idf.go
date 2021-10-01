@@ -30,10 +30,10 @@ type Idf struct {
 }
 
 // AddToken adds a new word with IDF into it's dictionary.
-func (i *Idf) AddToken(text string, frequency float64, pos ...string) error {
-	err := i.seg.AddToken(text, frequency, pos...)
+func (i *Idf) AddToken(text string, freq float64, pos ...string) error {
+	err := i.seg.AddToken(text, freq, pos...)
 
-	i.freqs = append(i.freqs, frequency)
+	i.freqs = append(i.freqs, freq)
 	sort.Float64s(i.freqs)
 	i.median = i.freqs[len(i.freqs)/2]
 	return err
@@ -48,8 +48,8 @@ func (i *Idf) LoadDict(files ...string) error {
 	return i.seg.LoadDict(files...)
 }
 
-// Frequency returns the IDF of given word.
-func (i *Idf) Frequency(key string) (float64, string, bool) {
+// Freq returns the IDF of given word.
+func (i *Idf) Freq(key string) (float64, string, bool) {
 	return i.seg.Find(key)
 }
 

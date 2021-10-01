@@ -37,13 +37,13 @@ func loadDict() {
 func loadDictMap() {
 	m := []map[string]string{
 		{
-			"text":      "一城山水",
-			"frequency": "10",
-			"pos":       "n",
+			"text": "一城山水",
+			"freq": "10",
+			"pos":  "n",
 		},
 		{
-			"text":      "山河日月",
-			"frequency": "13",
+			"text": "山河日月",
+			"freq": "13",
 		},
 	}
 

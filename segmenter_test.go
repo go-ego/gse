@@ -193,7 +193,7 @@ func TestToken(t *testing.T) {
 	tt.Nil(t, err)
 	freq, pos, ok = prodSeg.Find("西雅图太空针")
 	tt.Equal(t, 100, freq)
-	tt.Equal(t, "n", pos)
+	tt.Equal(t, "", pos)
 	tt.True(t, ok)
 
 	err = prodSeg.ReAddToken("西雅图太空针", 200, "n")

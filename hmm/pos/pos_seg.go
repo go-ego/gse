@@ -120,7 +120,7 @@ func (seg *Segmenter) getDag(runes []rune) map[int][]int {
 		frag = runes[k : k+1]
 
 		for {
-			freq, _, ok := seg.dict.Frequency(string(frag))
+			freq, _, ok := seg.dict.Freq(string(frag))
 			if !ok {
 				break
 			}
@@ -146,8 +146,8 @@ func (seg *Segmenter) getDag(runes []rune) map[int][]int {
 }
 
 type route struct {
-	frequency float64
-	index     int
+	freq  float64
+	index int
 }
 
 func (seg *Segmenter) calc(runes []rune) map[int]route {
@@ -155,26 +155,26 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 	n := len(runes)
 
 	rs := make(map[int]route)
-	rs[n] = route{frequency: 0.0, index: 0}
+	rs[n] = route{freq: 0.0, index: 0}
 	var r route
 
 	for idx := n - 1; idx >= 0; idx-- {
 		for _, i := range dag[idx] {
-			if freq, _, ok := seg.dict.Frequency(string(runes[idx : i+1])); ok {
+			if freq, _, ok := seg.dict.Freq(string(runes[idx : i+1])); ok {
 				r = route{
-					frequency: math.Log(freq) - seg.dict.logTotal + rs[i+1].frequency,
-					index:     i}
+					freq:  math.Log(freq) - seg.dict.logTotal + rs[i+1].freq,
+					index: i}
 			} else {
 				r = route{
-					frequency: math.Log(1.0) - seg.dict.logTotal + rs[i+1].frequency,
-					index:     i}
+					freq:  math.Log(1.0) - seg.dict.logTotal + rs[i+1].freq,
+					index: i}
 			}
 
 			if v, ok := rs[idx]; !ok {
 				rs[idx] = r
 			} else {
-				if v.frequency < r.frequency ||
-					(v.frequency == r.frequency && v.index < r.index) {
+				if v.freq < r.freq ||
+					(v.freq == r.freq && v.index < r.index) {
 					rs[idx] = r
 				}
 			}
@@ -216,7 +216,7 @@ func (seg *Segmenter) cutDAG(sentence string) (result []gse.SegPos) {
 				continue
 			}
 
-			if v, _, ok := seg.dict.Frequency(bufString); !ok || v == 0.0 {
+			if v, _, ok := seg.dict.Freq(bufString); !ok || v == 0.0 {
 				result = append(result, seg.cutDetail(bufString)...)
 			} else {
 				for _, elem := range buf {
@@ -259,7 +259,7 @@ func (seg *Segmenter) bufn(buf []rune) (result []gse.SegPos) {
 		return
 	}
 
-	if v, _, ok := seg.dict.Frequency(bufString); !ok || v == 0.0 {
+	if v, _, ok := seg.dict.Freq(bufString); !ok || v == 0.0 {
 		result = append(result, seg.cutDetail(bufString)...)
 		return
 	}

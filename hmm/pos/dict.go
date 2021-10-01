@@ -31,16 +31,16 @@ type Dict struct {
 // }
 
 // AddToken adds one token
-func (d *Dict) AddToken(text string, frequency float64, pos ...string) error {
-	return d.Seg.AddToken(text, frequency, pos...)
+func (d *Dict) AddToken(text string, freq float64, pos ...string) error {
+	return d.Seg.AddToken(text, freq, pos...)
 }
 
 func (d *Dict) updateLogTotal() {
 	d.logTotal = math.Log(d.total)
 }
 
-// Frequency returns the frequency and existence of give word
-func (d *Dict) Frequency(key string) (float64, string, bool) {
+// Freq returns the frequency and existence of give word
+func (d *Dict) Freq(key string) (float64, string, bool) {
 	return d.Seg.Find(key)
 }
 

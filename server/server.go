@@ -109,9 +109,9 @@ func JsonRpcServer(w http.ResponseWriter, req *http.Request) {
 
 func addToken(w http.ResponseWriter, req *http.Request) {
 	text := req.URL.Query().Get("text")
-	frequency, _ := strconv.ParseFloat(req.URL.Query().Get("freq"), 64)
+	freq, _ := strconv.ParseFloat(req.URL.Query().Get("freq"), 64)
 	pos := req.URL.Query().Get("pos")
-	seg.AddTokenForce(text, frequency, pos)
+	seg.AddTokenForce(text, freq, pos)
 
 	response, _ := json.Marshal(&Resp{Code: 200, Text: "ok"})
 	w.Header().Set("Content-Type", "application/json")

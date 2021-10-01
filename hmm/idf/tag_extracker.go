@@ -107,7 +107,7 @@ func (t *TagExtracter) ExtractTags(sentence string, topK int) (tags Segments) {
 	ws := make(Segments, 0)
 	var s Segment
 	for k, v := range freqMap {
-		if freq, _, ok := t.Idf.Frequency(k); ok {
+		if freq, _, ok := t.Idf.Freq(k); ok {
 			s = Segment{text: k, weight: freq * v}
 		} else {
 			s = Segment{text: k, weight: t.Idf.median * v}
