@@ -49,24 +49,40 @@ func (seg *Segmenter) Dictionary() *Dictionary {
 	return seg.Dict
 }
 
-// AddToken add new text to token
-func (seg *Segmenter) AddToken(text string, frequency float64, pos ...string) error {
+// ToToken make the text, freq and pos to token structure
+func (seg *Segmenter) ToToken(text string, freq float64, pos ...string) Token {
 	var po string
 	if len(pos) > 0 {
 		po = pos[0]
 	}
 
 	words := seg.SplitTextToWords([]byte(text))
-	token := Token{text: words, frequency: frequency, pos: po}
+	token := Token{text: words, freq: freq, pos: po}
+	return token
+}
 
+// AddToken add new text to token
+func (seg *Segmenter) AddToken(text string, freq float64, pos ...string) error {
+	token := seg.ToToken(text, freq, pos...)
 	return seg.Dict.AddToken(token)
 }
 
 // AddTokenForce add new text to token and force
 // time-consuming
-func (seg *Segmenter) AddTokenForce(text string, frequency float64, pos ...string) {
-	seg.AddToken(text, frequency, pos...)
+func (seg *Segmenter) AddTokenForce(text string, freq float64, pos ...string) (err error) {
+	err = seg.AddToken(text, freq, pos...)
 	seg.CalcToken()
+	return
+}
+
+// ReAddToken remove and add token again
+func (seg *Segmenter) ReAddToken(text string, freq float64, pos ...string) error {
+	token := seg.ToToken(text, freq, pos...)
+	err := seg.Dict.RemoveToken(token)
+	if err != nil {
+		return err
+	}
+	return seg.Dict.AddToken(token)
 }
 
 // RemoveToken remove token in dictionary
@@ -91,14 +107,14 @@ func (seg *Segmenter) LoadDictMap(dict []map[string]string) error {
 	}
 
 	for _, d := range dict {
-		// Parse word frequency
-		frequency := seg.Size(len(d), d["text"], d["frequency"])
-		if frequency == 0.0 {
+		// Parse the word frequency
+		freq := seg.Size(len(d), d["text"], d["freq"])
+		if freq == 0.0 {
 			continue
 		}
 
 		words := seg.SplitTextToWords([]byte(d["text"]))
-		token := Token{text: words, frequency: frequency, pos: d["pos"]}
+		token := Token{text: words, freq: freq, pos: d["pos"]}
 		seg.Dict.AddToken(token)
 	}
 
@@ -226,7 +242,7 @@ func (seg *Segmenter) Read(file string) error {
 }
 
 // Size frequency is calculated based on the size of the text
-func (seg *Segmenter) Size(size int, text, freqText string) (frequency float64) {
+func (seg *Segmenter) Size(size int, text, freqText string) (freq float64) {
 	if size == 0 {
 		// 文件结束或错误行
 		// continue
@@ -244,20 +260,20 @@ func (seg *Segmenter) Size(size int, text, freqText string) (frequency float64) 
 
 	// 解析词频
 	var err error
-	frequency, err = strconv.ParseFloat(freqText, 64)
+	freq, err = strconv.ParseFloat(freqText, 64)
 	if err != nil {
 		// continue
 		return
 	}
 
 	// 过滤频率太小的词
-	if frequency < seg.MinTokenFreq {
+	if freq < seg.MinTokenFreq {
 		return 0.0
 	}
 
 	// 过滤长度为1的词, 降低词频
 	if len([]rune(text)) < 2 {
-		frequency = 2
+		freq = 2
 	}
 
 	return
@@ -268,7 +284,7 @@ func (seg *Segmenter) Reader(reader io.Reader, files ...string) error {
 	var (
 		file           string
 		text, freqText string
-		frequency      float64
+		freq           float64
 		pos            string
 	)
 
@@ -298,8 +314,8 @@ func (seg *Segmenter) Reader(reader io.Reader, files ...string) error {
 			}
 		}
 
-		frequency = seg.Size(size, text, freqText)
-		if frequency == 0.0 {
+		freq = seg.Size(size, text, freqText)
+		if freq == 0.0 {
 			continue
 		}
 
@@ -310,7 +326,7 @@ func (seg *Segmenter) Reader(reader io.Reader, files ...string) error {
 
 		// 将分词添加到字典中
 		words := seg.SplitTextToWords([]byte(text))
-		token := Token{text: words, frequency: frequency, pos: pos}
+		token := Token{text: words, freq: freq, pos: pos}
 		seg.Dict.AddToken(token)
 	}
 
@@ -389,10 +405,10 @@ func IsJp(segText string) bool {
 // CalcToken calc the segmenter token
 func (seg *Segmenter) CalcToken() {
 	// 计算每个分词的路径值，路径值含义见 Token 结构体的注释
-	logTotalFrequency := float32(math.Log2(seg.Dict.totalFrequency))
+	logTotalFreq := float32(math.Log2(seg.Dict.totalFreq))
 	for i := range seg.Dict.Tokens {
 		token := &seg.Dict.Tokens[i]
-		token.distance = logTotalFrequency - float32(math.Log2(token.frequency))
+		token.distance = logTotalFreq - float32(math.Log2(token.freq))
 	}
 
 	// 对每个分词进行细致划分，用于搜索引擎模式，

@@ -98,7 +98,7 @@ func TestSegmentJp(t *testing.T) {
 
 	token := segments[0].Token()
 	tt.Expect(t, "こんにちは", token.Text())
-	tt.Expect(t, "5704", token.Frequency())
+	tt.Expect(t, "5704", token.Freq())
 	tt.Expect(t, "感動詞", token.Pos())
 
 	var tokenArr []*Token
@@ -188,10 +188,18 @@ func TestToken(t *testing.T) {
 
 	err = prodSeg.AddToken("西雅图中心", 100)
 	tt.Nil(t, err)
-	err = prodSeg.AddToken("西雅图太空针", 100, "n")
+
+	err = prodSeg.AddToken("西雅图太空针", 100)
 	tt.Nil(t, err)
 	freq, pos, ok = prodSeg.Find("西雅图太空针")
 	tt.Equal(t, 100, freq)
+	tt.Equal(t, "n", pos)
+	tt.True(t, ok)
+
+	err = prodSeg.ReAddToken("西雅图太空针", 200, "n")
+	tt.Nil(t, err)
+	freq, pos, ok = prodSeg.Find("西雅图太空针")
+	tt.Equal(t, 200, freq)
 	tt.Equal(t, "n", pos)
 	tt.True(t, ok)
 

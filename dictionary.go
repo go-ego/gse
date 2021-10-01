@@ -22,9 +22,9 @@ import (
 type Dictionary struct {
 	trie *cedar.Cedar // Cedar 双数组树
 
-	maxTokenLen    int     // 词典中最长的分词
-	Tokens         []Token // 词典中所有的分词，方便遍历
-	totalFrequency float64 // 词典中所有分词的频率之和
+	maxTokenLen int     // 词典中最长的分词
+	Tokens      []Token // 词典中所有的分词，方便遍历
+	totalFreq   float64 // 词典中所有分词的频率之和
 }
 
 // NewDict new dictionary
@@ -44,7 +44,7 @@ func (dict *Dictionary) NumTokens() int {
 
 // TotalFreq 词典中所有分词的频率之和
 func (dict *Dictionary) TotalFreq() float64 {
-	return dict.totalFrequency
+	return dict.totalFreq
 }
 
 // AddToken 向词典中加入一个分词
@@ -61,7 +61,7 @@ func (dict *Dictionary) AddToken(token Token) error {
 	}
 
 	dict.Tokens = append(dict.Tokens, token)
-	dict.totalFrequency += token.frequency
+	dict.totalFreq += token.freq
 
 	if len(token.text) > dict.maxTokenLen {
 		dict.maxTokenLen = len(token.text)
@@ -125,7 +125,7 @@ func (dict *Dictionary) Find(word []byte) (float64, string, bool) {
 		return 0, "", false
 	}
 
-	freq = dict.Tokens[value].frequency
+	freq = dict.Tokens[value].freq
 	pos := dict.Tokens[value].pos
 	return freq, pos, true
 }

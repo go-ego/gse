@@ -72,7 +72,7 @@ type Token struct {
 	text []Text
 
 	// 分词在语料库中的词频
-	frequency float64
+	freq float64
 
 	// log2(总词频/该分词词频)，这相当于 log2(1/p(分词))，用作动态规划中
 	// 该分词的路径长度。求解 prod(p(分词)) 的最大值相当于求解
@@ -91,9 +91,9 @@ func (token *Token) Text() string {
 	return textSliceToString(token.text)
 }
 
-// Frequency 返回分词在语料库中的词频
-func (token *Token) Frequency() float64 {
-	return token.frequency
+// Freq 返回分词在语料库中的词频
+func (token *Token) Freq() float64 {
+	return token.freq
 }
 
 // Pos 返回分词词性标注
