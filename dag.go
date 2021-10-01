@@ -148,11 +148,11 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 	return rs
 }
 
-func (seg *Segmenter) hmm(bufString string, buf []rune) (result []string) {
+func (seg *Segmenter) hmm(bufString string, buf []rune, reg ...*regexp.Regexp) (result []string) {
 
 	v, _, ok := seg.Find(bufString)
 	if !ok || v == 0 {
-		result = append(result, seg.HMMCut(bufString)...)
+		result = append(result, seg.HMMCut(bufString, reg...)...)
 		return
 	}
 
@@ -162,7 +162,7 @@ func (seg *Segmenter) hmm(bufString string, buf []rune) (result []string) {
 	return
 }
 
-func (seg *Segmenter) cutDAG(str string) []string {
+func (seg *Segmenter) cutDAG(str string, reg ...*regexp.Regexp) []string {
 
 	mLen := int(float32(len(str))/RatioWord) + 1
 	result := make([]string, 0, mLen)
@@ -186,7 +186,7 @@ func (seg *Segmenter) cutDAG(str string) []string {
 				if len(buf) == 1 {
 					result = append(result, bufString)
 				} else {
-					result = append(result, seg.hmm(bufString, buf)...)
+					result = append(result, seg.hmm(bufString, buf, reg...)...)
 				}
 
 				buf = make([]rune, 0)
@@ -204,7 +204,7 @@ func (seg *Segmenter) cutDAG(str string) []string {
 		if len(buf) == 1 {
 			result = append(result, bufString)
 		} else {
-			result = append(result, seg.hmm(bufString, buf)...)
+			result = append(result, seg.hmm(bufString, buf, reg...)...)
 		}
 	}
 

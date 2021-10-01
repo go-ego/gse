@@ -19,12 +19,14 @@ Package gse Go efficient text segmentation, Go 语言高性能分词
 package gse
 
 import (
+	"regexp"
+
 	"github.com/go-ego/gse/hmm"
 )
 
 const (
 	// Version get the gse version
-	Version = "v0.69.1.593, Green Lake!"
+	Version = "v0.69.9.593, Green Lake!"
 
 	// minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
 )
@@ -56,6 +58,10 @@ func New(files ...string) (seg Segmenter, err error) {
 // Cut cuts a str into words using accurate mode.
 // Parameter hmm controls whether to use the HMM(Hidden Markov Model)
 // or use the user's model.
+//
+// seg.Cut(text), use the shortest path
+// seg.Cut(text, false), use cut dag not hmm
+// seg.Cut(text, true), use cut dag and hmm mode
 func (seg *Segmenter) Cut(str string, hmm ...bool) []string {
 	if len(hmm) <= 0 {
 		return seg.Slice(str)
@@ -81,6 +87,16 @@ func (seg *Segmenter) CutSearch(str string, hmm ...bool) []string {
 // CutAll cuts a str into words using full mode.
 func (seg *Segmenter) CutAll(str string) []string {
 	return seg.cutAll(str)
+}
+
+// CutDAG cut string with DAG use hmm and regexp
+func (seg *Segmenter) CutDAG(str string, reg ...*regexp.Regexp) []string {
+	return seg.cutDAG(str, reg...)
+}
+
+// CutDAGNoHMM cut string with DAG not use hmm
+func (seg *Segmenter) CutDAGNoHMM(str string) []string {
+	return seg.cutDAGNoHMM(str)
 }
 
 // CutStr cut []string with Cut return string
@@ -110,9 +126,9 @@ func (seg *Segmenter) LoadModel(prob ...map[rune]float64) {
 }
 
 // HMMCut cut sentence string use HMM with Viterbi
-func (seg *Segmenter) HMMCut(str string) []string {
+func (seg *Segmenter) HMMCut(str string, reg ...*regexp.Regexp) []string {
 	// hmm.LoadModel(prob...)
-	return hmm.Cut(str)
+	return hmm.Cut(str, reg...)
 }
 
 // HMMCutMod cut sentence string use HMM with Viterbi
