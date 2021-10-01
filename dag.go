@@ -313,8 +313,7 @@ func (seg *Segmenter) cutForSearch(str string, hmm ...bool) []string {
 }
 
 // SuggestFreq suggest the words frequency
-// returns a suggested frequncy of a word
-// cutted into several short words.
+// return a suggested frequency of a word cutted to short words.
 func (seg *Segmenter) SuggestFreq(words ...string) float64 {
 	freq := 1.0
 	total := seg.Dict.totalFreq

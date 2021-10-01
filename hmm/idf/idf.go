@@ -53,6 +53,16 @@ func (i *Idf) Freq(key string) (float64, string, bool) {
 	return i.seg.Find(key)
 }
 
+// NumTokens return the IDF tokens' num
+func (i *Idf) NumTokens() int {
+	return i.seg.Dict.NumTokens()
+}
+
+// TotalFreq reruen the IDF total frequency
+func (i *Idf) TotalFreq() float64 {
+	return i.seg.Dict.TotalFreq()
+}
+
 // NewIdf create a new Idf
 func NewIdf() *Idf {
 	return &Idf{freqs: make([]float64, 0)}
