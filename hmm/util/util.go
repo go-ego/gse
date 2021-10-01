@@ -2,12 +2,10 @@ package util
 
 import "regexp"
 
-/*
-RegexpSplit split slices s into substrings separated by the expression and
-returns a slice
-
-This function acts consistent with Python's re.split function.
-*/
+// RegexpSplit split slice str into substrings separated by the expression and
+// return a slice
+//
+// This function consistent with Python's re.split function.
 func RegexpSplit(re *regexp.Regexp, s string, n int) []string {
 	if n == 0 {
 		return nil
@@ -23,8 +21,8 @@ func RegexpSplit(re *regexp.Regexp, s string, n int) []string {
 	} else {
 		matches = re.FindAllStringIndex(s, n)
 	}
-	strs := make([]string, 0, len(matches))
 
+	strs := make([]string, 0, len(matches))
 	begin, end := 0, 0
 	for _, match := range matches {
 		if n > 0 && len(strs) >= n-1 {

@@ -135,7 +135,7 @@ func (seg *Segmenter) String(s string, searchMode ...bool) string {
 	return ToString(segs, searchMode...)
 }
 
-// SegPos represents a word with it's POS
+// SegPos type a POS struct
 type SegPos struct {
 	Text, Pos string
 }

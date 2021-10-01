@@ -14,18 +14,18 @@ var (
 	defaultAllowPOS = []string{"ns", "n", "vn", "v"}
 )
 
-// TextRanker is used to extract tags from sentence.
+// TextRanker is extract tags struct.
 type TextRanker struct {
 	seg pos.Segmenter
 	HMM bool
 }
 
-// WithGse register gse segmenter
+// WithGse register the gse segmenter
 func (t *TextRanker) WithGse(segs gse.Segmenter) {
 	t.seg.WithGse(segs)
 }
 
-// LoadDict reads a given file and create a new dictionary file for Textranker.
+// LoadDict load and create a new dictionary from the file for Textranker
 func (t *TextRanker) LoadDict(fileName ...string) error {
 	// t.seg = new(pos.Segmenter)
 	return t.seg.LoadDict(fileName...)
@@ -63,6 +63,7 @@ func newUndirectWeightedGraph() *undirectWeightedGraph {
 }
 
 func (u *undirectWeightedGraph) addEdge(start, end string, weight float64) {
+	// # use a tuple (start, end, weight) instead of a Edge object
 	if _, ok := u.graph[start]; !ok {
 		u.keys = append(u.keys, start)
 		u.graph[start] = edges{edge{start: start, end: end, weight: weight}}
@@ -74,10 +75,10 @@ func (u *undirectWeightedGraph) addEdge(start, end string, weight float64) {
 	if _, ok := u.graph[end]; !ok {
 		u.keys = append(u.keys, end)
 		u.graph[end] = edges{edge{start: end, end: start, weight: weight}}
-	} else {
-		u.graph[end] = append(u.graph[end],
-			edge{start: end, end: start, weight: weight})
+		return
 	}
+	u.graph[end] = append(u.graph[end],
+		edge{start: end, end: start, weight: weight})
 }
 
 func (u *undirectWeightedGraph) rank() Segments {
@@ -88,13 +89,13 @@ func (u *undirectWeightedGraph) rank() Segments {
 	ws := make(map[string]float64)
 	outSum := make(map[string]float64)
 
-	wsdef := 1.0
+	wsDef := 1.0
 	if len(u.graph) > 0 {
-		wsdef /= float64(len(u.graph))
+		wsDef /= float64(len(u.graph))
 	}
 
 	for n, out := range u.graph {
-		ws[n] = wsdef
+		ws[n] = wsDef
 		sum := 0.0
 		for _, e := range out {
 			sum += e.weight
@@ -134,9 +135,9 @@ func (u *undirectWeightedGraph) rank() Segments {
 	return result
 }
 
-// TextRankWithPOS extracts keywords from sentence using TextRank algorithm.
-// Parameter allowPOS allows a customized pos list.
-func (t *TextRanker) TextRankWithPOS(sentence string, topK int, allowPOS []string) Segments {
+// TextRankWithPOS extracts keywords from text using TextRank algorithm.
+// Parameter allowPOS allows a []string pos list.
+func (t *TextRanker) TextRankWithPOS(text string, topK int, allowPOS []string) Segments {
 	posFilt := make(map[string]int)
 	for _, pos1 := range allowPOS {
 		posFilt[pos1] = 1
@@ -147,7 +148,7 @@ func (t *TextRanker) TextRankWithPOS(sentence string, topK int, allowPOS []strin
 	span := 5
 
 	var pairs []gse.SegPos
-	pairs = append(pairs, t.seg.Cut(sentence, true)...)
+	pairs = append(pairs, t.seg.Cut(text, true)...)
 
 	for i := range pairs {
 		_, ok := posFilt[pairs[i].Pos]
@@ -178,8 +179,8 @@ func (t *TextRanker) TextRankWithPOS(sentence string, topK int, allowPOS []strin
 	return tags
 }
 
-// TextRank extract keywords from sentence using TextRank algorithm.
+// TextRank extract keywords from text using TextRank algorithm.
 // Parameter topK specify how many top keywords to be returned at most.
-func (t *TextRanker) TextRank(sentence string, topK int) Segments {
-	return t.TextRankWithPOS(sentence, topK, defaultAllowPOS)
+func (t *TextRanker) TextRank(text string, topK int) Segments {
+	return t.TextRankWithPOS(text, topK, defaultAllowPOS)
 }

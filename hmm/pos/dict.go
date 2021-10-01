@@ -20,7 +20,7 @@ import (
 	"github.com/go-ego/gse"
 )
 
-// Dict represents a dictionary used for word segmentation.
+// Dict type a dictionary for the word segmentation.
 type Dict struct {
 	total, logTotal float64
 	Seg             gse.Segmenter
@@ -30,21 +30,26 @@ type Dict struct {
 // 	return gse.New(files...)
 // }
 
-// AddToken adds one token
+// AddToken add new text to token
 func (d *Dict) AddToken(text string, freq float64, pos ...string) error {
 	return d.Seg.AddToken(text, freq, pos...)
+}
+
+// RemoveToken remove the token in the dict
+func (d *Dict) RemoveToken(text string) error {
+	return d.Seg.RemoveToken(text)
 }
 
 func (d *Dict) updateLogTotal() {
 	d.logTotal = math.Log(d.total)
 }
 
-// Freq returns the frequency and existence of give word
+// Freq find the word return the frequency and existenced
 func (d *Dict) Freq(key string) (float64, string, bool) {
 	return d.Seg.Find(key)
 }
 
-// Pos returns the POS and existence of give word
+// Pos find the key return the POS and existenced
 func (d *Dict) Pos(key string) (string, bool) {
 	value, _, _ := d.Seg.Value(key)
 	if value == 0 {

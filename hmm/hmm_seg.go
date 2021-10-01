@@ -31,7 +31,7 @@ var (
 //
 // }
 
-// LoadModel load HMM model
+// LoadModel load the HMM model
 func LoadModel(prob ...map[rune]float64) {
 	if len(prob) > 3 {
 		probEmit['B'] = prob[0]
@@ -45,10 +45,10 @@ func LoadModel(prob ...map[rune]float64) {
 	loadDefEmit()
 }
 
-func internalCut(sentence string) []string {
+func internalCut(text string) []string {
 	result := make([]string, 0, 10)
 
-	runes := []rune(sentence)
+	runes := []rune(text)
 	_, posList := Viterbi(runes, []byte{'B', 'M', 'E', 'S'})
 	begin, next := 0, 0
 
@@ -73,8 +73,8 @@ func internalCut(sentence string) []string {
 	return result
 }
 
-// Cut cuts sentence into words using HMM with Viterbi algorithm
-func Cut(sentence string) []string {
+// Cut cuts text to words using HMM with Viterbi algorithm
+func Cut(text string) []string {
 	result := make([]string, 0, 10)
 
 	var (
@@ -84,42 +84,42 @@ func Cut(sentence string) []string {
 	)
 
 	for {
-		// find(sentence, hans, hanLoc, nonHanLoc)
+		// find(text, hans, hanLoc, nonHanLoc)
 
-		hanLoc = regHan.FindStringIndex(sentence)
+		hanLoc = regHan.FindStringIndex(text)
 		if hanLoc == nil {
-			if len(sentence) == 0 {
+			if len(text) == 0 {
 				break
 			}
 		} else if hanLoc[0] == 0 {
-			hans = sentence[hanLoc[0]:hanLoc[1]]
-			sentence = sentence[hanLoc[1]:]
+			hans = text[hanLoc[0]:hanLoc[1]]
+			text = text[hanLoc[1]:]
 			result = append(result, internalCut(hans)...)
 			continue
 		}
 
-		nonHanLoc = regSkip.FindStringIndex(sentence)
+		nonHanLoc = regSkip.FindStringIndex(text)
 		if nonHanLoc == nil {
-			if len(sentence) == 0 {
+			if len(text) == 0 {
 				break
 			}
 		} else if nonHanLoc[0] == 0 {
-			nonHans := sentence[nonHanLoc[0]:nonHanLoc[1]]
-			sentence = sentence[nonHanLoc[1]:]
+			nonHans := text[nonHanLoc[0]:nonHanLoc[1]]
+			text = text[nonHanLoc[1]:]
 			if nonHans != "" {
 				result = append(result, nonHans)
 				continue
 			}
 		}
 
-		loc := locJudge(sentence, hanLoc, nonHanLoc)
+		loc := locJudge(text, hanLoc, nonHanLoc)
 		if loc == nil {
-			result = append(result, sentence)
+			result = append(result, text)
 			break
 		}
 
-		result = append(result, sentence[:loc[0]])
-		sentence = sentence[loc[0]:]
+		result = append(result, text[:loc[0]])
+		text = text[loc[0]:]
 	}
 
 	return result

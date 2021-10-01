@@ -35,28 +35,28 @@ var (
 	reSkipInternal = regexp.MustCompile(`(\r\n|\s)`)
 )
 
-// SegPos represents a word with it's POS
+// SegPos type POS struct
 type SegPos struct {
 	Text, Pos string
 }
 
-// Segmenter is a words segmentation struct.
+// Segmenter is a segmentation struct
 type Segmenter struct {
 	dict Dict
 }
 
-// WithGse register gse segmenter
+// WithGse register the gse segmenter
 func (seg *Segmenter) WithGse(segs gse.Segmenter) {
 	seg.dict.Seg = segs
 }
 
-// LoadDict loads dictionary from given file name.
+// LoadDict load dictionary from the file.
 func (seg *Segmenter) LoadDict(fileName ...string) error {
 	return seg.dict.loadDict(fileName...)
 }
 
-func (seg *Segmenter) cutDetailInternal(sentence string) (result []gse.SegPos) {
-	runes := []rune(sentence)
+func (seg *Segmenter) cutDetailInternal(text string) (result []gse.SegPos) {
+	runes := []rune(text)
 	posList := viterbi(runes)
 
 	begin := 0
@@ -82,8 +82,8 @@ func (seg *Segmenter) cutDetailInternal(sentence string) (result []gse.SegPos) {
 	return
 }
 
-func (seg *Segmenter) cutDetail(sentence string) (result []gse.SegPos) {
-	for _, blk := range util.RegexpSplit(reHanDetail, sentence, -1) {
+func (seg *Segmenter) cutDetail(text string) (result []gse.SegPos) {
+	for _, blk := range util.RegexpSplit(reHanDetail, text, -1) {
 		if reHanDetail.MatchString(blk) {
 			result = append(result, seg.cutDetailInternal(blk)...)
 			continue
@@ -184,10 +184,10 @@ func (seg *Segmenter) calc(runes []rune) map[int]route {
 	return rs
 }
 
-type cutFunc func(sentence string) []gse.SegPos
+type cutFunc func(text string) []gse.SegPos
 
-func (seg *Segmenter) cutDAG(sentence string) (result []gse.SegPos) {
-	runes := []rune(sentence)
+func (seg *Segmenter) cutDAG(text string) (result []gse.SegPos) {
+	runes := []rune(text)
 	routes := seg.calc(runes)
 	length := len(runes)
 
@@ -276,8 +276,8 @@ func (seg *Segmenter) bufn(buf []rune) (result []gse.SegPos) {
 	return
 }
 
-func (seg *Segmenter) cutDAGNoHMM(sentence string) (result []gse.SegPos) {
-	runes := []rune(sentence)
+func (seg *Segmenter) cutDAGNoHMM(text string) (result []gse.SegPos) {
+	runes := []rune(text)
 	routes := seg.calc(runes)
 	var y int
 
@@ -314,17 +314,17 @@ func (seg *Segmenter) cutDAGNoHMM(sentence string) (result []gse.SegPos) {
 	return
 }
 
-// Cut cuts a sentence into words.
-// Parameter hmm controls whether to use the HMM.
-func (seg *Segmenter) Cut(sentence string, hmm bool) (result []gse.SegPos) {
+// Cut cuts a text into words.
+// Parameter hmm controls whether to use the HMM
+func (seg *Segmenter) Cut(text string, hmm ...bool) (result []gse.SegPos) {
 	var cut cutFunc
-	if hmm {
+	if len(hmm) > 0 && hmm[0] {
 		cut = seg.cutDAG
 	} else {
 		cut = seg.cutDAGNoHMM
 	}
 
-	for _, blk := range util.RegexpSplit(reHanInternal, sentence, -1) {
+	for _, blk := range util.RegexpSplit(reHanInternal, text, -1) {
 		if reHanInternal.MatchString(blk) {
 			result = append(result, cut(blk)...)
 			continue

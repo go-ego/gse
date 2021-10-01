@@ -8,23 +8,23 @@ import (
 	"github.com/go-ego/gse"
 )
 
-// Segment represents a word with weight.
+// Segment type a word with weight.
 type Segment struct {
 	text   string
 	weight float64
 }
 
-// Text returns the segment's text.
+// Text return the segment's text.
 func (s Segment) Text() string {
 	return s.text
 }
 
-// Weight returns the segment's weight.
+// Weight return the segment's weight.
 func (s Segment) Weight() float64 {
 	return s.weight
 }
 
-// Segments represents a slice of Segment.
+// Segments type a slice of Segment.
 type Segments []Segment
 
 func (ss Segments) Len() int {
@@ -43,7 +43,7 @@ func (ss Segments) Swap(i, j int) {
 	ss[i], ss[j] = ss[j], ss[i]
 }
 
-// TagExtracter is used to extract tags from sentence.
+// TagExtracter is extract tags struct.
 type TagExtracter struct {
 	seg gse.Segmenter
 
@@ -51,35 +51,35 @@ type TagExtracter struct {
 	stopWord *StopWord
 }
 
-// WithGse register gse segmenter
+// WithGse register the gse segmenter
 func (t *TagExtracter) WithGse(segs gse.Segmenter) {
 	t.stopWord = NewStopWord()
 	t.seg = segs
 }
 
-// LoadDict reads the given filename and create a new dictionary.
+// LoadDict load and create a new dictionary from the file
 func (t *TagExtracter) LoadDict(fileName ...string) error {
 	t.stopWord = NewStopWord()
 	return t.seg.LoadDict(fileName...)
 }
 
-// LoadIdf reads the given file and create a new Idf dictionary.
+// LoadIdf load and create a new Idf dictionary from the file.
 func (t *TagExtracter) LoadIdf(fileName ...string) error {
 	t.Idf = NewIdf()
 	return t.Idf.LoadDict(fileName...)
 }
 
-// LoadStopWords reads the given file and create a new StopWord dictionary.
+// LoadStopWords load and create a new StopWord dictionary from the file.
 func (t *TagExtracter) LoadStopWords(fileName ...string) error {
 	t.stopWord = NewStopWord()
 	return t.stopWord.LoadDict(fileName...)
 }
 
-// ExtractTags extracts the topK key words from sentence.
-func (t *TagExtracter) ExtractTags(sentence string, topK int) (tags Segments) {
+// ExtractTags extract the topK key words from text.
+func (t *TagExtracter) ExtractTags(text string, topK int) (tags Segments) {
 	freqMap := make(map[string]float64)
 
-	for _, w := range t.seg.Cut(sentence, true) {
+	for _, w := range t.seg.Cut(text, true) {
 		w = strings.TrimSpace(w)
 		if utf8.RuneCountInString(w) < 2 {
 			continue

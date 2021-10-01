@@ -64,7 +64,7 @@ func (ps probStates) Swap(i, j int) {
 	ps[i], ps[j] = ps[j], ps[i]
 }
 
-// Viterbi go viterbi algorithm
+// Viterbi write viterbi algorithm by go
 func Viterbi(obs []rune, states []byte) (float64, []byte) {
 	path := make(map[byte][]byte)
 	vtb := make([]map[byte]float64, len(obs))
