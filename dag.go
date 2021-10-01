@@ -321,9 +321,9 @@ func (seg *Segmenter) SuggestFreq(words ...string) float64 {
 
 	if len(words) > 1 {
 		for _, word := range words {
-			freq, _, ok := seg.Find(word)
+			v, _, ok := seg.Find(word)
 			if ok {
-				freq *= freq
+				freq *= v
 			}
 
 			freq /= total
@@ -331,9 +331,9 @@ func (seg *Segmenter) SuggestFreq(words ...string) float64 {
 
 		freq, _ = math.Modf(freq * total)
 		wordFreq := 0.0
-		freq, _, ok := seg.Find(strings.Join(words, ""))
+		v, _, ok := seg.Find(strings.Join(words, ""))
 		if ok {
-			wordFreq = freq
+			wordFreq = v
 		}
 
 		if wordFreq < freq {
@@ -345,9 +345,9 @@ func (seg *Segmenter) SuggestFreq(words ...string) float64 {
 
 	word := words[0]
 	for _, segment := range seg.Cut(word, false) {
-		freq, _, ok := seg.Find(segment)
+		v, _, ok := seg.Find(segment)
 		if ok {
-			freq *= freq
+			freq *= v
 		}
 
 		freq /= total
@@ -357,9 +357,9 @@ func (seg *Segmenter) SuggestFreq(words ...string) float64 {
 	freq += 1.0
 	wordFreq := 1.0
 
-	freq, _, ok := seg.Find(word)
+	v, _, ok := seg.Find(word)
 	if ok {
-		wordFreq = freq
+		wordFreq = v
 	}
 
 	if wordFreq > freq {
