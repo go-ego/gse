@@ -74,7 +74,7 @@ func internalCut(text string) []string {
 }
 
 // Cut cuts text to words using HMM with Viterbi algorithm
-func Cut(text string) []string {
+func Cut(text string, reg ...*regexp.Regexp) []string {
 	result := make([]string, 0, 10)
 
 	var (
@@ -98,7 +98,11 @@ func Cut(text string) []string {
 			continue
 		}
 
-		nonHanLoc = regSkip.FindStringIndex(text)
+		if len(reg) > 0 {
+			nonHanLoc = reg[0].FindStringIndex(text)
+		} else {
+			nonHanLoc = regSkip.FindStringIndex(text)
+		}
 		if nonHanLoc == nil {
 			if len(text) == 0 {
 				break

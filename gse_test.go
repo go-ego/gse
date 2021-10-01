@@ -1,6 +1,7 @@
 package gse
 
 import (
+	"regexp"
 	"testing"
 
 	"github.com/vcaesar/tt"
@@ -118,6 +119,16 @@ func TestHMM(t *testing.T) {
 
 	f1 = prodSeg.SuggestFreq("西雅图", "西雅图都会区", "旧金山湾")
 	tt.Equal(t, 0, f1)
+
+	reg := regexp.MustCompile(`(\d+年|\d+月|\d+日|[\p{Latin}]+|[\p{Hangul}]+|\d+\.\d+|[a-zA-Z0-9]+)`)
+	text1 := `헬로월드 헬로 서울, 2021年09月10日, 3.14`
+	tx = prodSeg.CutDAG(text1, reg)
+	tt.Equal(t, 11, len(tx))
+	tt.Equal(t, "[헬로월드   헬로   서울 ,  2021年 09月 10日 ,  3.14]", tx)
+
+	tx = prodSeg.CutDAGNoHMM(text)
+	tt.Equal(t, 9, len(tx))
+	tt.Equal(t, "[纽约时代广场 ,   纽约 帝国大厦 ,   旧金山湾 金门大桥]", tx)
 }
 
 func TestPos(t *testing.T) {
