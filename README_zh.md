@@ -1,6 +1,6 @@
 # [gse](https://github.com/go-ego/gse)
 
-Go 语言高性能多语言 NLP 和分词, 支持英文、中文、日文等, 支持接入 elasticsearch
+Go 高性能多语言 NLP 和分词, 支持英文、中文、日文等, 支持接入 [elasticsearch](https://github.com/vcaesar/go-gse-elastic) 和 bleve
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
@@ -20,9 +20,12 @@ Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多
 
 ## 特征:
 - 支持普通、搜索引擎、全模式、精确模式和 HMM 模式多种分词模式
-- 支持自定义词典、embed 词典、词性标注、停用词和整理分析分词、支持繁体字
+- 支持自定义词典、embed 词典、词性标注、停用词、整理分析分词、支持繁体字
 - NLP 和 TensorFlow 支持 (进行中)
-- 可运行<a href="https://github.com/go-ego/gse/blob/master/server/server.go"> JSON RPC 服务</a>。
+- 命名实体识别 (进行中)
+- 支持接入 Elasticsearch 和 bleve
+- 多语言支持: 英文, 中文, 日文等
+- 可运行<a href="https://github.com/go-ego/gse/blob/master/server/server.go"> JSON RPC 服务</a>
 
 ## 算法: 
 - [词典](https://github.com/go-ego/gse/blob/master/dictionary.go)用双数组 trie（Double-Array Trie）实现，
@@ -51,6 +54,7 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/go-ego/gse"
 	"github.com/go-ego/gse/hmm/pos"
@@ -88,6 +92,11 @@ func cut() {
 
 	hmm = new.CutAll(text)
 	fmt.Println("cut all: ", hmm)
+
+	reg := regexp.MustCompile(`(\d+年|\d+月|\d+日|[\p{Latin}]+|[\p{Hangul}]+|\d+\.\d+|[a-zA-Z0-9]+)`)
+	text1 := `헬로월드 헬로 서울, 2021年09月10日, 3.14`
+	hmm = seg.CutDAG(text1, reg)
+	fmt.Println("Cut with hmm and regexp: ", hmm, hmm[0], hmm[6])
 }
 
 func analyzeAndTrim(cut []string) {

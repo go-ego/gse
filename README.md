@@ -1,6 +1,7 @@
 # gse
 
-Go efficient multilingual NLP and text segmentation; support english, chinese, japanese and other. And supports with elasticsearch.
+Go efficient multilingual NLP and text segmentation; support english, chinese, japanese and other. 
+And supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and bleve.
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
@@ -23,9 +24,12 @@ Gse is implements jieba by golang, and try add NLP support and more feature
 
 ## Feature:
 - Support common, search engine, full mode, precise mode and HMM mode multiple word segmentation modes; 
-- support user and embed dictionary, POS tagging, analyze segment info, stop and trim
-- Support HMM cut text use Viterbi algorithm.
+- Support user and embed dictionary, Part-of-speech/POS tagging, analyze segment info, stop and trim words
+- Support HMM cut text use Viterbi algorithm
 - Support NLP by TensorFlow (in work)
+- Named Entity Recognition (in work) 
+- Supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and bleve
+- Support multilingual
 - run<a href="https://github.com/go-ego/gse/blob/master/server/server.go"> JSON RPC service</a>.
 
 ## Algorithm:
@@ -54,6 +58,7 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/go-ego/gse"
 	"github.com/go-ego/gse/hmm/pos"
@@ -90,6 +95,11 @@ func cut() {
 
 	hmm = new.CutAll(text)
 	fmt.Println("cut all: ", hmm)
+
+	reg := regexp.MustCompile(`(\d+年|\d+月|\d+日|[\p{Latin}]+|[\p{Hangul}]+|\d+\.\d+|[a-zA-Z0-9]+)`)
+	text1 := `헬로월드 헬로 서울, 2021年09月10日, 3.14`
+	hmm = seg.CutDAG(text1, reg)
+	fmt.Println("Cut with hmm and regexp: ", hmm, hmm[0], hmm[6])
 }
 
 func analyzeAndTrim(cut []string) {
