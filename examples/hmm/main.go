@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/go-ego/gse"
 )
@@ -25,6 +26,11 @@ func main() {
 
 	hmm = seg.CutAll(text)
 	fmt.Println("cut all: ", hmm)
+
+	reg := regexp.MustCompile(`(\d+年|\d+月|\d+日|[\p{Latin}]+|[\p{Hangul}]+|\d+\.\d+|[a-zA-Z0-9]+)`)
+	text1 := `헬로월드 헬로 서울, 2021年09月10日, 3.14`
+	hmm = seg.CutDAG(text1, reg)
+	fmt.Println("Cut with hmm and regexp: ", hmm, hmm[0], hmm[6])
 
 	//
 	// hmm = seg.HMMCutMod(text)

@@ -63,7 +63,7 @@ func NewStopWord() *StopWord {
 	return s
 }
 
-// IsStopWord check if the word in the stop word
+// IsStopWord check the word is a stop word
 func (s *StopWord) IsStopWord(word string) bool {
 	_, ok := s.stopWordMap[word]
 	return ok
