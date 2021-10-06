@@ -1,6 +1,6 @@
 # [gse](https://github.com/go-ego/gse)
 
-Go 高性能多语言 NLP 和分词, 支持英文、中文、日文等, 支持接入 [elasticsearch](https://github.com/vcaesar/go-gse-elastic) 和 bleve
+Go 高性能多语言 NLP 和分词, 支持英文、中文、日文等, 支持接入 [elasticsearch](https://github.com/vcaesar/go-gse-elastic) 和 [bleve](https://github.com/vcaesar/gse-bleve)
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
