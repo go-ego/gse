@@ -74,13 +74,13 @@ type Token struct {
 	// 分词在语料库中的词频
 	freq float64
 
+	// 词性标注
+	pos string
+
 	// log2(总词频/该分词词频)，这相当于 log2(1/p(分词))，用作动态规划中
 	// 该分词的路径长度。求解 prod(p(分词)) 的最大值相当于求解
 	// sum(distance(分词)) 的最小值，这就是“最短路径”的来历。
 	distance float32
-
-	// 词性标注
-	pos string
 
 	// 该分词文本的进一步分词划分，见 Segments 函数注释。
 	segments []*Segment
