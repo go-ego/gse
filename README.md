@@ -1,7 +1,7 @@
 # gse
 
 Go efficient multilingual NLP and text segmentation; support english, chinese, japanese and other. 
-And supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and bleve.
+And supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and [bleve](https://github.com/vcaesar/gse-bleve).
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->

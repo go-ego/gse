@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"regexp"
 
 	"github.com/go-ego/gse"
 	"github.com/go-ego/gse/hmm/idf"
@@ -50,6 +51,7 @@ func addToken() {
 	// seg.AddTokenForce("上海东方明珠广播电视塔", 100, "n")
 	//
 	seg.AddToken("太空针", 100)
+	seg.ReAddToken("太空针", 100, "n")
 	freq, pos, ok := seg.Find("太空针")
 	fmt.Println("seg.Find: ", freq, pos, ok)
 
@@ -88,6 +90,11 @@ func cut() {
 	// cut all to string:  《复仇者联盟3：无限战争》, 复仇, 复仇者, 仇者, 联盟, 3, ：, 无限, 战争, 》, 是, 全片, 使用, I, M, A, X, 摄影, 摄影机, 拍摄, 摄制, 制作, 的, 的, 科幻, 科幻片, .
 
 	analyzeAndTrim(cut)
+
+	reg := regexp.MustCompile(`(\d+年|\d+月|\d+日|[\p{Latin}]+|[\p{Hangul}]+|\d+\.\d+|[a-zA-Z0-9]+)`)
+	text1 := `헬로월드 헬로 서울, 2021年09月10日, 3.14`
+	hmm = seg.CutDAG(text1, reg)
+	fmt.Println("Cut with hmm and regexp: ", hmm, hmm[0], hmm[6])
 }
 
 func analyzeAndTrim(cut []string) {
