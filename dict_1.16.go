@@ -21,6 +21,13 @@ import (
 //go:embed data/dict/dictionary.txt
 var dataDict string
 
+var (
+	//go:embed data/dict/zh_t.txt
+	zhT string
+	//go:embed data/dict/zh_s.txt
+	zhS string
+)
+
 //go:embed data/dict/stop_tokens.txt
 var stopDict string
 
@@ -34,6 +41,31 @@ func NewEmbed(dict ...string) (seg Segmenter, err error) {
 	return
 }
 
+func (seg *Segmenter) loadZh() (err error) {
+	err = seg.LoadDictStr(zhS)
+	err = seg.LoadDictStr(zhT)
+	return
+}
+
+func (seg *Segmenter) loadZhST(d string) (begin int, err error) {
+	if strings.Contains(d, "zh,") {
+		begin = 1
+		// err = seg.LoadDictStr(dataDict)
+		err = seg.loadZh()
+	}
+
+	if strings.Contains(d, "zh_s,") {
+		begin = 1
+		err = seg.LoadDictStr(zhS)
+	}
+	if strings.Contains(d, "zh_t,") {
+		begin = 1
+		err = seg.LoadDictStr(zhT)
+	}
+
+	return
+}
+
 // LoadDictEmbed load dictionary by embed file
 func (seg *Segmenter) LoadDictEmbed(dict ...string) (err error) {
 	if len(dict) > 0 {
@@ -41,10 +73,7 @@ func (seg *Segmenter) LoadDictEmbed(dict ...string) (err error) {
 		if strings.Contains(d, ", ") {
 			begin := 0
 			s := strings.Split(d, ", ")
-			if strings.Contains(d, "zh,") {
-				begin = 1
-				err = seg.LoadDictStr(dataDict)
-			}
+			begin, err = seg.loadZhST(d)
 
 			for i := begin; i < len(s); i++ {
 				err = seg.LoadDictStr(s[i])
@@ -56,7 +85,8 @@ func (seg *Segmenter) LoadDictEmbed(dict ...string) (err error) {
 		return
 	}
 
-	return seg.LoadDictStr(dataDict)
+	// return seg.LoadDictStr(dataDict)
+	return seg.loadZh()
 }
 
 // LoadDictStr load dictionary from string
@@ -90,7 +120,7 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 			pos = strings.TrimSpace(strings.Trim(s1[2], "\n"))
 		}
 
-		// 将分词添加到字典中
+		// add the words to the token
 		words := seg.SplitTextToWords([]byte(text))
 		token := Token{text: words, freq: freq, pos: pos}
 		seg.Dict.AddToken(token)
