@@ -18,13 +18,13 @@ import (
 	"strings"
 )
 
-//go:embed data/dict/dictionary.txt
-var dataDict string
+// //go:embed data/dict/dictionary.txt
+// var dataDict string
 
 var (
-	//go:embed data/dict/zh_t.txt
+	//go:embed data/dict/zh/t_1.txt
 	zhT string
-	//go:embed data/dict/zh_s.txt
+	//go:embed data/dict/zh/s_1.txt
 	zhS string
 )
 
