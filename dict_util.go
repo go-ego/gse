@@ -349,7 +349,6 @@ func DictPaths(dictDir, filePath string) (files []string) {
 	var dictPath string
 
 	if filePath == "en" {
-
 		return
 	}
 
@@ -382,7 +381,9 @@ func DictPaths(dictDir, filePath string) (files []string) {
 		// if str[i] == "ti" {
 		// }
 
-		dictName := fileName[i] != "en" && fileName[i] != "zh" &&
+		dictName := fileName[i] != "en" &&
+			fileName[i] != "zh" &&
+			fileName[i] != "zh_s" && fileName[i] != "zh_t" &&
 			fileName[i] != "jp" && fileName[i] != "ti"
 
 		if dictName {

@@ -192,6 +192,19 @@ func TestPos(t *testing.T) {
 		"纽约时代广场 纽约 帝国大厦 旧金山湾 金门大桥", pos3)
 }
 
+func TestLoadST(t *testing.T) {
+	var seg Segmenter
+	err := seg.LoadDict("zh_s")
+	tt.Nil(t, err)
+	tt.Equal(t, 352275, len(seg.Dict.Tokens))
+	tt.Equal(t, 3.3335153e+07, seg.Dict.totalFreq)
+
+	err = seg.LoadDict("zh_t, ./testdata/test_dict3.txt")
+	tt.Nil(t, err)
+	tt.Equal(t, 587210, len(seg.Dict.Tokens))
+	tt.Equal(t, 5.3226814e+07, seg.Dict.totalFreq)
+}
+
 func TestStop(t *testing.T) {
 	var seg Segmenter
 	err := seg.LoadStop()

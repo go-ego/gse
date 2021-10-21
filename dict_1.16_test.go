@@ -57,6 +57,19 @@ func TestLoadDictEmbed(t *testing.T) {
 	tt.Equal(t, 2, f)
 }
 
+func TestLoadDictSTEmbed(t *testing.T) {
+	var seg1 Segmenter
+	err := seg1.LoadDictEmbed("zh_s")
+	tt.Nil(t, err)
+	tt.Equal(t, 352275, len(seg1.Dict.Tokens))
+	tt.Equal(t, 3.3335153e+07, seg1.Dict.totalFreq)
+
+	err = seg1.LoadDictEmbed("zh_t, word1 20 n, " + testDict)
+	tt.Nil(t, err)
+	tt.Equal(t, 587211, len(seg1.Dict.Tokens))
+	tt.Equal(t, 5.3226834e+07, seg1.Dict.totalFreq)
+}
+
 func TestLoadStopEmbed(t *testing.T) {
 	var seg1 Segmenter
 	err := seg1.LoadStopEmbed("zh, " + testStop)
