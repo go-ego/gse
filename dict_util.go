@@ -33,6 +33,11 @@ var (
 	ToLower = true
 )
 
+const (
+	zhS1 = "dict/zh/s_1.txt"
+	zhT1 = "dict/zh/t_1.txt"
+)
+
 // Init init seg config
 func (seg *Segmenter) Init() {
 	if seg.MinTokenFreq == 0 {
@@ -180,9 +185,15 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	}
 
 	if len(files) == 0 {
-		dictPath = path.Join(dictDir, "dict/dictionary.txt")
+		dictPath = path.Join(dictDir, zhS1)
+		path1 := path.Join(dictDir, zhT1)
 		// files = []string{dictPath}
 		err := seg.Read(dictPath)
+		if err != nil {
+			return err
+		}
+
+		err = seg.Read(path1)
 		if err != nil {
 			return err
 		}
@@ -338,19 +349,6 @@ func DictPaths(dictDir, filePath string) (files []string) {
 	var dictPath string
 
 	if filePath == "en" {
-		return
-	}
-
-	if filePath == "zh" {
-		dictPath = path.Join(dictDir, "dict/dictionary.txt")
-		files = []string{dictPath}
-
-		return
-	}
-
-	if filePath == "jp" {
-		dictPath = path.Join(dictDir, "dict/jp/dict.txt")
-		files = []string{dictPath}
 
 		return
 	}
@@ -368,7 +366,17 @@ func DictPaths(dictDir, filePath string) (files []string) {
 		}
 
 		if fileName[i] == "zh" {
-			dictPath = path.Join(dictDir, "dict/dictionary.txt")
+			dictPath = path.Join(dictDir, zhS1)
+			path1 := path.Join(dictDir, zhT1)
+			files = append(files, path1)
+		}
+
+		if fileName[i] == "zh_s" {
+			dictPath = path.Join(dictDir, zhS1)
+		}
+
+		if fileName[i] == "zh_t" {
+			dictPath = path.Join(dictDir, zhT1)
 		}
 
 		// if str[i] == "ti" {
