@@ -28,7 +28,7 @@ var (
 	zhS string
 )
 
-//go:embed data/dict/stop_tokens.txt
+//go:embed data/dict/zh/stop_tokens.txt
 var stopDict string
 
 // NewEmbed return new gse segmenter by embed dictionary

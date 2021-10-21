@@ -5,6 +5,9 @@
 
 examples/examples
 examples/jp/jp
+# 
+data/dict/zh/dict.txt
+data/dict/zh/dictionary.txt
 
 vendor
 # vendor/github.com/vcaesar/tt

@@ -59,8 +59,8 @@ func TestAnalyze(t *testing.T) {
 }
 
 func TestHMM(t *testing.T) {
-	tt.Equal(t, 587880, len(prodSeg.Dict.Tokens))
-	tt.Equal(t, 5.3250742e+07, prodSeg.Dict.totalFreq)
+	tt.Equal(t, 587209, len(prodSeg.Dict.Tokens))
+	tt.Equal(t, 5.3226765e+07, prodSeg.Dict.totalFreq)
 
 	hmm := prodSeg.HMMCutMod("纽约时代广场")
 	tt.Equal(t, 2, len(hmm))

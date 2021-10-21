@@ -349,14 +349,7 @@ func DictPaths(dictDir, filePath string) (files []string) {
 	var dictPath string
 
 	if filePath == "en" {
-		return
-	}
 
-	if filePath == "zh" {
-		dictPath = path.Join(dictDir, zhS1)
-		path1 := path.Join(dictDir, zhT1)
-
-		files = []string{dictPath, path1}
 		return
 	}
 
