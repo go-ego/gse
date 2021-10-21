@@ -14,7 +14,8 @@
 
 /*
 
-Package gse Go efficient text segmentation, Go 语言高性能分词
+Package gse Go efficient multilingual NLP and text segmentation,
+Go 高性能多语言 NLP 和分词
 */
 package gse
 

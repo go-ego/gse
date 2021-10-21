@@ -70,6 +70,16 @@ func (seg *Segmenter) loadZhST(d string) (begin int, err error) {
 func (seg *Segmenter) LoadDictEmbed(dict ...string) (err error) {
 	if len(dict) > 0 {
 		d := dict[0]
+		if d == "zh" {
+			return seg.loadZh()
+		}
+		if d == "zh_s" {
+			return seg.LoadDictStr(zhS)
+		}
+		if d == "zh_t" {
+			return seg.LoadDictStr(zhT)
+		}
+
 		if strings.Contains(d, ", ") {
 			begin := 0
 			s := strings.Split(d, ", ")
