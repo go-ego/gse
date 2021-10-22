@@ -25,7 +25,7 @@ Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多
 - 命名实体识别 (进行中)
 - 支持接入 Elasticsearch 和 bleve
 - 多语言支持: 英文, 中文, 日文等
-- 可运行<a href="https://github.com/go-ego/gse/blob/master/server/server.go"> JSON RPC 服务</a>
+- 可运行<a href="https://github.com/go-ego/gse/blob/master/tool/server/server.go"> JSON RPC 服务</a>
 
 ## 算法: 
 - [词典](https://github.com/go-ego/gse/blob/master/dictionary.go)用双数组 trie（Double-Array Trie）实现，
@@ -33,8 +33,8 @@ Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多
 - 支持 HMM 分词, 使用 viterbi 算法.
 
 ## 分词速度:
-- <a href="https://github.com/go-ego/gse/blob/master/benchmark/benchmark.go">单线程</a> 9.2MB/s
-- <a href="https://github.com/go-ego/gse/blob/master/benchmark/goroutines/goroutines.go">goroutines 并发</a> 26.8MB/s. 
+- <a href="https://github.com/go-ego/gse/blob/master/tool/benchmark/benchmark.go">单线程</a> 9.2MB/s
+- <a href="https://github.com/go-ego/gse/blob/master/tool/benchmark/goroutines/goroutines.go">goroutines 并发</a> 26.8MB/s. 
 - HMM 模式单线程分词速度 3.2MB/s.（双核 4 线程 Macbook Pro）。
 
 ## Binding:
