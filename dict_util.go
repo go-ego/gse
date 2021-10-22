@@ -227,7 +227,7 @@ func GetCurrentFilePath() string {
 func GetIdfPath(files ...string) []string {
 	var (
 		dictDir  = path.Join(path.Dir(GetCurrentFilePath()), "data")
-		dictPath = path.Join(dictDir, "idf.txt")
+		dictPath = path.Join(dictDir, "dict/zh/idf.txt")
 	)
 
 	files = append(files, dictPath)

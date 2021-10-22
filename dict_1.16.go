@@ -41,10 +41,8 @@ func NewEmbed(dict ...string) (seg Segmenter, err error) {
 	return
 }
 
-func (seg *Segmenter) loadZh() (err error) {
-	err = seg.LoadDictStr(zhS)
-	err = seg.LoadDictStr(zhT)
-	return
+func (seg *Segmenter) loadZh() error {
+	return seg.LoadDictStr(zhS + zhT)
 }
 
 func (seg *Segmenter) loadZhST(d string) (begin int, err error) {

@@ -225,7 +225,7 @@ func TestDictPaths(t *testing.T) {
 	tt.Equal(t, paths, paths1)
 
 	p := strings.ReplaceAll(GetCurrentFilePath(), "/segmenter_test.go", "") +
-		`/data/idf.txt`
+		`/data/dict/zh/idf.txt`
 	tt.Equal(t, "["+p+"]", GetIdfPath([]string{}...))
 }
 
