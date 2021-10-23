@@ -30,15 +30,15 @@ Gse is implements jieba by golang, and try add NLP support and more feature
 - Named Entity Recognition (in work) 
 - Supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and bleve
 - Support multilingual
-- run<a href="https://github.com/go-ego/gse/blob/master/tool/server/server.go"> JSON RPC service</a>.
+- run<a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go"> JSON RPC service</a>.
 
 ## Algorithm:
 - [Dictionary](https://github.com/go-ego/gse/blob/master/dictionary.go) with double array trie (Double-Array Trie) to achieve
 - [Segmenter](https://github.com/go-ego/gse/blob/master/segmenter.go) algorithm is the shortest path (based on word frequency and dynamic programming), and DAG and HMM algorithm word segmentation.
 
 ## Text Segmentation speed:
-- <a href="https://github.com/go-ego/gse/blob/master/tool/benchmark/benchmark.go"> single thread</a> 9.2MB/s
-- <a href="https://github.com/go-ego/gse/blob/master/tool/benchmark/goroutines/goroutines.go">goroutines concurrent</a> 26.8MB/s. 
+- <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/benchmark.go"> single thread</a> 9.2MB/s
+- <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/goroutines/goroutines.go">goroutines concurrent</a> 26.8MB/s. 
 - HMM text segmentation single thread 3.2MB/s. (2core 4threads Macbook Pro).
 
 ## Binding:

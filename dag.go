@@ -45,17 +45,25 @@ func (seg *Segmenter) Value(str string) (int, int, error) {
 }
 
 // Analyze analyze the token segment info
-func (seg *Segmenter) Analyze(text []string) (az []AnalyzeToken) {
+func (seg *Segmenter) Analyze(text []string, by ...bool) (az []AnalyzeToken) {
 	if len(text) <= 0 {
 		return
 	}
 
-	start := 0
-	end := len([]rune(text[0]))
+	start, end := 0, 0
+	if len(by) <= 0 {
+		end = len([]rune(text[0]))
+	} else {
+		end = len([]byte(text[0]))
+	}
 	for k, v := range text {
 		if k > 0 {
 			start = az[k-1].End
-			end = az[k-1].End + len([]rune(v))
+			if len(by) <= 0 {
+				end = az[k-1].End + len([]rune(v))
+			} else {
+				end = az[k-1].End + len([]byte(v))
+			}
 		}
 
 		freq, pos, _ := seg.Find(v)
