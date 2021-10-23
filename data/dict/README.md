@@ -1,1 +1,1 @@
-dictionary.txt 词典拷贝自 [github.com/fxsjy/jieba](https://github.com/fxsjy/jieba)
+Some dict/zh data is from [github.com/fxsjy/jieba](https://github.com/fxsjy/jieba)
