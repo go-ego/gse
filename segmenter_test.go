@@ -254,9 +254,9 @@ func TestInAlphaNum(t *testing.T) {
 
 	tx = seg.Cut(text, false)
 	tt.Equal(t, 11, len(tx))
-	tt.Equal(t, "[hello world !   你好 世界 ,   Hello world .]", tx)
+	tt.Equal(t, "[hello world !   你好 世界 ,   hello world .]", tx)
 
 	tx = seg.Cut(text, true)
 	tt.Equal(t, 9, len(tx))
-	tt.Equal(t, "[hello world !  你好 世界 ,  Hello world .]", tx)
+	tt.Equal(t, "[hello world !  你好 世界 ,  hello world .]", tx)
 }

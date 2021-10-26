@@ -80,6 +80,9 @@ func (seg *Segmenter) Analyze(text []string, t1 string, by ...bool) (az []Analyz
 	}
 
 	isEx := make(map[string]int, 0)
+	if ToLower {
+		t1 = strings.ToLower(t1)
+	}
 	all := findAllOccs([]byte(t1), text)
 	for k, v := range text {
 		if k > 0 && t1 == "" {
@@ -98,7 +101,9 @@ func (seg *Segmenter) Analyze(text []string, t1 string, by ...bool) (az []Analyz
 				isEx[v] = 0
 			}
 
-			start = all[v][isEx[v]]
+			if len(all[v]) > 0 {
+				start = all[v][isEx[v]]
+			}
 			end = start + len([]byte(v))
 		}
 
@@ -212,6 +217,9 @@ func (seg *Segmenter) cutDAG(str string, reg ...*regexp.Regexp) []string {
 	mLen := int(float32(len(str))/RatioWord) + 1
 	result := make([]string, 0, mLen)
 
+	if ToLower {
+		str = strings.ToLower(str)
+	}
 	runes := []rune(str)
 	routes := seg.calc(runes)
 
@@ -260,6 +268,9 @@ func (seg *Segmenter) cutDAGNoHMM(str string) []string {
 	mLen := int(float32(len(str))/RatioWord) + 1
 	result := make([]string, 0, mLen)
 
+	if ToLower {
+		str = strings.ToLower(str)
+	}
 	runes := []rune(str)
 	routes := seg.calc(runes)
 	length := len(runes)
@@ -298,6 +309,9 @@ func (seg *Segmenter) cutAll(str string) []string {
 	mLen := int(float32(len(str))/RatioWord) + 1
 	result := make([]string, 0, mLen)
 
+	if ToLower {
+		str = strings.ToLower(str)
+	}
 	runes := []rune(str)
 	dag := seg.getDag(runes)
 	start := -1
