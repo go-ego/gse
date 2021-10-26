@@ -98,7 +98,7 @@ func cut() {
 }
 
 func analyzeAndTrim(cut []string) {
-	a := seg.Analyze(cut)
+	a := seg.Analyze(cut, "")
 	fmt.Println("analyze the segment: ", a)
 	// analyze the segment:
 

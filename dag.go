@@ -15,6 +15,7 @@
 package gse
 
 import (
+	"bytes"
 	"math"
 	"regexp"
 	"strings"
@@ -44,20 +45,44 @@ func (seg *Segmenter) Value(str string) (int, int, error) {
 	return seg.Dict.Value([]byte(str))
 }
 
+func findAllOccs(data []byte, searches []string) map[string][]int {
+	results := make(map[string][]int, 0)
+	for _, search := range searches {
+		index := len(data)
+		tmp := data
+		for {
+			match := bytes.LastIndex(tmp[0:index], []byte(search))
+			if match == -1 {
+				break
+			} else {
+				index = match
+				results[search] = append(results[search], match)
+			}
+		}
+	}
+
+	return results
+}
+
 // Analyze analyze the token segment info
-func (seg *Segmenter) Analyze(text []string, by ...bool) (az []AnalyzeToken) {
+func (seg *Segmenter) Analyze(text []string, t1 string, by ...bool) (az []AnalyzeToken) {
 	if len(text) <= 0 {
 		return
 	}
 
 	start, end := 0, 0
-	if len(by) <= 0 {
-		end = len([]rune(text[0]))
-	} else {
-		end = len([]byte(text[0]))
+	if t1 == "" {
+		if len(by) <= 0 {
+			end = len([]rune(text[0]))
+		} else {
+			end = len([]byte(text[0]))
+		}
 	}
+
+	isEx := make(map[string]int, 0)
+	all := findAllOccs([]byte(t1), text)
 	for k, v := range text {
-		if k > 0 {
+		if k > 0 && t1 == "" {
 			start = az[k-1].End
 			if len(by) <= 0 {
 				end = az[k-1].End + len([]rune(v))
@@ -66,14 +91,26 @@ func (seg *Segmenter) Analyze(text []string, by ...bool) (az []AnalyzeToken) {
 			}
 		}
 
+		if t1 != "" {
+			if _, ok := isEx[v]; ok {
+				isEx[v] = isEx[v] + 1
+			} else {
+				isEx[v] = 0
+			}
+
+			start = all[v][isEx[v]]
+			end = start + len([]byte(v))
+		}
+
 		freq, pos, _ := seg.Find(v)
 		az = append(az, AnalyzeToken{
 			Position: k,
 			Start:    start,
 			End:      end,
-			Text:     v,
-			Freq:     freq,
-			Pos:      pos,
+
+			Text: v,
+			Freq: freq,
+			Pos:  pos,
 		})
 	}
 
