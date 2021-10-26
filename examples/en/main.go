@@ -31,6 +31,6 @@ func main() {
 	tx = seg.Trim(tx)
 	fmt.Println(tx)
 
-	a := seg.Analyze(tx)
+	a := seg.Analyze(tx, text)
 	fmt.Println(a)
 }

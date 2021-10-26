@@ -92,6 +92,7 @@ func cut() {
 
 	hmm = new.CutSearch(text, true)
 	fmt.Println("cut search use hmm: ", hmm)
+	fmt.Println("analyze: ", new.Analyze(hmm, text))
 
 	hmm = new.CutAll(text)
 	fmt.Println("cut all: ", hmm)
@@ -103,7 +104,7 @@ func cut() {
 }
 
 func analyzeAndTrim(cut []string) {
-	a := seg.Analyze(cut)
+	a := seg.Analyze(cut, "")
 	fmt.Println("analyze the segment: ", a)
 
 	cut = seg.Trim(cut)

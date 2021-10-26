@@ -76,6 +76,7 @@ func cut() {
 	hmm = seg.CutSearch(text, true)
 	fmt.Println("cut search use hmm: ", hmm)
 	//cut search use hmm:  [复仇 仇者 联盟 无限 战争 复仇者 《复仇者联盟3：无限战争》 是 全片 使用 IMAX 摄影 摄影机 拍摄 制作 的 的 科幻 科幻片 .]
+	fmt.Println("analyze: ", seg.Analyze(hmm, text))
 
 	cut = seg.CutSearch(text)
 	fmt.Println("cut search: ", cut)
@@ -98,7 +99,7 @@ func cut() {
 }
 
 func analyzeAndTrim(cut []string) {
-	a := seg.Analyze(cut)
+	a := seg.Analyze(cut, "")
 	fmt.Println("analyze the segment: ", a)
 	// analyze the segment:
 

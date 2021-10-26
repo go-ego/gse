@@ -45,7 +45,7 @@ func TestAnalyze(t *testing.T) {
 	tt.Equal(t, 23, len(s))
 	tt.Equal(t, "[城市地标 建筑 :  纽约 帝国大厦 ,  旧金山湾 金门大桥 ,  Seattle   Space   Needle ,  Toronto   CN   Tower ,  伦敦 大笨钟]", s)
 
-	a := prodSeg.Analyze(s)
+	a := prodSeg.Analyze(s, "")
 	tt.Equal(t, 23, len(a))
 	tt.Equal(t, "[{0 4 0 0  城市地标 3 j} {4 6 1 0  建筑 14397 n} {6 8 2 0  :  0 } {8 10 3 0  纽约 1758 ns} {10 14 4 0  帝国大厦 3 nr} {14 16 5 0  ,  0 } {16 20 6 0  旧金山湾 3 ns} {20 24 7 0  金门大桥 38 nz} {24 26 8 0  ,  0 } {26 33 9 0  Seattle 0 } {33 34 10 0    0 } {34 39 11 0  Space 0 } {39 40 12 0    0 } {40 46 13 0  Needle 0 } {46 48 14 0  ,  0 } {48 55 15 0  Toronto 0 } {55 56 16 0    0 } {56 58 17 0  CN 0 } {58 59 18 0    0 } {59 64 19 0  Tower 0 } {64 66 20 0  ,  0 } {66 68 21 0  伦敦 2255 ns} {68 71 22 0  大笨钟 0 }]", a)
 
@@ -56,6 +56,14 @@ func TestAnalyze(t *testing.T) {
 	tt.Equal(t, "城市地标", a[0].Text)
 	tt.Equal(t, 3, a[0].Freq)
 	tt.Equal(t, "", a[0].Type)
+
+	s = prodSeg.CutSearch(txt, true)
+	tt.Equal(t, 34, len(s))
+	tt.Equal(t, "[城市 市地 地标 城市地标 建筑 :  纽约 帝国 国大 大厦 帝国大厦 ,  金山 山湾 旧金山 旧金山湾 金门 大桥 金门大桥 ,  Seattle   Space   Needle ,  Toronto   CN   Tower ,  伦敦 大笨钟]", s)
+
+	a = prodSeg.Analyze(s, txt)
+	tt.Equal(t, 34, len(a))
+	tt.Equal(t, "[{0 6 0 0  城市 25084 ns} {3 9 1 0  市地 11 n} {6 12 2 0  地标 32 n} {0 12 3 0  城市地标 3 j} {12 18 4 0  建筑 14397 n} {18 20 5 0  :  0 } {20 26 6 0  纽约 1758 ns} {26 32 7 0  帝国 3655 n} {29 35 8 0  国大 114 j} {32 38 9 0  大厦 777 n} {26 38 10 0  帝国大厦 3 nr} {104 106 11 0  ,  0 } {43 49 12 0  金山 291 nr} {46 52 13 0  山湾 7 ns} {40 49 14 0  旧金山 238 ns} {40 52 15 0  旧金山湾 3 ns} {52 58 16 0  金门 149 n} {58 64 17 0  大桥 3288 ns} {52 64 18 0  金门大桥 38 nz} {86 88 19 0  ,  0 } {66 73 20 0  Seattle 0 } {105 106 21 0    0 } {74 79 22 0  Space 0 } {98 99 23 0    0 } {80 86 24 0  Needle 0 } {64 66 25 0  ,  0 } {88 95 26 0  Toronto 0 } {95 96 27 0    0 } {96 98 28 0  CN 0 } {87 88 29 0    0 } {99 104 30 0  Tower 0 } {38 40 31 0  ,  0 } {106 112 32 0  伦敦 2255 ns} {112 121 33 0  大笨钟 0 }]", a)
 }
 
 func TestHMM(t *testing.T) {
