@@ -45,7 +45,7 @@ func TestAnalyze(t *testing.T) {
 	tt.Equal(t, 23, len(s))
 	tt.Equal(t, "[城市地标 建筑 :  纽约 帝国大厦 ,  旧金山湾 金门大桥 ,  seattle   space   needle ,  toronto   cn   tower ,  伦敦 大笨钟]", s)
 
-	a := prodSeg.Analyze(s, "")
+	a := prodSeg.Analyze(s, "", true)
 	tt.Equal(t, 23, len(a))
 	tt.Equal(t, "[{0 4 0 0  城市地标 3 j} {4 6 1 0  建筑 14397 n} {6 8 2 0  :  0 } {8 10 3 0  纽约 1758 ns} {10 14 4 0  帝国大厦 3 nr} {14 16 5 0  ,  0 } {16 20 6 0  旧金山湾 3 ns} {20 24 7 0  金门大桥 38 nz} {24 26 8 0  ,  0 } {26 33 9 0  seattle 0 } {33 34 10 0    0 } {34 39 11 0  space 0 } {39 40 12 0    0 } {40 46 13 0  needle 0 } {46 48 14 0  ,  0 } {48 55 15 0  toronto 0 } {55 56 16 0    0 } {56 58 17 0  cn 0 } {58 59 18 0    0 } {59 64 19 0  tower 0 } {64 66 20 0  ,  0 } {66 68 21 0  伦敦 2255 ns} {68 71 22 0  大笨钟 0 }]", a)
 
