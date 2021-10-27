@@ -45,11 +45,12 @@ func (seg *Segmenter) Value(str string) (int, int, error) {
 	return seg.Dict.Value([]byte(str))
 }
 
-func findAllOccs(data []byte, searches []string) map[string][]int {
+// FindAllOccs find the all search byte start in data
+func FindAllOccs(data []byte, searches []string) map[string][]int {
 	results := make(map[string][]int, 0)
+	tmp := data
 	for _, search := range searches {
 		index := len(data)
-		tmp := data
 		for {
 			match := bytes.LastIndex(tmp[0:index], []byte(search))
 			if match == -1 {
@@ -72,7 +73,7 @@ func (seg *Segmenter) Analyze(text []string, t1 string, by ...bool) (az []Analyz
 
 	start, end := 0, 0
 	if t1 == "" {
-		if len(by) <= 0 {
+		if len(by) > 0 {
 			end = len([]rune(text[0]))
 		} else {
 			end = len([]byte(text[0]))
@@ -83,11 +84,11 @@ func (seg *Segmenter) Analyze(text []string, t1 string, by ...bool) (az []Analyz
 	if ToLower {
 		t1 = strings.ToLower(t1)
 	}
-	all := findAllOccs([]byte(t1), text)
+	all := FindAllOccs([]byte(t1), text)
 	for k, v := range text {
 		if k > 0 && t1 == "" {
 			start = az[k-1].End
-			if len(by) <= 0 {
+			if len(by) > 0 {
 				end = az[k-1].End + len([]rune(v))
 			} else {
 				end = az[k-1].End + len([]byte(v))
@@ -96,7 +97,7 @@ func (seg *Segmenter) Analyze(text []string, t1 string, by ...bool) (az []Analyz
 
 		if t1 != "" {
 			if _, ok := isEx[v]; ok {
-				isEx[v] = isEx[v] + 1
+				isEx[v]++
 			} else {
 				isEx[v] = 0
 			}
