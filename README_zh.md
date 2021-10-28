@@ -20,11 +20,12 @@ Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多
 
 ## 特征:
 - 支持普通、搜索引擎、全模式、精确模式和 HMM 模式多种分词模式
-- 支持自定义词典、embed 词典、词性标注、停用词、整理分析分词、支持繁体字
+- 支持自定义词典、embed 词典、词性标注、停用词、整理分析分词
+- 多语言支持: 英文, 中文, 日文等
+- 支持繁体字
 - NLP 和 TensorFlow 支持 (进行中)
 - 命名实体识别 (进行中)
 - 支持接入 Elasticsearch 和 bleve
-- 多语言支持: 英文, 中文, 日文等
 - 可运行<a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go"> JSON RPC 服务</a>
 
 ## 算法: 
@@ -70,9 +71,20 @@ var (
 )
 
 func main() {
-	// 加载默认字典
+	// 加载默认词典
 	seg.LoadDict()
+	// 加载默认 embed 词典
 	// seg.LoadDictEmbed()
+	// 
+	// 加载简体中文词典
+	// seg.LoadDict("zh_s")
+	// seg.LoadDictEmbed("zh_s")
+	// 
+	// 加载繁体中文词典
+	// seg.LoadDict("zh_t")
+	// 
+	// 加载日文词典
+	// seg.LoadDict("jp")
 	// 
 	// 载入词典
 	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")

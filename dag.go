@@ -55,10 +55,10 @@ func FindAllOccs(data []byte, searches []string) map[string][]int {
 			match := bytes.LastIndex(tmp[0:index], []byte(search))
 			if match == -1 {
 				break
-			} else {
-				index = match
-				results[search] = append(results[search], match)
 			}
+
+			index = match
+			results[search] = append(results[search], match)
 		}
 	}
 
