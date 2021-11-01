@@ -24,12 +24,24 @@ var (
 func main() {
 	flag.Parse()
 
-	// 加载默认词典
+	// Loading the default dictionary
 	seg.LoadDict()
+	// Loading the default dictionary with embed
 	// seg.LoadDictEmbed()
+	//
+	// Loading the simple chinese dictionary
+	// seg.LoadDict("zh_s")
+	// seg.LoadDictEmbed("zh_s")
+	//
+	// Loading the traditional chinese dictionary
+	// seg.LoadDict("zh_t")
+	//
+	// Loading the japanese dictionary
+	// seg.LoadDict("jp")
+	//
 	// seg.LoadDict("../data/dict/dictionary.txt")
 	//
-	// 使用自定义字典
+	// Loading the custom dictionary
 	// seg.LoadDict("zh,../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
 
 	addToken()
@@ -67,7 +79,7 @@ func cut() {
 	// use DAG and HMM
 	hmm := seg.Cut(text, true)
 	fmt.Println("cut use hmm: ", hmm)
-	// cut use hmm:  [《复仇者联盟3：无限战争》 是 全片 使用 IMAX 摄影机 拍摄 制作 的 的 科幻片 .]
+	// cut use hmm:  [《复仇者联盟3：无限战争》 是 全片 使用 imax 摄影机 拍摄 制作 的 的 科幻片 .]
 
 	cut := seg.Cut(text)
 	fmt.Println("cut: ", cut)
@@ -75,7 +87,7 @@ func cut() {
 
 	hmm = seg.CutSearch(text, true)
 	fmt.Println("cut search use hmm: ", hmm)
-	//cut search use hmm:  [复仇 仇者 联盟 无限 战争 复仇者 《复仇者联盟3：无限战争》 是 全片 使用 IMAX 摄影 摄影机 拍摄 制作 的 的 科幻 科幻片 .]
+	//cut search use hmm:  [复仇 仇者 联盟 无限 战争 复仇者 《复仇者联盟3：无限战争》 是 全片 使用 imax 摄影 摄影机 拍摄 制作 的 的 科幻 科幻片 .]
 	fmt.Println("analyze: ", seg.Analyze(hmm, text))
 
 	cut = seg.CutSearch(text)
@@ -84,11 +96,11 @@ func cut() {
 
 	cut = seg.CutAll(text)
 	fmt.Println("cut all: ", cut)
-	// cut all:  [《复仇者联盟3：无限战争》 复仇 复仇者 仇者 联盟 3 ： 无限 战争 》 是 全片 使用 I M A X 摄影 摄影机 拍摄 摄制 制作 的 的 科幻 科幻片 .]
+	// cut all:  [《复仇者联盟3：无限战争》 复仇 复仇者 仇者 联盟 3 ： 无限 战争 》 是 全片 使用 i m a x 摄影 摄影机 拍摄 摄制 制作 的 的 科幻 科幻片 .]
 
 	s := seg.CutStr(cut, ", ")
 	fmt.Println("cut all to string: ", s)
-	// cut all to string:  《复仇者联盟3：无限战争》, 复仇, 复仇者, 仇者, 联盟, 3, ：, 无限, 战争, 》, 是, 全片, 使用, I, M, A, X, 摄影, 摄影机, 拍摄, 摄制, 制作, 的, 的, 科幻, 科幻片, .
+	// cut all to string:  《复仇者联盟3：无限战争》, 复仇, 复仇者, 仇者, 联盟, 3, ：, 无限, 战争, 》, 是, 全片, 使用, i, m, a, x, 摄影, 摄影机, 拍摄, 摄制, 制作, 的, 的, 科幻, 科幻片, .
 
 	analyzeAndTrim(cut)
 
@@ -105,7 +117,7 @@ func analyzeAndTrim(cut []string) {
 
 	cut = seg.Trim(cut)
 	fmt.Println("cut all: ", cut)
-	// cut all:  [复仇者联盟3无限战争 复仇 复仇者 仇者 联盟 3 无限 战争 是 全片 使用 I M A X 摄影 摄影机 拍摄 摄制 制作 的 的 科幻 科幻片]
+	// cut all:  [复仇者联盟3无限战争 复仇 复仇者 仇者 联盟 3 无限 战争 是 全片 使用 i m a x 摄影 摄影机 拍摄 摄制 制作 的 的 科幻 科幻片]
 
 	fmt.Println(seg.String(text2, true))
 	// 西雅图/nr 地标/n 建筑/n ,/x  /x seattle/x  /x space needle/n ,/x  /x 西雅图太空针/n ./x  /x sky/x  /x tree/x ./x
@@ -127,11 +139,11 @@ func cutPos() {
 	posSeg.WithGse(seg)
 	po = posSeg.Cut(text, true)
 	fmt.Println("pos: ", po)
-	// pos:  [{《 x} {复仇 v} {者 k} {联盟 j} {3 x} {： x} {无限 v} {战争 n} {》 x} {是 v} {全片 n} {使用 v} {IMAX eng} {摄影 n} {机 n} {拍摄 v} {制作 vn} {的的 u} {科幻 n} {片 q} {. m}]
+	// pos:  [{《 x} {复仇 v} {者 k} {联盟 j} {3 x} {： x} {无限 v} {战争 n} {》 x} {是 v} {全片 n} {使用 v} {imax eng} {摄影 n} {机 n} {拍摄 v} {制作 vn} {的的 u} {科幻 n} {片 q} {. m}]
 
 	po = posSeg.TrimWithPos(po, "zg")
 	fmt.Println("trim pos: ", po)
-	// trim pos:  [{《 x} {复仇 v} {者 k} {联盟 j} {3 x} {： x} {无限 v} {战争 n} {》 x} {是 v} {全片 n} {使用 v} {IMAX eng} {摄影 n} {机 n} {拍摄 v} {制作 vn} {的的 u} {科幻 n} {片 q} {. m}]
+	// trim pos:  [{《 x} {复仇 v} {者 k} {联盟 j} {3 x} {： x} {无限 v} {战争 n} {》 x} {是 v} {全片 n} {使用 v} {imax eng} {摄影 n} {机 n} {拍摄 v} {制作 vn} {的的 u} {科幻 n} {片 q} {. m}]
 }
 
 // 使用最短路径和动态规划分词
