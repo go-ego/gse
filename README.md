@@ -193,29 +193,6 @@ How to use it with elasticsearch?
 
 [go-gse-elastic](https://github.com/vcaesar/go-gse-elastic)
 
-
-## [Build-tools](https://github.com/go-ego/re)
-
-```
-go get -u github.com/go-ego/re
-```
-
-### re gse
-
-To create a new gse application
-
-```
-$ re gse my-gse
-```
-
-### re run
-
-To run the application we just created, you can navigate to the application folder and execute:
-
-```
-$ cd my-gse && re run
-```
-
 ## Authors
 
 - [Maintainers](https://github.com/orgs/go-ego/people)
