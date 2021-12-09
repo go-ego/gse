@@ -48,6 +48,12 @@ Gse is implements jieba by golang, and try add NLP support and more feature
 
 ## Install / update
 
+With Go module support (Go 1.11+), just import:
+```go
+import "github.com/go-ego/gse"
+```
+
+Otherwise, to install the gse package, run the command:
 ```
 go get -u github.com/go-ego/gse
 ```

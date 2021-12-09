@@ -43,7 +43,12 @@ Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多
 [gse-bind](https://github.com/vcaesar/gse-bind), binding JavaScript and other, support more language.
 
 ## 安装/更新
+With Go module support (Go 1.11+), just import:
+```go
+import "github.com/go-ego/gse"
+```
 
+Otherwise, to install the gse package, run the command:
 ```
 go get -u github.com/go-ego/gse
 ```
