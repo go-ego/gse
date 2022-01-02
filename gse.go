@@ -60,9 +60,12 @@ func New(files ...string) (seg Segmenter, err error) {
 // Parameter hmm controls whether to use the HMM(Hidden Markov Model)
 // or use the user's model.
 //
-// seg.Cut(text), use the shortest path
-// seg.Cut(text, false), use cut dag not hmm
-// seg.Cut(text, true), use cut dag and hmm mode
+// seg.Cut(text):
+//	use the shortest path
+// seg.Cut(text, false):
+//	use cut dag not hmm
+// seg.Cut(text, true):
+//	use cut dag and hmm mode
 func (seg *Segmenter) Cut(str string, hmm ...bool) []string {
 	if len(hmm) <= 0 {
 		return seg.Slice(str)
