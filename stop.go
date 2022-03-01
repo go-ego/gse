@@ -84,6 +84,11 @@ func (seg *Segmenter) AddStop(text string) {
 	seg.StopWordMap[text] = true
 }
 
+// AddStopArr add array stop token to stop dictionaries
+func (seg *Segmenter) AddStopArr(text ...string) {
+	seg.LoadStopArr(text)
+}
+
 // RemoveStop remove a token from the StopWord dictionary.
 func (seg *Segmenter) RemoveStop(text string) {
 	delete(seg.StopWordMap, text)

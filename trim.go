@@ -84,6 +84,16 @@ func (seg *Segmenter) TrimWithPos(se []SegPos, pos ...string) (re []SegPos) {
 	return
 }
 
+// Stop trim []string stop word
+func (seg *Segmenter) Stop(s []string) (r []string) {
+	for _, v := range s {
+		if !seg.IsStop(v) && v != "" {
+			r = append(r, v)
+		}
+	}
+	return
+}
+
 // Trim trim []string exclude symbol, space and punct
 func (seg *Segmenter) Trim(s []string) (r []string) {
 	for i := 0; i < len(s); i++ {
@@ -126,6 +136,11 @@ func (seg *Segmenter) TrimPos(s []SegPos) (r []SegPos) {
 	}
 
 	return
+}
+
+// CutStop cut string and tirm stop
+func (seg *Segmenter) CutStop(str string, hmm ...bool) []string {
+	return seg.Stop(seg.Cut(str, hmm...))
 }
 
 // CutTrim cut string and tirm
