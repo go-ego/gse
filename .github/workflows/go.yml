@@ -5,7 +5,7 @@ jobs:
     # name: build
     strategy:
       matrix:
-        go: [1.16.x, 1.17.x]
+        go: [1.17.x, 1.18.x]
         os: [macOS-latest, windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
@@ -22,10 +22,7 @@ jobs:
       - name: Get dependencies
         run: |
           go get -v -t -d ./...
-          # if [ -f Gopkg.toml ]; then
-          #     curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-          #     dep ensure
-          # fi
+
       - name: Build
         run: go build -v .
       - name: Test
