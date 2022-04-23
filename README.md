@@ -182,7 +182,10 @@ func main() {
 	seg.LoadStopEmbed()
 
 	text1 := "你好世界, Hello world"
-	fmt.Println(seg.Cut(text1, true))
+	s1 := seg.Cut(text1, true)
+	fmt.Println(s1)
+	fmt.Println("trim: ", seg.Trim(s1))
+	fmt.Println("stop: ", seg.Stop(s1))
 	fmt.Println(seg.String(text1, true))
 
 	segments := seg.Segment([]byte(text1))
