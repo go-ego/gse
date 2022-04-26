@@ -78,45 +78,49 @@ func Cut(text string, reg ...*regexp.Regexp) []string {
 	result := make([]string, 0, 10)
 
 	var (
-		hans      string
-		hanLoc    []int
-		nonHanLoc []int
+		cuts      string
+		cutLoc    []int
+		nonCutLoc []int
 	)
 
 	for {
-		// find(text, hans, hanLoc, nonHanLoc)
+		// find(text, cuts, cutLoc, nonCutLoc)
+		if len(reg) > 1 {
+			cutLoc = reg[1].FindStringIndex(text)
+		} else {
+			cutLoc = regHan.FindStringIndex(text)
+		}
 
-		hanLoc = regHan.FindStringIndex(text)
-		if hanLoc == nil {
+		if cutLoc == nil {
 			if len(text) == 0 {
 				break
 			}
-		} else if hanLoc[0] == 0 {
-			hans = text[hanLoc[0]:hanLoc[1]]
-			text = text[hanLoc[1]:]
-			result = append(result, internalCut(hans)...)
+		} else if cutLoc[0] == 0 {
+			cuts = text[cutLoc[0]:cutLoc[1]]
+			text = text[cutLoc[1]:]
+			result = append(result, internalCut(cuts)...)
 			continue
 		}
 
 		if len(reg) > 0 {
-			nonHanLoc = reg[0].FindStringIndex(text)
+			nonCutLoc = reg[0].FindStringIndex(text)
 		} else {
-			nonHanLoc = regSkip.FindStringIndex(text)
+			nonCutLoc = regSkip.FindStringIndex(text)
 		}
-		if nonHanLoc == nil {
+		if nonCutLoc == nil {
 			if len(text) == 0 {
 				break
 			}
-		} else if nonHanLoc[0] == 0 {
-			nonHans := text[nonHanLoc[0]:nonHanLoc[1]]
-			text = text[nonHanLoc[1]:]
-			if nonHans != "" {
-				result = append(result, nonHans)
+		} else if nonCutLoc[0] == 0 {
+			nonCuts := text[nonCutLoc[0]:nonCutLoc[1]]
+			text = text[nonCutLoc[1]:]
+			if nonCuts != "" {
+				result = append(result, nonCuts)
 				continue
 			}
 		}
 
-		loc := locJudge(text, hanLoc, nonHanLoc)
+		loc := locJudge(text, cutLoc, nonCutLoc)
 		if loc == nil {
 			result = append(result, text)
 			break
@@ -129,17 +133,17 @@ func Cut(text string, reg ...*regexp.Regexp) []string {
 	return result
 }
 
-func locJudge(str string, hanLoc, nonHanLoc []int) (loc []int) {
-	if hanLoc == nil && nonHanLoc == nil {
+func locJudge(str string, cutLoc, nonCutLoc []int) (loc []int) {
+	if cutLoc == nil && nonCutLoc == nil {
 		if len(str) > 0 {
 			return nil
 		}
-	} else if hanLoc == nil {
-		loc = nonHanLoc
-	} else if nonHanLoc == nil || hanLoc[0] < nonHanLoc[0] {
-		loc = hanLoc
+	} else if cutLoc == nil {
+		loc = nonCutLoc
+	} else if nonCutLoc == nil || cutLoc[0] < nonCutLoc[0] {
+		loc = cutLoc
 	} else {
-		loc = nonHanLoc
+		loc = nonCutLoc
 	}
 
 	return
