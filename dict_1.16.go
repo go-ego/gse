@@ -71,7 +71,7 @@ func (seg *Segmenter) loadZhST(d string) (begin int, err error) {
 func (seg *Segmenter) LoadDictEmbed(dict ...string) (err error) {
 	if len(dict) > 0 {
 		d := dict[0]
-		if d == "jp" {
+		if d == "ja" {
 			return seg.LoadDictStr(ja)
 		}
 
