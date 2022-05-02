@@ -217,7 +217,7 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	return nil
 }
 
-// GetCurrentFilePath get current file path
+// GetCurrentFilePath get the current file path
 func GetCurrentFilePath() string {
 	_, filePath, _, _ := runtime.Caller(1)
 	return filePath
@@ -360,7 +360,7 @@ func DictPaths(dictDir, filePath string) (files []string) {
 	}
 
 	for i := 0; i < len(fileName); i++ {
-		if fileName[i] == "jp" {
+		if fileName[i] == "ja" || fileName[i] == "jp" {
 			dictPath = path.Join(dictDir, "dict/jp/dict.txt")
 		}
 
@@ -384,7 +384,8 @@ func DictPaths(dictDir, filePath string) (files []string) {
 		dictName := fileName[i] != "en" &&
 			fileName[i] != "zh" &&
 			fileName[i] != "zh_s" && fileName[i] != "zh_t" &&
-			fileName[i] != "jp" && fileName[i] != "ti"
+			fileName[i] != "ja" && fileName[i] != "jp" &&
+			fileName[i] != "ko" && fileName[i] != "ti"
 
 		if dictName {
 			dictPath = fileName[i]

@@ -83,7 +83,21 @@ func TestSegment(t *testing.T) {
 func TestSegmentJp(t *testing.T) {
 	var seg Segmenter
 	// SkipLog = true
-	seg.LoadDict("data/dict/jp/dict.txt")
+	err := seg.LoadDict("data/dict/jp/dict.txt")
+	tt.Nil(t, err)
+	tt.Equal(t, 794146, len(seg.Dict.Tokens))
+	tt.Equal(t, 4.784183005e+09, seg.Dict.totalFreq)
+
+	f, pos, ok := seg.Find("自由")
+	tt.Bool(t, ok)
+	tt.Equal(t, "名詞", pos)
+	tt.Equal(t, 3636, f)
+
+	f, pos, ok = seg.Find("此の度")
+	tt.Bool(t, ok)
+	tt.Equal(t, "名詞", pos)
+	tt.Equal(t, 5257, f)
+
 	segments := seg.Segment(testH)
 
 	tt.Expect(t, "こんにちは/感動詞 世界/名詞 ", ToString(segments, false))

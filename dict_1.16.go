@@ -22,6 +22,9 @@ import (
 // var dataDict string
 
 var (
+	//go:embed data/dict/jp/dict.txt
+	ja string
+
 	//go:embed data/dict/zh/t_1.txt
 	zhT string
 	//go:embed data/dict/zh/s_1.txt
@@ -68,6 +71,10 @@ func (seg *Segmenter) loadZhST(d string) (begin int, err error) {
 func (seg *Segmenter) LoadDictEmbed(dict ...string) (err error) {
 	if len(dict) > 0 {
 		d := dict[0]
+		if d == "ja" {
+			return seg.LoadDictStr(ja)
+		}
+
 		if d == "zh" {
 			return seg.loadZh()
 		}
