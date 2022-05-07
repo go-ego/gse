@@ -35,7 +35,7 @@ Gse is implements jieba by golang, and try add NLP support and more feature
 
 ## Algorithm:
 - [Dictionary](https://github.com/go-ego/gse/blob/master/dictionary.go) with double array trie (Double-Array Trie) to achieve
-- [Segmenter](https://github.com/go-ego/gse/blob/master/segmenter.go) algorithm is the shortest path (based on word frequency and dynamic programming), and DAG and HMM algorithm word segmentation.
+- [Segmenter](https://github.com/go-ego/gse/blob/master/dag.go) algorithm is the shortest path (based on word frequency and dynamic programming), and DAG and HMM algorithm word segmentation.
 
 ## Text Segmentation speed:
 - <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/benchmark.go"> single thread</a> 9.2MB/s
@@ -72,7 +72,7 @@ import (
 )
 
 var (
-	text = "Hello world, Helloworld. Winter is coming! 你好世界."
+	text = "Hello world, Helloworld. Winter is coming! こんにちは世界, 你好世界."
 
 	new, _ = gse.New("zh,testdata/test_dict3.txt", "alpha")
 
@@ -181,7 +181,7 @@ func main() {
 	// seg.LoadDictEmbed()
 	seg.LoadStopEmbed()
 
-	text1 := "你好世界, Hello world"
+	text1 := "Hello world, こんにちは世界, 你好世界!"
 	s1 := seg.Cut(text1, true)
 	fmt.Println(s1)
 	fmt.Println("trim: ", seg.Trim(s1))
