@@ -1,6 +1,6 @@
 # gse
 
-Go efficient multilingual NLP and text segmentation; support english, chinese, japanese and other. 
+Go efficient multilingual NLP and text segmentation; support English, Chinese, Japanese and others. 
 And supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and [bleve](https://github.com/vcaesar/gse-bleve).
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
@@ -25,8 +25,8 @@ Gse is implements jieba by golang, and try add NLP support and more feature
 ## Feature:
 - Support common, search engine, full mode, precise mode and HMM mode multiple word segmentation modes; 
 - Support user and embed dictionary, Part-of-speech/POS tagging, analyze segment info, stop and trim words
-- Support multilingual: English, Chinese, Japanese and other
-- Support traditional chinese
+- Support multilingual: English, Chinese, Japanese and others
+- Support Traditional Chinese
 - Support HMM cut text use Viterbi algorithm
 - Support NLP by TensorFlow (in work)
 - Named Entity Recognition (in work) 
@@ -86,14 +86,14 @@ func main() {
 	// Loading the default dictionary with embed
 	// seg.LoadDictEmbed()
 	// 
-	// Loading the simple chinese dictionary
+	// Loading the Simplified Chinese dictionary
 	// seg.LoadDict("zh_s")
 	// seg.LoadDictEmbed("zh_s")
 	//
-	// Loading the traditional chinese dictionary
+	// Loading the Traditional Chinese dictionary
 	// seg.LoadDict("zh_t")
 	// 
-	// Loading the japanese dictionary
+	// Loading the Japanese dictionary
 	// seg.LoadDict("jp")
 	// 
 	// Load the dictionary
