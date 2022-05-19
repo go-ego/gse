@@ -8,31 +8,14 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-//go:build go1.16
-// +build go1.16
-
 package gse
 
 import (
-	_ "embed"
 	"strings"
 )
 
 // //go:embed data/dict/dictionary.txt
 // var dataDict string
-
-var (
-	//go:embed data/dict/jp/dict.txt
-	ja string
-
-	//go:embed data/dict/zh/t_1.txt
-	zhT string
-	//go:embed data/dict/zh/s_1.txt
-	zhS string
-)
-
-//go:embed data/dict/zh/stop_tokens.txt
-var stopDict string
 
 // NewEmbed return new gse segmenter by embed dictionary
 func NewEmbed(dict ...string) (seg Segmenter, err error) {
