@@ -5,7 +5,7 @@ jobs:
     # name: build
     strategy:
       matrix:
-        go: [1.17.x, 1.18.x]
+        go: [1.18.x, 1.19.x]
         os: [macOS-latest, windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
