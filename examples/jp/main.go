@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	text = flag.String("text", `ひっそり远くから、もしかすると离（はな）し难（がた）いのか。
+	text = flag.String("text", `ひっそり遠くから、もしかすると離（はな）し難（がた）いのか。
 		黙々（もくもく）と静かに、もしかするととても価値（かち）があるのか。
 		僕はまだここで待っている`, "単語セグメンテーションのテキスト")
 )
@@ -32,7 +32,7 @@ func main() {
 	segments := seg.Segment([]byte(*text))
 	fmt.Println(gse.ToString(segments, true))
 
-	text2 := []byte("运命は神の考えるものだ, 人间は人间らしく働ければそれ结构だ")
+	text2 := []byte("運命は神の考えるものだ。人間は人間らしく働けばそれで結構だ。")
 	segs := seg.Segment(text2)
 	log.Println(gse.ToString(segs))
 }
