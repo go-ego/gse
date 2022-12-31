@@ -13,9 +13,7 @@
 // under the License.
 
 /*
-
 Package gse Go efficient multilingual NLP and text segmentation,
-Go 高性能多语言 NLP 和分词
 */
 package gse
 
@@ -29,7 +27,7 @@ const (
 	// Version get the gse version
 	Version = "v0.69.9.593, Green Lake!"
 
-	// minTokenFrequency = 2 // 仅从字典文件中读取大于等于此频率的分词
+	// minTokenFrequency = 2 // only read tokens with frequency >= 2 from the dictionary
 )
 
 func init() {
@@ -61,10 +59,15 @@ func New(files ...string) (seg Segmenter, err error) {
 // or use the user's model.
 //
 // seg.Cut(text):
+//
 //	use the shortest path
+//
 // seg.Cut(text, false):
+//
 //	use cut dag not hmm
+//
 // seg.Cut(text, true):
+//
 //	use cut dag and hmm mode
 func (seg *Segmenter) Cut(str string, hmm ...bool) []string {
 	if len(hmm) <= 0 {
@@ -124,7 +127,8 @@ func (seg *Segmenter) CutStr(str []string, separator ...string) (r string) {
 // LoadModel load the hmm model
 //
 // Use the user's model:
-// 	seg.LoadModel(B, E, M, S map[rune]float64)
+//
+//	seg.LoadModel(B, E, M, S map[rune]float64)
 func (seg *Segmenter) LoadModel(prob ...map[rune]float64) {
 	hmm.LoadModel(prob...)
 }

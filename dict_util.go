@@ -49,7 +49,7 @@ func (seg *Segmenter) Init() {
 	}
 }
 
-// Dictionary 返回分词器使用的词典
+// Dictionary returns the dictionary used by the tokenizer
 func (seg *Segmenter) Dictionary() *Dictionary {
 	return seg.Dict
 }
@@ -130,24 +130,16 @@ func (seg *Segmenter) LoadDictMap(dict []map[string]string) error {
 // LoadDict load the dictionary from the file
 //
 // The format of the dictionary is (one for each participle):
+//
 //	participle text, frequency, part of speech
 //
 // Can load multiple dictionary files, the file name separated by "," or ", "
 // the front of the dictionary preferentially load the participle,
+//
 //	such as: "user_dictionary.txt,common_dictionary.txt"
 //
 // When a participle appears both in the user dictionary and
 // in the `common dictionary`, the `user dictionary` is given priority.
-//
-// 从文件中载入词典
-//
-// 可以载入多个词典文件，文件名用 "," 或 ", " 分隔，排在前面的词典优先载入分词，比如:
-// 	"用户词典.txt,通用词典.txt"
-//
-// 当一个分词既出现在用户词典也出现在 `通用词典` 中，则优先使用 `用户词典`。
-//
-// 词典的格式为（每个分词一行）：
-//	分词文本 频率 词性
 func (seg *Segmenter) LoadDict(files ...string) error {
 	if !seg.Load {
 		seg.Dict = NewDict()
@@ -255,21 +247,21 @@ func (seg *Segmenter) Read(file string) error {
 // Size frequency is calculated based on the size of the text
 func (seg *Segmenter) Size(size int, text, freqText string) (freq float64) {
 	if size == 0 {
-		// 文件结束或错误行
+		// End of file or error line
 		// continue
 		return
 	}
 
 	if size < 2 {
 		if !seg.LoadNoFreq {
-			// 无效行
+			// invalid row line
 			return
 		}
 
 		freqText = seg.TextFreq
 	}
 
-	// 解析词频
+	// Analyze the word frequency
 	var err error
 	freq, err = strconv.ParseFloat(freqText, 64)
 	if err != nil {
@@ -277,12 +269,12 @@ func (seg *Segmenter) Size(size int, text, freqText string) (freq float64) {
 		return
 	}
 
-	// 过滤频率太小的词
+	// Filter out the words that are too infrequent
 	if freq < seg.MinTokenFreq {
 		return 0.0
 	}
 
-	// 过滤长度为1的词, 降低词频
+	// Filter words with a length of 1 to reduce the word frequency
 	if len([]rune(text)) < 2 {
 		freq = 2
 	}
@@ -303,7 +295,7 @@ func (seg *Segmenter) Reader(reader io.Reader, files ...string) error {
 		file = files[0]
 	}
 
-	// 逐行读入分词
+	// Read the word segmentation line by line
 	line := 0
 	for {
 		line++
@@ -331,11 +323,11 @@ func (seg *Segmenter) Reader(reader io.Reader, files ...string) error {
 		}
 
 		if size == 2 {
-			// 没有词性, 标注为空字符串
+			// No part of speech, marked as an empty string
 			pos = ""
 		}
 
-		// 将分词添加到字典中
+		// Add participle tokens to dictionary
 		words := seg.SplitTextToWords([]byte(text))
 		token := Token{text: words, freq: freq, pos: pos}
 		seg.Dict.AddToken(token)
@@ -414,20 +406,21 @@ func IsJp(segText string) bool {
 
 // CalcToken calc the segmenter token
 func (seg *Segmenter) CalcToken() {
-	// 计算每个分词的路径值，路径值含义见 Token 结构体的注释
+	// Calculate the path value of each word segment.
+	// For the meaning of the path value, see the notes of the Token structure
 	logTotalFreq := float32(math.Log2(seg.Dict.totalFreq))
 	for i := range seg.Dict.Tokens {
 		token := &seg.Dict.Tokens[i]
 		token.distance = logTotalFreq - float32(math.Log2(token.freq))
 	}
 
-	// 对每个分词进行细致划分，用于搜索引擎模式，
-	// 该模式用法见 Token 结构体的注释。
+	// Each word segmentation is carefully divided for search engine mode,
+	// For the usage of this mode, see the comments of the Token structure.
 	for i := range seg.Dict.Tokens {
 		token := &seg.Dict.Tokens[i]
 		segments := seg.segmentWords(token.text, true)
 
-		// 计算需要添加的子分词数目
+		// Calculate the number of sub-segments that need to be added
 		numTokensToAdd := 0
 		for iToken := 0; iToken < len(segments); iToken++ {
 			if len(segments[iToken].token.text) > 0 {
@@ -444,7 +437,7 @@ func (seg *Segmenter) CalcToken() {
 		}
 		token.segments = make([]*Segment, numTokensToAdd)
 
-		// 添加子分词
+		// add sub-segments subparticiple
 		iSegmentsToAdd := 0
 		for iToken := 0; iToken < len(segments); iToken++ {
 			if len(segments[iToken].token.text) > 0 {
