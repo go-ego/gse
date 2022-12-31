@@ -96,7 +96,7 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 
 	arr := strings.Split(dict, "\n")
 	for i := 0; i < len(arr); i++ {
-		s1 := strings.Split(arr[i], " ")
+		s1 := strings.Split(arr[i], seg.DictSep+" ")
 		size := len(s1)
 		if size == 0 {
 			continue

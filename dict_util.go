@@ -133,6 +133,8 @@ func (seg *Segmenter) LoadDictMap(dict []map[string]string) error {
 //
 //	participle text, frequency, part of speech
 //
+// # And you can option the dictionary separator by seg.DictSep = ","
+//
 // Can load multiple dictionary files, the file name separated by "," or ", "
 // the front of the dictionary preferentially load the participle,
 //
@@ -282,8 +284,28 @@ func (seg *Segmenter) Size(size int, text, freqText string) (freq float64) {
 	return
 }
 
+// ReadN read the tokens by '\n'
+func (seg *Segmenter) ReadN(reader *bufio.Reader) (size int,
+	text, freqText, pos string, fsErr error) {
+	var txt string
+	txt, fsErr = reader.ReadString('\n')
+
+	parts := strings.Split(txt, seg.DictSep+" ")
+	size = len(parts)
+
+	text = parts[0]
+	if size > 1 {
+		freqText = strings.TrimSpace(parts[1])
+	}
+	if size > 2 {
+		pos = strings.TrimSpace(strings.Trim(parts[2], "\n"))
+	}
+
+	return
+}
+
 // Reader load dictionary from io.Reader
-func (seg *Segmenter) Reader(reader io.Reader, files ...string) error {
+func (seg *Segmenter) Reader(reader *bufio.Reader, files ...string) error {
 	var (
 		file           string
 		text, freqText string
@@ -299,11 +321,26 @@ func (seg *Segmenter) Reader(reader io.Reader, files ...string) error {
 	line := 0
 	for {
 		line++
-		size, fsErr := fmt.Fscanln(reader, &text, &freqText, &pos)
+		var (
+			size  int
+			fsErr error
+		)
+		if seg.DictSep == "" {
+			size, fsErr = fmt.Fscanln(reader, &text, &freqText, &pos)
+		} else {
+			size, text, freqText, pos, fsErr = seg.ReadN(reader)
+		}
+
 		if fsErr != nil {
 			if fsErr == io.EOF {
 				// End of file
-				break
+				if seg.DictSep == "" {
+					break
+				}
+
+				if seg.DictSep != "" && text == "" {
+					break
+				}
 			}
 
 			if size > 0 {
@@ -454,5 +491,4 @@ func (seg *Segmenter) CalcToken() {
 			}
 		}
 	}
-
 }
