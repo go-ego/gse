@@ -42,7 +42,7 @@ func main() {
 	// seg.LoadDict("../data/dict/dictionary.txt")
 	//
 	// Loading the custom dictionary
-	// seg.LoadDict("zh,../../testdata/test_dict.txt,../../testdata/test_dict1.txt")
+	// seg.LoadDict("zh,../../testdata/zh/test_dict.txt,../../testdata/zh/test_dict1.txt")
 
 	addToken()
 
