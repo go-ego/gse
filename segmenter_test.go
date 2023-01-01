@@ -60,8 +60,8 @@ func TestSplit(t *testing.T) {
 
 func TestSegment(t *testing.T) {
 	var seg Segmenter
-	seg.LoadDict("testdata/zh/test_dict1.txt,testdata/zh/test_dict2.txt")
-	// seg.LoadDict("testdata/zh/test_dict1.txt", "testdata/zh/test_dict2.txt")
+	seg.LoadDict("testdata/zh/test_dict1.txt,testdata/zh/test_zh_dict2.txt")
+	// seg.LoadDict("testdata/zh/test_dict1.txt", "testdata/zh/test_zh_dict2.txt")
 	tt.Expect(t, "16", seg.Dict.NumTokens())
 	// tt.Expect(t, "5", seg.Dict.NumTokens())
 	segments := seg.Segment([]byte("世界有七十亿人口"))
