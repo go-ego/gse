@@ -1,6 +1,6 @@
 # gse
 
-Go efficient multilingual NLP and text segmentation; support English, Chinese, Japanese and others. 
+Go efficient multilingual NLP and text segmentation; support English, Chinese, Japanese and others.
 And supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and [bleve](https://github.com/vcaesar/gse-bleve).
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
@@ -23,23 +23,26 @@ And supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and
 Gse is implements jieba by golang, and try add NLP support and more feature
 
 ## Feature:
-- Support common, search engine, full mode, precise mode and HMM mode multiple word segmentation modes; 
+
+- Support common, search engine, full mode, precise mode and HMM mode multiple word segmentation modes;
 - Support user and embed dictionary, Part-of-speech/POS tagging, analyze segment info, stop and trim words
 - Support multilingual: English, Chinese, Japanese and others
 - Support Traditional Chinese
 - Support HMM cut text use Viterbi algorithm
 - Support NLP by TensorFlow (in work)
-- Named Entity Recognition (in work) 
+- Named Entity Recognition (in work)
 - Supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and bleve
 - run<a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go"> JSON RPC service</a>.
 
 ## Algorithm:
+
 - [Dictionary](https://github.com/go-ego/gse/blob/master/dictionary.go) with double array trie (Double-Array Trie) to achieve
 - [Segmenter](https://github.com/go-ego/gse/blob/master/dag.go) algorithm is the shortest path (based on word frequency and dynamic programming), and DAG and HMM algorithm word segmentation.
 
 ## Text Segmentation speed:
+
 - <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/benchmark.go"> single thread</a> 9.2MB/s
-- <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/goroutines/goroutines.go">goroutines concurrent</a> 26.8MB/s. 
+- <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/goroutines/goroutines.go">goroutines concurrent</a> 26.8MB/s.
 - HMM text segmentation single thread 3.2MB/s. (2core 4threads Macbook Pro).
 
 ## Binding:
@@ -49,11 +52,13 @@ Gse is implements jieba by golang, and try add NLP support and more feature
 ## Install / update
 
 With Go module support (Go 1.11+), just import:
+
 ```go
 import "github.com/go-ego/gse"
 ```
 
 Otherwise, to install the gse package, run the command:
+
 ```
 go get -u github.com/go-ego/gse
 ```
@@ -74,7 +79,7 @@ import (
 var (
 	text = "Hello world, Helloworld. Winter is coming! こんにちは世界, 你好世界."
 
-	new, _ = gse.New("zh,testdata/test_dict3.txt", "alpha")
+	new, _ = gse.New("zh,testdata/test_en_dict3.txt", "alpha")
 
 	seg gse.Segmenter
 	posSeg pos.Segmenter
@@ -85,17 +90,17 @@ func main() {
 	seg.LoadDict()
 	// Loading the default dictionary with embed
 	// seg.LoadDictEmbed()
-	// 
+	//
 	// Loading the Simplified Chinese dictionary
 	// seg.LoadDict("zh_s")
 	// seg.LoadDictEmbed("zh_s")
 	//
 	// Loading the Traditional Chinese dictionary
 	// seg.LoadDict("zh_t")
-	// 
+	//
 	// Loading the Japanese dictionary
 	// seg.LoadDict("jp")
-	// 
+	//
 	// Load the dictionary
 	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
 
@@ -170,12 +175,12 @@ import (
 	"github.com/go-ego/gse"
 )
 
-//go:embed test_dict3.txt
+//go:embed test_en_dict3.txt
 var testDict string
 
 func main() {
 	// var seg gse.Segmenter
-	// seg.LoadDict("zh, testdata/test_dict.txt, testdata/test_dict1.txt")
+	// seg.LoadDict("zh, testdata/zh/test_dict.txt, testdata/zh/test_dict1.txt")
 	// seg.LoadStop()
 	seg, err := gse.NewEmbed("zh, word 20 n"+testDict, "en")
 	// seg.LoadDictEmbed()
@@ -198,6 +203,7 @@ func main() {
 [Look at an Japanese example](/examples/jp/main.go)
 
 ## Elasticsearch
+
 How to use it with elasticsearch?
 
 [go-gse-elastic](https://github.com/vcaesar/go-gse-elastic)
@@ -209,7 +215,7 @@ How to use it with elasticsearch?
 
 ## License
 
-Gse is primarily distributed under the terms of "both the MIT license and the Apache License (Version 2.0)". 
+Gse is primarily distributed under the terms of "both the MIT license and the Apache License (Version 2.0)".
 See [LICENSE-APACHE](http://www.apache.org/licenses/LICENSE-2.0), [LICENSE-MIT](https://github.com/go-vgo/robotgo/blob/master/LICENSE).
 
 Thanks for [sego](https://github.com/huichen/sego) and [jieba](https://github.com/fxsjy/jieba)([jiebago](https://github.com/wangbin/jiebago)).

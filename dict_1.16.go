@@ -68,7 +68,7 @@ func (seg *Segmenter) LoadDictEmbed(dict ...string) (err error) {
 			return seg.LoadDictStr(zhT)
 		}
 
-		if strings.Contains(d, ", ") {
+		if strings.Contains(d, ", ") && seg.DictSep != "," {
 			begin := 0
 			s := strings.Split(d, ", ")
 			begin, err = seg.loadZhST(d)

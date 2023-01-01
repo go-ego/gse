@@ -13,6 +13,9 @@ import (
 //go:embed testdata/test_en_dict3.txt
 var testDict string
 
+//go:embed testdata/test_en.txt
+var testEn string
+
 //go:embed testdata/zh/test_zh_dict2.txt
 var testDict2 string
 
@@ -76,4 +79,16 @@ func TestLoadStopEmbed(t *testing.T) {
 	tt.Nil(t, err)
 	tt.Bool(t, seg1.IsStop("比如"))
 	tt.Bool(t, seg1.IsStop("离开"))
+}
+
+func TestDictSep(t *testing.T) {
+	var seg1 Segmenter
+	seg1.DictSep = ","
+	err := seg1.LoadDictEmbed(testEn)
+	tt.Nil(t, err)
+
+	f, pos, ok := seg1.Find("to be")
+	tt.Bool(t, ok)
+	tt.Equal(t, "x", pos)
+	tt.Equal(t, 10, f)
 }

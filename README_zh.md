@@ -19,6 +19,7 @@ Go 高性能多语言 NLP 和分词, 支持英文、中文、日文等, 支持�
 Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多属性
 
 ## 特征:
+
 - 支持普通、搜索引擎、全模式、精确模式和 HMM 模式多种分词模式
 - 支持自定义词典、embed 词典、词性标注、停用词、整理分析分词
 - 多语言支持: 英文, 中文, 日文等
@@ -28,14 +29,16 @@ Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多
 - 支持接入 Elasticsearch 和 bleve
 - 可运行<a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go"> JSON RPC 服务</a>
 
-## 算法: 
+## 算法:
+
 - [词典](https://github.com/go-ego/gse/blob/master/dictionary.go)用双数组 trie（Double-Array Trie）实现，
 - [分词器](https://github.com/go-ego/gse/blob/master/segmenter.go)算法为基于词频的最短路径加动态规划, 以及 DAG 和 HMM 算法分词.
 - 支持 HMM 分词, 使用 viterbi 算法.
 
 ## 分词速度:
+
 - <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/benchmark.go">单线程</a> 9.2MB/s
-- <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/goroutines/goroutines.go">goroutines 并发</a> 26.8MB/s. 
+- <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/goroutines/goroutines.go">goroutines 并发</a> 26.8MB/s.
 - HMM 模式单线程分词速度 3.2MB/s.（双核 4 线程 Macbook Pro）。
 
 ## Binding:
@@ -43,12 +46,15 @@ Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多
 [gse-bind](https://github.com/vcaesar/gse-bind), binding JavaScript and other, support more language.
 
 ## 安装/更新
+
 With Go module support (Go 1.11+), just import:
+
 ```go
 import "github.com/go-ego/gse"
 ```
 
 Otherwise, to install the gse package, run the command:
+
 ```
 go get -u github.com/go-ego/gse
 ```
@@ -70,7 +76,7 @@ var (
 	seg gse.Segmenter
 	posSeg pos.Segmenter
 
-	new, _ = gse.New("zh,testdata/test_dict3.txt", "alpha")
+	new, _ = gse.New("zh,testdata/test_en_dict3.txt", "alpha")
 
 	text = "你好世界, Hello world, Helloworld."
 )
@@ -80,17 +86,17 @@ func main() {
 	seg.LoadDict()
 	// 加载默认 embed 词典
 	// seg.LoadDictEmbed()
-	// 
+	//
 	// 加载简体中文词典
 	// seg.LoadDict("zh_s")
 	// seg.LoadDictEmbed("zh_s")
-	// 
+	//
 	// 加载繁体中文词典
 	// seg.LoadDict("zh_t")
-	// 
+	//
 	// 加载日文词典
 	// seg.LoadDict("jp")
-	// 
+	//
 	// 载入词典
 	// seg.LoadDict("your gopath"+"/src/github.com/go-ego/gse/data/dict/dictionary.txt")
 
@@ -174,7 +180,7 @@ import (
 	"github.com/go-ego/gse"
 )
 
-//go:embed test_dict3.txt
+//go:embed test_en_dict3.txt
 var testDict string
 
 func main() {
@@ -199,6 +205,7 @@ func main() {
 [日文分词示例](/examples/jp/main.go)
 
 ## Elasticsearch
+
 How to use it with elasticsearch?
 
 [go-gse-elastic](https://github.com/vcaesar/go-gse-elastic)
