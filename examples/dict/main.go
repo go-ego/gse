@@ -8,7 +8,7 @@ import (
 
 var (
 	text   = "旧金山湾金门大桥"
-	new, _ = gse.New("zh,../../testdata/test_dict.txt")
+	new, _ = gse.New("zh,../../testdata/zh/test_dict.txt")
 
 	seg gse.Segmenter
 )
@@ -30,7 +30,7 @@ func loadDictEmbed() {
 
 func loadDict() {
 	// var seg gse.Segmenter
-	seg.LoadDict("zh, ../../testdata/test_dict.txt, ../../testdata/test_dict1.txt")
+	seg.LoadDict("zh, ../../testdata/zh/test_dict.txt, ../../testdata/zh/test_dict1.txt")
 	seg.LoadStop()
 }
 

@@ -22,8 +22,9 @@ import (
 
 // Segmenter 分词器结构体
 type Segmenter struct {
-	Dict *Dictionary
-	Load bool
+	Dict    *Dictionary
+	Load    bool
+	DictSep string
 
 	// AlphaNum set splitTextToWords can add token
 	// when words in alphanum
@@ -62,9 +63,11 @@ type jumper struct {
 // Segment 对文本分词
 //
 // 输入参数：
+//
 //	bytes	UTF8 文本的字节数组
 //
 // 输出：
+//
 //	[]Segment	划分的分词
 func (seg *Segmenter) Segment(bytes []byte) []Segment {
 	return seg.internalSegment(bytes, false)
@@ -167,8 +170,9 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 }
 
 // updateJumper 更新跳转信息:
-// 	1. 当该位置从未被访问过时 (jumper.minDistance 为零的情况)，或者
-//	2. 当该位置的当前最短路径大于新的最短路径时
+//  1. 当该位置从未被访问过时 (jumper.minDistance 为零的情况)，或者
+//  2. 当该位置的当前最短路径大于新的最短路径时
+//
 // 将当前位置的最短路径值更新为 baseDistance 加上新分词的概率
 func updateJumper(jumper *jumper, baseDistance float32, token *Token) {
 	newDistance := baseDistance + token.distance

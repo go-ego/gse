@@ -60,8 +60,8 @@ func TestSplit(t *testing.T) {
 
 func TestSegment(t *testing.T) {
 	var seg Segmenter
-	seg.LoadDict("testdata/test_dict1.txt,testdata/test_dict2.txt")
-	// seg.LoadDict("testdata/test_dict1.txt", "testdata/test_dict2.txt")
+	seg.LoadDict("testdata/zh/test_dict1.txt,testdata/zh/test_zh_dict2.txt")
+	// seg.LoadDict("testdata/zh/test_dict1.txt", "testdata/zh/test_zh_dict2.txt")
 	tt.Expect(t, "16", seg.Dict.NumTokens())
 	// tt.Expect(t, "5", seg.Dict.NumTokens())
 	segments := seg.Segment([]byte("世界有七十亿人口"))
@@ -246,11 +246,11 @@ func TestDictPaths(t *testing.T) {
 func TestInAlphaNum(t *testing.T) {
 	// var seg Segmenter
 	// AlphaNum = true
-	// seg.LoadDict("zh,./testdata/test_dict3.txt")
+	// seg.LoadDict("zh,./testdata/test_en_dict3.txt")
 	//
 	// AlphaNum = true
 	// ToLower = true
-	seg, err := New("zh,./testdata/test_dict3.txt", "alpha")
+	seg, err := New("zh,./testdata/test_en_dict3.txt", "alpha")
 	tt.Nil(t, err)
 
 	freq, _, ok := seg.Find("hello")

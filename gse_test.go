@@ -15,12 +15,12 @@ func init() {
 func TestLoadDictMap(t *testing.T) {
 	m := []map[string]string{
 		{
-			"text": "一城山水",
+			"text": "to be",
 			"freq": "10",
 			"pos":  "n",
 		},
 		{
-			"text": "山河日月",
+			"text": "or not",
 			"freq": "13",
 		},
 	}
@@ -28,12 +28,12 @@ func TestLoadDictMap(t *testing.T) {
 	err := prodSeg.LoadDictMap(m)
 	tt.Nil(t, err)
 
-	f, pos, ok := prodSeg.Find("一城山水")
+	f, pos, ok := prodSeg.Find("to be")
 	tt.Bool(t, ok)
 	tt.Equal(t, "n", pos)
 	tt.Equal(t, 10, f)
 
-	f, _, ok = prodSeg.Find("山河日月")
+	f, _, ok = prodSeg.Find("or not")
 	tt.Bool(t, ok)
 	tt.Equal(t, 13, f)
 }
@@ -207,7 +207,7 @@ func TestLoadST(t *testing.T) {
 	tt.Equal(t, 352275, len(seg.Dict.Tokens))
 	tt.Equal(t, 3.3335153e+07, seg.Dict.totalFreq)
 
-	err = seg.LoadDict("zh_t, ./testdata/test_dict3.txt")
+	err = seg.LoadDict("zh_t, ./testdata/test_en_dict3.txt")
 	tt.Nil(t, err)
 	tt.Equal(t, 587210, len(seg.Dict.Tokens))
 	tt.Equal(t, 5.3226814e+07, seg.Dict.totalFreq)
@@ -221,7 +221,7 @@ func TestStop(t *testing.T) {
 
 	err = seg.LoadStop("testdata/stop.txt")
 	tt.Nil(t, err)
-	tt.Equal(t, 89, len(seg.StopWordMap))
+	tt.Equal(t, 90, len(seg.StopWordMap))
 	tt.Bool(t, seg.IsStop("离开"))
 
 	err = seg.EmptyStop()
@@ -282,7 +282,7 @@ func TestStop(t *testing.T) {
 }
 
 func TestNum(t *testing.T) {
-	seg, err := New("./testdata/test_dict3.txt")
+	seg, err := New("./testdata/test_en_dict3.txt")
 	tt.Nil(t, err)
 
 	seg.Num = true
@@ -303,9 +303,21 @@ func TestNum(t *testing.T) {
 }
 
 func TestUrl(t *testing.T) {
-	seg, err := New("./testdata/test_dict3.txt")
+	seg, err := New("./testdata/test_en_dict3.txt")
 	tt.Nil(t, err)
 
 	s1 := seg.CutUrls("https://www.g.com/search?q=test%m11.42&ie=UTF-8")
 	tt.Equal(t, "https www g com search q test m 11 42 ie utf 8", s1)
+}
+
+func TestLoadDictSep(t *testing.T) {
+	var seg1 Segmenter
+	seg1.DictSep = ","
+	err := seg1.LoadDict("./testdata/test_en.txt")
+	tt.Nil(t, err)
+
+	f, pos, ok := seg1.Find("not to be")
+	tt.Bool(t, ok)
+	tt.Equal(t, "x", pos)
+	tt.Equal(t, 5, f)
 }

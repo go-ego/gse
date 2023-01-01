@@ -30,7 +30,7 @@ func worker() {
 
 func openBook() (int, [][]byte) {
 	// 打开将要分词的文件
-	file, err := os.Open("../../testdata/bailuyuan.txt")
+	file, err := os.Open("../../testdata/zh/bailuyuan.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
