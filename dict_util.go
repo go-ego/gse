@@ -38,7 +38,7 @@ const (
 	zhT1 = "dict/zh/t_1.txt"
 )
 
-// Init init seg config
+// Init initializes the segmenter config
 func (seg *Segmenter) Init() {
 	if seg.MinTokenFreq == 0 {
 		seg.MinTokenFreq = 2.0
@@ -46,6 +46,10 @@ func (seg *Segmenter) Init() {
 
 	if seg.TextFreq == "" {
 		seg.TextFreq = "2.0"
+	}
+
+	if !seg.NotLoadHMM {
+		seg.LoadModel()
 	}
 }
 
@@ -66,7 +70,7 @@ func (seg *Segmenter) ToToken(text string, freq float64, pos ...string) Token {
 	return token
 }
 
-// AddToken add new text to token
+// AddToken add a new text to the token
 func (seg *Segmenter) AddToken(text string, freq float64, pos ...string) error {
 	token := seg.ToToken(text, freq, pos...)
 	return seg.Dict.AddToken(token)
@@ -364,7 +368,7 @@ func (seg *Segmenter) Reader(reader *bufio.Reader, files ...string) error {
 			pos = ""
 		}
 
-		// Add participle tokens to dictionary
+		// Add participle tokens to the dictionary
 		words := seg.SplitTextToWords([]byte(text))
 		token := Token{text: words, freq: freq, pos: pos}
 		seg.Dict.AddToken(token)

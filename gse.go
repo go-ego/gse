@@ -30,21 +30,17 @@ const (
 	// minTokenFrequency = 2 // only read tokens with frequency >= 2 from the dictionary
 )
 
-func init() {
-	hmm.LoadModel()
-}
-
-// GetVersion get the gse version
+// GetVersion get the version of gse
 func GetVersion() string {
 	return Version
 }
 
-// Prob type hmm model struct
+// Prob define the hmm model struct
 type Prob struct {
 	B, E, M, S map[rune]float64
 }
 
-// New return new gse segmenter
+// New return a new gse segmenter
 func New(files ...string) (seg Segmenter, err error) {
 	if len(files) > 1 && files[1] == "alpha" {
 		seg.AlphaNum = true
@@ -124,7 +120,7 @@ func (seg *Segmenter) CutStr(str []string, separator ...string) (r string) {
 	return
 }
 
-// LoadModel load the hmm model
+// LoadModel load the hmm model (default is Chinese char)
 //
 // Use the user's model:
 //
