@@ -17,37 +17,37 @@ import (
 	"github.com/vcaesar/cedar"
 )
 
-// Dictionary 结构体实现了一个字串双数组树，
-// 一个分词可能出现在叶子节点也有可能出现在非叶节点
+// Dictionary struct implements a string double array trie.
+// one segment maybe in leaf node or not
 type Dictionary struct {
-	trie *cedar.Cedar // Cedar 双数组树
+	trie *cedar.Cedar // Cedar double array trie
 
-	maxTokenLen int     // 词典中最长的分词
-	Tokens      []Token // 词典中所有的分词，方便遍历
-	totalFreq   float64 // 词典中所有分词的频率之和
+	maxTokenLen int     // the maximum length of the dictionary
+	Tokens      []Token // the all tokens in the dictionary, to traverse
+	totalFreq   float64 // the total number of tokens in the dictionary
 }
 
-// NewDict new dictionary
+// NewDict a new dictionary trie
 func NewDict() *Dictionary {
 	return &Dictionary{trie: cedar.New()}
 }
 
-// MaxTokenLen 词典中最长的分词
+// MaxTokenLen the maximum length of the dictionary
 func (dict *Dictionary) MaxTokenLen() int {
 	return dict.maxTokenLen
 }
 
-// NumTokens 词典中分词数目
+// NumTokens the number of tokens in the dictionary
 func (dict *Dictionary) NumTokens() int {
 	return len(dict.Tokens)
 }
 
-// TotalFreq 词典中所有分词的频率之和
+// TotalFreq the total frequency of the dictionary
 func (dict *Dictionary) TotalFreq() float64 {
 	return dict.totalFreq
 }
 
-// AddToken 向词典中加入一个分词
+// AddToken add a token to the dictionary
 func (dict *Dictionary) AddToken(token Token) error {
 	bytes := textSliceToBytes(token.text)
 	val, err := dict.trie.Get(bytes)
@@ -77,8 +77,8 @@ func (dict *Dictionary) RemoveToken(token Token) error {
 	return dict.trie.Delete(bytes)
 }
 
-// LookupTokens 在词典中查找和字元组 words 可以前缀匹配的所有分词
-// 返回值为找到的分词数
+// LookupTokens finds tokens and words in the dictionary, matching the given pattern
+// and returns the number of tokens
 func (dict *Dictionary) LookupTokens(
 	words []Text, tokens []*Token) (numOfTokens int) {
 	var (
@@ -103,7 +103,7 @@ func (dict *Dictionary) LookupTokens(
 }
 
 // Find find the word in the dictionary is non-existent
-// and the word's frequency, pos
+// and the word's frequency and pos
 func (dict *Dictionary) Find(word []byte) (float64, string, bool) {
 	var (
 		id, value int
@@ -131,7 +131,7 @@ func (dict *Dictionary) Find(word []byte) (float64, string, bool) {
 }
 
 // Value find word in the dictionary
-// retrun the word's value, id
+// retrun the word's value and id
 func (dict *Dictionary) Value(word []byte) (val, id int, err error) {
 	id, err = dict.trie.Jump(word, id)
 	if err != nil {

@@ -20,11 +20,14 @@ import (
 	"unicode/utf8"
 )
 
-// Segmenter 分词器结构体
+// Segmenter define the segmenter structure
 type Segmenter struct {
 	Dict    *Dictionary
 	Load    bool
 	DictSep string
+
+	// NotLoadHMM option load the default hmm model config (Chinese char)
+	NotLoadHMM bool
 
 	// AlphaNum set splitTextToWords can add token
 	// when words in alphanum
@@ -60,15 +63,15 @@ type jumper struct {
 	token       *Token
 }
 
-// Segment 对文本分词
+// Segment use shortest path to segment the text
 //
-// 输入参数：
+// input parameter：
 //
-//	bytes	UTF8 文本的字节数组
+//	bytes	UTF8 text []byte
 //
-// 输出：
+// output：
 //
-//	[]Segment	划分的分词
+//	[]Segment	retrun segments result
 func (seg *Segmenter) Segment(bytes []byte) []Segment {
 	return seg.internalSegment(bytes, false)
 }
@@ -84,13 +87,13 @@ func (seg *Segmenter) ModeSegment(bytes []byte, searchMode ...bool) []Segment {
 }
 
 func (seg *Segmenter) internalSegment(bytes []byte, searchMode bool) []Segment {
-	// 处理特殊情况
+	// specific case
 	if len(bytes) == 0 {
 		// return []Segment{}
 		return nil
 	}
 
-	// 划分字元
+	// split text to words
 	text := seg.SplitTextToWords(bytes)
 
 	return seg.segmentWords(text, searchMode)
@@ -182,13 +185,13 @@ func updateJumper(jumper *jumper, baseDistance float32, token *Token) {
 	}
 }
 
-// SplitWords 将文本划分成字元
+// SplitWords splits a string to token words
 func SplitWords(text Text) []Text {
 	var seg Segmenter
 	return seg.SplitTextToWords(text)
 }
 
-// SplitTextToWords 将文本划分成字元
+// SplitTextToWords splits a string to token words
 func (seg *Segmenter) SplitTextToWords(text Text) []Text {
 	output := make([]Text, 0, len(text)/3)
 	current, alphanumericStart := 0, 0
@@ -221,7 +224,7 @@ func (seg *Segmenter) SplitTextToWords(text Text) []Text {
 		current += size
 	}
 
-	// 处理最后一个字元是英文的情况
+	// procsss last byte is alpha and num
 	if inAlphanumeric && !seg.AlphaNum {
 		if current != 0 {
 			output = append(output, toLow(text[alphanumericStart:current]))
@@ -239,7 +242,7 @@ func toLow(text []byte) []byte {
 	return text
 }
 
-// toLower 将英文词转化为小写
+// toLower converts a string to lower
 func toLower(text []byte) []byte {
 	output := make([]byte, len(text))
 	for i, t := range text {
@@ -253,7 +256,7 @@ func toLower(text []byte) []byte {
 	return output
 }
 
-// minInt 取两整数较小值
+// minInt get min value of int
 func minInt(a, b int) int {
 	if a > b {
 		return b
@@ -261,7 +264,7 @@ func minInt(a, b int) int {
 	return a
 }
 
-// maxInt 取两整数较大值
+// maxInt get max value of int
 func maxInt(a, b int) int {
 	if a > b {
 		return a
