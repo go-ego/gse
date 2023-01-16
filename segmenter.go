@@ -22,10 +22,10 @@ import (
 
 // Segmenter define the segmenter structure
 type Segmenter struct {
-	Dict    *Dictionary
-	Load    bool
-	DictSep string
-	// DictPath string
+	Dict     *Dictionary
+	Load     bool
+	DictSep  string
+	DictPath string
 
 	// NotLoadHMM option load the default hmm model config (Chinese char)
 	NotLoadHMM bool

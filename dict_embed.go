@@ -15,6 +15,9 @@ var (
 	zhT string
 	//go:embed data/dict/zh/s_1.txt
 	zhS string
+
+	//go:embed data/dict/zh/idf.txt
+	zhIdf string
 )
 
 //go:embed data/dict/zh/stop_tokens.txt
