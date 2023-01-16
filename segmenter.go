@@ -22,9 +22,10 @@ import (
 
 // Segmenter define the segmenter structure
 type Segmenter struct {
-	Dict    *Dictionary
-	Load    bool
-	DictSep string
+	Dict     *Dictionary
+	Load     bool
+	DictSep  string
+	DictPath string
 
 	// NotLoadHMM option load the default hmm model config (Chinese char)
 	NotLoadHMM bool
@@ -57,7 +58,8 @@ type Segmenter struct {
 	StopWordMap map[string]bool
 }
 
-// jumper 该结构体用于记录 Viterbi 算法中某字元处的向前分词跳转信息
+// jumper this structure is used to record information
+// about the forward leap at a word in the Viterbi algorithm
 type jumper struct {
 	minDistance float32
 	token       *Token
@@ -87,7 +89,7 @@ func (seg *Segmenter) ModeSegment(bytes []byte, searchMode ...bool) []Segment {
 }
 
 func (seg *Segmenter) internalSegment(bytes []byte, searchMode bool) []Segment {
-	// specific case
+	// special cases
 	if len(bytes) == 0 {
 		// return []Segment{}
 		return nil
@@ -100,14 +102,16 @@ func (seg *Segmenter) internalSegment(bytes []byte, searchMode bool) []Segment {
 }
 
 func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
-	// 搜索模式下该分词已无继续划分可能的情况
+	// The case where the division is no longer possible in the search mode
 	if searchMode && len(text) == 1 {
 		return nil
 	}
 
-	// jumpers 定义了每个字元处的向前跳转信息，
-	// 包括这个跳转对应的分词，
-	// 以及从文本段开始到该字元的最短路径值
+	// jumpers defines the forward jump information at each literal,
+	// including the subword corresponding to this jump,
+	// the and the value of the shortest path from the start
+	// of the text segment to that literal
+	//
 	jumpers := make([]jumper, len(text))
 
 	if seg.Dict == nil {
@@ -116,20 +120,23 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 
 	tokens := make([]*Token, seg.Dict.maxTokenLen)
 	for current := 0; current < len(text); current++ {
-		// 找到前一个字元处的最短路径，以便计算后续路径值
+		// find the shortest path of the previous token,
+		// to calculate the subsequent path values
 		var baseDistance float32
 		if current == 0 {
-			// 当本字元在文本首部时，基础距离应该是零
+			// When this character is at the beginning of the text,
+			// the base distance should be zero
 			baseDistance = 0
 		} else {
 			baseDistance = jumpers[current-1].minDistance
 		}
 
-		// 寻找所有以当前字元开头的分词
+		// find all the segments starting with this token
 		tx := text[current:minInt(current+seg.Dict.maxTokenLen, len(text))]
 		numTokens := seg.Dict.LookupTokens(tx, tokens)
 
-		// 对所有可能的分词，更新分词结束字元处的跳转信息
+		// Update the jump information at the end of the split word
+		// for all possible splits
 		for iToken := 0; iToken < numTokens; iToken++ {
 			location := current + len(tokens[iToken].text) - 1
 			if !searchMode || current != 0 || location != len(text)-1 {
@@ -137,14 +144,16 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 			}
 		}
 
-		// 当前字元没有对应分词时补加一个伪分词
+		// Add a pseudo-syllable if there is no corresponding syllable
+		// for the current character
 		if numTokens == 0 || len(tokens[0].text) > 1 {
 			updateJumper(&jumpers[current], baseDistance,
 				&Token{text: []Text{text[current]}, freq: 1, distance: 32, pos: "x"})
 		}
 	}
 
-	// 从后向前扫描第一遍得到需要添加的分词数目
+	// Scan the first pass from back to front
+	// to get the number of subwords to be added
 	numSeg := 0
 	for index := len(text) - 1; index >= 0; {
 		location := index - len(jumpers[index].token.text) + 1
@@ -152,7 +161,8 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 		index = location - 1
 	}
 
-	// 从后向前扫描第二遍添加分词到最终结果
+	// Scan from back to front for a second time
+	// to add the split to the final result
 	outputSegments := make([]Segment, numSeg)
 	for index := len(text) - 1; index >= 0; {
 		location := index - len(jumpers[index].token.text) + 1
@@ -161,7 +171,7 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 		index = location - 1
 	}
 
-	// 计算各个分词的字节位置
+	// Calculate the byte position of each participle
 	bytePosition := 0
 	for iSeg := 0; iSeg < len(outputSegments); iSeg++ {
 		outputSegments[iSeg].start = bytePosition
@@ -172,11 +182,14 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 	return outputSegments
 }
 
-// updateJumper 更新跳转信息:
-//  1. 当该位置从未被访问过时 (jumper.minDistance 为零的情况)，或者
-//  2. 当该位置的当前最短路径大于新的最短路径时
+// updateJumper Update the jump information:
+//  1. When the location has never been visited
+//     (the case where jumper.minDistance is zero), or
+//  2. When the current shortest path at the location
+//     is greater than the new shortest path
 //
-// 将当前位置的最短路径值更新为 baseDistance 加上新分词的概率
+// Update the shortest path value of the current location to baseDistance
+// add the probability of the new split
 func updateJumper(jumper *jumper, baseDistance float32, token *Token) {
 	newDistance := baseDistance + token.distance
 	if jumper.minDistance == 0 || jumper.minDistance > newDistance {
@@ -202,7 +215,7 @@ func (seg *Segmenter) SplitTextToWords(text Text) []Text {
 		isNum := unicode.IsNumber(r) && !seg.Num
 		isAlpha := unicode.IsLetter(r) && !seg.Alpha
 		if size <= 2 && (isAlpha || isNum) {
-			// 当前是拉丁字母或数字（非中日韩文字）
+			// Currently is Latin alphabet or numbers (not in CJK)
 			if !inAlphanumeric {
 				alphanumericStart = current
 				inAlphanumeric = true

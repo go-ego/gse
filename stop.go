@@ -44,7 +44,7 @@ func (seg *Segmenter) LoadStop(files ...string) error {
 		seg.StopWordMap = make(map[string]bool)
 	}
 
-	dictDir := path.Join(path.Dir(GetCurrentFilePath()), "data")
+	dictDir := path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
 	if len(files) <= 0 {
 		dictPath := path.Join(dictDir, "dict/zh/stop_word.txt")
 		files = append(files, dictPath)

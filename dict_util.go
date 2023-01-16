@@ -48,6 +48,7 @@ func (seg *Segmenter) Init() {
 		seg.TextFreq = "2.0"
 	}
 
+	// init the model of hmm cut
 	if !seg.NotLoadHMM {
 		seg.LoadModel()
 	}
@@ -154,7 +155,7 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	}
 
 	var (
-		dictDir  = path.Join(path.Dir(GetCurrentFilePath()), "data")
+		dictDir  = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
 		dictPath string
 		// load     bool
 	)
@@ -216,15 +217,19 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 }
 
 // GetCurrentFilePath get the current file path
-func GetCurrentFilePath() string {
+func (seg *Segmenter) GetCurrentFilePath() string {
+	if seg.DictPath != "" {
+		return seg.DictPath
+	}
+
 	_, filePath, _, _ := runtime.Caller(1)
 	return filePath
 }
 
 // GetIdfPath get the idf path
-func GetIdfPath(files ...string) []string {
+func (seg *Segmenter) GetIdfPath(files ...string) []string {
 	var (
-		dictDir  = path.Join(path.Dir(GetCurrentFilePath()), "data")
+		dictDir  = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
 		dictPath = path.Join(dictDir, "dict/zh/idf.txt")
 	)
 

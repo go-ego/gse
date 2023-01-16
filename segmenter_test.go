@@ -226,6 +226,7 @@ func TestToken(t *testing.T) {
 }
 
 func TestDictPaths(t *testing.T) {
+	var seg1 Segmenter
 	// seg.SkipLog = true
 	paths := DictPaths("./dictDir", "zh, jp")
 	tt.Expect(t, "3", len(paths))
@@ -238,9 +239,13 @@ func TestDictPaths(t *testing.T) {
 	tt.Expect(t, "3", len(paths))
 	tt.Equal(t, paths, paths1)
 
-	p := strings.ReplaceAll(GetCurrentFilePath(), "/segmenter_test.go", "") +
+	p := strings.ReplaceAll(seg1.GetCurrentFilePath(), "/segmenter_test.go", "") +
 		`/data/dict/zh/idf.txt`
-	tt.Equal(t, "["+p+"]", GetIdfPath([]string{}...))
+	tt.Equal(t, "["+p+"]", seg1.GetIdfPath([]string{}...))
+
+	seg1.DictPath = "testdata/zh"
+	tt.Equal(t, "testdata/zh", seg1.GetCurrentFilePath())
+	tt.Equal(t, "[testdata/data/dict/zh/idf.txt]", seg1.GetIdfPath([]string{}...))
 }
 
 func TestInAlphaNum(t *testing.T) {
