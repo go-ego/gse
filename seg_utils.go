@@ -20,16 +20,15 @@ import (
 	"fmt"
 )
 
-// ToString segments to string  输出分词结果为字符串
+// ToString converts a segments slice to string retrun the string
 //
-// 有两种输出模式，以 "山达尔星联邦共和国" 为例
+//	 two output modes:
 //
-//  普通模式（searchMode=false）输出一个分词 "山达尔星联邦共和国/ns "
-//  搜索模式（searchMode=true） 输出普通模式的再细致切分：
-//      "山达尔星/nz 联邦/n 共和/nz 国/n 共和国/ns 联邦共和国/nt 山达尔星联邦共和国/ns "
+//		normal mode (searchMode=false）
+//		search mode（searchMode=true）
 //
-// 默认 searchMode=false
-// 搜索模式主要用于给搜索引擎提供尽可能多的关键字，详情请见 Token 结构体的注释。
+// default searchMode=false
+// search mode is used search engine, and will output more results
 func ToString(segs []Segment, searchMode ...bool) (output string) {
 	var mode bool
 	if len(searchMode) > 0 {
@@ -76,16 +75,7 @@ func tokenToBytes(token *Token) (output []byte) {
 	return
 }
 
-// ToSlice segments to slice 输出分词结果到一个字符串 slice
-//
-// 有两种输出模式，以 "山达尔星联邦共和国" 为例
-//
-//  普通模式（searchMode=false）输出一个分词"[山达尔星联邦共和国]"
-//  搜索模式（searchMode=true） 输出普通模式的再细致切分：
-//      "[山达尔星 联邦 共和 国 共和国 联邦共和国 山达尔星联邦共和国]"
-//
-// 默认 searchMode=false
-// 搜索模式主要用于给搜索引擎提供尽可能多的关键字，详情请见Token结构体的注释。
+// ToSlice converts a segments to slice retrun string slice
 func ToSlice(segs []Segment, searchMode ...bool) (output []string) {
 	var mode bool
 	if len(searchMode) > 0 {
@@ -121,7 +111,7 @@ func tokenToSlice(token *Token) (output []string) {
 	return
 }
 
-// ToPos segments to SegPos
+// ToPos converts a segments slice to []SegPos
 func ToPos(segs []Segment, searchMode ...bool) (output []SegPos) {
 	var mode bool
 	if len(searchMode) > 0 {
@@ -168,7 +158,7 @@ func tokenToPos(token *Token) (output []SegPos) {
 	return
 }
 
-// 将多个字元拼接一个字符串输出
+// let make multiple []Text into one string ooutput
 func textToString(text []Text) (output string) {
 	for _, word := range text {
 		output += string(word)
@@ -176,12 +166,12 @@ func textToString(text []Text) (output string) {
 	return
 }
 
-// 将多个字元拼接一个字符串输出
+// let make []Text toString returns a string output
 func textSliceToString(text []Text) string {
 	return Join(text)
 }
 
-// 返回多个字元的字节总长度
+// retrun total length of text slice
 func textSliceByteLen(text []Text) (length int) {
 	for _, word := range text {
 		length += len(word)

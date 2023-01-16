@@ -48,6 +48,7 @@ func (seg *Segmenter) Init() {
 		seg.TextFreq = "2.0"
 	}
 
+	// init the model of hmm cut
 	if !seg.NotLoadHMM {
 		seg.LoadModel()
 	}

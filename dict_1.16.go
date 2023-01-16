@@ -50,7 +50,7 @@ func (seg *Segmenter) loadZhST(d string) (begin int, err error) {
 	return
 }
 
-// LoadDictEmbed load dictionary by embed file
+// LoadDictEmbed load the dictionary by embed file
 func (seg *Segmenter) LoadDictEmbed(dict ...string) (err error) {
 	if len(dict) > 0 {
 		d := dict[0]
@@ -87,7 +87,7 @@ func (seg *Segmenter) LoadDictEmbed(dict ...string) (err error) {
 	return seg.loadZh()
 }
 
-// LoadDictStr load dictionary from string
+// LoadDictStr load the dictionary from string
 func (seg *Segmenter) LoadDictStr(dict string) error {
 	if seg.Dict == nil {
 		seg.Dict = NewDict()
@@ -128,7 +128,7 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 	return nil
 }
 
-// LoadStopEmbed load stop dictionary from embed file
+// LoadStopEmbed load the stop dictionary from embed file
 func (seg *Segmenter) LoadStopEmbed(dict ...string) (err error) {
 	if len(dict) > 0 {
 		d := dict[0]

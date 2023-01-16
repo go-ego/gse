@@ -17,7 +17,7 @@ package gse
 
 // AnalyzeToken analyze the segment info structure
 type AnalyzeToken struct {
-	// 分词在文本中的起始位置
+	// the start of the segment in the text
 	Start int
 	End   int
 
@@ -31,80 +31,85 @@ type AnalyzeToken struct {
 	Pos  string
 }
 
-// Segment 文本中的一个分词
+// Segment a segment in the text
 type Segment struct {
-	// 分词在文本中的起始字节位置
+	// the start of the segment in the text
 	start int
 
-	// 分词在文本中的结束字节位置（不包括该位置）
+	// the bytes end of the segment in the text (not including this)
 	end int
 
 	Position int
 
-	// 分词信息
+	// segment information
 	token *Token
 }
 
-// Start 返回分词在文本中的起始字节位置
+// Start returns the start byte position of the segment
 func (s *Segment) Start() int {
 	return s.start
 }
 
-// End 返回分词在文本中的结束字节位置（不包括该位置）
+// End retrun the end byte position of the segment (not including this)
 func (s *Segment) End() int {
 	return s.end
 }
 
-// Token 返回分词信息
+// Token retrun the segment token information
 func (s *Segment) Token() *Token {
 	return s.token
 }
 
-// Text 字串类型，可以用来表达
-//	1. 一个字元，比如 "世" 又如 "界", 英文的一个字元是一个词
-//	2. 一个分词，比如 "世界" 又如 "人口"
-//	3. 一段文字，比如 "世界有七十亿人口"
+// Text a string type，used to parse text
+// 1. a word, such as "world" or "boundary", in English a word is a word
+// 2. a participle, such as "world" a.k.a. "population"
+// 3. a text, such as "the world has seven billion people"
 type Text []byte
 
-// Token 一个分词
+// Token define a segment token structure
 type Token struct {
-	// 分词的字串，这实际上是个字元数组
+	// a segment string，it's []Text
 	text []Text
 
-	// 分词在语料库中的词频
+	// a frenquency of the token
 	freq float64
 
-	// 词性标注
+	// part of speech label
 	pos string
 
-	// log2(总词频/该分词词频)，这相当于 log2(1/p(分词))，用作动态规划中
-	// 该分词的路径长度。求解 prod(p(分词)) 的最大值相当于求解
-	// sum(distance(分词)) 的最小值，这就是“最短路径”的来历。
+	// log2(total frequency/this segment frenquency)，equal to log2(1/p(segment)))，
+	// used by the short path as the path length of the clause in dynamic programming.
+	// Solving for the maximum of prod(p(segment)) is equivalent to solving for the minimum of
+	// the minimum of sum(distance(segment)),
+	// which is where "shortest path" comes from.
 	distance float32
 
-	// 该分词文本的进一步分词划分，见 Segments 函数注释。
+	// For further segmentation of this segmented text,
+	// see the Segments function comment.
 	segments []*Segment
 }
 
-// Text 返回分词文本
+// Text return the text of the segment
 func (token *Token) Text() string {
 	return textSliceToString(token.text)
 }
 
-// Freq 返回分词在语料库中的词频
+// Freq returns the frequency in the dictionary token
 func (token *Token) Freq() float64 {
 	return token.freq
 }
 
-// Pos 返回分词词性标注
+// Pos returns the part of speech in the dictionary token
 func (token *Token) Pos() string {
 	return token.pos
 }
 
-// Segments 该分词文本的进一步分词划分，比如 "山达尔星联邦共和国联邦政府" 这个分词
-// 有两个子分词 "山达尔星联邦共和国 " 和 "联邦政府"。子分词也可以进一步有子分词
-// 形成一个树结构，遍历这个树就可以得到该分词的所有细致分词划分，这主要
-// 用于搜索引擎对一段文本进行全文搜索。
+// Segments will segment further subdivisions of the text of this participle,
+// the participle has two subclauses.
+//
+// Subclauses can also have further subclauses forming a tree structure,
+// which can be traversed to get all the detailed subdivisions of the participle,
+// which is mainly Used by search engines to perform full-text searches on a piece of text.
 func (token *Token) Segments() []*Segment {
 	return token.segments
 }
