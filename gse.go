@@ -13,7 +13,7 @@
 // under the License.
 
 /*
-Package gse Go efficient multilingual NLP and text segmentation,
+Package gse Go efficient multilingual NLP and text segmentation
 */
 package gse
 
@@ -25,7 +25,7 @@ import (
 
 const (
 	// Version get the gse version
-	Version = "v0.71.0.695, Green Lake!"
+	Version = "v0.80.2.705, Green Lake!"
 
 	// minTokenFrequency = 2 // only read tokens with frequency >= 2 from the dictionary
 )

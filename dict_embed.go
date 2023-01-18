@@ -17,7 +17,7 @@ var (
 	zhS string
 
 	//go:embed data/dict/zh/idf.txt
-	zhIdf string
+	ZhIdf string
 )
 
 //go:embed data/dict/zh/stop_tokens.txt
