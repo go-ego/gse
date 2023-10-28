@@ -50,12 +50,12 @@ func (s *Segment) Start() int {
 	return s.start
 }
 
-// End retrun the end byte position of the segment (not including this)
+// End return the end byte position of the segment (not including this)
 func (s *Segment) End() int {
 	return s.end
 }
 
-// Token retrun the segment token information
+// Token return the segment token information
 func (s *Segment) Token() *Token {
 	return s.token
 }
@@ -71,13 +71,13 @@ type Token struct {
 	// a segment string，it's []Text
 	text []Text
 
-	// a frenquency of the token
+	// a frequency of the token
 	freq float64
 
 	// part of speech label
 	pos string
 
-	// log2(total frequency/this segment frenquency)，equal to log2(1/p(segment)))，
+	// log2(total frequency/this segment frequency)，equal to log2(1/p(segment)))，
 	// used by the short path as the path length of the clause in dynamic programming.
 	// Solving for the maximum of prod(p(segment)) is equivalent to solving for the minimum of
 	// the minimum of sum(distance(segment)),

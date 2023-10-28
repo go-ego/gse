@@ -44,12 +44,12 @@ func (d *Dict) updateLogTotal() {
 	d.logTotal = math.Log(d.total)
 }
 
-// Freq find the word return the frequency and existenced
+// Freq find the word return the word's freq, pos and existence
 func (d *Dict) Freq(key string) (float64, string, bool) {
 	return d.Seg.Find(key)
 }
 
-// Pos find the key return the POS and existenced
+// Pos find the key return the POS and existence
 func (d *Dict) Pos(key string) (string, bool) {
 	value, _, _ := d.Seg.Value(key)
 	if value == 0 {

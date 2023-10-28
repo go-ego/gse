@@ -123,6 +123,7 @@ func (seg *Segmenter) Analyze(text []string, t1 string, by ...bool) (az []Analyz
 	return
 }
 
+// getDag get a directed acyclic graph (DAG) from slice of runes(containing Unicode characters)
 func (seg *Segmenter) getDag(runes []rune) map[int][]int {
 	dag := make(map[int][]int)
 	n := len(runes)

@@ -43,7 +43,7 @@ type Segmenter struct {
 	LoadNoFreq bool
 	// MinTokenFreq load min freq token
 	MinTokenFreq float64
-	// TextFreq add token frenquency when not specified freq
+	// TextFreq add token frequency when not specified freq
 	TextFreq string
 
 	// SkipLog set skip log print
@@ -65,15 +65,15 @@ type jumper struct {
 	token       *Token
 }
 
-// Segment use shortest path to segment the text
+// Segment use the shortest path to segment the text
 //
 // input parameter：
 //
-//	bytes	UTF8 text []byte
+// bytes	UTF8 text []byte
 //
 // output：
 //
-//	[]Segment	retrun segments result
+// []Segment return segments result
 func (seg *Segmenter) Segment(bytes []byte) []Segment {
 	return seg.internalSegment(bytes, false)
 }
@@ -237,7 +237,7 @@ func (seg *Segmenter) SplitTextToWords(text Text) []Text {
 		current += size
 	}
 
-	// procsss last byte is alpha and num
+	// process last byte is alpha and num
 	if inAlphanumeric && !seg.AlphaNum {
 		if current != 0 {
 			output = append(output, toLow(text[alphanumericStart:current]))

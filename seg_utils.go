@@ -20,7 +20,7 @@ import (
 	"fmt"
 )
 
-// ToString converts a segments slice to string retrun the string
+// ToString converts a segments slice to string return the string
 //
 //	 two output modes:
 //
@@ -75,7 +75,7 @@ func tokenToBytes(token *Token) (output []byte) {
 	return
 }
 
-// ToSlice converts a segments to slice retrun string slice
+// ToSlice converts a segments to slice return string slice
 func ToSlice(segs []Segment, searchMode ...bool) (output []string) {
 	var mode bool
 	if len(searchMode) > 0 {
@@ -158,7 +158,7 @@ func tokenToPos(token *Token) (output []SegPos) {
 	return
 }
 
-// let make multiple []Text into one string ooutput
+// let make multiple []Text into one string output
 func textToString(text []Text) (output string) {
 	for _, word := range text {
 		output += string(word)
@@ -171,7 +171,7 @@ func textSliceToString(text []Text) string {
 	return Join(text)
 }
 
-// retrun total length of text slice
+// return total length of text slice
 func textSliceByteLen(text []Text) (length int) {
 	for _, word := range text {
 		length += len(word)
