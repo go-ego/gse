@@ -87,7 +87,7 @@ func (seg *Segmenter) LoadDictEmbed(dict ...string) (err error) {
 	return seg.loadZh()
 }
 
-// LoadDictStr load the dictionary from string
+// LoadDictStr load the dictionary from dict path
 func (seg *Segmenter) LoadDictStr(dict string) error {
 	if seg.Dict == nil {
 		seg.Dict = NewDict()
@@ -153,7 +153,7 @@ func (seg *Segmenter) LoadStopEmbed(dict ...string) (err error) {
 	return seg.LoadStopStr(stopDict)
 }
 
-// LoadDictStr load the stop dictionary from string
+// LoadStopStr load the stop dictionary from dict path
 func (seg *Segmenter) LoadStopStr(dict string) error {
 	if seg.StopWordMap == nil {
 		seg.StopWordMap = make(map[string]bool)

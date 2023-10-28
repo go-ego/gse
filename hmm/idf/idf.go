@@ -58,7 +58,7 @@ func (i *Idf) NumTokens() int {
 	return i.seg.Dict.NumTokens()
 }
 
-// TotalFreq reruen the IDF total frequency
+// TotalFreq return the IDF total frequency
 func (i *Idf) TotalFreq() float64 {
 	return i.seg.Dict.TotalFreq()
 }

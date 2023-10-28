@@ -67,7 +67,7 @@ func segment() {
 	segments := seg.Segment(text1)
 	// fmt.Println(gse.ToString(segments, false))
 	fmt.Println(gse.ToString(segments))
-	//"旧金山湾/n 金门大桥/nz "
+	// "旧金山湾/n 金门大桥/nz "
 
 	// 搜索模式主要用于给搜索引擎提供尽可能多的关键字
 	segs := seg.ModeSegment(text1, true)

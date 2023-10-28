@@ -131,7 +131,7 @@ func (dict *Dictionary) Find(word []byte) (float64, string, bool) {
 }
 
 // Value find word in the dictionary
-// retrun the word's value and id
+// return the word's value and id
 func (dict *Dictionary) Value(word []byte) (val, id int, err error) {
 	id, err = dict.trie.Jump(word, id)
 	if err != nil {

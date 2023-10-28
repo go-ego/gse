@@ -29,7 +29,7 @@ import (
 )
 
 var (
-	// ToLower set alpha tolower
+	// ToLower set alpha to lowercase
 	ToLower = true
 )
 
@@ -238,7 +238,7 @@ func (seg *Segmenter) GetIdfPath(files ...string) []string {
 	return files
 }
 
-// Read read the dict flie
+// Read read the dict file
 func (seg *Segmenter) Read(file string) error {
 	if !seg.SkipLog {
 		log.Printf("Load the gse dictionary: \"%s\" ", file)

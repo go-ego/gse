@@ -141,14 +141,14 @@ func (seg *Segmenter) HMMCutMod(str string, prob ...map[rune]float64) []string {
 	return hmm.Cut(str)
 }
 
-// Slice use modeSegment segment retrun []string
+// Slice use modeSegment segment return []string
 // using search mode if searchMode is true
 func (seg *Segmenter) Slice(s string, searchMode ...bool) []string {
 	segs := seg.ModeSegment([]byte(s), searchMode...)
 	return ToSlice(segs, searchMode...)
 }
 
-// Slice use modeSegment segment retrun string
+// Slice use modeSegment segment return string
 // using search mode if searchMode is true
 func (seg *Segmenter) String(s string, searchMode ...bool) string {
 	segs := seg.ModeSegment([]byte(s), searchMode...)
