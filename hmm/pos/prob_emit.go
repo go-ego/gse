@@ -1,6 +1,5 @@
 // Package pos model data
 // The data from https://github.com/fxsjy/jieba
-//
 package pos
 
 const minFloat = -3.14e100
