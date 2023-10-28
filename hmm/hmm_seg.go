@@ -13,7 +13,6 @@
 // under the License.
 
 /*
-
 Package hmm is the Golang HMM cut module
 */
 package hmm
