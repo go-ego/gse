@@ -6,42 +6,8 @@ import (
 	"unicode/utf8"
 
 	"github.com/go-ego/gse"
+	"github.com/go-ego/gse/hmm/segment"
 )
-
-// Segment type a word with weight.
-type Segment struct {
-	text   string
-	weight float64
-}
-
-// Text return the segment's text.
-func (s Segment) Text() string {
-	return s.text
-}
-
-// Weight return the segment's weight.
-func (s Segment) Weight() float64 {
-	return s.weight
-}
-
-// Segments type a slice of Segment.
-type Segments []Segment
-
-func (ss Segments) Len() int {
-	return len(ss)
-}
-
-func (ss Segments) Less(i, j int) bool {
-	if ss[i].weight == ss[j].weight {
-		return ss[i].text < ss[j].text
-	}
-
-	return ss[i].weight < ss[j].weight
-}
-
-func (ss Segments) Swap(i, j int) {
-	ss[i], ss[j] = ss[j], ss[i]
-}
 
 // TagExtracter is extract tags struct.
 type TagExtracter struct {
@@ -82,7 +48,7 @@ func (t *TagExtracter) LoadStopWords(fileName ...string) error {
 }
 
 // ExtractTags extract the topK key words from text.
-func (t *TagExtracter) ExtractTags(text string, topK int) (tags Segments) {
+func (t *TagExtracter) ExtractTags(text string, topK int) (tags segment.Segments) {
 	freqMap := make(map[string]float64)
 
 	for _, w := range t.seg.Cut(text, true) {
@@ -110,13 +76,13 @@ func (t *TagExtracter) ExtractTags(text string, topK int) (tags Segments) {
 		freqMap[k] = v / total
 	}
 
-	ws := make(Segments, 0)
-	var s Segment
+	ws := make(segment.Segments, 0)
+	var s segment.Segment
 	for k, v := range freqMap {
 		if freq, _, ok := t.Idf.Freq(k); ok {
-			s = Segment{text: k, weight: freq * v}
+			s = segment.Segment{Text: k, Weight: freq * v}
 		} else {
-			s = Segment{text: k, weight: t.Idf.median * v}
+			s = segment.Segment{Text: k, Weight: t.Idf.median * v}
 		}
 		ws = append(ws, s)
 	}

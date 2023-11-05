@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-ego/gse"
 	"github.com/go-ego/gse/hmm/pos"
+	"github.com/go-ego/gse/hmm/segment"
 )
 
 const dampingFactor = 0.85
@@ -81,7 +82,7 @@ func (u *undirectWeightedGraph) addEdge(start, end string, weight float64) {
 		edge{start: end, end: start, weight: weight})
 }
 
-func (u *undirectWeightedGraph) rank() Segments {
+func (u *undirectWeightedGraph) rank() segment.Segments {
 	if !sort.IsSorted(u.keys) {
 		sort.Sort(u.keys)
 	}
@@ -124,10 +125,10 @@ func (u *undirectWeightedGraph) rank() Segments {
 		}
 	}
 
-	result := make(Segments, 0)
+	result := make(segment.Segments, 0)
 	for n, w := range ws {
 		result = append(result,
-			Segment{text: n, weight: (w - minRank/10.0) / (maxRank - minRank/10.0)},
+			segment.Segment{Text: n, Weight: (w - minRank/10.0) / (maxRank - minRank/10.0)},
 		)
 	}
 
@@ -137,7 +138,7 @@ func (u *undirectWeightedGraph) rank() Segments {
 
 // TextRankWithPOS extracts keywords from text using TextRank algorithm.
 // Parameter allowPOS allows a []string pos list.
-func (t *TextRanker) TextRankWithPOS(text string, topK int, allowPOS []string) Segments {
+func (t *TextRanker) TextRankWithPOS(text string, topK int, allowPOS []string) segment.Segments {
 	posFilt := make(map[string]int)
 	for _, pos1 := range allowPOS {
 		posFilt[pos1] = 1
@@ -181,6 +182,6 @@ func (t *TextRanker) TextRankWithPOS(text string, topK int, allowPOS []string) S
 
 // TextRank extract keywords from text using TextRank algorithm.
 // Parameter topK specify how many top keywords to be returned at most.
-func (t *TextRanker) TextRank(text string, topK int) Segments {
+func (t *TextRanker) TextRank(text string, topK int) segment.Segments {
 	return t.TextRankWithPOS(text, topK, defaultAllowPOS)
 }
