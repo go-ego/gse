@@ -70,3 +70,4 @@ _testmain.go
 .glide/
 examples/dict/embed/embed
 examples/dict/embed/main
+oryxBuildBinary
