@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/go-ego/gse"
 	"github.com/vcaesar/tt"
+
+	"github.com/go-ego/gse"
 )
 
 var (
@@ -17,6 +18,8 @@ func TestExtAndRank(t *testing.T) {
 	var te TagExtracter
 	te.WithGse(segs)
 	err := te.LoadIdf()
+	tt.Nil(t, err)
+	err = te.LoadStopWords()
 	tt.Nil(t, err)
 
 	segments := te.ExtractTags(text, 5)

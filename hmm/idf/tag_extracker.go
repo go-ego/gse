@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-ego/gse"
 	"github.com/go-ego/gse/hmm/segment"
+	"github.com/go-ego/gse/hmm/stopwords"
 )
 
 // TagExtracter is extract tags struct.
@@ -14,18 +15,18 @@ type TagExtracter struct {
 	seg gse.Segmenter
 
 	Idf      *Idf
-	stopWord *StopWord
+	stopWord *stopwords.StopWord
 }
 
 // WithGse register the gse segmenter
 func (t *TagExtracter) WithGse(segs gse.Segmenter) {
-	t.stopWord = NewStopWord()
+	t.stopWord = stopwords.NewStopWord()
 	t.seg = segs
 }
 
 // LoadDict load and create a new dictionary from the file
 func (t *TagExtracter) LoadDict(fileName ...string) error {
-	t.stopWord = NewStopWord()
+	t.stopWord = stopwords.NewStopWord()
 	return t.seg.LoadDict(fileName...)
 }
 
@@ -43,11 +44,11 @@ func (t *TagExtracter) LoadIdfStr(str string) error {
 
 // LoadStopWords load and create a new StopWord dictionary from the file.
 func (t *TagExtracter) LoadStopWords(fileName ...string) error {
-	t.stopWord = NewStopWord()
+	t.stopWord = stopwords.NewStopWord()
 	return t.stopWord.LoadDict(fileName...)
 }
 
-// ExtractTags extract the topK key words from text.
+// ExtractTags extract the topK keywords from text.
 func (t *TagExtracter) ExtractTags(text string, topK int) (tags segment.Segments) {
 	freqMap := make(map[string]float64)
 

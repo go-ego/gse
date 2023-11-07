@@ -1,4 +1,4 @@
-package idf
+package stopwords
 
 import (
 	"github.com/go-ego/gse"
