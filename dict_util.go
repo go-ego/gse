@@ -238,6 +238,18 @@ func (seg *Segmenter) GetIdfPath(files ...string) []string {
 	return files
 }
 
+// GetIdfPath get the tfidf path
+func (seg *Segmenter) GetTfIdfPath(files ...string) []string {
+	var (
+		dictDir  = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
+		dictPath = path.Join(dictDir, "dict/zh/tf_idf.txt")
+	)
+
+	files = append(files, dictPath)
+
+	return files
+}
+
 // Read read the dict file
 func (seg *Segmenter) Read(file string) error {
 	if !seg.SkipLog {
