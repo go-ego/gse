@@ -26,6 +26,8 @@ import (
 	"strconv"
 	"strings"
 	"unicode"
+
+	"github.com/go-ego/gse/types"
 )
 
 var (
@@ -216,6 +218,65 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	return nil
 }
 
+func (seg *Segmenter) LoadTFIDFDict(files []*types.LoadDictFile) error {
+	if !seg.Load {
+		seg.Dict = NewDict()
+		seg.Load = true
+		seg.Init()
+	}
+
+	var (
+		dictDir  = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
+		dictPath string
+		// load     bool
+	)
+
+	for _, file := range files {
+		dictFiles := DictPaths(dictDir, file.File)
+		if !seg.SkipLog {
+			log.Println("Dict files path: ", dictFiles)
+		}
+
+		if len(dictFiles) == 0 {
+			log.Println("Warning: dict files is nil.")
+			// return errors.New("Dict files is nil.")
+		}
+
+		if len(dictFiles) > 0 {
+			// load = true
+			// files = dictFiles
+			for i := 0; i < len(dictFiles); i++ {
+				err := seg.ReadTFIDF(dictFiles[i])
+				if err != nil {
+					return err
+				}
+			}
+		}
+	}
+
+	if len(files) == 0 {
+		dictPath = path.Join(dictDir, zhS1)
+		path1 := path.Join(dictDir, zhT1)
+		// files = []string{dictPath}
+		err := seg.Read(dictPath)
+		if err != nil {
+			return err
+		}
+
+		err = seg.Read(path1)
+		if err != nil {
+			return err
+		}
+	}
+
+	seg.CalcToken()
+	if !seg.SkipLog {
+		log.Println("Gse dictionary loaded finished.")
+	}
+
+	return nil
+}
+
 // GetCurrentFilePath get the current file path
 func (seg *Segmenter) GetCurrentFilePath() string {
 	if seg.DictPath != "" {
@@ -238,7 +299,7 @@ func (seg *Segmenter) GetIdfPath(files ...string) []string {
 	return files
 }
 
-// GetIdfPath get the tfidf path
+// GetTfIdfPath get the tfidf path
 func (seg *Segmenter) GetTfIdfPath(files ...string) []string {
 	var (
 		dictDir  = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
@@ -265,6 +326,23 @@ func (seg *Segmenter) Read(file string) error {
 
 	reader := bufio.NewReader(dictFile)
 	return seg.Reader(reader, file)
+}
+
+// ReadTFIDF read the dict file
+func (seg *Segmenter) ReadTFIDF(file string) error {
+	if !seg.SkipLog {
+		log.Printf("Load the gse dictionary: \"%s\" ", file)
+	}
+
+	dictFile, err := os.Open(file)
+	if err != nil {
+		log.Printf("Could not load dictionaries: \"%s\", %v \n", file, err)
+		return err
+	}
+	defer dictFile.Close()
+
+	reader := bufio.NewReader(dictFile)
+	return seg.ReaderTFIDF(reader, file)
 }
 
 // Size frequency is calculated based on the size of the text
@@ -306,8 +384,7 @@ func (seg *Segmenter) Size(size int, text, freqText string) (freq float64) {
 }
 
 // ReadN read the tokens by '\n'
-func (seg *Segmenter) ReadN(reader *bufio.Reader) (size int,
-	text, freqText, pos string, fsErr error) {
+func (seg *Segmenter) ReadN(reader *bufio.Reader) (size int, text, freqText, pos string, fsErr error) {
 	var txt string
 	txt, fsErr = reader.ReadString('\n')
 
@@ -320,6 +397,23 @@ func (seg *Segmenter) ReadN(reader *bufio.Reader) (size int,
 	}
 	if size > 2 {
 		pos = strings.TrimSpace(strings.Trim(parts[2], "\n"))
+	}
+
+	return
+}
+
+// ReadNTFIDF read the tokens with tfidf by '\n'
+func (seg *Segmenter) ReadNTFIDF(reader *bufio.Reader) (size int, text, freqText, idfText string, fsErr error) {
+	var txt string
+	txt, fsErr = reader.ReadString('\n')
+
+	parts := strings.Split(txt, seg.DictSep+" ")
+	size = len(parts)
+
+	text = parts[0]
+	if size > 2 {
+		freqText = strings.TrimSpace(parts[1])
+		idfText = strings.TrimSpace(strings.Trim(parts[2], "\n"))
 	}
 
 	return
@@ -388,6 +482,71 @@ func (seg *Segmenter) Reader(reader *bufio.Reader, files ...string) error {
 		// Add participle tokens to the dictionary
 		words := seg.SplitTextToWords([]byte(text))
 		token := Token{text: words, freq: freq, pos: pos}
+		seg.Dict.AddToken(token)
+	}
+
+	return nil
+}
+
+// ReaderTFIDF load tfidf dictionary from io.Reader
+func (seg *Segmenter) ReaderTFIDF(reader *bufio.Reader, files ...string) error {
+	var (
+		file                    string
+		text, freqText, idfText string
+		freq                    float64
+		inverseFreq             float64
+	)
+
+	if len(files) > 0 {
+		file = files[0]
+	}
+
+	// Read the word segmentation line by line
+	line := 0
+	for {
+		line++
+		var (
+			size  int
+			fsErr error
+		)
+		if seg.DictSep == "" {
+			size, fsErr = fmt.Fscanln(reader, &text, &freqText, &idfText)
+		} else {
+			size, text, freqText, idfText, fsErr = seg.ReadNTFIDF(reader)
+		}
+
+		if fsErr != nil {
+			if fsErr == io.EOF {
+				// End of file
+				if seg.DictSep == "" {
+					break
+				}
+
+				if seg.DictSep != "" && text == "" {
+					break
+				}
+			}
+
+			if size > 0 {
+				if seg.MoreLog {
+					log.Printf("File '%v' line \"%v\" read error: %v, skip",
+						file, line, fsErr.Error())
+				}
+			} else {
+				log.Printf("File '%v' line \"%v\" is empty, read error: %v, skip",
+					file, line, fsErr.Error())
+			}
+		}
+
+		freq = seg.Size(size, text, freqText)
+		inverseFreq = seg.Size(size, text, idfText)
+		if freq == 0.0 || inverseFreq == 0.0 {
+			continue
+		}
+
+		// Add participle tokens to the dictionary
+		words := seg.SplitTextToWords([]byte(text))
+		token := Token{text: words, freq: freq, inverseFreq: inverseFreq}
 		seg.Dict.AddToken(token)
 	}
 

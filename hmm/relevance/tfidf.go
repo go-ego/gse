@@ -21,8 +21,10 @@ import (
 	"unicode/utf8"
 
 	"github.com/go-ego/gse"
+	"github.com/go-ego/gse/consts"
 	"github.com/go-ego/gse/hmm/segment"
 	"github.com/go-ego/gse/hmm/stopwords"
+	"github.com/go-ego/gse/types"
 )
 
 // TFIDF a measure of importance of a word to a document in a collection.
@@ -49,13 +51,20 @@ func (t *TFIDF) LoadStopWord(fileName ...string) error {
 	return t.StopWord.LoadDict(fileName...)
 }
 
-// LoadDictStr load dict for TFIDF seg
+// LoadDict load dict for TFIDF seg
 func (t *TFIDF) LoadDict(files ...string) error {
 	if len(files) <= 0 {
 		files = t.Seg.GetTfIdfPath(files...)
 	}
+	dictFiles := make([]*types.LoadDictFile, len(files))
+	for i, v := range dictFiles {
+		dictFiles[i] = &types.LoadDictFile{
+			File:     v.File,
+			FileType: consts.LoadDictTypeTFIDF,
+		}
+	}
 
-	return t.Seg.LoadDict(files...)
+	return t.Seg.LoadTFIDFDict(dictFiles)
 }
 
 // LoadDictStr load dict for TFIDF seg
