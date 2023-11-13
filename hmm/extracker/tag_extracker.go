@@ -29,6 +29,7 @@ type TagExtracter struct {
 	// calculate weight by Relevance(including IDF,TF-IDF,BM25 and so on)
 	Relevance relevance.Relevance
 	// stopWord *stopwords.StopWord
+
 }
 
 // WithGse register the gse segmenter
@@ -65,13 +66,13 @@ func (t *TagExtracter) LoadNewTFIDFStr(str string) error {
 	return t.Relevance.LoadDictStr(str)
 }
 
-// LoadTFIDF load and create a new TFIDF dictionary from the file.
+// LoadBM25 load and create a new BM25 dictionary from the file.
 func (t *TagExtracter) LoadBM25(fileName ...string) error {
 	t.Relevance = relevance.NewBM25()
 	return t.Relevance.LoadDict(fileName...)
 }
 
-// LoadNewTFIDFStr load and create a new TFIDF dictionary from the string.
+// LoadNewBM25Str load and create a new BM25 dictionary from the string.
 func (t *TagExtracter) LoadNewBM25Str(str string) error {
 	t.Relevance = relevance.NewBM25()
 	return t.Relevance.LoadDictStr(str)

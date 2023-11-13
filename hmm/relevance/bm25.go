@@ -59,7 +59,7 @@ func (bm25 *BM25) LoadDict(files ...string) error {
 	for i, v := range files {
 		dictFiles[i] = &types.LoadDictFile{
 			File:     v,
-			FileType: consts.LoadDictTypeTFIDF,
+			FileType: consts.LoadDictTypeBM25,
 		}
 	}
 
@@ -70,7 +70,7 @@ func (bm25 *BM25) LoadDict(files ...string) error {
 func (bm25 *BM25) calculateK(docNum float64) float64 {
 	// t := len(strings.Split(document, " "))/bm25.AverageDocSize
 	t := docNum / bm25.AverageDocSize
-	return bm25.K1 * ((1 - bm25.B) + bm25.B*(float64(t)))
+	return bm25.K1 * ((1 - bm25.B) + bm25.B*(t))
 }
 
 // LoadDictStr load dict for TFIDF seg
