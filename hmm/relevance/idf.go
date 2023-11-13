@@ -66,7 +66,7 @@ func (i *Idf) LoadDictStr(dictStr string) error {
 }
 
 // Freq return the IDF of the word
-func (i *Idf) Freq(key string) (float64, string, bool) {
+func (i *Idf) Freq(key string) (float64, interface{}, bool) {
 	return i.Seg.Find(key)
 }
 

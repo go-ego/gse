@@ -15,7 +15,6 @@
 package relevance
 
 import (
-	"math"
 	"sort"
 	"strings"
 	"unicode/utf8"
@@ -73,8 +72,8 @@ func (t *TFIDF) LoadDictStr(dictStr string) error {
 }
 
 // Freq return the TFIDF of the word
-func (t *TFIDF) Freq(key string) (float64, string, bool) {
-	return t.Seg.Find(key)
+func (t *TFIDF) Freq(key string) (float64, interface{}, bool) {
+	return t.Seg.FindTFIDF(key)
 }
 
 // NumTokens return the TFIDF tokens' num
@@ -120,24 +119,17 @@ func (t *TFIDF) FreqMap(text string) map[string]float64 {
 }
 
 // calculateIdf calculate the word's weight by TFIDF
-func (t *TFIDF) calculateIdf(term string, documents []string) float64 {
-	documentsWithTerm := 0
-	for _, document := range documents {
-		if strings.Contains(document, term) {
-			documentsWithTerm++
-		}
-	}
-
-	return math.Log(float64(len(documents)) / float64(documentsWithTerm+1))
+func (t *TFIDF) calculateWeight(term string) float64 {
+	tf, idf, _ := t.Freq(term)
+	return tf * idf.(float64)
 }
 
 // ConstructSeg construct segment with weight
 func (t *TFIDF) ConstructSeg(text string) segment.Segments {
 	// make segment list by total freq num
 	ws := make([]segment.Segment, 0)
-	docs := []string{text}
-	for k, v := range t.FreqMap(text) {
-		ws = append(ws, segment.Segment{Text: k, Weight: v * t.calculateIdf(k, docs)})
+	for k := range t.FreqMap(text) {
+		ws = append(ws, segment.Segment{Text: k, Weight: t.calculateWeight(k)})
 	}
 
 	return ws
