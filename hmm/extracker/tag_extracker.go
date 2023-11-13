@@ -65,6 +65,18 @@ func (t *TagExtracter) LoadNewTFIDFStr(str string) error {
 	return t.Relevance.LoadDictStr(str)
 }
 
+// LoadTFIDF load and create a new TFIDF dictionary from the file.
+func (t *TagExtracter) LoadBM25(fileName ...string) error {
+	t.Relevance = relevance.NewBM25()
+	return t.Relevance.LoadDict(fileName...)
+}
+
+// LoadNewTFIDFStr load and create a new TFIDF dictionary from the string.
+func (t *TagExtracter) LoadNewBM25Str(str string) error {
+	t.Relevance = relevance.NewBM25()
+	return t.Relevance.LoadDictStr(str)
+}
+
 // LoadStopWords load and create a new StopWord dictionary from the file.
 func (t *TagExtracter) LoadStopWords(fileName ...string) error {
 	return t.Relevance.LoadStopWord(fileName...)
