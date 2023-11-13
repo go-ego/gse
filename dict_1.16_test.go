@@ -7,6 +7,8 @@ import (
 	_ "embed"
 	"testing"
 
+	"github.com/go-ego/gse/consts"
+	"github.com/go-ego/gse/types"
 	"github.com/vcaesar/tt"
 )
 
@@ -91,4 +93,14 @@ func TestDictSep(t *testing.T) {
 	tt.Bool(t, ok)
 	tt.Equal(t, "x", pos)
 	tt.Equal(t, 10, f)
+}
+
+func TestLoadTFIDFDictStr(t *testing.T) {
+	var seg Segmenter
+	a := []*types.LoadDictFile{}
+	a = append(a, &types.LoadDictFile{
+		File:     "/workspaces/gse/data/dict/zh/tf_idf.txt",
+		FileType: consts.LoadDictTypeTFIDF,
+	})
+	seg.LoadTFIDFDict(a)
 }

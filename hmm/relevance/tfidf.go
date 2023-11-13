@@ -56,9 +56,9 @@ func (t *TFIDF) LoadDict(files ...string) error {
 		files = t.Seg.GetTfIdfPath(files...)
 	}
 	dictFiles := make([]*types.LoadDictFile, len(files))
-	for i, v := range dictFiles {
+	for i, v := range files {
 		dictFiles[i] = &types.LoadDictFile{
-			File:     v.File,
+			File:     v,
 			FileType: consts.LoadDictTypeTFIDF,
 		}
 	}
@@ -68,7 +68,11 @@ func (t *TFIDF) LoadDict(files ...string) error {
 
 // LoadDictStr load dict for TFIDF seg
 func (t *TFIDF) LoadDictStr(dictStr string) error {
-	return t.Seg.LoadDictStr(dictStr)
+	dictFile := &types.LoadDictFile{
+		File:     dictStr,
+		FileType: consts.LoadDictTypeTFIDF,
+	}
+	return t.Seg.LoadTFIDFDictStr(dictFile)
 }
 
 // Freq return the TFIDF of the word

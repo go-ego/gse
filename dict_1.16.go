@@ -12,6 +12,8 @@ package gse
 
 import (
 	"strings"
+
+	"github.com/go-ego/gse/types"
 )
 
 // //go:embed data/dict/dictionary.txt
@@ -121,6 +123,43 @@ func (seg *Segmenter) LoadDictStr(dict string) error {
 		// add the words to the token
 		words := seg.SplitTextToWords([]byte(text))
 		token := Token{text: words, freq: freq, pos: pos}
+		seg.Dict.AddToken(token)
+	}
+
+	seg.CalcToken()
+	return nil
+}
+
+// LoadTFIDFDictStr load the TFIDF dictionary from dict path
+func (seg *Segmenter) LoadTFIDFDictStr(dictFile *types.LoadDictFile) error {
+	if seg.Dict == nil {
+		seg.Dict = NewDict()
+		seg.Init()
+	}
+
+	arr := strings.Split(dictFile.File, "\n")
+	for i := 0; i < len(arr); i++ {
+		s1 := strings.Split(arr[i], seg.DictSep+" ")
+		size := len(s1)
+		if size == 0 {
+			continue
+		}
+		text := strings.TrimSpace(s1[0])
+		// frequency
+		freqText := strings.TrimSpace(s1[1])
+		freq := seg.Size(size, text, freqText)
+		if freq == 0.0 {
+			continue
+		}
+		// invserse frequency
+		inverseFreqText := strings.Trim(s1[2], "\n")
+		inverseFreq := seg.Size(size, text, inverseFreqText)
+		if inverseFreq == 0.0 {
+			continue
+		}
+		// add the words to the token
+		words := seg.SplitTextToWords([]byte(text))
+		token := Token{text: words, freq: freq, inverseFreq: inverseFreq}
 		seg.Dict.AddToken(token)
 	}
 
