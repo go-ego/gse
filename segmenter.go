@@ -56,6 +56,9 @@ type Segmenter struct {
 	NotStop bool
 	// StopWordMap the stop word map
 	StopWordMap map[string]bool
+
+	// CorpusNum the number of corpus
+	CorpusNum int
 }
 
 // jumper this structure is used to record information

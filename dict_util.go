@@ -299,6 +299,57 @@ func (seg *Segmenter) GetIdfPath(files ...string) []string {
 	return files
 }
 
+// LoadCorpusNum load the corpus
+func (seg *Segmenter) LoadCorpusNum(files ...string) (corpusTotal int, err error) {
+	filePaths := seg.GetCorpusPath(files...)
+	corpusTotal = 0
+	for _, v := range filePaths {
+		var number = 0
+		number, err = seg.ReadCorpus(v)
+		if err != nil {
+			log.Printf("Could not read corpus from file path: \"%s\", %v \n", v, err)
+			return
+		}
+		corpusTotal += number
+	}
+
+	return
+}
+
+// GetCorpusPath get the corpus path
+func (seg *Segmenter) GetCorpusPath(files ...string) []string {
+	var (
+		dictDir  = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
+		dictPath = path.Join(dictDir, "dict/zh/tf_idf_origin.txt")
+	)
+
+	files = append(files, dictPath)
+
+	return files
+}
+
+func (seg *Segmenter) ReadCorpus(file string) (corpusNum int, err error) {
+	if !seg.SkipLog {
+		log.Printf("Load the gse dictionary: \"%s\" ", file)
+	}
+	corpusNum = 0
+	dictFile, err := os.Open(file)
+	if err != nil {
+		log.Printf("Could not load dictionaries: \"%s\", %v \n", file, err)
+		return
+	}
+	defer dictFile.Close()
+
+	// 创建一个 Scanner 来读取文件内容
+	scanner := bufio.NewScanner(dictFile)
+	// 逐行读取文件内容
+	for scanner.Scan() {
+		corpusNum++
+	}
+
+	return
+}
+
 // GetTfIdfPath get the tfidf path
 func (seg *Segmenter) GetTfIdfPath(files ...string) []string {
 	var (

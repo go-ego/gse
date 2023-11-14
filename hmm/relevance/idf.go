@@ -138,6 +138,11 @@ func (i *Idf) GetSeg() gse.Segmenter {
 	return i.Seg
 }
 
+// LoadCorpus idf no need to load corpus
+func (i *Idf) LoadCorpus() error {
+	return nil
+}
+
 // NewIdf create a new Idf
 func NewIdf() Relevance {
 	idf := &Idf{

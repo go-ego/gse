@@ -144,6 +144,11 @@ func (t *TFIDF) GetSeg() gse.Segmenter {
 	return t.Seg
 }
 
+// LoadCorpus tf idf no need to load corpus
+func (t *TFIDF) LoadCorpus() error {
+	return nil
+}
+
 // NewTFIDF create a new TFIDF
 func NewTFIDF() Relevance {
 	tfidf := &TFIDF{

@@ -10,3 +10,8 @@ type LoadBM25DictFile struct {
 	FileType int
 	Number   float64
 }
+
+type BM25Setting struct {
+	K1 float64
+	B  float64
+}

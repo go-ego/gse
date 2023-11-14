@@ -32,6 +32,9 @@ type Relevance interface {
 	// LoadDictStr loading dict file by file path
 	LoadDictStr(pathStr string) error
 
+	// LoadCorpus loading corpus
+	LoadCorpus(path ...string) error
+
 	// LoadStopWord loading word file by filename
 	LoadStopWord(fileName ...string) error
 

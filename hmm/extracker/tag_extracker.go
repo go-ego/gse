@@ -20,6 +20,7 @@ import (
 	"github.com/go-ego/gse"
 	"github.com/go-ego/gse/hmm/relevance"
 	"github.com/go-ego/gse/hmm/segment"
+	"github.com/go-ego/gse/types"
 )
 
 // TagExtracter is extract tags struct.
@@ -67,14 +68,14 @@ func (t *TagExtracter) LoadNewTFIDFStr(str string) error {
 }
 
 // LoadBM25 load and create a new BM25 dictionary from the file.
-func (t *TagExtracter) LoadBM25(fileName ...string) error {
-	t.Relevance = relevance.NewBM25()
+func (t *TagExtracter) LoadBM25(setting *types.BM25Setting, fileName ...string) error {
+	t.Relevance = relevance.NewBM25(setting)
 	return t.Relevance.LoadDict(fileName...)
 }
 
 // LoadNewBM25Str load and create a new BM25 dictionary from the string.
-func (t *TagExtracter) LoadNewBM25Str(str string) error {
-	t.Relevance = relevance.NewBM25()
+func (t *TagExtracter) LoadNewBM25Str(setting *types.BM25Setting, str string) error {
+	t.Relevance = relevance.NewBM25(setting)
 	return t.Relevance.LoadDictStr(str)
 }
 

@@ -15,3 +15,8 @@ const (
 	// LoadDictTypeWithPos dict of with position to loading
 	LoadDictTypeWithPos
 )
+
+const (
+	BM25DefaultK1 = 1.25
+	BM25DefaultB  = 0.8
+)

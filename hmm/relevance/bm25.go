@@ -154,9 +154,29 @@ func (bm25 *BM25) GetSeg() gse.Segmenter {
 	return bm25.Seg
 }
 
+// LoadCorpus tf idf no need to load corpus
+func (bm25 *BM25) LoadCorpus(path ...string) (err error) {
+	number, err := bm25.Seg.LoadCorpusNum(path...)
+	if err != nil {
+		return
+	}
+
+	bm25.AverageDocSize = number
+	return
+}
+
 // NewBM25 create a new TFIDF
-func NewBM25() Relevance {
-	bm25 := &BM25{}
+func NewBM25(bm25Setting *types.BM25Setting) Relevance {
+	if bm25Setting.K1 == 0 {
+		bm25Setting.K1 = consts.BM25DefaultK1
+	}
+	if bm25Setting.B == 0 {
+		bm25Setting.K1 = consts.BM25DefaultB
+	}
+	bm25 := &BM25{
+		K1: bm25Setting.K1,
+		B:  bm25Setting.B,
+	}
 	bm25.StopWord = stopwords.NewStopWord()
 	return Relevance(bm25)
 }
