@@ -145,7 +145,7 @@ func (t *TFIDF) GetSeg() gse.Segmenter {
 }
 
 // LoadCorpus tf idf no need to load corpus
-func (t *TFIDF) LoadCorpus() error {
+func (t *TFIDF) LoadCorpus(path ...string) error {
 	return nil
 }
 

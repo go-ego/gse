@@ -139,7 +139,7 @@ func (i *Idf) GetSeg() gse.Segmenter {
 }
 
 // LoadCorpus idf no need to load corpus
-func (i *Idf) LoadCorpus() error {
+func (i *Idf) LoadCorpus(path ...string) error {
 	return nil
 }
 

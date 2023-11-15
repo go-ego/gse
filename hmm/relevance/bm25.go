@@ -133,7 +133,7 @@ func (bm25 *BM25) FreqMap(text string) map[string]float64 {
 // calculateIdf calculate the word's weight by TFIDF
 func (bm25 *BM25) calculateWeight(term string) float64 {
 	tf, idf, _ := bm25.Freq(term)
-	k := bm25.calculateK(bm25.TermTotal)
+	k := bm25.calculateK(float64(utf8.RuneCountInString(term)))
 
 	return idf.(float64) * ((tf * (bm25.K1 + 1)) / (tf + k))
 }
@@ -156,17 +156,23 @@ func (bm25 *BM25) GetSeg() gse.Segmenter {
 
 // LoadCorpus tf idf no need to load corpus
 func (bm25 *BM25) LoadCorpus(path ...string) (err error) {
-	number, err := bm25.Seg.LoadCorpusNum(path...)
+	averLength, err := bm25.Seg.LoadCorpusAverLen(path...)
 	if err != nil {
 		return
 	}
 
-	bm25.AverageDocSize = number
+	bm25.AverageDocSize = averLength
 	return
 }
 
 // NewBM25 create a new TFIDF
 func NewBM25(bm25Setting *types.BM25Setting) Relevance {
+	if bm25Setting == nil {
+		bm25Setting = &types.BM25Setting{
+			K1: consts.BM25DefaultK1,
+			B:  consts.BM25DefaultB,
+		}
+	}
 	if bm25Setting.K1 == 0 {
 		bm25Setting.K1 = consts.BM25DefaultK1
 	}

@@ -68,8 +68,12 @@ func (t *TagExtracter) LoadNewTFIDFStr(str string) error {
 }
 
 // LoadBM25 load and create a new BM25 dictionary from the file.
-func (t *TagExtracter) LoadBM25(setting *types.BM25Setting, fileName ...string) error {
+func (t *TagExtracter) LoadBM25(setting *types.BM25Setting, fileName ...string) (err error) {
 	t.Relevance = relevance.NewBM25(setting)
+	err = t.Relevance.LoadCorpus() // TODO: params handle
+	if err != nil {
+		return
+	}
 	return t.Relevance.LoadDict(fileName...)
 }
 

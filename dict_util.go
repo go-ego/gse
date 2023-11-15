@@ -26,6 +26,7 @@ import (
 	"strconv"
 	"strings"
 	"unicode"
+	"unicode/utf8"
 
 	"github.com/go-ego/gse/types"
 )
@@ -299,12 +300,12 @@ func (seg *Segmenter) GetIdfPath(files ...string) []string {
 	return files
 }
 
-// LoadCorpusNum load the corpus
-func (seg *Segmenter) LoadCorpusNum(files ...string) (corpusTotal int, err error) {
+// LoadCorpusAverLen load the average length of corpus
+func (seg *Segmenter) LoadCorpusAverLen(files ...string) (corpusTotal float64, err error) {
 	filePaths := seg.GetCorpusPath(files...)
 	corpusTotal = 0
 	for _, v := range filePaths {
-		var number = 0
+		var number float64 = 0
 		number, err = seg.ReadCorpus(v)
 		if err != nil {
 			log.Printf("Could not read corpus from file path: \"%s\", %v \n", v, err)
@@ -312,6 +313,8 @@ func (seg *Segmenter) LoadCorpusNum(files ...string) (corpusTotal int, err error
 		}
 		corpusTotal += number
 	}
+
+	corpusTotal = corpusTotal / float64(len(filePaths))
 
 	return
 }
@@ -328,11 +331,12 @@ func (seg *Segmenter) GetCorpusPath(files ...string) []string {
 	return files
 }
 
-func (seg *Segmenter) ReadCorpus(file string) (corpusNum int, err error) {
+func (seg *Segmenter) ReadCorpus(file string) (corpusAverLen float64, err error) {
 	if !seg.SkipLog {
 		log.Printf("Load the gse dictionary: \"%s\" ", file)
 	}
-	corpusNum = 0
+	var corpusNumber float64 = 0
+	var corpusLength float64 = 0
 	dictFile, err := os.Open(file)
 	if err != nil {
 		log.Printf("Could not load dictionaries: \"%s\", %v \n", file, err)
@@ -340,12 +344,15 @@ func (seg *Segmenter) ReadCorpus(file string) (corpusNum int, err error) {
 	}
 	defer dictFile.Close()
 
-	// 创建一个 Scanner 来读取文件内容
+	// new the Scanner to read file content
 	scanner := bufio.NewScanner(dictFile)
-	// 逐行读取文件内容
+	// read file content by line
 	for scanner.Scan() {
-		corpusNum++
+		corpusNumber++
+		line := scanner.Text()
+		corpusLength += float64(utf8.RuneCountInString(line))
 	}
+	corpusAverLen = corpusLength / corpusNumber
 
 	return
 }

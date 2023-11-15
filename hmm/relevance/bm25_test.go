@@ -12,13 +12,13 @@ import (
 
 var (
 	segsBM25, _ = gse.New()
-	textBM25    = "油价的下跌将刺激汽车新一轮消费，增强消费者的购车欲望"
+	textBM25    = "这里不仅有历史的积淀,还充满活力与想象"
 )
 
 func TestExtBM25AndRank(t *testing.T) {
 	var te extracker.TagExtracter
 	te.WithGse(segsBM25)
-	err := te.LoadBM25()
+	err := te.LoadBM25(nil)
 	tt.Nil(t, err)
 	err = te.LoadStopWords()
 	tt.Nil(t, err)
