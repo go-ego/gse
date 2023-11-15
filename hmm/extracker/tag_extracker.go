@@ -18,6 +18,7 @@ import (
 	"sort"
 
 	"github.com/go-ego/gse"
+	"github.com/go-ego/gse/consts"
 	"github.com/go-ego/gse/hmm/relevance"
 	"github.com/go-ego/gse/hmm/segment"
 	"github.com/go-ego/gse/types"
@@ -30,7 +31,6 @@ type TagExtracter struct {
 	// calculate weight by Relevance(including IDF,TF-IDF,BM25 and so on)
 	Relevance relevance.Relevance
 	// stopWord *stopwords.StopWord
-
 }
 
 // WithGse register the gse segmenter
@@ -68,13 +68,29 @@ func (t *TagExtracter) LoadNewTFIDFStr(str string) error {
 }
 
 // LoadBM25 load and create a new BM25 dictionary from the file.
-func (t *TagExtracter) LoadBM25(setting *types.BM25Setting, fileName ...string) (err error) {
+func (t *TagExtracter) LoadBM25(setting *types.BM25Setting, fileList []*types.LoadBM25DictFile) (err error) {
 	t.Relevance = relevance.NewBM25(setting)
-	err = t.Relevance.LoadCorpus() // TODO: params handle
+	// load dict file and corpus file
+	dictBM25 := []string{}
+	corpusBM25 := []string{}
+
+	for _, v := range fileList {
+		switch v.FileType {
+
+		case consts.LoadDictCorpus:
+			corpusBM25 = append(corpusBM25, v.FilePath)
+
+		case consts.LoadDictTypeBM25:
+			dictBM25 = append(dictBM25, v.FilePath)
+		}
+	}
+
+	err = t.Relevance.LoadCorpus(corpusBM25...)
 	if err != nil {
 		return
 	}
-	return t.Relevance.LoadDict(fileName...)
+
+	return t.Relevance.LoadDict(dictBM25...)
 }
 
 // LoadNewBM25Str load and create a new BM25 dictionary from the string.

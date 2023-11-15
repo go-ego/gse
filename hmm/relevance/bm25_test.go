@@ -12,13 +12,13 @@ import (
 
 var (
 	segsBM25, _ = gse.New()
-	textBM25    = "这里不仅有历史的积淀,还充满活力与想象"
+	textBM25    = "这里有历史的积淀,充满活力与想象"
 )
 
 func TestExtBM25AndRank(t *testing.T) {
 	var te extracker.TagExtracter
 	te.WithGse(segsBM25)
-	err := te.LoadBM25(nil)
+	err := te.LoadBM25(nil, nil)
 	tt.Nil(t, err)
 	err = te.LoadStopWords()
 	tt.Nil(t, err)

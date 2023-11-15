@@ -6,7 +6,7 @@ type LoadDictFile struct {
 }
 
 type LoadBM25DictFile struct {
-	File     string
+	FilePath string
 	FileType int
 	Number   float64
 }

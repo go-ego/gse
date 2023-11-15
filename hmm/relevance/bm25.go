@@ -32,7 +32,7 @@ type BM25 struct {
 
 	B float64
 
-	AverageDocSize float64
+	AverageDocLength float64
 
 	TermTotal float64
 
@@ -53,8 +53,10 @@ func (bm25 *BM25) LoadStopWord(fileName ...string) error {
 // LoadDict load dict for TFIDF seg
 func (bm25 *BM25) LoadDict(files ...string) error {
 	if len(files) <= 0 {
+		// bm25 needs tf and idf value , so we just get the tfidf path and loading it.
 		files = bm25.Seg.GetTfIdfPath(files...)
 	}
+
 	dictFiles := make([]*types.LoadDictFile, len(files))
 	for i, v := range files {
 		dictFiles[i] = &types.LoadDictFile{
@@ -66,10 +68,9 @@ func (bm25 *BM25) LoadDict(files ...string) error {
 	return bm25.Seg.LoadTFIDFDict(dictFiles)
 }
 
-// calculateK Calculate the K value for a document
+// calculateK Calculate the K value for bm25
 func (bm25 *BM25) calculateK(docNum float64) float64 {
-	// t := len(strings.Split(document, " "))/bm25.AverageDocSize
-	t := docNum / bm25.AverageDocSize
+	t := docNum / bm25.AverageDocLength
 	return bm25.K1 * ((1 - bm25.B) + bm25.B*(t))
 }
 
@@ -154,19 +155,20 @@ func (bm25 *BM25) GetSeg() gse.Segmenter {
 	return bm25.Seg
 }
 
-// LoadCorpus tf idf no need to load corpus
+// LoadCorpus for calcaluate the avgerage length of corpus
 func (bm25 *BM25) LoadCorpus(path ...string) (err error) {
 	averLength, err := bm25.Seg.LoadCorpusAverLen(path...)
 	if err != nil {
 		return
 	}
 
-	bm25.AverageDocSize = averLength
+	bm25.AverageDocLength = averLength
 	return
 }
 
 // NewBM25 create a new TFIDF
 func NewBM25(bm25Setting *types.BM25Setting) Relevance {
+	// init value
 	if bm25Setting == nil {
 		bm25Setting = &types.BM25Setting{
 			K1: consts.BM25DefaultK1,
@@ -179,10 +181,12 @@ func NewBM25(bm25Setting *types.BM25Setting) Relevance {
 	if bm25Setting.B == 0 {
 		bm25Setting.K1 = consts.BM25DefaultB
 	}
+
 	bm25 := &BM25{
 		K1: bm25Setting.K1,
 		B:  bm25Setting.B,
 	}
 	bm25.StopWord = stopwords.NewStopWord()
+
 	return Relevance(bm25)
 }
