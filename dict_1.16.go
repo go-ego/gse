@@ -137,7 +137,7 @@ func (seg *Segmenter) LoadTFIDFDictStr(dictFile *types.LoadDictFile) error {
 		seg.Init()
 	}
 
-	arr := strings.Split(dictFile.File, "\n")
+	arr := strings.Split(dictFile.FilePath, "\n")
 	for i := 0; i < len(arr); i++ {
 		s1 := strings.Split(arr[i], seg.DictSep+" ")
 		size := len(s1)

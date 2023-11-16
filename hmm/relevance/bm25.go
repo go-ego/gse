@@ -28,14 +28,30 @@ import (
 // BM25 Best Match
 // ref: https://en.wikipedia.org/wiki/Okapi_BM25
 type BM25 struct {
+	// K1 Saturation Paramete
+	// Controls the saturation of the TF,
+	// i.e. a word frequency that exceeds the value of this parameter is not given more weight.
+	// A lower k1 will make the word frequency less influential
+	// and a higher k1 will make the word frequency more influential.
+	// if not defind K1 , we will defind it in 1.25
 	K1 float64
 
+	// B Length Normalization Parameter
+	// Controls the degree of normalization of document length.
+	// A lower b will make shorter documents more important
+	// and a higher b will make longer documents more important.
+	// so and K1 , if not defind by client, we will defind it in 0.75
 	B float64
 
+	// AverageDocLength Average Document Length
+	// Indicates the average vocabulary per document in the entire document set.
+	// This value is used to normalize the document length in order to compare documents of different lengths.
 	AverageDocLength float64
 
+	// TermTotal
 	TermTotal float64
 
+	// Base default setting
 	Base
 }
 
@@ -60,7 +76,7 @@ func (bm25 *BM25) LoadDict(files ...string) error {
 	dictFiles := make([]*types.LoadDictFile, len(files))
 	for i, v := range files {
 		dictFiles[i] = &types.LoadDictFile{
-			File:     v,
+			FilePath: v,
 			FileType: consts.LoadDictTypeBM25,
 		}
 	}
@@ -68,37 +84,32 @@ func (bm25 *BM25) LoadDict(files ...string) error {
 	return bm25.Seg.LoadTFIDFDict(dictFiles)
 }
 
-// calculateK Calculate the K value for bm25
-func (bm25 *BM25) calculateK(docNum float64) float64 {
-	t := docNum / bm25.AverageDocLength
-	return bm25.K1 * ((1 - bm25.B) + bm25.B*(t))
-}
-
-// LoadDictStr load dict for TFIDF seg
+// LoadDictStr load dict for BM25 seg
 func (bm25 *BM25) LoadDictStr(dictStr string) error {
 	dictFile := &types.LoadDictFile{
-		File:     dictStr,
-		FileType: consts.LoadDictTypeTFIDF,
+		FilePath: dictStr,
+		FileType: consts.LoadDictTypeBM25,
 	}
 	return bm25.Seg.LoadTFIDFDictStr(dictFile)
 }
 
-// Freq return the TFIDF of the word
+// Freq return the BM25 of the word
+// BM25 need TF and IDF value so we just use FindTFIDF func
 func (bm25 *BM25) Freq(key string) (float64, interface{}, bool) {
 	return bm25.Seg.FindTFIDF(key)
 }
 
-// NumTokens return the TFIDF tokens' num
+// NumTokens return the BM25 tokens' num
 func (bm25 *BM25) NumTokens() int {
 	return bm25.Seg.Dict.NumTokens()
 }
 
-// TotalFreq return the TFIDF total frequency
+// TotalFreq return the BM25 total frequency
 func (bm25 *BM25) TotalFreq() float64 {
 	return bm25.Seg.Dict.TotalFreq()
 }
 
-// FreqMap return the TFIDF freq map
+// FreqMap return the BM25 freq map
 func (bm25 *BM25) FreqMap(text string) map[string]float64 {
 	freqMap := make(map[string]float64)
 
@@ -131,7 +142,13 @@ func (bm25 *BM25) FreqMap(text string) map[string]float64 {
 	return freqMap
 }
 
-// calculateIdf calculate the word's weight by TFIDF
+// calculateK Calculate the K value for bm25
+func (bm25 *BM25) calculateK(docNum float64) float64 {
+	t := docNum / bm25.AverageDocLength
+	return bm25.K1 * ((1 - bm25.B) + bm25.B*(t))
+}
+
+// calculateIdf calculate the word's weight by BM25
 func (bm25 *BM25) calculateWeight(term string) float64 {
 	tf, idf, _ := bm25.Freq(term)
 	k := bm25.calculateK(float64(utf8.RuneCountInString(term)))

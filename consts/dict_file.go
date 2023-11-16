@@ -24,5 +24,5 @@ const (
 	BM25DefaultK1 = 1.25
 
 	// BM25DefaultK1 default B value for calculate bm25
-	BM25DefaultB = 0.8
+	BM25DefaultB = 0.75
 )

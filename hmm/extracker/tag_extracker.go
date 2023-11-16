@@ -68,12 +68,27 @@ func (t *TagExtracter) LoadNewTFIDFStr(str string) error {
 }
 
 // LoadBM25 load and create a new BM25 dictionary from the file.
-func (t *TagExtracter) LoadBM25(setting *types.BM25Setting, fileList []*types.LoadBM25DictFile) (err error) {
+// params setting: the k1 and b to defind for calcluate bm25
+//
+//	types.BM25Setting{
+//		K1
+//	 	B
+//	}
+//
+// params: fileList:
+//
+//	type LoadBM25DictFile struct {
+//			FilePath string
+//			FileType int
+//			Number   float64
+//	}
+func (t *TagExtracter) LoadBM25(setting *types.BM25Setting, fileList []*types.LoadDictFile) (err error) {
 	t.Relevance = relevance.NewBM25(setting)
 	// load dict file and corpus file
 	dictBM25 := []string{}
 	corpusBM25 := []string{}
 
+	// Distinguishing dictionary types
 	for _, v := range fileList {
 		switch v.FileType {
 
@@ -91,12 +106,6 @@ func (t *TagExtracter) LoadBM25(setting *types.BM25Setting, fileList []*types.Lo
 	}
 
 	return t.Relevance.LoadDict(dictBM25...)
-}
-
-// LoadNewBM25Str load and create a new BM25 dictionary from the string.
-func (t *TagExtracter) LoadNewBM25Str(setting *types.BM25Setting, str string) error {
-	t.Relevance = relevance.NewBM25(setting)
-	return t.Relevance.LoadDictStr(str)
 }
 
 // LoadStopWords load and create a new StopWord dictionary from the file.

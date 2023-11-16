@@ -28,6 +28,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/go-ego/gse/consts"
 	"github.com/go-ego/gse/types"
 )
 
@@ -219,6 +220,7 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	return nil
 }
 
+// LoadTFIDFDict load tfidf dict for cal tfidf & bm25
 func (seg *Segmenter) LoadTFIDFDict(files []*types.LoadDictFile) error {
 	if !seg.Load {
 		seg.Dict = NewDict()
@@ -227,13 +229,15 @@ func (seg *Segmenter) LoadTFIDFDict(files []*types.LoadDictFile) error {
 	}
 
 	var (
-		dictDir  = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
-		dictPath string
-		// load     bool
+		dictDir = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
 	)
 
 	for _, file := range files {
-		dictFiles := DictPaths(dictDir, file.File)
+		// limit file type
+		if file.FileType != consts.LoadDictTypeTFIDF || file.FileType != consts.LoadDictTypeBM25 {
+			continue
+		}
+		dictFiles := DictPaths(dictDir, file.FilePath)
 		if !seg.SkipLog {
 			log.Println("Dict files path: ", dictFiles)
 		}
@@ -244,29 +248,12 @@ func (seg *Segmenter) LoadTFIDFDict(files []*types.LoadDictFile) error {
 		}
 
 		if len(dictFiles) > 0 {
-			// load = true
-			// files = dictFiles
 			for i := 0; i < len(dictFiles); i++ {
 				err := seg.ReadTFIDF(dictFiles[i])
 				if err != nil {
 					return err
 				}
 			}
-		}
-	}
-
-	if len(files) == 0 {
-		dictPath = path.Join(dictDir, zhS1)
-		path1 := path.Join(dictDir, zhT1)
-		// files = []string{dictPath}
-		err := seg.Read(dictPath)
-		if err != nil {
-			return err
-		}
-
-		err = seg.Read(path1)
-		if err != nil {
-			return err
 		}
 	}
 

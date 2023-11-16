@@ -99,7 +99,7 @@ func TestLoadTFIDFDictStr(t *testing.T) {
 	var seg Segmenter
 	a := []*types.LoadDictFile{}
 	a = append(a, &types.LoadDictFile{
-		File:     "/workspaces/gse/data/dict/zh/tf_idf.txt",
+		FilePath: "/workspaces/gse/data/dict/zh/tf_idf.txt",
 		FileType: consts.LoadDictTypeTFIDF,
 	})
 	seg.LoadTFIDFDict(a)

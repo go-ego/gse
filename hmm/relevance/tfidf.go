@@ -58,7 +58,7 @@ func (t *TFIDF) LoadDict(files ...string) error {
 	dictFiles := make([]*types.LoadDictFile, len(files))
 	for i, v := range files {
 		dictFiles[i] = &types.LoadDictFile{
-			File:     v,
+			FilePath: v,
 			FileType: consts.LoadDictTypeTFIDF,
 		}
 	}
@@ -69,7 +69,7 @@ func (t *TFIDF) LoadDict(files ...string) error {
 // LoadDictStr load dict for TFIDF seg
 func (t *TFIDF) LoadDictStr(dictStr string) error {
 	dictFile := &types.LoadDictFile{
-		File:     dictStr,
+		FilePath: dictStr,
 		FileType: consts.LoadDictTypeTFIDF,
 	}
 	return t.Seg.LoadTFIDFDictStr(dictFile)
