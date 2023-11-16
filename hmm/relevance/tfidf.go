@@ -28,7 +28,7 @@ import (
 
 // TFIDF a measure of importance of a word to a document in a collection.
 // Term Frequency-Inverse Document Frequency
-// ref:https://en.wikipedia.org/wiki/Tf–idf
+// ref: https://en.wikipedia.org/wiki/Tf–idf
 type TFIDF struct {
 	// the list of word frequencies
 	freqs []float64

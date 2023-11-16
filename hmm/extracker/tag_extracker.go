@@ -61,12 +61,6 @@ func (t *TagExtracter) LoadTFIDF(fileName ...string) error {
 	return t.Relevance.LoadDict(fileName...)
 }
 
-// LoadNewTFIDFStr load and create a new TFIDF dictionary from the string.
-func (t *TagExtracter) LoadNewTFIDFStr(str string) error {
-	t.Relevance = relevance.NewTFIDF()
-	return t.Relevance.LoadDictStr(str)
-}
-
 // LoadBM25 load and create a new BM25 dictionary from the file.
 // params setting: the k1 and b to defind for calcluate bm25
 //

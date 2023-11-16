@@ -28,7 +28,6 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/go-ego/gse/consts"
 	"github.com/go-ego/gse/types"
 )
 
@@ -233,10 +232,6 @@ func (seg *Segmenter) LoadTFIDFDict(files []*types.LoadDictFile) error {
 	)
 
 	for _, file := range files {
-		// limit file type
-		if file.FileType != consts.LoadDictTypeTFIDF || file.FileType != consts.LoadDictTypeBM25 {
-			continue
-		}
 		dictFiles := DictPaths(dictDir, file.FilePath)
 		if !seg.SkipLog {
 			log.Println("Dict files path: ", dictFiles)

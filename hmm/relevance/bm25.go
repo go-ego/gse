@@ -28,28 +28,25 @@ import (
 // BM25 Best Match
 // ref: https://en.wikipedia.org/wiki/Okapi_BM25
 type BM25 struct {
-	// K1 Saturation Paramete
+	// K1 Saturation Parameter
 	// Controls the saturation of the TF,
 	// i.e. a word frequency that exceeds the value of this parameter is not given more weight.
 	// A lower k1 will make the word frequency less influential
 	// and a higher k1 will make the word frequency more influential.
-	// if not defind K1 , we will defind it in 1.25
+	// if not defined K1 , we will define it in 1.25
 	K1 float64
 
 	// B Length Normalization Parameter
 	// Controls the degree of normalization of document length.
 	// A lower b will make shorter documents more important
 	// and a higher b will make longer documents more important.
-	// so and K1 , if not defind by client, we will defind it in 0.75
+	// so and K1 , if not defined by client, we will define it in 0.75
 	B float64
 
 	// AverageDocLength Average Document Length
 	// Indicates the average vocabulary per document in the entire document set.
 	// This value is used to normalize the document length in order to compare documents of different lengths.
 	AverageDocLength float64
-
-	// TermTotal
-	TermTotal float64
 
 	// Base default setting
 	Base
@@ -94,7 +91,7 @@ func (bm25 *BM25) LoadDictStr(dictStr string) error {
 }
 
 // Freq return the BM25 of the word
-// BM25 need TF and IDF value so we just use FindTFIDF func
+// BM25 need TF and IDF value, so we just use FindTFIDF func
 func (bm25 *BM25) Freq(key string) (float64, interface{}, bool) {
 	return bm25.Seg.FindTFIDF(key)
 }
@@ -138,7 +135,6 @@ func (bm25 *BM25) FreqMap(text string) map[string]float64 {
 		freqMap[k] = v / total
 	}
 
-	bm25.TermTotal = total
 	return freqMap
 }
 
@@ -148,7 +144,7 @@ func (bm25 *BM25) calculateK(docNum float64) float64 {
 	return bm25.K1 * ((1 - bm25.B) + bm25.B*(t))
 }
 
-// calculateIdf calculate the word's weight by BM25
+// calculateWeight calculate the word's weight by BM25
 func (bm25 *BM25) calculateWeight(term string) float64 {
 	tf, idf, _ := bm25.Freq(term)
 	k := bm25.calculateK(float64(utf8.RuneCountInString(term)))
@@ -172,7 +168,7 @@ func (bm25 *BM25) GetSeg() gse.Segmenter {
 	return bm25.Seg
 }
 
-// LoadCorpus for calcaluate the avgerage length of corpus
+// LoadCorpus for calculate the average length of corpus
 func (bm25 *BM25) LoadCorpus(path ...string) (err error) {
 	averLength, err := bm25.Seg.LoadCorpusAverLen(path...)
 	if err != nil {
@@ -183,7 +179,7 @@ func (bm25 *BM25) LoadCorpus(path ...string) (err error) {
 	return
 }
 
-// NewBM25 create a new TFIDF
+// NewBM25 create a new BM25
 func NewBM25(bm25Setting *types.BM25Setting) Relevance {
 	// init value
 	if bm25Setting == nil {
