@@ -18,8 +18,10 @@ import (
 	"sort"
 
 	"github.com/go-ego/gse"
+	"github.com/go-ego/gse/consts"
 	"github.com/go-ego/gse/hmm/relevance"
 	"github.com/go-ego/gse/hmm/segment"
+	"github.com/go-ego/gse/types"
 )
 
 // TagExtracter is extract tags struct.
@@ -51,6 +53,53 @@ func (t *TagExtracter) LoadIdf(fileName ...string) error {
 func (t *TagExtracter) LoadIdfStr(str string) error {
 	t.Relevance = relevance.NewIdf()
 	return t.Relevance.LoadDictStr(str)
+}
+
+// LoadTFIDF load and create a new TFIDF dictionary from the file.
+func (t *TagExtracter) LoadTFIDF(fileName ...string) error {
+	t.Relevance = relevance.NewTFIDF()
+	return t.Relevance.LoadDict(fileName...)
+}
+
+// LoadBM25 load and create a new BM25 dictionary from the file.
+// params setting: the k1 and b to defind for calcluate bm25
+//
+//	types.BM25Setting{
+//		K1
+//	 	B
+//	}
+//
+// params: fileList:
+//
+//	type LoadBM25DictFile struct {
+//			FilePath string
+//			FileType int
+//			Number   float64
+//	}
+func (t *TagExtracter) LoadBM25(setting *types.BM25Setting, fileList []*types.LoadDictFile) (err error) {
+	t.Relevance = relevance.NewBM25(setting)
+	// load dict file and corpus file
+	dictBM25 := []string{}
+	corpusBM25 := []string{}
+
+	// Distinguishing dictionary types
+	for _, v := range fileList {
+		switch v.FileType {
+
+		case consts.LoadDictCorpus:
+			corpusBM25 = append(corpusBM25, v.FilePath)
+
+		case consts.LoadDictTypeBM25:
+			dictBM25 = append(dictBM25, v.FilePath)
+		}
+	}
+
+	err = t.Relevance.LoadCorpus(corpusBM25...)
+	if err != nil {
+		return
+	}
+
+	return t.Relevance.LoadDict(dictBM25...)
 }
 
 // LoadStopWords load and create a new StopWord dictionary from the file.

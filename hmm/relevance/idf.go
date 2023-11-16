@@ -66,7 +66,7 @@ func (i *Idf) LoadDictStr(dictStr string) error {
 }
 
 // Freq return the IDF of the word
-func (i *Idf) Freq(key string) (float64, string, bool) {
+func (i *Idf) Freq(key string) (float64, interface{}, bool) {
 	return i.Seg.Find(key)
 }
 
@@ -136,6 +136,11 @@ func (i *Idf) ConstructSeg(text string) segment.Segments {
 // GetSeg get IDF Segmenter
 func (i *Idf) GetSeg() gse.Segmenter {
 	return i.Seg
+}
+
+// LoadCorpus idf no need to load corpus
+func (i *Idf) LoadCorpus(path ...string) error {
+	return nil
 }
 
 // NewIdf create a new Idf
