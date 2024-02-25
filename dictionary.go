@@ -130,6 +130,32 @@ func (dict *Dictionary) Find(word []byte) (float64, string, bool) {
 	return freq, pos, true
 }
 
+func (dict *Dictionary) FindTFIDF(word []byte) (float64, float64, bool) {
+	var (
+		id, value int
+		freq      float64
+		err       error
+	)
+
+	id, err = dict.trie.Jump(word, id)
+	if err != nil {
+		return 0, 0, false
+	}
+
+	value, err = dict.trie.Value(id)
+	if err != nil && id != 0 {
+		return 0, 0, true
+	}
+
+	if err != nil {
+		return 0, 0, false
+	}
+
+	freq = dict.Tokens[value].freq
+	inverseFreq := dict.Tokens[value].inverseFreq
+	return freq, inverseFreq, true
+}
+
 // Value find word in the dictionary
 // return the word's value and id
 func (dict *Dictionary) Value(word []byte) (val, id int, err error) {

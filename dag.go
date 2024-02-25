@@ -40,6 +40,11 @@ func (seg *Segmenter) Find(str string) (float64, string, bool) {
 	return seg.Dict.Find([]byte(str))
 }
 
+// FindTFIDF find word in dictionary return word's freq, inverseFreq and existence
+func (seg *Segmenter) FindTFIDF(str string) (float64, float64, bool) {
+	return seg.Dict.FindTFIDF([]byte(str))
+}
+
 // Value find word in dictionary return word's value
 func (seg *Segmenter) Value(str string) (int, int, error) {
 	return seg.Dict.Value([]byte(str))

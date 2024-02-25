@@ -84,6 +84,9 @@ type Token struct {
 	// which is where "shortest path" comes from.
 	distance float32
 
+	// the inverse document frequency of the token
+	inverseFreq float64
+
 	// For further segmentation of this segmented text,
 	// see the Segments function comment.
 	segments []*Segment

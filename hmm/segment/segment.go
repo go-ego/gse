@@ -6,12 +6,12 @@ type Segment struct {
 	Weight float64
 }
 
-// Text return the segment's text.
+// GetText return the segment's text.
 func (s Segment) GetText() string {
 	return s.Text
 }
 
-// Weight return the segment's weight.
+// GetWeight return the segment's weight.
 func (s Segment) GetWeight() float64 {
 	return s.Weight
 }

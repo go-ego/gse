@@ -7,7 +7,7 @@ import (
 	"regexp"
 
 	"github.com/go-ego/gse"
-	"github.com/go-ego/gse/hmm/idf"
+	"github.com/go-ego/gse/hmm/extracker"
 	"github.com/go-ego/gse/hmm/pos"
 )
 
@@ -87,7 +87,7 @@ func cut() {
 
 	hmm = seg.CutSearch(text, true)
 	fmt.Println("cut search use hmm: ", hmm)
-	//cut search use hmm:  [复仇 仇者 联盟 无限 战争 复仇者 《复仇者联盟3：无限战争》 是 全片 使用 imax 摄影 摄影机 拍摄 制作 的 的 科幻 科幻片 .]
+	// cut search use hmm:  [复仇 仇者 联盟 无限 战争 复仇者 《复仇者联盟3：无限战争》 是 全片 使用 imax 摄影 摄影机 拍摄 制作 的 的 科幻 科幻片 .]
 	fmt.Println("analyze: ", seg.Analyze(hmm, text))
 
 	cut = seg.CutSearch(text)
@@ -167,7 +167,7 @@ func segCut() {
 }
 
 func extAndRank(segs gse.Segmenter) {
-	var te idf.TagExtracter
+	var te extracker.TagExtracter
 	te.WithGse(segs)
 	err := te.LoadIdf()
 	fmt.Println("load idf: ", err)
@@ -176,7 +176,7 @@ func extAndRank(segs gse.Segmenter) {
 	fmt.Println("segments: ", len(segments), segments)
 	// segments:  5 [{科幻片 1.6002581704125} {全片 1.449761569875} {摄影机 1.2764747747375} {拍摄 0.9690261695075} {制作 0.8246043033375}]
 
-	var tr idf.TextRanker
+	var tr extracker.TextRanker
 	tr.WithGse(segs)
 
 	results := tr.TextRank(text, 5)
