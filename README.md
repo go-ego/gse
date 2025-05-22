@@ -87,6 +87,9 @@ var (
 )
 
 func main() {
+	// keep the origin capital letter
+	// gse.ToLower = false
+
 	var seg1 gse.Segmenter
 	seg1.DictSep = ","
 	err := seg1.LoadDict("./testdata/test_en.txt")

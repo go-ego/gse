@@ -23,6 +23,8 @@ var (
 
 func main() {
 	flag.Parse()
+	// keep the origin capital letter
+	// gse.ToLower = false
 
 	// Loading the default dictionary
 	seg.LoadDict()
