@@ -30,19 +30,17 @@ Before sending code out for review, run all the tests for the whole tree to make
 
 In addition to the owner, Changes to Ego must be reviewed before they are accepted, no matter who makes the change even if it is a maintainer. We use GitHub's pull request workflow to do that and we also use [LGTM](http://lgtm.co) to ensure every PR is reviewed by vz or least 2 maintainers.
 
-
 ## Sign your work
 
-The sign-off is a simple line at the end of the explanation for the patch. Your signature certifies that you wrote the patch or otherwise have the right to pass it on as an open-source patch. 
+The sign-off is a simple line at the end of the explanation for the patch. Your signature certifies that you wrote the patch or otherwise have the right to pass it on as an open-source patch.
 
 ## Maintainers
 
-To make sure every PR is checked, we got team maintainers. A maintainer should be a contributor of Ego and contributed at least 4 accepted PRs. 
+To make sure every PR is checked, we got team maintainers. A maintainer should be a contributor of Ego and contributed at least 4 accepted PRs.
 
 ## Owners
 
 Since Ego is a pure community organization without any company support, Copyright 2016 The go-ego Project Developers.
-
 
 ## Versions
 
@@ -60,9 +58,9 @@ Code that you contribute should use the standard copyright header:
 // https://github.com/go-ego/gse/blob/master/LICENSE
 //
 // Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
-// http://www.apache.org/licenses/LICENSE-2.0> or the MIT license
-// <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your
-// option. This file may not be copied, modified, or distributed
+// http://www.apache.org/licenses/LICENSE-2.0>
+//
+// This file may not be copied, modified, or distributed
 // except according to those terms.
 ```
 
