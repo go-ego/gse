@@ -18,7 +18,7 @@ And supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and
 <!-- [![Release](https://github-release-version.herokuapp.com/github/go-ego/gse/release.svg?style=flat)](https://github.com/go-ego/gse/releases/latest) -->
 <!--<a href="https://github.com/go-ego/ego/releases"><img src="https://img.shields.io/badge/%20version%20-%206.0.0%20-blue.svg?style=flat-square" alt="Releases"></a>-->
 
-[简体中文](https://github.com/go-ego/gse/blob/master/README_zh.md)
+[简体中文](https://github.com/go-ego/gse/blob/master/README_zh.md) | [日本語](https://github.com/go-ego/gse/blob/master/README_ja.md)
 
 Gse is implements jieba by golang, and try add NLP support and more feature
 

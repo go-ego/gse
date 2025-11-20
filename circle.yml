@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: golang:1.24.0
+      - image: golang:1.25.0
     working_directory: /gopath/src/github.com/go-ego/gse
     steps:
       - checkout
