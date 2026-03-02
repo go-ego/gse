@@ -25,7 +25,7 @@ import (
 
 const (
 	// Version get the gse version
-	Version = "v0.80.2.705, Green Lake!"
+	Version = "v1.0.1.705, Green Lake!"
 
 	// minTokenFrequency = 2 // only read tokens with frequency >= 2 from the dictionary
 )
