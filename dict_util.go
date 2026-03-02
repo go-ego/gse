@@ -151,9 +151,9 @@ func (seg *Segmenter) LoadDictMap(dict []map[string]string) error {
 // When a participle appears both in the user dictionary and
 // in the `common dictionary`, the `user dictionary` is given priority.
 func (seg *Segmenter) LoadDict(files ...string) error {
-	if !seg.Load {
+	if seg.Dict == nil {
 		seg.Dict = NewDict()
-		seg.Load = true
+		// seg.Load = true
 		seg.Init()
 	}
 
@@ -221,9 +221,9 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 
 // LoadTFIDFDict load tfidf dict for cal tfidf & bm25
 func (seg *Segmenter) LoadTFIDFDict(files []*types.LoadDictFile) error {
-	if !seg.Load {
+	if seg.Dict == nil {
 		seg.Dict = NewDict()
-		seg.Load = true
+		// seg.Load = true
 		seg.Init()
 	}
 
@@ -256,7 +256,6 @@ func (seg *Segmenter) LoadTFIDFDict(files []*types.LoadDictFile) error {
 	if !seg.SkipLog {
 		log.Println("Gse dictionary loaded finished.")
 	}
-
 	return nil
 }
 
@@ -278,7 +277,6 @@ func (seg *Segmenter) GetIdfPath(files ...string) []string {
 	)
 
 	files = append(files, dictPath)
-
 	return files
 }
 
@@ -297,7 +295,6 @@ func (seg *Segmenter) LoadCorpusAverLen(files ...string) (corpusTotal float64, e
 	}
 
 	corpusTotal = corpusTotal / float64(len(filePaths))
-
 	return
 }
 
@@ -309,7 +306,6 @@ func (seg *Segmenter) GetCorpusPath(files ...string) []string {
 	)
 
 	files = append(files, dictPath)
-
 	return files
 }
 
@@ -335,7 +331,6 @@ func (seg *Segmenter) ReadCorpus(file string) (corpusAverLen float64, err error)
 		corpusLength += float64(utf8.RuneCountInString(line))
 	}
 	corpusAverLen = corpusLength / corpusNumber
-
 	return
 }
 
@@ -347,7 +342,6 @@ func (seg *Segmenter) GetTfIdfPath(files ...string) []string {
 	)
 
 	files = append(files, dictPath)
-
 	return files
 }
 
