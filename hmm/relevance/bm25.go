@@ -19,7 +19,6 @@ import (
 	"unicode/utf8"
 
 	"github.com/go-ego/gse"
-	"github.com/go-ego/gse/consts"
 	"github.com/go-ego/gse/hmm/segment"
 	"github.com/go-ego/gse/hmm/stopwords"
 	"github.com/go-ego/gse/types"
@@ -74,7 +73,7 @@ func (bm25 *BM25) LoadDict(files ...string) error {
 	for i, v := range files {
 		dictFiles[i] = &types.LoadDictFile{
 			FilePath: v,
-			FileType: consts.LoadDictTypeBM25,
+			FileType: types.LoadDictTypeBM25,
 		}
 	}
 
@@ -85,7 +84,7 @@ func (bm25 *BM25) LoadDict(files ...string) error {
 func (bm25 *BM25) LoadDictStr(dictStr string) error {
 	dictFile := &types.LoadDictFile{
 		FilePath: dictStr,
-		FileType: consts.LoadDictTypeBM25,
+		FileType: types.LoadDictTypeBM25,
 	}
 	return bm25.Seg.LoadTFIDFDictStr(dictFile)
 }
@@ -184,15 +183,15 @@ func NewBM25(bm25Setting *types.BM25Setting) Relevance {
 	// init value
 	if bm25Setting == nil {
 		bm25Setting = &types.BM25Setting{
-			K1: consts.BM25DefaultK1,
-			B:  consts.BM25DefaultB,
+			K1: types.BM25DefaultK1,
+			B:  types.BM25DefaultB,
 		}
 	}
 	if bm25Setting.K1 == 0 {
-		bm25Setting.K1 = consts.BM25DefaultK1
+		bm25Setting.K1 = types.BM25DefaultK1
 	}
 	if bm25Setting.B == 0 {
-		bm25Setting.K1 = consts.BM25DefaultB
+		bm25Setting.K1 = types.BM25DefaultB
 	}
 
 	bm25 := &BM25{
