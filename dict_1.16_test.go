@@ -7,7 +7,6 @@ import (
 	_ "embed"
 	"testing"
 
-	"github.com/go-ego/gse/consts"
 	"github.com/go-ego/gse/types"
 	"github.com/vcaesar/tt"
 )
@@ -100,7 +99,7 @@ func TestLoadTFIDFDictStr(t *testing.T) {
 	a := []*types.LoadDictFile{}
 	a = append(a, &types.LoadDictFile{
 		FilePath: "/workspaces/gse/data/dict/zh/tf_idf.txt",
-		FileType: consts.LoadDictTypeTFIDF,
+		FileType: types.LoadDictTypeTFIDF,
 	})
 	seg.LoadTFIDFDict(a)
 }

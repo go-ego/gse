@@ -18,7 +18,6 @@ import (
 	"sort"
 
 	"github.com/go-ego/gse"
-	"github.com/go-ego/gse/consts"
 	"github.com/go-ego/gse/hmm/relevance"
 	"github.com/go-ego/gse/hmm/segment"
 	"github.com/go-ego/gse/types"
@@ -86,10 +85,10 @@ func (t *TagExtracter) LoadBM25(setting *types.BM25Setting, fileList []*types.Lo
 	for _, v := range fileList {
 		switch v.FileType {
 
-		case consts.LoadDictCorpus:
+		case types.LoadDictCorpus:
 			corpusBM25 = append(corpusBM25, v.FilePath)
 
-		case consts.LoadDictTypeBM25:
+		case types.LoadDictTypeBM25:
 			dictBM25 = append(dictBM25, v.FilePath)
 		}
 	}

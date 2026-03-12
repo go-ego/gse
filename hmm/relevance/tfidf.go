@@ -20,7 +20,6 @@ import (
 	"unicode/utf8"
 
 	"github.com/go-ego/gse"
-	"github.com/go-ego/gse/consts"
 	"github.com/go-ego/gse/hmm/segment"
 	"github.com/go-ego/gse/hmm/stopwords"
 	"github.com/go-ego/gse/types"
@@ -59,7 +58,7 @@ func (t *TFIDF) LoadDict(files ...string) error {
 	for i, v := range files {
 		dictFiles[i] = &types.LoadDictFile{
 			FilePath: v,
-			FileType: consts.LoadDictTypeTFIDF,
+			FileType: types.LoadDictTypeTFIDF,
 		}
 	}
 
@@ -70,7 +69,7 @@ func (t *TFIDF) LoadDict(files ...string) error {
 func (t *TFIDF) LoadDictStr(dictStr string) error {
 	dictFile := &types.LoadDictFile{
 		FilePath: dictStr,
-		FileType: consts.LoadDictTypeTFIDF,
+		FileType: types.LoadDictTypeTFIDF,
 	}
 	return t.Seg.LoadTFIDFDictStr(dictFile)
 }
