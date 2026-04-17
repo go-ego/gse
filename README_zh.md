@@ -17,6 +17,15 @@ Go 高性能多语言 NLP 和分词, 支持英文、中文、日文等, 支持�
 
 Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多属性
 
+I build [Codg]("https://github.com/vcaesar/codg") now, Easy code and work AI agent system: auto, asynchronous, concurrency, efficiently
+
+<p align="center">
+<a href="https://github.com/vcaesar/codg" rel="nofollow">
+<!-- <img width="800" alt="Codg Demo" src="https://github.com/vcaesar/codg/raw/main/demo/26-04.png" /> -->
+<img width="800" alt="Codg Demo" src="https://github.com/vcaesar/codg/raw/main/demo/26-04-1.png" />
+</a>
+</p>
+
 ## 特征:
 
 - 支持普通、搜索引擎、全模式、精确模式和 HMM 模式多种分词模式

@@ -19,6 +19,15 @@ Go による効率的な多言語 NLP およびテキスト分割ライブラリ
 
 Gse は jieba の Golang 実装であり、NLP サポートやより多くの機能を追加することを目指しています。
 
+I build [Codg]("https://github.com/vcaesar/codg") now, Easy code and work AI agent system: auto, asynchronous, concurrency, efficiently
+
+<p align="center">
+<a href="https://github.com/vcaesar/codg" rel="nofollow">
+<!-- <img width="800" alt="Codg Demo" src="https://github.com/vcaesar/codg/raw/main/demo/26-04.png" /> -->
+<img width="800" alt="Codg Demo" src="https://github.com/vcaesar/codg/raw/main/demo/26-04-1.png" />
+</a>
+</p>
+
 ## 機能:
 
 - 一般、検索エンジン、完全、精密、HMM モードなど複数の分かち書きモードをサポート
