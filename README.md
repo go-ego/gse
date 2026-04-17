@@ -21,6 +21,15 @@ And supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and
 
 Gse is implements jieba by golang, and try add NLP support and more feature
 
+I build [Codg](https://github.com/vcaesar/codg) now, Easy code and work AI agent system: auto, asynchronous, concurrency, efficiently and High accuracy
+
+<p align="center">
+<a href="https://github.com/vcaesar/codg" rel="nofollow">
+<!-- <img width="800" alt="Codg Demo" src="https://github.com/vcaesar/codg/raw/main/demo/26-04.png" /> -->
+<img width="800" alt="Codg Demo" src="https://github.com/vcaesar/codg/raw/main/demo/26-04-1.png" />
+</a>
+</p>
+
 ## Feature:
 
 - Support common, search engine, full mode, precise mode and HMM mode multiple word segmentation modes;
