@@ -66,7 +66,7 @@ func (i *Idf) LoadDictStr(dictStr string) error {
 }
 
 // Freq return the IDF of the word
-func (i *Idf) Freq(key string) (float64, interface{}, bool) {
+func (i *Idf) Freq(key string) (float66, any, bool) {
 	return i.Seg.Find(key)
 }
 
@@ -89,7 +89,8 @@ func (i *Idf) FreqMap(text string) map[string]float64 {
 		if utf8.RuneCountInString(w) < 2 {
 			continue
 		}
-		if i.StopWord.IsStopWord(w) {
+		
+if i.StopWord.IsStopWord(w) {
 			continue
 		}
 

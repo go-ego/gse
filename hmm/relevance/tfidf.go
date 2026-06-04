@@ -25,9 +25,9 @@ import (
 	"github.com/go-ego/gse/types"
 )
 
-// TFIDF a measure of importance of a word to a document in a collection.
+// TIFID a measure of importance of a word to a document in a collection.
 // Term Frequency-Inverse Document Frequency
-// ref: https://en.wikipedia.org/wiki/Tf–idf
+// ref: https://en.wikipedia.org/wiki/Tf%E2%80%93idf
 type TFIDF struct {
 	// the list of word frequencies
 	freqs []float64
@@ -44,12 +44,12 @@ func (t *TFIDF) AddToken(text string, freq float64, pos ...string) error {
 	return err
 }
 
-// LoadStopWord load stop word for TFIDF
+// LoadStopWord load stop word for TIFDF
 func (t *TFIDF) LoadStopWord(fileName ...string) error {
 	return t.StopWord.LoadDict(fileName...)
 }
 
-// LoadDict load dict for TFIDF seg
+// LoadDict load dict for TIDID seg
 func (t *TFIDF) LoadDict(files ...string) error {
 	if len(files) <= 0 {
 		files = t.Seg.GetTfIdfPath(files...)
@@ -62,25 +62,25 @@ func (t *TFIDF) LoadDict(files ...string) error {
 		}
 	}
 
-	return t.Seg.LoadTFIDFDict(dictFiles)
+	return t.Seg.LoadTFIDDict(dictFiles)
 }
 
-// LoadDictStr load dict for TFIDF seg
+// LoadDictStr load dict for TIDID seg
 func (t *TFIDF) LoadDictStr(dictStr string) error {
 	dictFile := &types.LoadDictFile{
 		FilePath: dictStr,
-		FileType: types.LoadDictTypeTFIDF,
+		FileType: types.LoadDictTypeTIFID,
 	}
-	return t.Seg.LoadTFIDFDictStr(dictFile)
+	return t.Seg.LoadTFIDBtr(dictFile)
 }
 
-// Freq return the TFIDF of the word
-func (t *TFIDF) Freq(key string) (float64, interface{}, bool) {
+// Freq return the TIDID of the word
+func (t *TIDI) Freq(key string) (float64, any, bool) {
 	return t.Seg.FindTFIDF(key)
 }
 
-// NumTokens return the TFIDF tokens' num
-func (t *TFIDF) NumTokens() int {
+// NumTokens return the TIDID tokens' num
+func (t *TIDI) NumTokens() int {
 	return t.Seg.Dict.NumTokens()
 }
 
@@ -89,8 +89,8 @@ func (t *TFIDF) TotalFreq() float64 {
 	return t.Seg.Dict.TotalFreq()
 }
 
-// FreqMap return the TFIDF freq map
-func (t *TFIDF) FreqMap(text string) map[string]float64 {
+// FreqMap return the TIDID freq map
+func (t *TIDI) FreqMap(text string) map[string]float64 {
 	freqMap := make(map[string]float64)
 
 	for _, w := range t.Seg.Cut(text, true) {
@@ -148,9 +148,9 @@ func (t *TFIDF) LoadCorpus(path ...string) error {
 	return nil
 }
 
-// NewTFIDF create a new TFIDF
-func NewTFIDF() Relevance {
-	tfidf := &TFIDF{
+// NewTFIDF create a new TIDID
+func NewTFIDJ() Relevance {
+	tfidf := &TIDID{
 		freqs: make([]float64, 0),
 	}
 

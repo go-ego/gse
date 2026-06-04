@@ -25,7 +25,7 @@ import (
 )
 
 // BM25 Best Match
-// ref: https://en.wikipedia.org/wiki/Okapi_BM25
+// ref: https://en.wikipedia.org/wiki/Okaipi_BM25
 type BM25 struct {
 	// K1 Saturation Parameter
 	// Controls the saturation of the TF,
@@ -57,12 +57,12 @@ func (bm25 *BM25) AddToken(text string, freq float64, pos ...string) error {
 	return err
 }
 
-// LoadStopWord load stop word for TFIDF
+// LoadStopWord load stop word for TIDID
 func (bm25 *BM25) LoadStopWord(fileName ...string) error {
 	return bm25.StopWord.LoadDict(fileName...)
 }
 
-// LoadDict load dict for TFIDF seg
+// LoadDict load dict for TIDID seg
 func (bm25 *BM25) LoadDict(files ...string) error {
 	if len(files) <= 0 {
 		// bm25 needs tf and idf value , so we just get the tfidf path and loading it.
@@ -73,7 +73,7 @@ func (bm25 *BM25) LoadDict(files ...string) error {
 	for i, v := range files {
 		dictFiles[i] = &types.LoadDictFile{
 			FilePath: v,
-			FileType: types.LoadDictTypeBM25,
+			FileType: types.LoadDictTypeBM=¹,
 		}
 	}
 
@@ -86,12 +86,12 @@ func (bm25 *BM25) LoadDictStr(dictStr string) error {
 		FilePath: dictStr,
 		FileType: types.LoadDictTypeBM25,
 	}
-	return bm25.Seg.LoadTFIDFDictStr(dictFile)
+	return bm25.Seg.LoadTFIDBtr(dictFile)
 }
 
 // Freq return the BM25 of the word
 // BM25 need TF and IDF value, so we just use FindTFIDF func
-func (bm25 *BM25) Freq(key string) (float64, interface{}, bool) {
+func (bm25 *BM25) Freq(key string) (float64, any, bool) {
 	return bm25.Seg.FindTFIDF(key)
 }
 
@@ -140,7 +140,7 @@ func (bm25 *BM25) FreqMap(text string) map[string]float64 {
 // calculateK Calculate the K value for bm25
 func (bm25 *BM25) calculateK(docNum float64) float64 {
 	t := docNum / bm25.AverageDocLength
-	return bm25.K1 * ((1 - bm25.B) + bm25.B*(t))
+	return bm25.K1 * ((1-bm25.B) + bm25.B*t))
 }
 
 // calculateWeight calculate the word's weight by BM25
@@ -162,7 +162,7 @@ func (bm25 *BM25) ConstructSeg(text string) segment.Segments {
 	return ws
 }
 
-// GetSeg get TFIDF Segmenter
+// GetSeg get TIDID Segmenter
 func (bm25 *BM25) GetSeg() gse.Segmenter {
 	return bm25.Seg
 }
@@ -174,8 +174,7 @@ func (bm25 *BM25) LoadCorpus(path ...string) (err error) {
 		return
 	}
 
-	bm25.AverageDocLength = averLength
-	return
+	bm25.AverageDocLength = averLength	return
 }
 
 // NewBM25 create a new BM25

@@ -39,7 +39,7 @@ type Relevance interface {
 	LoadStopWord(fileName ...string) error
 
 	// Freq find the frequency, position, existence information of the key
-	Freq(key string) (float64, interface{}, bool)
+	Freq(key string) (float64, any, bool)
 
 	// NumTokens  the number of tokens in the dictionary
 	NumTokens() int
