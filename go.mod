@@ -4,5 +4,5 @@ go 1.25
 
 require (
 	github.com/vcaesar/cedar v0.30.0
-	github.com/vcaesar/tt v0.20.1
+	github.com/vcaesar/tt v0.30.0
 )
