@@ -200,6 +200,12 @@ func TestPos(t *testing.T) {
 		"纽约时代广场 纽约 帝国大厦 旧金山湾 金门大桥", pos3)
 }
 
+func TestSliceSearchModeSingleWord(t *testing.T) {
+	tt.Equal(t, []string{"hello"}, prodSeg.Slice("hello", true))
+	tt.Equal(t, prodSeg.String("hello"), prodSeg.String("hello", true))
+	tt.Equal(t, prodSeg.Pos("hello"), prodSeg.Pos("hello", true))
+}
+
 func TestLoadST(t *testing.T) {
 	var seg Segmenter
 	err := seg.LoadDict("zh_s")

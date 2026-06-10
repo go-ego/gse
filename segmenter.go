@@ -105,7 +105,8 @@ func (seg *Segmenter) internalSegment(bytes []byte, searchMode bool) []Segment {
 }
 
 func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
-	// The case where the division is no longer possible in the search mode
+	// CalcToken relies on search-mode segmentation for multi-token dictionary entries.
+	// A single token has no searchable sub-segments and is handled by the public APIs.
 	if searchMode && len(text) == 1 {
 		return nil
 	}
@@ -183,6 +184,10 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 	}
 
 	return outputSegments
+}
+
+func searchModeSingleWord(seg *Segmenter, s string, searchMode ...bool) bool {
+	return len(searchMode) > 0 && searchMode[0] && len(seg.SplitTextToWords([]byte(s))) == 1
 }
 
 // updateJumper Update the jump information:
