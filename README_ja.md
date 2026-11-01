@@ -10,12 +10,9 @@ Go による効率的な多言語 NLP およびテキスト分割ライブラリ
 [![Lint Status](https://github.com/go-ego/gse/workflows/Lint/badge.svg)](https://github.com/go-ego/gse/actions/workflows/lint.yml)
 [![CircleCI Status](https://circleci.com/gh/go-ego/gse.svg?style=shield)](https://circleci.com/gh/go-ego/gse)
 [![codecov](https://codecov.io/gh/go-ego/gse/branch/master/graph/badge.svg)](https://codecov.io/gh/go-ego/gse)
-[![GoDoc](https://godoc.org/github.com/go-ego/gse?status.svg)](https://godoc.org/github.com/go-ego/gse)
+[![Go Reference](https://pkg.go.dev/badge/github.com/go-ego/gse.svg)](https://pkg.go.dev/github.com/go-ego/gse)
 [![GitHub release](https://img.shields.io/github/release/go-ego/gse.svg)](https://github.com/go-ego/gse/releases/latest)
-[![Join the chat at https://gitter.im/go-ego/ego](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/go-ego/ego?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-<!-- [![Release](https://github-release-version.herokuapp.com/github/go-ego/gse/release.svg?style=flat)](https://github.com/go-ego/gse/releases/latest) -->
-<!--<a href="https://github.com/go-ego/ego/releases"><img src="https://img.shields.io/badge/%20version%20-%206.0.0%20-blue.svg?style=flat-square" alt="Releases"></a>-->
+<a href="https://discord.gg/npPb3NzE4A"><img src="https://img.shields.io/discord/1484658282777018551.svg?logo=discord&logoColor=white&label=Discord&color=5865F2" alt="Discord チャットに参加 https://discord.gg/535uZPakJw"></a>
 
 [English](https://github.com/go-ego/gse/blob/master/README.md) | [简体中文](https://github.com/go-ego/gse/blob/master/README_zh.md)
 
@@ -322,4 +319,4 @@ elasticsearch と一緒に使用するには？
 Gse は主に「Apache License (Version 2.0)」の条項の下で配布されています。
 [LICENSE-APACHE](http://www.apache.org/licenses/LICENSE-2.0)、[LICENSE](https://github.com/go-vgo/robotgo/blob/master/LICENSE) を参照してください。
 
-[sego](https://github.com/huichen/sego) と [jieba](https://github.com/fxsjy/jieba)（[jiebago](https://github.com/wangbin/jiebago)）に感謝します。
+[jieba](https://github.com/fxsjy/jieba)（[jiebago](https://github.com/wangbin/jiebago)）と [sego](https://github.com/huichen/sego) に感謝します。
