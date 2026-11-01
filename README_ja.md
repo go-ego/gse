@@ -39,7 +39,7 @@ Gse は jieba の Golang 実装であり、NLP サポートやより多くの機
 - Viterbi アルゴリズムを使った HMM テキスト分割をサポート
 - Pytorch による NLP サポート（開発中）
 - 固有表現認識（開発中）
-- [elasticsearch](https://github.com/vcaesar/go-gse-elastic) と bleve をサポート
+- [riot](https://github.com/vcaesar/riot) と [zedsearch](https://github.com/vcaesar/zedsearch)、さらに [elasticsearch](https://github.com/vcaesar/go-gse-elastic)、[bleve](https://github.com/vcaesar/gse-bleve) などをサポート
 - <a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go">JSON RPC サービス</a>の実行が可能
 
 ## アルゴリズム:

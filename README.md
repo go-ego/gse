@@ -39,7 +39,7 @@ I build [Codg](https://github.com/vcaesar/codg) now, Easy code and work AI agent
 - Support HMM cut text use Viterbi algorithm
 - Support NLP by Pytorch (in work)
 - Named Entity Recognition (in work)
-- Supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and bleve
+- Supports [riot](https://github.com/vcaesar/riot) and [zedsearch](https://github.com/vcaesar/zedsearch), and [elasticsearch](https://github.com/vcaesar/go-gse-elastic), [bleve](https://github.com/vcaesar/gse-bleve) and others
 - run<a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go"> JSON RPC service</a>.
 
 ## Algorithm:

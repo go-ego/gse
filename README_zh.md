@@ -39,7 +39,7 @@ Gse 是结巴分词(jieba)的 golang 实现, 并添加 NLP 功能和更多特性
 - 支持使用 Viterbi 算法的 HMM 分词
 - 基于 Pytorch 的 NLP 支持 (进行中)
 - 命名实体识别 (进行中)
-- 支持接入 [elasticsearch](https://github.com/vcaesar/go-gse-elastic) 和 bleve
+- 支持接入 [riot](https://github.com/vcaesar/riot) 和 [zedsearch](https://github.com/vcaesar/zedsearch), 以及 [elasticsearch](https://github.com/vcaesar/go-gse-elastic)、[bleve](https://github.com/vcaesar/gse-bleve) 等
 - 可运行<a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go"> JSON RPC 服务</a>
 
 ## 算法:
