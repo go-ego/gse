@@ -16,6 +16,7 @@ package gse
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"io"
 	"log"
@@ -69,9 +70,19 @@ func (seg *Segmenter) ToToken(text string, freq float64, pos ...string) Token {
 		po = pos[0]
 	}
 
-	words := seg.SplitTextToWords([]byte(text))
-	token := Token{text: words, freq: freq, pos: po}
-	return token
+	b := []byte(text)
+	var buf [16]Text
+	words := seg.appendWords(buf[:0], b)
+	// the words are b split, only the letters may be lowered
+	if bytes.ContainsFunc(b, isUpper) {
+		b = textSliceToBytes(words)
+	}
+
+	return Token{text: b, size: int32(len(words)), freq: freq, pos: po}
+}
+
+func isUpper(r rune) bool {
+	return r >= 'A' && r <= 'Z'
 }
 
 // AddToken add a new text to the token
@@ -100,10 +111,7 @@ func (seg *Segmenter) ReAddToken(text string, freq float64, pos ...string) error
 
 // RemoveToken remove token in dictionary
 func (seg *Segmenter) RemoveToken(text string) error {
-	words := seg.SplitTextToWords([]byte(text))
-	token := Token{text: words}
-
-	return seg.Dict.RemoveToken(token)
+	return seg.Dict.RemoveToken(seg.ToToken(text, 0))
 }
 
 // Empty empty the seg dictionary
@@ -126,9 +134,7 @@ func (seg *Segmenter) LoadDictMap(dict []map[string]string) error {
 			continue
 		}
 
-		words := seg.SplitTextToWords([]byte(d["text"]))
-		token := Token{text: words, freq: freq, pos: d["pos"]}
-		seg.Dict.AddToken(token)
+		seg.Dict.AddToken(seg.ToToken(d["text"], freq, d["pos"]))
 	}
 
 	seg.CalcToken()
@@ -514,9 +520,7 @@ func (seg *Segmenter) Reader(reader *bufio.Reader, files ...string) error {
 		}
 
 		// Add participle tokens to the dictionary
-		words := seg.SplitTextToWords([]byte(text))
-		token := Token{text: words, freq: freq, pos: pos}
-		seg.Dict.AddToken(token)
+		seg.Dict.AddToken(seg.ToToken(text, freq, pos))
 	}
 
 	return nil
@@ -579,8 +583,8 @@ func (seg *Segmenter) ReaderTFIDF(reader *bufio.Reader, files ...string) error {
 		}
 
 		// Add participle tokens to the dictionary
-		words := seg.SplitTextToWords([]byte(text))
-		token := Token{text: words, freq: freq, inverseFreq: inverseFreq}
+		token := seg.ToToken(text, freq)
+		token.inverseFreq = inverseFreq
 		seg.Dict.AddToken(token)
 	}
 
@@ -655,6 +659,13 @@ func IsJp(segText string) bool {
 	return false
 }
 
+// firstIsJp reports whether the first Text unit of text is Japanese,
+// a kana is never alphanumeric, so it is always a one rune unit
+func firstIsJp(text Text) bool {
+	r, _ := utf8.DecodeRune(text)
+	return unicode.Is(unicode.Hiragana, r) || unicode.Is(unicode.Katakana, r)
+}
+
 // CalcToken calc the segmenter token
 func (seg *Segmenter) CalcToken() {
 	// Calculate the path value of each word segment.
@@ -671,17 +682,19 @@ func (seg *Segmenter) CalcToken() {
 		return
 	}
 
+	var words []Text
 	for i := range seg.Dict.Tokens {
 		token := &seg.Dict.Tokens[i]
-		segments := seg.segmentWords(token.text, true)
+		words = seg.appendWords(words[:0], token.text)
+		segments := seg.segmentWords(words, true)
 
 		// Calculate the number of sub-segments that need to be added
 		numTokensToAdd := 0
 		for iToken := 0; iToken < len(segments); iToken++ {
-			if len(segments[iToken].token.text) > 0 {
+			if segments[iToken].token.size > 0 {
 				hasJp := false
-				if len(segments[iToken].token.text) == 1 {
-					segText := string(segments[iToken].token.text[0])
+				if segments[iToken].token.size == 1 {
+					segText := string(segments[iToken].token.text)
 					hasJp = IsJp(segText)
 				}
 
@@ -695,10 +708,10 @@ func (seg *Segmenter) CalcToken() {
 		// add sub-segments subparticiple
 		iSegmentsToAdd := 0
 		for iToken := 0; iToken < len(segments); iToken++ {
-			if len(segments[iToken].token.text) > 0 {
+			if segments[iToken].token.size > 0 {
 				hasJp := false
-				if len(segments[iToken].token.text) == 1 {
-					segText := string(segments[iToken].token.text[0])
+				if segments[iToken].token.size == 1 {
+					segText := string(segments[iToken].token.text)
 					hasJp = IsJp(segText)
 				}
 

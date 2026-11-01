@@ -12,7 +12,7 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-//go:build !cedar
+//go:build hash
 
 package gse
 
@@ -46,7 +46,7 @@ var (
 )
 
 // trie is a rune-level hash trie, used instead of the byte-level cedar
-// double array trie (build with `-tags cedar` to switch back).
+// double array trie with `-tags hash`: ~40% less trie memory, but slower lookups.
 //
 // A CJK word costs one node per rune instead of one per byte. Every edge
 // (parent, rune) is one slot of an open addressing table, and the node it

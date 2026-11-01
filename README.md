@@ -44,7 +44,7 @@ I build [Codg](https://github.com/vcaesar/codg) now, Easy code and work AI agent
 
 ## Algorithm:
 
-- [Dictionary](https://github.com/go-ego/gse/blob/master/dictionary.go) with a rune-level hash trie by default, or the double array trie (Double-Array Trie, [cedar](https://github.com/vcaesar/cedar)) with `-tags cedar`
+- [Dictionary](https://github.com/go-ego/gse/blob/master/dictionary.go) with the double array trie (Double-Array Trie, [cedar](https://github.com/vcaesar/cedar)) by default, or a rune-level hash trie with `-tags hash`
 - [Segmenter](https://github.com/go-ego/gse/blob/master/dag.go) algorithm is the shortest path (based on word frequency and dynamic programming), and DAG and HMM algorithm word segmentation.
 
 ## Text Segmentation speed:
@@ -73,12 +73,27 @@ go get -u github.com/go-ego/gse
 
 ### Build tags
 
-- `-tags cedar`: use the cedar double array trie instead of the default rune-level hash trie for the dictionary.
+- `-tags hash`: use a rune-level hash trie instead of the default cedar double array trie; ~8 MiB (~40%) less trie memory for the zh dict, but ~10% slower segmentation.
 - `-tags ne`: do not embed the default dictionaries into the binary (smaller size); load them with `LoadDict("your dict path")` instead of `LoadDictEmbed()`.
 
 ```
-go build -tags cedar
+go build -tags hash
 go build -tags ne
+```
+
+### Low memory devices
+
+The zh dictionary takes about 132 MiB of heap by default. For low memory devices, combine:
+
+- `-tags hash`: the hash trie, about 8 MiB less.
+- `seg.SkipSubSeg = true` before loading: skips the precomputed sub-words of the search mode (`Slice`, `String`, `Pos` with `searchMode`), about 50 MiB less. `CutSearch(text)` uses them too, `CutSearch(text, true)` and `CutSearch(text, false)` still work.
+- `seg.LoadDict("zh_s")`: only the simplified Chinese dictionary.
+
+```go
+// go build -tags hash
+var seg gse.Segmenter
+seg.SkipSubSeg = true
+err := seg.LoadDict("zh_s") // about 53 MiB
 ```
 
 ## Use

@@ -12,7 +12,7 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-//go:build !cedar
+//go:build hash
 
 package gse
 
@@ -217,11 +217,11 @@ func TestDictSaturatedPrefix(t *testing.T) {
 	dict := NewDict()
 	n := trieKidsMax + 1
 	for i := 0; i < n; i++ {
-		tok := Token{text: []Text{Text("大"), Text(string(rune(0x4E00 + i)))}, freq: 1}
+		tok := Token{text: Text("大" + string(rune(0x4E00+i))), size: 2, freq: 1}
 		tt.Nil(t, dict.AddToken(tok))
 	}
 	for i := 0; i < n; i++ {
-		tok := Token{text: []Text{Text("大"), Text(string(rune(0x4E00 + i)))}}
+		tok := Token{text: Text("大" + string(rune(0x4E00+i))), size: 2}
 		tt.Nil(t, dict.RemoveToken(tok))
 	}
 
