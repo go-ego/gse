@@ -184,6 +184,17 @@ func TestLoadDictEmbedLangs(t *testing.T) {
 	tt.Nil(t, seg.LoadDictEmbed("ja"))
 	_, _, ok := seg.Find("こん")
 	tt.Bool(t, ok)
+	// words before the full-width space line (trimmed to "") must survive
+	freq, _, ok := seg.Find("犠牲")
+	tt.Bool(t, ok)
+	tt.Equal(t, 5622.0, freq)
+
+	empty := Segmenter{SkipSubSeg: true, NotLoadHMM: true}
+	tt.Nil(t, empty.LoadDictStr("犠牲 5622 n\n\u3000 1287 x\n運命 5578 n"))
+	tt.Equal(t, 2, empty.Dict.NumTokens())
+	freq, _, ok = empty.Find("犠牲")
+	tt.Bool(t, ok)
+	tt.Equal(t, 5622.0, freq)
 
 	tt.Nil(t, seg.LoadDictEmbed("zh_t"))
 	tt.Nil(t, seg.LoadDictEmbed("zh_s, word1 20 n"))
