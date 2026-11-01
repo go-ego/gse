@@ -123,9 +123,7 @@ func (seg *Segmenter) loadDictStr(dicts ...string) {
 			freq := seg.Size(size, text, strings.TrimSpace(freqText))
 			if freq != 0.0 {
 				// add the words to the token
-				words := seg.SplitTextToWords([]byte(text))
-				token := Token{text: words, freq: freq, pos: strings.TrimSpace(pos)}
-				seg.Dict.AddToken(token)
+				seg.Dict.AddToken(seg.ToToken(text, freq, strings.TrimSpace(pos)))
 			}
 
 			if !more {
@@ -174,8 +172,8 @@ func (seg *Segmenter) LoadTFIDFDictStr(dictFile *types.LoadDictFile) error {
 		inverseFreq := seg.Size(size, text, inverseFreqText)
 		if freq != 0.0 && inverseFreq != 0.0 {
 			// add the words to the token
-			words := seg.SplitTextToWords([]byte(text))
-			token := Token{text: words, freq: freq, inverseFreq: inverseFreq}
+			token := seg.ToToken(text, freq)
+			token.inverseFreq = inverseFreq
 			seg.Dict.AddToken(token)
 		}
 

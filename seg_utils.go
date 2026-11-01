@@ -43,7 +43,7 @@ func ToString(segs []Segment, searchMode ...bool) (output string) {
 
 	for _, seg := range segs {
 		output += fmt.Sprintf("%s/%s ",
-			textSliceToString(seg.token.text), seg.token.pos)
+			string(seg.token.text), seg.token.pos)
 	}
 	return
 }
@@ -51,7 +51,7 @@ func ToString(segs []Segment, searchMode ...bool) (output string) {
 func tokenToString(token *Token) (output string) {
 	hasOnlyTerminalToken := true
 	for _, s := range token.segments {
-		if len(s.token.segments) > 1 || IsJp(string(s.token.text[0])) {
+		if len(s.token.segments) > 1 || firstIsJp(s.token.text) {
 			hasOnlyTerminalToken = false
 		}
 
@@ -60,7 +60,7 @@ func tokenToString(token *Token) (output string) {
 		}
 	}
 
-	output += fmt.Sprintf("%s/%s ", textSliceToString(token.text), token.pos)
+	output += fmt.Sprintf("%s/%s ", string(token.text), token.pos)
 	return
 }
 
@@ -69,7 +69,7 @@ func tokenToBytes(token *Token) (output []byte) {
 		output = append(output, tokenToBytes(s.token)...)
 	}
 	output = append(output,
-		fmt.Appendf(nil, "%s/%s ", textSliceToString(token.text), token.pos)...)
+		fmt.Appendf(nil, "%s/%s ", string(token.text), token.pos)...)
 
 	return
 }
@@ -97,7 +97,7 @@ func ToSlice(segs []Segment, searchMode ...bool) (output []string) {
 func tokenToSlice(token *Token) (output []string) {
 	hasOnlyTerminalToken := true
 	for _, s := range token.segments {
-		if len(s.token.segments) > 1 || IsJp(string(s.token.text[0])) {
+		if len(s.token.segments) > 1 || firstIsJp(s.token.text) {
 			hasOnlyTerminalToken = false
 		}
 
@@ -106,7 +106,7 @@ func tokenToSlice(token *Token) (output []string) {
 		}
 	}
 
-	output = append(output, textSliceToString(token.text))
+	output = append(output, string(token.text))
 	return
 }
 
@@ -126,7 +126,7 @@ func ToPos(segs []Segment, searchMode ...bool) (output []SegPos) {
 
 	for _, seg := range segs {
 		pos1 := SegPos{
-			Text: textSliceToString(seg.token.text),
+			Text: string(seg.token.text),
 			Pos:  seg.token.pos,
 		}
 
@@ -139,7 +139,7 @@ func ToPos(segs []Segment, searchMode ...bool) (output []SegPos) {
 func tokenToPos(token *Token) (output []SegPos) {
 	hasOnlyTerminalToken := true
 	for _, s := range token.segments {
-		if len(s.token.segments) > 1 || IsJp(string(s.token.text[0])) {
+		if len(s.token.segments) > 1 || firstIsJp(s.token.text) {
 			hasOnlyTerminalToken = false
 		}
 
@@ -149,7 +149,7 @@ func tokenToPos(token *Token) (output []SegPos) {
 	}
 
 	pos1 := SegPos{
-		Text: textSliceToString(token.text),
+		Text: string(token.text),
 		Pos:  token.pos,
 	}
 	output = append(output, pos1)
@@ -223,9 +223,7 @@ func Join(text []Text) string {
 
 func printTokens(tokens []*Token, numTokens int) (output string) {
 	for iToken := 0; iToken < numTokens; iToken++ {
-		for _, word := range tokens[iToken].text {
-			output += fmt.Sprint(string(word))
-		}
+		output += string(tokens[iToken].text)
 		output += " "
 	}
 	return

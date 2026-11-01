@@ -68,8 +68,9 @@ type Text []byte
 
 // Token define a segment token structure
 type Token struct {
-	// a segment string，it's []Text
-	text []Text
+	// the segment text, stored in one buffer instead of a []Text
+	// per word to save memory, it has size Text units (see SplitTextToWords)
+	text Text
 
 	// a frequency of the token
 	freq float64
@@ -84,6 +85,9 @@ type Token struct {
 	// which is where "shortest path" comes from.
 	distance float32
 
+	// the number of Text units of the text
+	size int32
+
 	// the inverse document frequency of the token
 	inverseFreq float64
 
@@ -94,7 +98,7 @@ type Token struct {
 
 // Text return the text of the segment
 func (token *Token) Text() string {
-	return textSliceToString(token.text)
+	return string(token.text)
 }
 
 // Freq returns the frequency in the dictionary token
@@ -119,26 +123,5 @@ func (token *Token) Segments() []*Segment {
 
 // Equals compare str split tokens
 func (token *Token) Equals(str string) bool {
-	tokenLen := 0
-	for _, t := range token.text {
-		tokenLen += len(t)
-	}
-	if tokenLen != len(str) {
-		return false
-	}
-
-	bytStr := []byte(str)
-	index := 0
-	for i := 0; i < len(token.text); i++ {
-		textArray := []byte(token.text[i])
-		for j := 0; j < len(textArray); j++ {
-			if textArray[j] != bytStr[index] {
-				return false
-			}
-
-			index++
-		}
-	}
-
-	return true
+	return string(token.text) == str
 }

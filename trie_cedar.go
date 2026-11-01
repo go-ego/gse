@@ -12,7 +12,7 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-//go:build cedar
+//go:build !hash
 
 package gse
 
@@ -20,7 +20,7 @@ import (
 	"github.com/vcaesar/cedar"
 )
 
-// trie is the cedar double array trie, built with `-tags cedar`
+// trie is the cedar double array trie, the default (`-tags hash` to switch)
 type trie = cedar.Cedar
 
 func newTrie() *trie {

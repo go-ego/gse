@@ -22,7 +22,7 @@ import (
 	"github.com/vcaesar/tt"
 )
 
-// the tests run on both tries: `go test` and `go test -tags cedar`
+// the tests run on both tries: `go test` and `go test -tags hash`
 
 func TestTrieInsertGet(t *testing.T) {
 	tr := newTrie()
@@ -130,7 +130,7 @@ func heapAlloc() uint64 {
 func BenchmarkTrieLoad(b *testing.B) {
 	keys := make([][]byte, len(prodSeg.Dict.Tokens))
 	for i, token := range prodSeg.Dict.Tokens {
-		keys[i] = textSliceToBytes(token.text)
+		keys[i] = token.text
 	}
 
 	var tr *trie

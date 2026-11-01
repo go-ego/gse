@@ -44,7 +44,7 @@ Gse は jieba の Golang 実装であり、NLP サポートやより多くの機
 
 ## アルゴリズム:
 
-- [辞書](https://github.com/go-ego/gse/blob/master/dictionary.go)はデフォルトで rune 単位のハッシュトライ、`-tags cedar` 指定時は Double Array Trie（ダブル配列トライ、[cedar](https://github.com/vcaesar/cedar)）で実装
+- [辞書](https://github.com/go-ego/gse/blob/master/dictionary.go)はデフォルトで Double Array Trie（ダブル配列トライ、[cedar](https://github.com/vcaesar/cedar)）、`-tags hash` 指定時は rune 単位のハッシュトライで実装
 - [分割器](https://github.com/go-ego/gse/blob/master/dag.go)アルゴリズムは最短パス（単語頻度と動的プログラミングに基づく）、DAG および HMM アルゴリズムによる分かち書き
 
 ## テキスト分割速度:
@@ -73,12 +73,27 @@ go get -u github.com/go-ego/gse
 
 ### ビルドタグ
 
-- `-tags cedar`：辞書にデフォルトの rune 単位ハッシュトライではなく、cedar ダブル配列トライを使用します。
+- `-tags hash`：辞書にデフォルトの cedar ダブル配列トライではなく、rune 単位ハッシュトライを使用します（トライのメモリ約 40% 削減、分かち書きは約 10% 低速）。
 - `-tags ne`：デフォルト辞書をバイナリに埋め込みません（サイズ削減）。`LoadDictEmbed()` ではなく `LoadDict("辞書のパス")` で読み込んでください。
 
 ```
-go build -tags cedar
+go build -tags hash
 go build -tags ne
+```
+
+### 低メモリデバイス
+
+デフォルトの中国語辞書はヒープを約 132 MiB 使用します。低メモリデバイスでは以下を組み合わせてください：
+
+- `-tags hash`：ハッシュトライを使用し、約 8 MiB 削減。
+- 読み込み前に `seg.SkipSubSeg = true`：検索モード（`Slice`、`String`、`Pos` の `searchMode`）用に事前計算するサブワードを省略し、約 50 MiB 削減。`CutSearch` は引き続き使えます。
+- `seg.LoadDict("zh_s")`：簡体字中国語の辞書のみを読み込みます。
+
+```go
+// go build -tags hash
+var seg gse.Segmenter
+seg.SkipSubSeg = true
+err := seg.LoadDict("zh_s") // 約 53 MiB
 ```
 
 ## 使用方法

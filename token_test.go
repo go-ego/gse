@@ -7,12 +7,7 @@ import (
 	"github.com/vcaesar/tt"
 )
 
-var token = Token{
-	text: []Text{
-		[]byte("one"),
-		[]byte("two"),
-	},
-}
+var token = Token{text: Text("onetwo"), size: 2}
 
 func TestTokenEquals(t *testing.T) {
 	tt.True(t, token.Equals("onetwo"))
@@ -55,4 +50,53 @@ func BenchmarkEquals(t *testing.B) {
 	}
 
 	tt.BM(t, fn)
+}
+
+func TestToTokenText(t *testing.T) {
+	var seg Segmenter
+	token := seg.ToToken("Hello世界", 10, "n")
+	tt.Equal(t, "hello世界", token.Text())
+	tt.Equal(t, 3, int(token.size))
+	tt.Equal(t, 3, len(seg.SplitTextToWords(token.text)))
+
+	seg.AlphaNum = true
+	token = seg.ToToken("ab世", 10)
+	tt.Equal(t, "ab世", token.Text())
+	tt.Equal(t, 3, int(token.size))
+
+	ToLower = false
+	defer func() { ToLower = true }()
+	token = seg.ToToken("Ab世", 10)
+	tt.Equal(t, "Ab世", token.Text())
+	tt.Equal(t, 3, int(token.size))
+}
+
+func TestFirstIsJp(t *testing.T) {
+	tt.True(t, firstIsJp(Text("こんにちは")))
+	tt.True(t, firstIsJp(Text("カタカナ")))
+	tt.False(t, firstIsJp(Text("世界")))
+	tt.False(t, firstIsJp(Text("abc")))
+	tt.False(t, firstIsJp(nil))
+}
+
+func TestDictTokenText(t *testing.T) {
+	var seg Segmenter
+	seg.SkipLog = true
+	seg.Dict = NewDict()
+	tt.Nil(t, seg.AddToken("西雅图", 100, "ns"))
+	tt.Nil(t, seg.AddToken("西雅", 10))
+	seg.CalcToken()
+
+	freq, pos, ok := seg.Find("西雅图")
+	tt.True(t, ok)
+	tt.Equal(t, 100, freq)
+	tt.Equal(t, "ns", pos)
+	tt.Equal(t, 3, seg.Dict.MaxTokenLen())
+	tt.Equal(t, "[西雅 图]", seg.Slice("西雅图", true))
+	tt.Equal(t, "西雅/ 图/x ", seg.String("西雅图", true))
+	tt.Equal(t, 2, len(seg.Dict.Tokens[0].Segments()))
+
+	tt.Nil(t, seg.RemoveToken("西雅图"))
+	_, _, err := seg.Dict.Value([]byte("西雅图"))
+	tt.NotNil(t, err)
 }

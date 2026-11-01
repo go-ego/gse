@@ -56,7 +56,7 @@ type Segmenter struct {
 	// SkipSubSeg skip calculating the sub-segments of the dictionary tokens,
 	// they are only used by the search mode (Token.Segments and the
 	// searchMode of Slice, String, Pos, CutSearch); set before loading the
-	// dictionary to save about a quarter of the dictionary memory
+	// dictionary to save about 40% of the dictionary memory
 	SkipSubSeg bool
 
 	NotStop bool
@@ -147,7 +147,7 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 		// Update the jump information at the end of the split word
 		// for all possible splits
 		for iToken := 0; iToken < numTokens; iToken++ {
-			location := current + len(tokens[iToken].text) - 1
+			location := current + int(tokens[iToken].size) - 1
 			if !searchMode || current != 0 || location != len(text)-1 {
 				updateJumper(&jumpers[location], baseDistance, tokens[iToken])
 			}
@@ -155,9 +155,9 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 
 		// Add a pseudo-syllable if there is no corresponding syllable
 		// for the current character
-		if numTokens == 0 || len(tokens[0].text) > 1 {
+		if numTokens == 0 || tokens[0].size > 1 {
 			updateJumper(&jumpers[current], baseDistance,
-				&Token{text: []Text{text[current]}, freq: 1, distance: 32, pos: "x"})
+				&Token{text: text[current], size: 1, freq: 1, distance: 32, pos: "x"})
 		}
 	}
 
@@ -165,7 +165,7 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 	// to get the number of subwords to be added
 	numSeg := 0
 	for index := len(text) - 1; index >= 0; {
-		location := index - len(jumpers[index].token.text) + 1
+		location := index - int(jumpers[index].token.size) + 1
 		numSeg++
 		index = location - 1
 	}
@@ -174,7 +174,7 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 	// to add the split to the final result
 	outputSegments := make([]Segment, numSeg)
 	for index := len(text) - 1; index >= 0; {
-		location := index - len(jumpers[index].token.text) + 1
+		location := index - int(jumpers[index].token.size) + 1
 		numSeg--
 		outputSegments[numSeg].token = jumpers[index].token
 		index = location - 1
@@ -184,7 +184,7 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 	bytePosition := 0
 	for iSeg := 0; iSeg < len(outputSegments); iSeg++ {
 		outputSegments[iSeg].start = bytePosition
-		bytePosition += textSliceByteLen(outputSegments[iSeg].token.text)
+		bytePosition += len(outputSegments[iSeg].token.text)
 		outputSegments[iSeg].end = bytePosition
 	}
 
@@ -215,7 +215,11 @@ func SplitWords(text Text) []Text {
 
 // SplitTextToWords splits a string to token words
 func (seg *Segmenter) SplitTextToWords(text Text) []Text {
-	output := make([]Text, 0, len(text)/3)
+	return seg.appendWords(make([]Text, 0, len(text)/3), text)
+}
+
+// appendWords appends the token words of text to output
+func (seg *Segmenter) appendWords(output []Text, text Text) []Text {
 	current, alphanumericStart := 0, 0
 	inAlphanumeric := true
 

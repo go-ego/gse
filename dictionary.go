@@ -14,7 +14,7 @@
 package gse
 
 // Dictionary struct implements a string trie,
-// a rune-level hash trie by default or cedar with `-tags cedar`.
+// the cedar double array trie by default or a rune-level hash trie with `-tags hash`.
 // one segment maybe in leaf node or not
 type Dictionary struct {
 	trie *trie
@@ -59,13 +59,12 @@ func (dict *Dictionary) grow(n int) {
 
 // AddToken add a token to the dictionary
 func (dict *Dictionary) AddToken(token Token) error {
-	bytes := textSliceToBytes(token.text)
-	val, err := dict.trie.Get(bytes)
+	val, err := dict.trie.Get(token.text)
 	if err == nil || val > 0 {
 		return nil
 	}
 
-	err = dict.trie.Insert(bytes, dict.NumTokens())
+	err = dict.trie.Insert(token.text, dict.NumTokens())
 	if err != nil {
 		return err
 	}
@@ -73,8 +72,8 @@ func (dict *Dictionary) AddToken(token Token) error {
 	dict.Tokens = append(dict.Tokens, token)
 	dict.totalFreq += token.freq
 
-	if len(token.text) > dict.maxTokenLen {
-		dict.maxTokenLen = len(token.text)
+	if int(token.size) > dict.maxTokenLen {
+		dict.maxTokenLen = int(token.size)
 	}
 
 	return nil
@@ -82,9 +81,7 @@ func (dict *Dictionary) AddToken(token Token) error {
 
 // RemoveToken remove token in dictionary
 func (dict *Dictionary) RemoveToken(token Token) error {
-	bytes := textSliceToBytes(token.text)
-
-	return dict.trie.Delete(bytes)
+	return dict.trie.Delete(token.text)
 }
 
 // LookupTokens finds tokens and words in the dictionary, matching the given pattern
