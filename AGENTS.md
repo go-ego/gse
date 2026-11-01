@@ -18,8 +18,9 @@ Module: `github.com/go-ego/gse` · Go: `1.17` (`go.mod`) · CI tested against Go
 - **Build without embedded dicts**: `go build -tags ne .` (excludes `dict_embed.go`, uses `dict_no_embed.go` stubs)
 - **Format**: `gofmt -s -w .`
 - **Vet**: `go vet ./...`
+- **Lint**: `golangci-lint run ./...` (golangci-lint v2, config `.golangci.yml`; also `--build-tags hash` / `--build-tags ne`)
 
-No Makefile / Taskfile / justfile exists. CI (`.github/workflows/go.yml`) runs only `go build -v .` + `go test -v .` (root package). CircleCI (`circle.yml`) runs `go test -v ./...` + coverage upload.
+No Makefile / Taskfile / justfile exists. CI (`.github/workflows/go.yml`) runs only `go build -v .` + `go test -v .` (root package); `.github/workflows/lint.yml` runs golangci-lint v2.15 via `golangci/golangci-lint-action@v9`. CircleCI (`circle.yml`) runs `go test -v ./...` + coverage upload.
 
 ## Architecture
 

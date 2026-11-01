@@ -105,6 +105,7 @@ func TestLoadCorpusAverLen(t *testing.T) {
 	tt.Equal(t, filepath.Join(dir, "data/dict/zh/tf_idf.txt"), seg.GetTfIdfPath()[0])
 	tt.Equal(t, []string{"a.txt", filepath.Join(dir, "data/dict/zh/idf.txt")},
 		seg.GetIdfPath("a.txt"))
+	tt.Equal(t, filepath.Join(dir, "data/dict/zh/tf_idf_origin.txt"), seg.GetCorpusPath()[0])
 
 	// the default corpus file is missing
 	_, err := seg.LoadCorpusAverLen()
@@ -118,6 +119,19 @@ func TestLoadCorpusAverLen(t *testing.T) {
 	tt.Nil(t, err)
 	// (6 + (2+4)/2) / 2
 	tt.Equal(t, 4.5, avg)
+}
+
+func TestLoadStopDictPath(t *testing.T) {
+	dir := t.TempDir()
+	writeFile(t, dir, "data/dict/zh/stop_word.txt", "停用\n")
+	writeFile(t, dir, "data/dict/zh/stop_tokens.txt", "标记\n")
+
+	seg := newDictPathSeg(dir)
+	tt.Nil(t, seg.LoadStop())
+	tt.True(t, seg.IsStop("停用"))
+
+	tt.Nil(t, seg.LoadStop("zh"))
+	tt.True(t, seg.IsStop("标记"))
 }
 
 func TestSizeNoFreq(t *testing.T) {

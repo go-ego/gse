@@ -63,9 +63,9 @@ func TestTag(t *testing.T) {
 	tt.Equal(t, tag(125), tg)
 
 	_, err = newTag("X", "n")
-	tt.Equal(t, "Failed to convert X n to Tag", err.Error())
+	tt.Equal(t, "failed to convert X n to Tag", err.Error())
 	_, err = newTag("B", "zz")
-	tt.Equal(t, "Failed to convert B zz to Tag", err.Error())
+	tt.Equal(t, "failed to convert B zz to Tag", err.Error())
 }
 
 func TestTabGet(t *testing.T) {

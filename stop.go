@@ -18,7 +18,7 @@ import (
 	"bufio"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -44,15 +44,15 @@ func (seg *Segmenter) LoadStop(files ...string) error {
 		seg.StopWordMap = make(map[string]bool)
 	}
 
-	dictDir := path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
+	dictDir := filepath.Join(filepath.Dir(seg.GetCurrentFilePath()), "data")
 	if len(files) <= 0 {
-		dictPath := path.Join(dictDir, "dict/zh/stop_word.txt")
+		dictPath := filepath.Join(dictDir, "dict/zh/stop_word.txt")
 		files = append(files, dictPath)
 	}
 
 	name := strings.Split(files[0], ", ")
 	if name[0] == "zh" {
-		name[0] = path.Join(dictDir, "dict/zh/stop_tokens.txt")
+		name[0] = filepath.Join(dictDir, "dict/zh/stop_tokens.txt")
 	}
 
 	for i := 0; i < len(name); i++ {

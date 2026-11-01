@@ -8,6 +8,7 @@ Go 高性能多语言 NLP 和分词, 支持英文、中文、日文等。
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
 
 [![Build Status](https://github.com/go-ego/gse/workflows/Go/badge.svg)](https://github.com/go-ego/gse/commits/master)
+[![Lint Status](https://github.com/go-ego/gse/workflows/Lint/badge.svg)](https://github.com/go-ego/gse/actions/workflows/lint.yml)
 [![CircleCI Status](https://circleci.com/gh/go-ego/gse.svg?style=shield)](https://circleci.com/gh/go-ego/gse)
 [![codecov](https://codecov.io/gh/go-ego/gse/branch/master/graph/badge.svg)](https://codecov.io/gh/go-ego/gse)
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-ego/gse)](https://goreportcard.com/report/github.com/go-ego/gse)
@@ -95,6 +96,16 @@ go build -tags ne
 var seg gse.Segmenter
 seg.SkipSubSeg = true
 err := seg.LoadDict("zh_s") // 约 53 MiB
+```
+
+### 代码检查 (Lint)
+
+CI 使用 [golangci-lint](https://golangci-lint.run) v2 检查代码, 配置见 [.golangci.yml](.golangci.yml):
+
+```
+go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
+golangci-lint run ./...
+golangci-lint run --build-tags hash .
 ```
 
 ## 使用
