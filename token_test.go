@@ -100,3 +100,39 @@ func TestDictTokenText(t *testing.T) {
 	_, _, err := seg.Dict.Value([]byte("西雅图"))
 	tt.NotNil(t, err)
 }
+
+func TestSplitOptionChanged(t *testing.T) {
+	var seg Segmenter
+	seg.SkipLog = true
+	seg.Dict = NewDict()
+	seg.AlphaNum = true
+	tt.Nil(t, seg.AddToken("ab世", 10))
+	tt.Nil(t, seg.AddToken("ab", 10))
+
+	// the tokens are stored with 3 and 2 words, now split to 2 and 1
+	seg.AlphaNum = false
+	seg.CalcToken()
+	tt.Equal(t, "[ab世]", seg.Slice("ab世"))
+	tt.Equal(t, "[ab 世]", seg.Slice("ab世", true))
+	tt.Equal(t, 2, len(seg.Dict.Tokens[0].Segments()))
+
+	seg.AlphaNum = true
+	seg.CalcToken()
+	tt.Equal(t, "[ab世]", seg.Slice("ab世"))
+	tt.Equal(t, "[ab 世]", seg.Slice("ab世", true))
+}
+
+func TestLookupTokensSize(t *testing.T) {
+	var seg Segmenter
+	seg.Dict = NewDict()
+	tt.Nil(t, seg.AddToken("西雅", 10))
+	tt.Nil(t, seg.AddToken("西雅图", 10))
+
+	words := seg.SplitTextToWords([]byte("西雅图人"))
+	tokens := make([]*Token, 4)
+	sizes := make([]int, 4)
+	tt.Equal(t, 2, seg.Dict.lookupTokens(words, tokens, sizes))
+	tt.Equal(t, "[2 3]", sizes[:2])
+	tt.Equal(t, "西雅图", tokens[1].Text())
+	tt.Equal(t, 2, seg.Dict.LookupTokens(words, tokens))
+}

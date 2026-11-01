@@ -88,12 +88,20 @@ func (dict *Dictionary) RemoveToken(token Token) error {
 // and returns the number of tokens
 func (dict *Dictionary) LookupTokens(
 	words []Text, tokens []*Token) (numOfTokens int) {
+	return dict.lookupTokens(words, tokens, nil)
+}
+
+// lookupTokens is LookupTokens, it also stores in sizes (if not nil)
+// the number of words matched by each token, which may differ from
+// token.size when the split options changed after the token was added
+func (dict *Dictionary) lookupTokens(
+	words []Text, tokens []*Token, sizes []int) (numOfTokens int) {
 	var (
 		id, value int
 		err       error
 	)
 
-	for _, word := range words {
+	for i, word := range words {
 		id, err = dict.trie.Jump(word, id)
 		if err != nil {
 			break
@@ -102,6 +110,9 @@ func (dict *Dictionary) LookupTokens(
 		value, err = dict.trie.Value(id)
 		if err == nil {
 			tokens[numOfTokens] = &dict.Tokens[value]
+			if sizes != nil {
+				sizes[numOfTokens] = i + 1
+			}
 			numOfTokens++
 		}
 	}

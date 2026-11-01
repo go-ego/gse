@@ -86,7 +86,7 @@ go build -tags ne
 デフォルトの中国語辞書はヒープを約 132 MiB 使用します。低メモリデバイスでは以下を組み合わせてください：
 
 - `-tags hash`：ハッシュトライを使用し、約 8 MiB 削減。
-- 読み込み前に `seg.SkipSubSeg = true`：検索モード（`Slice`、`String`、`Pos` の `searchMode`）用に事前計算するサブワードを省略し、約 50 MiB 削減。`CutSearch` は引き続き使えます。
+- 読み込み前に `seg.SkipSubSeg = true`：検索モード（`Slice`、`String`、`Pos` の `searchMode`）用に事前計算するサブワードを省略し、約 50 MiB 削減。`CutSearch(text)` も影響を受けますが、`CutSearch(text, true)` と `CutSearch(text, false)` は引き続き使えます。
 - `seg.LoadDict("zh_s")`：簡体字中国語の辞書のみを読み込みます。
 
 ```go

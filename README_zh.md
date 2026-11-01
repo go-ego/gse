@@ -87,7 +87,7 @@ go build -tags ne
 默认的中文词典约占用 132 MiB 堆内存。低内存设备可组合使用:
 
 - `-tags hash`: 使用哈希 trie, 约减少 8 MiB。
-- 加载前设置 `seg.SkipSubSeg = true`: 跳过搜索模式 (`Slice`, `String`, `Pos` 的 `searchMode`) 预先计算的子词, 约减少 50 MiB; `CutSearch` 不受影响。
+- 加载前设置 `seg.SkipSubSeg = true`: 跳过搜索模式 (`Slice`, `String`, `Pos` 的 `searchMode`) 预先计算的子词, 约减少 50 MiB; `CutSearch(text)` 也会受影响, `CutSearch(text, true)` 和 `CutSearch(text, false)` 不受影响。
 - `seg.LoadDict("zh_s")`: 只加载简体中文词典。
 
 ```go

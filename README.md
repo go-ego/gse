@@ -86,7 +86,7 @@ go build -tags ne
 The zh dictionary takes about 132 MiB of heap by default. For low memory devices, combine:
 
 - `-tags hash`: the hash trie, about 8 MiB less.
-- `seg.SkipSubSeg = true` before loading: skips the precomputed sub-words of the search mode (`Slice`, `String`, `Pos` with `searchMode`), about 50 MiB less. `CutSearch` still works.
+- `seg.SkipSubSeg = true` before loading: skips the precomputed sub-words of the search mode (`Slice`, `String`, `Pos` with `searchMode`), about 50 MiB less. `CutSearch(text)` uses them too, `CutSearch(text, true)` and `CutSearch(text, false)` still work.
 - `seg.LoadDict("zh_s")`: only the simplified Chinese dictionary.
 
 ```go
