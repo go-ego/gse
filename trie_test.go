@@ -137,14 +137,20 @@ func BenchmarkTrieLoad(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		b.StopTimer()
 		before := heapAlloc()
+		b.StartTimer()
+
 		tr = newTrie()
 		for id, key := range keys {
 			if err := tr.Insert(key, id); err != nil {
 				b.Fatal(err)
 			}
 		}
+
+		b.StopTimer()
 		b.ReportMetric(float64(heapAlloc()-before)/(1<<20), "MB-heap")
+		b.StartTimer()
 	}
 	runtime.KeepAlive(tr)
 }

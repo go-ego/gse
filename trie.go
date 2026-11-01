@@ -33,7 +33,7 @@ const (
 	trieParentBits = 32
 	trieKidsShift  = trieRuneBits + trieParentBits
 	trieRuneMask   = 1<<trieRuneBits - 1
-	trieKidsMax    = 1<<10 - 1 // saturated counts are never decremented
+	trieKidsMax    = 1<<10 - 1 // the count above it is kept in trie.more
 	trieKidsMask   = trieKidsMax << trieKidsShift
 	trieUsed       = 1 << 63
 	trieTomb       = math.MaxUint64 // a deleted slot, matches no key
@@ -55,8 +55,9 @@ var (
 type trie struct {
 	keys  []uint64
 	vals  []int32
-	root  []uint32 // node ids of the root children of BMP runes
-	val   int32    // value of the root, the empty key
+	root  []uint32       // node ids of the root children of BMP runes
+	more  map[uint32]int // children counts above trieKidsMax, by node id
+	val   int32          // value of the root, the empty key
 	used  int
 	tombs int
 	shift uint // 64 - log2(len(keys))
@@ -100,6 +101,39 @@ func (t *trie) slot(k uint64) int {
 	return i
 }
 
+// free returns the first empty or deleted slot on the probe of k,
+// k must not be in the table
+func (t *trie) free(k uint64) int {
+	mask := len(t.keys) - 1
+	i := t.home(k)
+	for t.keys[i] != 0 && t.keys[i] != trieTomb {
+		i = (i + 1) & mask
+	}
+	return i
+}
+
+func (t *trie) addKid(id uint32) {
+	if t.keys[id-1]&trieKidsMask != trieKidsMask {
+		t.keys[id-1] += 1 << trieKidsShift
+		return
+	}
+	if t.more == nil {
+		t.more = make(map[uint32]int)
+	}
+	t.more[id]++
+}
+
+func (t *trie) dropKid(id uint32) {
+	switch n := t.more[id]; {
+	case n > 1:
+		t.more[id] = n - 1
+	case n == 1:
+		delete(t.more, id)
+	default:
+		t.keys[id-1] -= 1 << trieKidsShift
+	}
+}
+
 func (t *trie) child(from uint32, r rune) uint32 {
 	if from == 0 && r < trieRootLen {
 		return t.root[r]
@@ -112,17 +146,28 @@ func (t *trie) child(from uint32, r rune) uint32 {
 	return uint32(i + 1)
 }
 
-// Jump follows key from the node `from`, returns the reached node;
-// on a missing edge it returns the last node reached and errTrieNoKey
-func (t *trie) Jump(key []byte, from int) (int, error) {
-	node := uint32(from)
+// walk follows key from the node `from` as far as its nodes exist,
+// returns the last node reached and the rest of key
+func (t *trie) walk(key []byte, from uint32) (uint32, []byte) {
+	node := from
 	for len(key) > 0 {
 		r, n := trieRune(key)
 		next := t.child(node, r)
 		if next == 0 {
-			return int(node), errTrieNoKey
+			break
 		}
 		node, key = next, key[n:]
+	}
+	return node, key
+}
+
+// Jump follows key from the node `from`, returns the reached node;
+// on a missing edge it returns the last node reached and errTrieNoKey.
+// Node ids are invalidated by Insert and Delete.
+func (t *trie) Jump(key []byte, from int) (int, error) {
+	node, rest := t.walk(key, uint32(from))
+	if len(rest) > 0 {
+		return int(node), errTrieNoKey
 	}
 	return int(node), nil
 }
@@ -136,7 +181,8 @@ func (t *trie) value(id int) *int32 {
 
 // Value returns the value of the node id
 func (t *trie) Value(id int) (int, error) {
-	if id < 0 || id > len(t.vals) || *t.value(id) == trieNoVal {
+	if id < 0 || id > len(t.vals) || id > 0 && t.keys[id-1] == 0 ||
+		*t.value(id) == trieNoVal {
 		return 0, errTrieNoVal
 	}
 	return int(*t.value(id)), nil
@@ -156,17 +202,16 @@ func (t *trie) Insert(key []byte, val int) error {
 	if val < 0 || val > math.MaxInt32 {
 		return errTrieInvalidVal
 	}
-	// rehash changes node ids, so make room before walking
-	t.reserve(utf8.RuneCount(key))
-
-	node := uint32(0)
-	for len(key) > 0 {
-		r, n := trieRune(key)
-		next := t.child(node, r)
-		if next == 0 {
-			next = t.link(node, r)
+	node, rest := t.walk(key, 0)
+	if len(rest) > 0 {
+		// rehash changes node ids, so walk again after it
+		if t.reserve(utf8.RuneCount(rest)) {
+			node, rest = t.walk(key, 0)
 		}
-		node, key = next, key[n:]
+		for len(rest) > 0 {
+			r, n := trieRune(rest)
+			node, rest = t.link(node, r), rest[n:]
+		}
 	}
 
 	*t.value(int(node)) = int32(val)
@@ -175,12 +220,15 @@ func (t *trie) Insert(key []byte, val int) error {
 
 // link adds a new child node of parent on r
 func (t *trie) link(parent uint32, r rune) uint32 {
-	if parent != 0 && t.keys[parent-1]&trieKidsMask != trieKidsMask {
-		t.keys[parent-1] += 1 << trieKidsShift
+	if parent != 0 {
+		t.addKid(parent)
 	}
 
 	k := trieKey(parent, r)
-	i := t.slot(k)
+	i := t.free(k)
+	if t.keys[i] == trieTomb {
+		t.tombs--
+	}
 	t.keys[i], t.vals[i] = k, trieNoVal
 	t.used++
 
@@ -191,23 +239,25 @@ func (t *trie) link(parent uint32, r rune) uint32 {
 	return id
 }
 
-// reserve makes room for n more slots under the 7/8 load limit
-func (t *trie) reserve(n int) {
+// reserve makes room for n more slots under the 7/8 load limit,
+// reports whether it rehashed
+func (t *trie) reserve(n int) bool {
 	size := len(t.keys)
 	if (t.used+t.tombs+n)*8 <= size*7 {
-		return
+		return false
 	}
 	for (t.used+n)*4 > size*3 {
 		size *= 2
 	}
 	t.rehash(size)
+	return true
 }
 
 // rehash moves the slots to a new table of size n, dropping
 // the tombstones and remapping the parent ids of the keys
 func (t *trie) rehash(n int) {
-	keys, vals := t.keys, t.vals
-	t.keys, t.vals = make([]uint64, n), make([]int32, n)
+	keys, vals, more := t.keys, t.vals, t.more
+	t.keys, t.vals, t.more = make([]uint64, n), make([]int32, n), nil
 	t.shift = uint(64 - bits.Len(uint(n-1)))
 	t.used, t.tombs = 0, 0
 	for i := range t.root {
@@ -215,32 +265,47 @@ func (t *trie) rehash(n int) {
 	}
 
 	ids := make([]uint32, len(keys)) // old slot index -> new node id
-	var move func(i int) uint32
-	move = func(i int) uint32 {
-		if ids[i] != 0 {
-			return ids[i]
+	var chain []int
+	for i, k := range keys {
+		if k == 0 || k == trieTomb || ids[i] != 0 {
+			continue
 		}
 
-		parent := trieParent(keys[i])
-		if parent != 0 {
-			parent = move(int(parent - 1))
+		// a parent moves before its children, so collect
+		// the unmoved ancestors and move them top down
+		chain = chain[:0]
+		for j := i; ; {
+			chain = append(chain, j)
+			p := trieParent(keys[j])
+			if p == 0 || ids[p-1] != 0 {
+				break
+			}
+			j = int(p - 1)
 		}
-		r := rune(keys[i] & trieRuneMask)
-		k := trieKey(parent, r)
-		j := t.slot(k)
-		t.keys[j], t.vals[j] = k|keys[i]&trieKidsMask, vals[i]
-		t.used++
 
-		ids[i] = uint32(j + 1)
-		if parent == 0 && r < trieRootLen {
-			t.root[r] = ids[i]
+		for c := len(chain) - 1; c >= 0; c-- {
+			j := chain[c]
+			parent := trieParent(keys[j])
+			if parent != 0 {
+				parent = ids[parent-1]
+			}
+			r := rune(keys[j] & trieRuneMask)
+			nk := trieKey(parent, r)
+			s := t.free(nk)
+			t.keys[s], t.vals[s] = nk|keys[j]&trieKidsMask, vals[j]
+			t.used++
+
+			ids[j] = uint32(s + 1)
+			if parent == 0 && r < trieRootLen {
+				t.root[r] = ids[j]
+			}
 		}
-		return ids[i]
 	}
 
-	for i, k := range keys {
-		if k != 0 && k != trieTomb {
-			move(i)
+	if len(more) > 0 {
+		t.more = make(map[uint32]int, len(more))
+		for id, c := range more {
+			t.more[ids[id-1]] = c
 		}
 	}
 }
@@ -248,29 +313,19 @@ func (t *trie) rehash(n int) {
 // Delete removes the value of key and prunes the nodes left without
 // value and children
 func (t *trie) Delete(key []byte) error {
-	var path []uint32
-	node := uint32(0)
-	for len(key) > 0 {
-		r, n := trieRune(key)
-		next := t.child(node, r)
-		if next == 0 {
-			return errTrieNoKey
-		}
-		path = append(path, next)
-		node, key = next, key[n:]
-	}
-	if *t.value(int(node)) == trieNoVal {
+	node, rest := t.walk(key, 0)
+	if len(rest) > 0 || *t.value(int(node)) == trieNoVal {
 		return errTrieNoKey
 	}
 
 	*t.value(int(node)) = trieNoVal
-	for i := len(path) - 1; i >= 0; i-- {
-		k := t.keys[path[i]-1]
-		if t.vals[path[i]-1] != trieNoVal || k&trieKidsMask != 0 {
+	for node != 0 {
+		k := t.keys[node-1]
+		if t.vals[node-1] != trieNoVal || k&trieKidsMask != 0 {
 			break
 		}
 
-		t.keys[path[i]-1] = trieTomb
+		t.keys[node-1] = trieTomb
 		t.used--
 		t.tombs++
 
@@ -279,9 +334,10 @@ func (t *trie) Delete(key []byte) error {
 		if parent == 0 && r < trieRootLen {
 			t.root[r] = 0
 		}
-		if parent != 0 && t.keys[parent-1]&trieKidsMask != trieKidsMask {
-			t.keys[parent-1] -= 1 << trieKidsShift
+		if parent != 0 {
+			t.dropKid(parent)
 		}
+		node = parent
 	}
 	return nil
 }
