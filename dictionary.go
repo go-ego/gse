@@ -13,14 +13,11 @@
 
 package gse
 
-import (
-	"github.com/vcaesar/cedar"
-)
-
-// Dictionary struct implements a string double array trie.
+// Dictionary struct implements a string trie,
+// a rune-level hash trie by default or cedar with `-tags cedar`.
 // one segment maybe in leaf node or not
 type Dictionary struct {
-	trie *cedar.Cedar // Cedar double array trie
+	trie *trie
 
 	maxTokenLen int     // the maximum length of the dictionary
 	Tokens      []Token // the all tokens in the dictionary, to traverse
@@ -29,7 +26,7 @@ type Dictionary struct {
 
 // NewDict a new dictionary trie
 func NewDict() *Dictionary {
-	return &Dictionary{trie: cedar.New()}
+	return &Dictionary{trie: newTrie()}
 }
 
 // MaxTokenLen the maximum length of the dictionary

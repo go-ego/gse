@@ -182,7 +182,10 @@ func TestToken(t *testing.T) {
 
 	val, id, err := seg.Value("帝国")
 	tt.Equal(t, 96493, val)
-	tt.Equal(t, 597213, id)
+	tt.Nil(t, err)
+	// the node id depends on the trie implementation
+	val, err = dict.trie.Value(id)
+	tt.Equal(t, 96493, val)
 	tt.Nil(t, err)
 
 	err = seg.AddToken("伦敦摘星塔", 100)

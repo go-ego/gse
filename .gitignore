@@ -13,6 +13,7 @@ vendor
 # vendor/github.com/vcaesar/tt
 .v0
 .codg
+test
 
 # Debug files
 *.dSYM/
