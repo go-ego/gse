@@ -113,8 +113,7 @@ func (seg *Segmenter) internalSegment(bytes []byte, searchMode bool) []Segment {
 }
 
 func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
-	// CalcToken relies on search-mode segmentation for multi-token dictionary entries.
-	// A single token has no searchable sub-segments and is handled by the public APIs.
+	// The case where the division is no longer possible in the search mode
 	if searchMode && len(text) == 1 {
 		return nil
 	}
@@ -130,8 +129,18 @@ func (seg *Segmenter) segmentWords(text []Text, searchMode bool) []Segment {
 		return nil
 	}
 
-	tokens := make([]*Token, seg.Dict.maxTokenLen)
-	sizes := make([]int, seg.Dict.maxTokenLen)
+	// stack buffers for the usual short max token length,
+	// this is called once per dictionary token by CalcToken
+	var (
+		tokenBuf [32]*Token
+		sizeBuf  [32]int
+	)
+	tokens, sizes := tokenBuf[:], sizeBuf[:]
+	if seg.Dict.maxTokenLen > len(tokenBuf) {
+		tokens = make([]*Token, seg.Dict.maxTokenLen)
+		sizes = make([]int, seg.Dict.maxTokenLen)
+	}
+
 	for current := 0; current < len(text); current++ {
 		// find the shortest path of the previous token,
 		// to calculate the subsequent path values

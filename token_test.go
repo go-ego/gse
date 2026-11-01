@@ -2,6 +2,7 @@ package gse
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/vcaesar/tt"
@@ -135,4 +136,16 @@ func TestLookupTokensSize(t *testing.T) {
 	tt.Equal(t, "[2 3]", sizes[:2])
 	tt.Equal(t, "西雅图", tokens[1].Text())
 	tt.Equal(t, 2, seg.Dict.LookupTokens(words, tokens))
+}
+
+func TestSegmentLongToken(t *testing.T) {
+	var seg Segmenter
+	seg.Dict = NewDict()
+	long := strings.Repeat("长", 40) // above the 32 stack buffer
+	tt.Nil(t, seg.AddToken(long, 100))
+	seg.CalcToken()
+
+	tt.Equal(t, 40, seg.Dict.MaxTokenLen())
+	tt.Equal(t, "[短 "+long+" 短]", seg.Slice("短"+long+"短"))
+	tt.Equal(t, 40, len(seg.Dict.Tokens[0].Segments()))
 }
