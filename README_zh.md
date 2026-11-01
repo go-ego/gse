@@ -1,8 +1,7 @@
-
 # [gse](https://github.com/go-ego/gse)
 
 Go 高性能多语言 NLP 和分词, 支持英文、中文、日文等。
-支持接入 [riot](https://github.com/vcaesar/riot)、[zincsearch](https://github.com/zincsearch/zincsearch)、[elasticsearch](https://github.com/vcaesar/go-gse-elastic) 和 [bleve](https://github.com/vcaesar/gse-bleve)。
+支持接入 [riot](https://github.com/vcaesar/riot)、[zedsearch](https://github.com/vcaesar/zedsearch)、[zincsearch](https://github.com/zincsearch/zincsearch)、[elasticsearch](https://github.com/vcaesar/go-gse-elastic) 和 [bleve](https://github.com/vcaesar/gse-bleve)。
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
@@ -11,7 +10,6 @@ Go 高性能多语言 NLP 和分词, 支持英文、中文、日文等。
 [![Lint Status](https://github.com/go-ego/gse/workflows/Lint/badge.svg)](https://github.com/go-ego/gse/actions/workflows/lint.yml)
 [![CircleCI Status](https://circleci.com/gh/go-ego/gse.svg?style=shield)](https://circleci.com/gh/go-ego/gse)
 [![codecov](https://codecov.io/gh/go-ego/gse/branch/master/graph/badge.svg)](https://codecov.io/gh/go-ego/gse)
-[![Go Report Card](https://goreportcard.com/badge/github.com/go-ego/gse)](https://goreportcard.com/report/github.com/go-ego/gse)
 [![GoDoc](https://godoc.org/github.com/go-ego/gse?status.svg)](https://godoc.org/github.com/go-ego/gse)
 [![GitHub release](https://img.shields.io/github/release/go-ego/gse.svg)](https://github.com/go-ego/gse/releases/latest)
 [![Join the chat at https://gitter.im/go-ego/ego](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/go-ego/ego?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -21,7 +19,7 @@ Go 高性能多语言 NLP 和分词, 支持英文、中文、日文等。
 
 [English](https://github.com/go-ego/gse/blob/master/README.md) | [日本語](https://github.com/go-ego/gse/blob/master/README_ja.md)
 
-Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多特性
+Gse 是结巴分词(jieba)的 golang 实现, 并添加 NLP 功能和更多特性
 
 我目前正在开发 [Codg](https://github.com/vcaesar/codg), 简单易用的编码和工作 AI agent 系统: 自动、异步、并发、高效且高准确率
 
@@ -37,11 +35,11 @@ Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多
 - 支持普通、搜索引擎、全模式、精确模式和 HMM 模式多种分词模式
 - 支持自定义词典、embed 词典、词性标注、分词信息分析、停用词和整理分词
 - 多语言支持: 英文, 中文, 日文等
-- 支持繁体字
+- 支持繁体中文 (使用单一词典)
 - 支持使用 Viterbi 算法的 HMM 分词
-- NLP 和 TensorFlow 支持 (进行中)
+- 基于 Pytorch 的 NLP 支持 (进行中)
 - 命名实体识别 (进行中)
-- 支持接入 [elasticsearch](https://github.com/vcaesar/go-gse-elastic) 和 bleve
+- 支持接入 [riot](https://github.com/vcaesar/riot) 和 [zedsearch](https://github.com/vcaesar/zedsearch), 以及 [elasticsearch](https://github.com/vcaesar/go-gse-elastic)、[bleve](https://github.com/vcaesar/gse-bleve) 等
 - 可运行<a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go"> JSON RPC 服务</a>
 
 ## 算法:
@@ -75,7 +73,7 @@ go get -u github.com/go-ego/gse
 
 ### 编译标签 (Build tags)
 
-- `-tags hash`: 词典使用 rune 级哈希 trie, 替代默认的 cedar 双数组 trie（trie 内存约减少 40%, 分词约慢 10%）。
+- `-tags hash`: 词典使用 rune 级哈希 trie, 替代默认的 cedar 双数组 trie; 中文词典的 trie 内存约减少 8 MiB (约 40%), 但分词约慢 10%。
 - `-tags ne`: 不将默认词典嵌入二进制文件 (体积更小); 需使用 `LoadDict("你的词典路径")` 加载, 而非 `LoadDictEmbed()`。
 
 ```

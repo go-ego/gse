@@ -1,7 +1,7 @@
 # gse
 
 Go による効率的な多言語 NLP およびテキスト分割ライブラリ。英語、中国語、日本語などをサポートします。
-[riot](https://github.com/vcaesar/riot)、[zincsearch](https://github.com/zincsearch/zincsearch)、[elasticsearch](https://github.com/vcaesar/go-gse-elastic)、[bleve](https://github.com/vcaesar/gse-bleve) との連携もサポートしています。
+[riot](https://github.com/vcaesar/riot)、[zedsearch](https://github.com/vcaesar/zedsearch)、[zincsearch](https://github.com/zincsearch/zincsearch)、[elasticsearch](https://github.com/vcaesar/go-gse-elastic)、[bleve](https://github.com/vcaesar/gse-bleve) との連携もサポートしています。
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
@@ -10,7 +10,6 @@ Go による効率的な多言語 NLP およびテキスト分割ライブラリ
 [![Lint Status](https://github.com/go-ego/gse/workflows/Lint/badge.svg)](https://github.com/go-ego/gse/actions/workflows/lint.yml)
 [![CircleCI Status](https://circleci.com/gh/go-ego/gse.svg?style=shield)](https://circleci.com/gh/go-ego/gse)
 [![codecov](https://codecov.io/gh/go-ego/gse/branch/master/graph/badge.svg)](https://codecov.io/gh/go-ego/gse)
-[![Go Report Card](https://goreportcard.com/badge/github.com/go-ego/gse)](https://goreportcard.com/report/github.com/go-ego/gse)
 [![GoDoc](https://godoc.org/github.com/go-ego/gse?status.svg)](https://godoc.org/github.com/go-ego/gse)
 [![GitHub release](https://img.shields.io/github/release/go-ego/gse.svg)](https://github.com/go-ego/gse/releases/latest)
 [![Join the chat at https://gitter.im/go-ego/ego](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/go-ego/ego?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -20,7 +19,7 @@ Go による効率的な多言語 NLP およびテキスト分割ライブラリ
 
 [English](https://github.com/go-ego/gse/blob/master/README.md) | [简体中文](https://github.com/go-ego/gse/blob/master/README_zh.md)
 
-Gse は jieba の Golang 実装であり、NLP サポートやより多くの機能を追加することを目指しています。
+Gse は jieba の Golang 実装であり、NLP サポートやより多くの機能を追加しています。
 
 現在 [Codg](https://github.com/vcaesar/codg) を開発中です。手軽にコーディングと作業ができる AI エージェントシステム：自動、非同期、並行、効率的かつ高精度
 
@@ -36,11 +35,11 @@ Gse は jieba の Golang 実装であり、NLP サポートやより多くの機
 - 一般、検索エンジン、完全、精密、HMM モードなど複数の分かち書きモードをサポート
 - ユーザー辞書と埋め込み辞書、品詞タグ付け、分割情報の解析、ストップワードと単語のトリムをサポート
 - 多言語サポート：英語、中国語、日本語など
-- 繁体字中国語をサポート
+- 繁体字中国語をサポート（単一の辞書を使用）
 - Viterbi アルゴリズムを使った HMM テキスト分割をサポート
-- TensorFlow による NLP サポート（開発中）
+- Pytorch による NLP サポート（開発中）
 - 固有表現認識（開発中）
-- [elasticsearch](https://github.com/vcaesar/go-gse-elastic) と bleve をサポート
+- [riot](https://github.com/vcaesar/riot) と [zedsearch](https://github.com/vcaesar/zedsearch)、さらに [elasticsearch](https://github.com/vcaesar/go-gse-elastic)、[bleve](https://github.com/vcaesar/gse-bleve) などをサポート
 - <a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go">JSON RPC サービス</a>の実行が可能
 
 ## アルゴリズム:
@@ -74,7 +73,7 @@ go get -u github.com/go-ego/gse
 
 ### ビルドタグ
 
-- `-tags hash`：辞書にデフォルトの cedar ダブル配列トライではなく、rune 単位ハッシュトライを使用します（トライのメモリ約 40% 削減、分かち書きは約 10% 低速）。
+- `-tags hash`：辞書にデフォルトの cedar ダブル配列トライではなく、rune 単位ハッシュトライを使用します。中国語辞書のトライメモリを約 8 MiB（約 40%）削減しますが、分かち書きは約 10% 低速になります。
 - `-tags ne`：デフォルト辞書をバイナリに埋め込みません（サイズ削減）。`LoadDictEmbed()` ではなく `LoadDict("辞書のパス")` で読み込んでください。
 
 ```
