@@ -2,6 +2,7 @@ package gse
 
 import (
 	"fmt"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
@@ -234,9 +235,9 @@ func TestDictPaths(t *testing.T) {
 	paths := DictPaths("./dictDir", "zh, jp")
 	tt.Expect(t, "3", len(paths))
 
-	tt.Expect(t, "dictDir/dict/zh/t_1.txt", paths[0])
-	tt.Expect(t, "dictDir/dict/zh/s_1.txt", paths[1])
-	tt.Expect(t, "dictDir/dict/jp/dict.txt", paths[2])
+	tt.Expect(t, filepath.FromSlash("dictDir/dict/zh/t_1.txt"), paths[0])
+	tt.Expect(t, filepath.FromSlash("dictDir/dict/zh/s_1.txt"), paths[1])
+	tt.Expect(t, filepath.FromSlash("dictDir/dict/jp/dict.txt"), paths[2])
 
 	paths1 := DictPaths("./dictDir", "zh, jp")
 	tt.Expect(t, "3", len(paths))
@@ -244,11 +245,12 @@ func TestDictPaths(t *testing.T) {
 
 	p := strings.ReplaceAll(seg1.GetCurrentFilePath(), "/segmenter_test.go", "") +
 		`/data/dict/zh/idf.txt`
-	tt.Equal(t, "["+p+"]", seg1.GetIdfPath([]string{}...))
+	tt.Equal(t, "["+filepath.FromSlash(p)+"]", seg1.GetIdfPath([]string{}...))
 
 	seg1.DictPath = "testdata/zh"
 	tt.Equal(t, "testdata/zh", seg1.GetCurrentFilePath())
-	tt.Equal(t, "[testdata/data/dict/zh/idf.txt]", seg1.GetIdfPath([]string{}...))
+	tt.Equal(t, "["+filepath.FromSlash("testdata/data/dict/zh/idf.txt")+"]",
+		seg1.GetIdfPath([]string{}...))
 }
 
 func TestInAlphaNum(t *testing.T) {

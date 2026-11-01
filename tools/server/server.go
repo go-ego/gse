@@ -29,7 +29,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io"
 	"log"
 	"runtime"
 	"strconv"
@@ -87,7 +86,7 @@ func JsonRpcServer(w http.ResponseWriter, req *http.Request) {
 		response, _ := json.Marshal(&JsonResp{Seg: segs})
 
 		w.Header().Set("Content-Type", "application/json")
-		io.WriteString(w, string(response))
+		w.Write(response)
 
 		return
 	}
@@ -104,7 +103,7 @@ func JsonRpcServer(w http.ResponseWriter, req *http.Request) {
 	response, _ := json.Marshal(&JsonResponse{Segments: ss})
 
 	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, string(response))
+	w.Write(response)
 }
 
 func addToken(w http.ResponseWriter, req *http.Request) {
@@ -115,7 +114,7 @@ func addToken(w http.ResponseWriter, req *http.Request) {
 
 	response, _ := json.Marshal(&Resp{Code: 200, Text: "ok"})
 	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, string(response))
+	w.Write(response)
 }
 
 func main() {

@@ -22,7 +22,7 @@ import (
 	"log"
 	"math"
 	"os"
-	"path"
+	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
@@ -164,7 +164,7 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	}
 
 	var (
-		dictDir  = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
+		dictDir  = filepath.Join(filepath.Dir(seg.GetCurrentFilePath()), "data")
 		dictPath string
 		// load     bool
 	)
@@ -193,8 +193,8 @@ func (seg *Segmenter) LoadDict(files ...string) error {
 	}
 
 	if len(files) == 0 {
-		dictPath = path.Join(dictDir, zhS1)
-		path1 := path.Join(dictDir, zhT1)
+		dictPath = filepath.Join(dictDir, zhS1)
+		path1 := filepath.Join(dictDir, zhT1)
 		// files = []string{dictPath}
 		err := seg.Read(dictPath)
 		if err != nil {
@@ -234,7 +234,7 @@ func (seg *Segmenter) LoadTFIDFDict(files []*types.LoadDictFile) error {
 	}
 
 	var (
-		dictDir = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
+		dictDir = filepath.Join(filepath.Dir(seg.GetCurrentFilePath()), "data")
 	)
 
 	for _, file := range files {
@@ -278,8 +278,8 @@ func (seg *Segmenter) GetCurrentFilePath() string {
 // GetIdfPath get the idf path
 func (seg *Segmenter) GetIdfPath(files ...string) []string {
 	var (
-		dictDir  = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
-		dictPath = path.Join(dictDir, "dict/zh/idf.txt")
+		dictDir  = filepath.Join(filepath.Dir(seg.GetCurrentFilePath()), "data")
+		dictPath = filepath.Join(dictDir, "dict/zh/idf.txt")
 	)
 
 	files = append(files, dictPath)
@@ -291,7 +291,7 @@ func (seg *Segmenter) LoadCorpusAverLen(files ...string) (corpusTotal float64, e
 	filePaths := seg.GetCorpusPath(files...)
 	corpusTotal = 0
 	for _, v := range filePaths {
-		var number float64 = 0
+		var number float64
 		number, err = seg.ReadCorpus(v)
 		if err != nil {
 			log.Printf("Could not read corpus from file path: \"%s\", %v \n", v, err)
@@ -307,8 +307,8 @@ func (seg *Segmenter) LoadCorpusAverLen(files ...string) (corpusTotal float64, e
 // GetCorpusPath get the corpus path
 func (seg *Segmenter) GetCorpusPath(files ...string) []string {
 	var (
-		dictDir  = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
-		dictPath = path.Join(dictDir, "dict/zh/tf_idf_origin.txt")
+		dictDir  = filepath.Join(filepath.Dir(seg.GetCurrentFilePath()), "data")
+		dictPath = filepath.Join(dictDir, "dict/zh/tf_idf_origin.txt")
 	)
 
 	files = append(files, dictPath)
@@ -343,8 +343,8 @@ func (seg *Segmenter) ReadCorpus(file string) (corpusAverLen float64, err error)
 // GetTfIdfPath get the tfidf path
 func (seg *Segmenter) GetTfIdfPath(files ...string) []string {
 	var (
-		dictDir  = path.Join(path.Dir(seg.GetCurrentFilePath()), "data")
-		dictPath = path.Join(dictDir, "dict/zh/tf_idf.txt")
+		dictDir  = filepath.Join(filepath.Dir(seg.GetCurrentFilePath()), "data")
+		dictPath = filepath.Join(dictDir, "dict/zh/tf_idf.txt")
 	)
 
 	files = append(files, dictPath)
@@ -608,21 +608,21 @@ func DictPaths(dictDir, filePath string) (files []string) {
 
 	for i := 0; i < len(fileName); i++ {
 		if fileName[i] == "ja" || fileName[i] == "jp" {
-			dictPath = path.Join(dictDir, "dict/jp/dict.txt")
+			dictPath = filepath.Join(dictDir, "dict/jp/dict.txt")
 		}
 
 		if fileName[i] == "zh" {
-			dictPath = path.Join(dictDir, zhS1)
-			path1 := path.Join(dictDir, zhT1)
+			dictPath = filepath.Join(dictDir, zhS1)
+			path1 := filepath.Join(dictDir, zhT1)
 			files = append(files, path1)
 		}
 
 		if fileName[i] == "zh_s" {
-			dictPath = path.Join(dictDir, zhS1)
+			dictPath = filepath.Join(dictDir, zhS1)
 		}
 
 		if fileName[i] == "zh_t" {
-			dictPath = path.Join(dictDir, zhT1)
+			dictPath = filepath.Join(dictDir, zhT1)
 		}
 
 		// if str[i] == "ti" {

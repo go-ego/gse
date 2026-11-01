@@ -178,3 +178,32 @@ func TestLoadTFIDFDictStr(t *testing.T) {
 	})
 	seg.LoadTFIDFDict(a)
 }
+
+func TestLoadDictEmbedLangs(t *testing.T) {
+	seg := Segmenter{SkipSubSeg: true, NotLoadHMM: true}
+	tt.Nil(t, seg.LoadDictEmbed("ja"))
+	_, _, ok := seg.Find("こん")
+	tt.Bool(t, ok)
+
+	tt.Nil(t, seg.LoadDictEmbed("zh_t"))
+	tt.Nil(t, seg.LoadDictEmbed("zh_s, word1 20 n"))
+	_, pos, ok := seg.Find("word1")
+	tt.Bool(t, ok)
+	tt.Equal(t, "n", pos)
+
+	seg1 := Segmenter{SkipSubSeg: true, NotLoadHMM: true}
+	tt.Nil(t, seg1.LoadDictEmbed())
+	tt.Equal(t, 587207, seg1.Dict.NumTokens())
+}
+
+func TestLoadStopEmbedDefault(t *testing.T) {
+	var seg Segmenter
+	tt.Nil(t, seg.LoadStopEmbed())
+	tt.Bool(t, seg.IsStop("比如"))
+
+	var seg1 Segmenter
+	tt.Nil(t, seg1.LoadStopEmbed("停止\n词语"))
+	tt.Bool(t, seg1.IsStop("停止"))
+	tt.Bool(t, seg1.IsStop("词语"))
+	tt.False(t, seg1.IsStop("比如"))
+}

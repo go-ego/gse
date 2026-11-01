@@ -41,7 +41,7 @@ func newTag(position, pos string) (tag, error) {
 	}
 
 	if positionIndex < 0 || posIndex < 0 {
-		return 0, fmt.Errorf("Failed to convert %s %s to Tag", position, pos)
+		return 0, fmt.Errorf("failed to convert %s %s to Tag", position, pos)
 	}
 
 	return tag(positionIndex + posIndex), nil

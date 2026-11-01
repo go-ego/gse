@@ -1,0 +1,41 @@
+version: "2"
+
+run:
+  tests: true
+
+linters:
+  default: standard
+  settings:
+    errcheck:
+      exclude-functions:
+        # closing a read-only file
+        - (*os.File).Close
+        # loading a dictionary is best effort, a token that fails is skipped
+        - (*github.com/go-ego/gse.Dictionary).AddToken
+  exclusions:
+    generated: lax
+    presets:
+      - std-error-handling
+    paths:
+      - test
+    rules:
+      # tests, examples, demos and tools may skip error checks
+      - path: _test\.go
+        linters:
+          - errcheck
+      - path: ^(examples|tools|data)/
+        linters:
+          - errcheck
+          - unused
+
+formatters:
+  enable:
+    - gofmt
+  exclusions:
+    generated: lax
+    paths:
+      - test
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
