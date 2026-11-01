@@ -319,4 +319,4 @@ elasticsearch と一緒に使用するには？
 Gse は主に「Apache License (Version 2.0)」の条項の下で配布されています。
 [LICENSE-APACHE](http://www.apache.org/licenses/LICENSE-2.0)、[LICENSE](https://github.com/go-vgo/robotgo/blob/master/LICENSE) を参照してください。
 
-[sego](https://github.com/huichen/sego) と [jieba](https://github.com/fxsjy/jieba)（[jiebago](https://github.com/wangbin/jiebago)）に感謝します。
+[jieba](https://github.com/fxsjy/jieba)（[jiebago](https://github.com/wangbin/jiebago)）と [sego](https://github.com/huichen/sego) に感謝します。

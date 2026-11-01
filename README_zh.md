@@ -319,4 +319,4 @@ func main() {
 Gse 主要基于 "Apache License (Version 2.0)" 条款分发。
 参见 [LICENSE-APACHE](http://www.apache.org/licenses/LICENSE-2.0), [LICENSE](https://github.com/go-vgo/robotgo/blob/master/LICENSE)。
 
-感谢 [sego](https://github.com/huichen/sego) 和 [jieba](https://github.com/fxsjy/jieba)([jiebago](https://github.com/wangbin/jiebago))。
+感谢 [jieba](https://github.com/fxsjy/jieba)([jiebago](https://github.com/wangbin/jiebago)) 和 [sego](https://github.com/huichen/sego)。
