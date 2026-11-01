@@ -144,6 +144,10 @@ func (seg *Segmenter) HMMCutMod(str string, prob ...map[rune]float64) []string {
 // Slice use modeSegment segment return []string
 // using search mode if searchMode is true
 func (seg *Segmenter) Slice(s string, searchMode ...bool) []string {
+	if searchModeSingleWord(seg, s, searchMode...) {
+		return seg.Slice(s)
+	}
+
 	segs := seg.ModeSegment([]byte(s), searchMode...)
 	return ToSlice(segs, searchMode...)
 }
@@ -151,6 +155,10 @@ func (seg *Segmenter) Slice(s string, searchMode ...bool) []string {
 // Slice use modeSegment segment return string
 // using search mode if searchMode is true
 func (seg *Segmenter) String(s string, searchMode ...bool) string {
+	if searchModeSingleWord(seg, s, searchMode...) {
+		return seg.String(s)
+	}
+
 	segs := seg.ModeSegment([]byte(s), searchMode...)
 	return ToString(segs, searchMode...)
 }
@@ -162,6 +170,10 @@ type SegPos struct {
 
 // Pos return text and pos array
 func (seg *Segmenter) Pos(s string, searchMode ...bool) []SegPos {
+	if searchModeSingleWord(seg, s, searchMode...) {
+		return seg.Pos(s)
+	}
+
 	sa := seg.ModeSegment([]byte(s), searchMode...)
 	return ToPos(sa, searchMode...)
 }
