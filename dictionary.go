@@ -57,8 +57,14 @@ func (dict *Dictionary) grow(n int) {
 	dict.Tokens = tokens
 }
 
-// AddToken add a token to the dictionary
+// AddToken add a token to the dictionary, an empty token is skipped
 func (dict *Dictionary) AddToken(token Token) error {
+	// a dict word trimmed to "" (e.g. the full-width space in the jp dict)
+	// can never match, and an empty key corrupts the cedar trie
+	if len(token.text) == 0 {
+		return nil
+	}
+
 	val, err := dict.trie.Get(token.text)
 	if err == nil || val > 0 {
 		return nil
