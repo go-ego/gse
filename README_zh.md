@@ -45,7 +45,7 @@ Gse 是结巴分词(jieba)的 golang 实现, 并尝试添加 NLP 功能和更多
 
 ## 算法:
 
-- [词典](https://github.com/go-ego/gse/blob/master/dictionary.go)用双数组 trie（Double-Array Trie）实现
+- [词典](https://github.com/go-ego/gse/blob/master/dictionary.go)默认用 rune 级哈希 trie 实现, 使用 `-tags cedar` 时用双数组 trie（Double-Array Trie, [cedar](https://github.com/vcaesar/cedar)）实现
 - [分词器](https://github.com/go-ego/gse/blob/master/dag.go)算法为基于词频的最短路径加动态规划, 以及 DAG 和 HMM 算法分词
 
 ## 分词速度:
@@ -70,6 +70,16 @@ import "github.com/go-ego/gse"
 
 ```
 go get -u github.com/go-ego/gse
+```
+
+### 编译标签 (Build tags)
+
+- `-tags cedar`: 词典使用 cedar 双数组 trie, 替代默认的 rune 级哈希 trie。
+- `-tags ne`: 不将默认词典嵌入二进制文件 (体积更小); 需使用 `LoadDict("你的词典路径")` 加载, 而非 `LoadDictEmbed()`。
+
+```
+go build -tags cedar
+go build -tags ne
 ```
 
 ## 使用

@@ -44,7 +44,7 @@ Gse は jieba の Golang 実装であり、NLP サポートやより多くの機
 
 ## アルゴリズム:
 
-- [辞書](https://github.com/go-ego/gse/blob/master/dictionary.go)は Double Array Trie（ダブル配列トライ）で実装
+- [辞書](https://github.com/go-ego/gse/blob/master/dictionary.go)はデフォルトで rune 単位のハッシュトライ、`-tags cedar` 指定時は Double Array Trie（ダブル配列トライ、[cedar](https://github.com/vcaesar/cedar)）で実装
 - [分割器](https://github.com/go-ego/gse/blob/master/dag.go)アルゴリズムは最短パス（単語頻度と動的プログラミングに基づく）、DAG および HMM アルゴリズムによる分かち書き
 
 ## テキスト分割速度:
@@ -69,6 +69,16 @@ import "github.com/go-ego/gse"
 
 ```
 go get -u github.com/go-ego/gse
+```
+
+### ビルドタグ
+
+- `-tags cedar`：辞書にデフォルトの rune 単位ハッシュトライではなく、cedar ダブル配列トライを使用します。
+- `-tags ne`：デフォルト辞書をバイナリに埋め込みません（サイズ削減）。`LoadDictEmbed()` ではなく `LoadDict("辞書のパス")` で読み込んでください。
+
+```
+go build -tags cedar
+go build -tags ne
 ```
 
 ## 使用方法

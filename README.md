@@ -1,7 +1,7 @@
 # gse
 
 Go efficient multilingual NLP and text segmentation; support English, Chinese, Japanese and others.
-And supports with [riot](https://github.com/vcaesar/riot), [zincsearch](https://github.com/zincsearch/zincsearch), [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and [bleve](https://github.com/vcaesar/gse-bleve).
+And supports with [riot](https://github.com/vcaesar/riot), [zedsearch](https://github.com/vcaesar/zedsearch),[zincsearch](https://github.com/zincsearch/zincsearch), [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and [bleve](https://github.com/vcaesar/gse-bleve).
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
@@ -44,7 +44,7 @@ I build [Codg](https://github.com/vcaesar/codg) now, Easy code and work AI agent
 
 ## Algorithm:
 
-- [Dictionary](https://github.com/go-ego/gse/blob/master/dictionary.go) with double array trie (Double-Array Trie) to achieve
+- [Dictionary](https://github.com/go-ego/gse/blob/master/dictionary.go) with a rune-level hash trie by default, or the double array trie (Double-Array Trie, [cedar](https://github.com/vcaesar/cedar)) with `-tags cedar`
 - [Segmenter](https://github.com/go-ego/gse/blob/master/dag.go) algorithm is the shortest path (based on word frequency and dynamic programming), and DAG and HMM algorithm word segmentation.
 
 ## Text Segmentation speed:
@@ -69,6 +69,16 @@ Otherwise, to install the gse package, run the command:
 
 ```
 go get -u github.com/go-ego/gse
+```
+
+### Build tags
+
+- `-tags cedar`: use the cedar double array trie instead of the default rune-level hash trie for the dictionary.
+- `-tags ne`: do not embed the default dictionaries into the binary (smaller size); load them with `LoadDict("your dict path")` instead of `LoadDictEmbed()`.
+
+```
+go build -tags cedar
+go build -tags ne
 ```
 
 ## Use
