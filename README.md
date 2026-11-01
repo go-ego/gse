@@ -10,12 +10,9 @@ And supports with [riot](https://github.com/vcaesar/riot), [zedsearch](https://g
 [![Lint Status](https://github.com/go-ego/gse/workflows/Lint/badge.svg)](https://github.com/go-ego/gse/actions/workflows/lint.yml)
 [![CircleCI Status](https://circleci.com/gh/go-ego/gse.svg?style=shield)](https://circleci.com/gh/go-ego/gse)
 [![codecov](https://codecov.io/gh/go-ego/gse/branch/master/graph/badge.svg)](https://codecov.io/gh/go-ego/gse)
-[![GoDoc](https://godoc.org/github.com/go-ego/gse?status.svg)](https://godoc.org/github.com/go-ego/gse)
+[![Go Reference](https://pkg.go.dev/badge/github.com/go-ego/gse.svg)](https://pkg.go.dev/github.com/go-ego/gse)
 [![GitHub release](https://img.shields.io/github/release/go-ego/gse.svg)](https://github.com/go-ego/gse/releases/latest)
-[![Join the chat at https://gitter.im/go-ego/ego](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/go-ego/ego?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-<!-- [![Release](https://github-release-version.herokuapp.com/github/go-ego/gse/release.svg?style=flat)](https://github.com/go-ego/gse/releases/latest) -->
-<!--<a href="https://github.com/go-ego/ego/releases"><img src="https://img.shields.io/badge/%20version%20-%206.0.0%20-blue.svg?style=flat-square" alt="Releases"></a>-->
+<a href="https://discord.gg/npPb3NzE4A"><img src="https://img.shields.io/discord/1484658282777018551.svg?logo=discord&logoColor=white&label=Discord&color=5865F2" alt="Join the Discord chat at https://discord.gg/535uZPakJw"></a>
 
 [简体中文](https://github.com/go-ego/gse/blob/master/README_zh.md) | [日本語](https://github.com/go-ego/gse/blob/master/README_ja.md)
 
