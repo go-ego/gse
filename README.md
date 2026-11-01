@@ -1,7 +1,7 @@
 # gse
 
 Go efficient multilingual NLP and text segmentation; support English, Chinese, Japanese and others.
-And supports with [riot](https://github.com/vcaesar/riot), [zedsearch](https://github.com/vcaesar/zedsearch),[zincsearch](https://github.com/zincsearch/zincsearch), [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and [bleve](https://github.com/vcaesar/gse-bleve).
+And supports with [riot](https://github.com/vcaesar/riot), [zedsearch](https://github.com/vcaesar/zedsearch), [zincsearch](https://github.com/zincsearch/zincsearch), [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and [bleve](https://github.com/vcaesar/gse-bleve).
 
 <!--<img align="right" src="https://raw.githubusercontent.com/go-ego/ego/master/logo.jpg">-->
 <!--<a href="https://circleci.com/gh/go-ego/ego/tree/dev"><img src="https://img.shields.io/circleci/project/go-ego/ego/dev.svg" alt="Build Status"></a>-->
@@ -10,7 +10,6 @@ And supports with [riot](https://github.com/vcaesar/riot), [zedsearch](https://g
 [![Lint Status](https://github.com/go-ego/gse/workflows/Lint/badge.svg)](https://github.com/go-ego/gse/actions/workflows/lint.yml)
 [![CircleCI Status](https://circleci.com/gh/go-ego/gse.svg?style=shield)](https://circleci.com/gh/go-ego/gse)
 [![codecov](https://codecov.io/gh/go-ego/gse/branch/master/graph/badge.svg)](https://codecov.io/gh/go-ego/gse)
-[![Go Report Card](https://goreportcard.com/badge/github.com/go-ego/gse)](https://goreportcard.com/report/github.com/go-ego/gse)
 [![GoDoc](https://godoc.org/github.com/go-ego/gse?status.svg)](https://godoc.org/github.com/go-ego/gse)
 [![GitHub release](https://img.shields.io/github/release/go-ego/gse.svg)](https://github.com/go-ego/gse/releases/latest)
 [![Join the chat at https://gitter.im/go-ego/ego](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/go-ego/ego?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -20,7 +19,7 @@ And supports with [riot](https://github.com/vcaesar/riot), [zedsearch](https://g
 
 [简体中文](https://github.com/go-ego/gse/blob/master/README_zh.md) | [日本語](https://github.com/go-ego/gse/blob/master/README_ja.md)
 
-Gse is implements jieba by golang, and add NLP support and more features
+Gse is implements jieba by golang, and added NLP support and more features
 
 I build [Codg](https://github.com/vcaesar/codg) now, Easy code and work AI agent system: auto, asynchronous, concurrency, efficiently and High accuracy
 
@@ -36,9 +35,9 @@ I build [Codg](https://github.com/vcaesar/codg) now, Easy code and work AI agent
 - Support common, search engine, full mode, precise mode and HMM mode multiple word segmentation modes;
 - Support user and embed dictionary, Part-of-speech/POS tagging, analyze segment info, stop and trim words
 - Support multilingual: English, Chinese, Japanese and others
-- Support Traditional Chinese
+- Support Traditional Chinese (Use single dictionary)
 - Support HMM cut text use Viterbi algorithm
-- Support NLP by TensorFlow (in work)
+- Support NLP by Pytorch (in work)
 - Named Entity Recognition (in work)
 - Supports with [elasticsearch](https://github.com/vcaesar/go-gse-elastic) and bleve
 - run<a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go"> JSON RPC service</a>.
