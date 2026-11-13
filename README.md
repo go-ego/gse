@@ -14,7 +14,7 @@ And supports with [riot](https://github.com/vcaesar/riot), [zedsearch](https://g
 [![GitHub release](https://img.shields.io/github/release/go-ego/gse.svg)](https://github.com/go-ego/gse/releases/latest)
 <a href="https://discord.gg/535uZPakJw"><img src="https://img.shields.io/discord/1484658282777018551.svg?logo=discord&logoColor=white&label=Discord&color=5865F2" alt="Join the Discord chat at https://discord.gg/535uZPakJw"></a>
 
-[简体中文](https://github.com/go-ego/gse/blob/master/README_zh.md) | [日本語](https://github.com/go-ego/gse/blob/master/README_ja.md)
+[简体中文](https://github.com/go-ego/gse/blob/master/README_zh.md) | [繁體中文](https://github.com/go-ego/gse/blob/master/README_zht.md) | [日本語](https://github.com/go-ego/gse/blob/master/README_ja.md)
 
 Gse is implements jieba by golang, and added NLP support and more features
 
