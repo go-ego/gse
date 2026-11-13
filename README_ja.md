@@ -14,7 +14,7 @@ Go による効率的な多言語 NLP およびテキスト分割ライブラリ
 [![GitHub release](https://img.shields.io/github/release/go-ego/gse.svg)](https://github.com/go-ego/gse/releases/latest)
 <a href="https://discord.gg/535uZPakJw"><img src="https://img.shields.io/discord/1484658282777018551.svg?logo=discord&logoColor=white&label=Discord&color=5865F2" alt="Discord チャットに参加 https://discord.gg/535uZPakJw"></a>
 
-[English](https://github.com/go-ego/gse/blob/master/README.md) | [简体中文](https://github.com/go-ego/gse/blob/master/README_zh.md)
+[English](https://github.com/go-ego/gse/blob/master/README.md) | [简体中文](https://github.com/go-ego/gse/blob/master/README_zh.md) | [繁體中文](https://github.com/go-ego/gse/blob/master/README_zht.md)
 
 Gse は jieba の Golang 実装であり、NLP サポートやより多くの機能を追加しています。
 
