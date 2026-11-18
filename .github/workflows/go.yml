@@ -26,4 +26,13 @@ jobs:
       - name: Build
         run: go build -v .
       - name: Test
-        run: go test -v .
+        shell: bash
+        run: go test -v -covermode=count -coverprofile=coverage.out .
+
+      - name: Upload coverage to Codecov
+        if: matrix.os == 'ubuntu-latest' && matrix.go == '1.27.x'
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage.out
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
