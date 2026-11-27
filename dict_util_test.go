@@ -42,6 +42,23 @@ func newDictPathSeg(dir string) *Segmenter {
 	}
 }
 
+func TestRemoveTokenTotalFreq(t *testing.T) {
+	seg := Segmenter{Dict: NewDict()}
+	tt.Nil(t, seg.AddToken("apple", 10))
+	tt.Nil(t, seg.AddToken("pear", 3))
+	tt.NotNil(t, seg.RemoveToken("app"))
+	tt.Equal(t, 13.0, seg.Dict.TotalFreq())
+	freq, _, ok := seg.Find("apple")
+	tt.True(t, ok)
+	tt.Equal(t, 10.0, freq)
+	tt.Nil(t, seg.ReAddToken("apple", 5))
+	tt.Equal(t, 8.0, seg.Dict.TotalFreq())
+	tt.Nil(t, seg.RemoveToken("apple"))
+	tt.Equal(t, 3.0, seg.Dict.TotalFreq())
+	tt.NotNil(t, seg.RemoveToken("apple"))
+	tt.Equal(t, 3.0, seg.Dict.TotalFreq())
+}
+
 func TestReAddTokenErr(t *testing.T) {
 	seg := newDagSeg(t)
 	tt.NotNil(t, seg.ReAddToken("不存在", 10))

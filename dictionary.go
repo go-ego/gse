@@ -87,7 +87,16 @@ func (dict *Dictionary) AddToken(token Token) error {
 
 // RemoveToken remove token in dictionary
 func (dict *Dictionary) RemoveToken(token Token) error {
-	return dict.trie.Delete(token.text)
+	index, err := dict.trie.Get(token.text)
+	if err != nil {
+		return err
+	}
+	if err := dict.trie.Delete(token.text); err != nil {
+		return err
+	}
+
+	dict.totalFreq -= dict.Tokens[index].freq
+	return nil
 }
 
 // LookupTokens finds tokens and words in the dictionary, matching the given pattern
