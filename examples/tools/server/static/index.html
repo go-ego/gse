@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark">
+    <title>gse segment 演示</title>
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --ring: rgba(79, 70, 229, 0.25);
+            --radius: 12px;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f172a;
+                --card: #1e293b;
+                --text: #e2e8f0;
+                --muted: #94a3b8;
+                --border: #334155;
+                --accent: #818cf8;
+                --accent-hover: #a5b4fc;
+                --ring: rgba(129, 140, 248, 0.3);
+                --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font: 15px/1.6 system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 20px;
+        }
+
+        h1 {
+            margin: 0 0 24px;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        h1 span {
+            color: var(--accent);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .panel {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .panel label {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        textarea {
+            flex: 1;
+            width: 100%;
+            min-height: 460px;
+            padding: 16px;
+            resize: vertical;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--card);
+            color: var(--text);
+            box-shadow: var(--shadow);
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.8;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        textarea:focus,
+        select:focus,
+        button:focus-visible {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--ring);
+        }
+
+        #output {
+            background: color-mix(in srgb, var(--card) 92%, var(--accent));
+        }
+
+        #ctrl {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 14px;
+            min-width: 160px;
+        }
+
+        select,
+        button {
+            height: 40px;
+            padding: 0 14px;
+            border-radius: 10px;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        select {
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+        }
+
+        .switch {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .switch input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent);
+        }
+
+        button {
+            border: 0;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+            transition: background 0.15s, transform 0.05s;
+        }
+
+        button:hover {
+            background: var(--accent-hover);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        #stat {
+            min-height: 1.4em;
+            color: var(--muted);
+            font-size: 13px;
+            text-align: center;
+        }
+
+        @media (max-width: 800px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            textarea {
+                min-height: 220px;
+            }
+
+            #ctrl {
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1><span>gse</span> segment 演示</h1>
+        <div class="row">
+            <div class="panel">
+                <label for="text">Text</label>
+                <textarea id="text">2017年1月23日正式开机，导演罗素兄弟从社交网站上发布过一些在亚特兰大取景筹备的零星照片，主要以亚特兰大片场为主要拍摄地，期间还会前往伦敦取景。
+《复仇者联盟3：无限战争》是全片使用IMAX摄影机拍摄，在IMAX影院放映时，全片以上下扩展至IMAX 1.9：1的宽高比来呈现。参与影片特效制作的公司，包括工业光魔、维塔工作室、双重否定（DNEG）、Method Studios、Framestore、Cinesite、数字王国、RISE等等</textarea>
+            </div>
+            <div id="ctrl">
+                <select id="mode" title="segment mode"></select>
+                <label class="switch"><input type="checkbox" id="show_pos" checked> pos</label>
+                <button type="button" id="btn">Segment =&gt;</button>
+                <div id="stat"></div>
+            </div>
+            <div class="panel">
+                <label for="output">Segments</label>
+                <textarea id="output" readonly></textarea>
+            </div>
+        </div>
+    </main>
+    <script>
+        const el = (id) => document.getElementById(id);
+
+        async function getJSON(url, body) {
+            const resp = await fetch(url, body ? { method: "POST", body: new URLSearchParams(body) } : undefined);
+            const data = await resp.json();
+            if (!resp.ok) {
+                throw new Error(data.text || resp.statusText);
+            }
+            return data;
+        }
+
+        function format(segments, showPos) {
+            return segments
+                .filter((s) => s.text.trim() || s.text.includes("\n"))
+                .map((s) => showPos && s.pos && s.pos !== "x" && s.text.trim() ? s.text + "/" + s.pos : s.text)
+                .join(" ");
+        }
+
+        async function segment() {
+            el("btn").disabled = true;
+            const t0 = performance.now();
+            try {
+                const result = await getJSON("/json", { text: el("text").value, mode: el("mode").value });
+                el("output").value = format(result.segments, el("show_pos").checked);
+                el("stat").textContent = `${result.segments.length} tokens · ${Math.round(performance.now() - t0)} ms`;
+            } catch (err) {
+                el("output").value = "error: " + err.message;
+                el("stat").textContent = "";
+            } finally {
+                el("btn").disabled = false;
+            }
+        }
+
+        async function loadModes() {
+            try {
+                for (const m of await getJSON("/modes")) {
+                    el("mode").add(new Option(m.name, m.name));
+                    el("mode").lastChild.title = m.desc;
+                }
+            } catch (err) {
+                el("output").value = "error: " + err.message;
+            }
+        }
+
+        el("btn").addEventListener("click", segment);
+        el("text").addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+                segment();
+            }
+        });
+        loadModes();
+    </script>
+</body>
+
+</html>

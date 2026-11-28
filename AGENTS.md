@@ -13,8 +13,9 @@ Module: `github.com/go-ego/gse` · Go: `1.17` (`go.mod`) · CI tested against Go
 - **Test single subpackage**: `go test -v ./hmm/...`
 - **Coverage**: `go test -v -covermode=count -coverprofile=coverage.out`
 - **Benchmark**: `go test -v -bench=. -benchmem .` (see `gse_bm_test.go`)
-- **Benchmark tool**: `go run ./tools/benchmark/benchmark.go` (goroutines variant: `./tools/benchmark/goroutines/goroutines.go`)
-- **Run server demo**: `go run ./tools/server/server.go`
+- **Benchmark tool**: `go run ./examples/tools/benchmark -mode segment` (goroutines variant: `go run ./examples/tools/benchmark/goroutines`), run from the repo root
+- **Run server demo**: `go run ./examples/tools/server -mode hmm`
+- **Test tools**: `go test -race ./examples/tools/...`
 - **Build without embedded dicts**: `go build -tags ne .` (excludes `dict_embed.go`, uses `dict_no_embed.go` stubs)
 - **Format**: `gofmt -s -w .`
 - **Vet**: `go vet ./...`
@@ -56,10 +57,11 @@ Root package `gse` is the public segmenter API. Subpackages under `hmm/` and `tf
 │   ├── zh/{s_1,t_1,idf,tf_idf,stop_tokens,stop_word}.txt
 │   └── jp/dict.txt
 ├── examples/               # Runnable example main.go (en, jp, hmm, dict, embed)
+│   └── tools/
+│       ├── internal/segtool/  # shared seg modes, dict + lines loading
+│       ├── benchmark/      # single + goroutines benchmark
+│       └── server/         # JSON server demo + embedded static UI
 ├── testdata/               # Test fixtures (en + zh/*)
-├── tools/
-│   ├── benchmark/          # single + goroutines benchmark
-│   └── server/             # JSON RPC server demo + static UI
 └── .github/workflows/go.yml
 ```
 
