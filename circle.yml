@@ -11,6 +11,4 @@ jobs:
       # - run: go get -u github.com/go-ego/cedar
       - run: go get -v -t -d ./...
       - run: go test -v ./...
-      # codecov.io
-      - run: go test -v -covermode=count -coverprofile=coverage.out
-      - run: bash <(curl -s https://codecov.io/bash)
+      # codecov.io: moved to .github/workflows/go.yml
