@@ -37,7 +37,7 @@ Gse は jieba の Golang 実装であり、NLP サポートやより多くの機
 - Pytorch による NLP サポート（開発中）
 - 固有表現認識（開発中）
 - [riot](https://github.com/vcaesar/riot) と [zedsearch](https://github.com/vcaesar/zedsearch)、さらに [elasticsearch](https://github.com/vcaesar/go-gse-elastic)、[bleve](https://github.com/vcaesar/gse-bleve) などをサポート
-- <a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go">JSON RPC サービス</a>の実行が可能
+- <a href="https://github.com/go-ego/gse/blob/master/examples/tools/server/server.go">JSON RPC サービス</a>の実行が可能
 
 ## アルゴリズム:
 
@@ -46,8 +46,8 @@ Gse は jieba の Golang 実装であり、NLP サポートやより多くの機
 
 ## テキスト分割速度:
 
-- <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/benchmark.go">シングルスレッド</a> 9.2MB/s
-- <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/goroutines/goroutines.go">ゴルーチン並行</a> 26.8MB/s
+- <a href="https://github.com/go-ego/gse/blob/master/examples/tools/benchmark/benchmark.go">シングルスレッド</a> 9.2MB/s
+- <a href="https://github.com/go-ego/gse/blob/master/examples/tools/benchmark/goroutines/goroutines.go">ゴルーチン並行</a> 26.8MB/s
 - HMM テキスト分割シングルスレッド 3.2MB/s（2コア 4スレッド Macbook Pro）
 
 ## バインディング:
@@ -284,6 +284,9 @@ func main() {
 	// seg.LoadDict("zh, testdata/zh/test_dict.txt, testdata/zh/test_dict1.txt")
 	// seg.LoadStop()
 	seg, err := gse.NewEmbed("zh, word 20 n"+testDict, "en")
+	if err != nil {
+		fmt.Println("NewEmbed error: ", err)
+	}
 	// seg.LoadDictEmbed()
 	seg.LoadStopEmbed()
 

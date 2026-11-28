@@ -37,7 +37,7 @@ I build [Codg](https://github.com/vcaesar/codg) now, Easy code and work AI agent
 - Support NLP by Pytorch (in work)
 - Named Entity Recognition (in work)
 - Supports [riot](https://github.com/vcaesar/riot) and [zedsearch](https://github.com/vcaesar/zedsearch), and [elasticsearch](https://github.com/vcaesar/go-gse-elastic), [bleve](https://github.com/vcaesar/gse-bleve) and others
-- run<a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go"> JSON RPC service</a>.
+- run<a href="https://github.com/go-ego/gse/blob/master/examples/tools/server/server.go"> JSON RPC service</a>.
 
 ## Algorithm:
 
@@ -46,8 +46,8 @@ I build [Codg](https://github.com/vcaesar/codg) now, Easy code and work AI agent
 
 ## Text Segmentation speed:
 
-- <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/benchmark.go"> single thread</a> 9.2MB/s
-- <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/goroutines/goroutines.go">goroutines concurrent</a> 26.8MB/s.
+- <a href="https://github.com/go-ego/gse/blob/master/examples/tools/benchmark/benchmark.go"> single thread</a> 9.2MB/s
+- <a href="https://github.com/go-ego/gse/blob/master/examples/tools/benchmark/goroutines/goroutines.go">goroutines concurrent</a> 26.8MB/s.
 - HMM text segmentation single thread 3.2MB/s. (2core 4threads Macbook Pro).
 
 ## Binding:
@@ -284,6 +284,9 @@ func main() {
 	// seg.LoadDict("zh, testdata/zh/test_dict.txt, testdata/zh/test_dict1.txt")
 	// seg.LoadStop()
 	seg, err := gse.NewEmbed("zh, word 20 n"+testDict, "en")
+	if err != nil {
+		fmt.Println("NewEmbed error: ", err)
+	}
 	// seg.LoadDictEmbed()
 	seg.LoadStopEmbed()
 

@@ -37,7 +37,7 @@ Gse 是結巴分詞 (jieba) 的 golang 實作, 並加入 NLP 功能和更多特�
 - 基於 Pytorch 的 NLP 支援 (進行中)
 - 命名實體識別 (進行中)
 - 支援接入 [riot](https://github.com/vcaesar/riot) 和 [zedsearch](https://github.com/vcaesar/zedsearch), 以及 [elasticsearch](https://github.com/vcaesar/go-gse-elastic)、[bleve](https://github.com/vcaesar/gse-bleve) 等
-- 可執行<a href="https://github.com/go-ego/gse/blob/master/tools/server/server.go"> JSON RPC 服務</a>
+- 可執行<a href="https://github.com/go-ego/gse/blob/master/examples/tools/server/server.go"> JSON RPC 服務</a>
 
 ## 演算法:
 
@@ -46,8 +46,8 @@ Gse 是結巴分詞 (jieba) 的 golang 實作, 並加入 NLP 功能和更多特�
 
 ## 分詞速度:
 
-- <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/benchmark.go">單執行緒</a> 9.2MB/s
-- <a href="https://github.com/go-ego/gse/blob/master/tools/benchmark/goroutines/goroutines.go">goroutines 並行</a> 26.8MB/s
+- <a href="https://github.com/go-ego/gse/blob/master/examples/tools/benchmark/benchmark.go">單執行緒</a> 9.2MB/s
+- <a href="https://github.com/go-ego/gse/blob/master/examples/tools/benchmark/goroutines/goroutines.go">goroutines 並行</a> 26.8MB/s
 - HMM 模式單執行緒分詞速度 3.2MB/s（雙核心 4 執行緒 Macbook Pro）
 
 ## Binding:
@@ -284,6 +284,9 @@ func main() {
 	// seg.LoadDict("zh, testdata/zh/test_dict.txt, testdata/zh/test_dict1.txt")
 	// seg.LoadStop()
 	seg, err := gse.NewEmbed("zh, word 20 n"+testDict, "en")
+	if err != nil {
+		fmt.Println("NewEmbed error: ", err)
+	}
 	// seg.LoadDictEmbed()
 	seg.LoadStopEmbed()
 
